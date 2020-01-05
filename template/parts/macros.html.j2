@@ -1,0 +1,53 @@
+{% set km = dmp.knowledgeModel %}
+{% set replies = dmp.questionnaireReplies %}
+{% set report = dmp.report %}
+{% set metricDefinitions = dmp.metrics %}
+{% set levelDefinitions = dmp.levels %}
+
+{% macro renderCurrentLevel() %}
+  {% for levelDefinition in levelDefinitions %}
+    {% if levelDefinition.level == dmp.level %}
+      {{levelDefinition.title}}
+    {% endif %}
+  {% endfor %}
+{% endmacro %}
+
+{# full path match using hashtable (optimization) #}
+{% macro withReply(pathSuffix) %}
+  {% for reply in replies %}
+    {% if reply.path|endswith(pathSuffix) %}
+      {{ caller(reply) }}
+    {% endif %}
+  {% endfor %}
+{% endmacro %}
+
+{% macro withReplyDefault(pathSuffix, default) %}
+  {% for reply in replies|filter((r) -> endswith(r.path, pathSuffix)) %}
+    {{ caller(reply) }}
+  {% else %}
+    {{ caller(default) }}
+  {% endfor %}
+{% endmacro %}
+
+{% macro mapReplies(pathSuffixes) %}
+  {{ caller(map(pathSuffixes, (pathSuffix) -> filter(replies, (r) -> endswith(r.path, pathSuffix)))) }}
+{% endmacro %}
+
+{% macro getIntegrationForQuestion(questionUuid) %}
+  {% set question = km.entities.questions[questionUuid] %}
+  {% set integration = km.entities.integrations[question.integrationUuid] %}
+  {{ caller(integration) }}
+{% endmacro %}
+
+{% macro createIntegrationLink(integration, itemId) %}
+  {{ caller(integration.itemUrl|replace("${id}", itemId)) }}
+{% endmacro %}
+
+{% macro whenReply(pathSuffix, targetPathSuffix) %}
+  {% for reply in replies %}
+    {% if reply.path|endswith(pathSuffix) &&
+          reply.value.value == targetPathSuffix %}
+      {{ caller(reply) }}
+    {% endif %}
+  {% endfor %}
+{% endmacro %}

@@ -1,0 +1,87 @@
+<header>
+  <h1>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 204 153"><path d="M151,113.37,137.24,89.08l-24.67-7.25,19-2.76L113.81,47.7,95.94,37.89l17.18,2.85,37.53,5.7L94.59,1.33c-2.76-2.67-6.88-1.47-8.32,2.44l-14.4,55,20,3.36L69.71,67,57.32,114.31l36.85,5.2-41.56,6.63L.66,152.1s34.15-1.54,45.76-3.16c44-6.14,76.34-6.76,120.36-13.54,7.71-1.19,37.56-20.62,37.56-20.62Z" style="fill:#333"/></svg>
+    Science Europe / DCC Default DMP
+
+    <div style="float:right; text-align:right;">
+      <img src="https://libereurope.eu/wp-content/uploads/2017/10/S.E_Logo_QUADRI_baseline.jpg" class="org-logo" style="max-height: 2em;">
+    </div>
+  </h1>
+  <dl>
+    <dt>Project name</dt>
+    {% set projectNameUuid = "f0ef08fd-d733-465c-bc66-5de0b826c41b" %}
+    {% call (projectNameReply) withReply(projectNameUuid) %}
+      <dd>{{projectNameReply.value.value}}</dd>
+    {% endcall %}
+
+    {% set contributorsUuid = "73d686bd-7939-412e-8631-502ee6d9ea7b" %}
+    {% set contributorNameUuid = "6155ad47-3d1e-4488-9f2a-742de1e56580" %}
+    {% set contributorEmailUuid = "3a2ffc13-6a0e-4976-bb34-14ab6d938348" %}
+    {% set contributorOrcidUuid = "6295a55d-48d7-4f3c-961a-45b38eeea41f" %}
+    {% set contributorTypeUuid = "829dcda6-db8a-40ac-819a-92b9b52490f5" %}
+    {% set contactPersonAnswerUuid = "f7468e79-c621-4ac9-95e0-263ebdf23c73" %}
+
+    {% call (contributorsReply) withReply(contributorsUuid) %}
+      {% set contactPeople = [] %}
+      {% set nContributors = contributorsReply.value.value %}
+
+      {% set contacts = filter(replies, (r) -> endswith(r.path, contributorTypeUuid) && r.value.value == contactPersonAnswerUuid) %}
+      
+      <dt>Contact {{ length(contacts) > 1 ? "people" : "person" }}</dt>
+      <dd>
+        {% if length(contacts) == 0  %}
+          <i>There are no contact people define</i>
+        {% else %}
+          <ul>
+            {% for i in range(nContributors - 1) %}
+              {% set pathPrefix = contributorsUuid ~ "." ~ i ~ "." %}
+              {% call (contactType) withReply(pathPrefix ~ contributorTypeUuid) %}
+                {% if contactType.value.value == contactPersonAnswerUuid %}
+                  <li>
+                    {% call (xreplies) mapReplies([
+                        pathPrefix ~ contributorNameUuid,
+                        pathPrefix ~ contributorEmailUuid,
+                        pathPrefix ~ contributorOrcidUuid
+                        ]) %}
+                        {% set cName = length(xreplies[0]) == 1 ? xreplies[0][0].value.value : null %}
+                        {% set cEmail = length(xreplies[1]) == 1 ? xreplies[1][0].value.value : null %}
+                        {% set cOrcid = length(xreplies[2]) == 1 ? xreplies[2][0].value.value : null %}
+                        {%- macro formatEmail(email) -%}
+                          <span class="contact-email"><a href="mailto:{{ email }}">{{ email }}</a></span>
+                        {%- endmacro -%}
+                        {%- macro formatOrcid(orcid) -%}
+                          <span class="mini-orcid-icon-16"></span> <span class="contact-orcid">{{ orcid }}</span>
+                        {%- endmacro -%}
+
+                        {% if cName %}
+                          <span class="contact-name">{{ cName }}</span>
+                        {% else %}
+                          <span class="contact-name missing">(name not given)</span>
+                        {% endif %}
+                        {% set contacts = [] %}
+                        {% if cEmail and cOrcid %}
+                          ({{ formatEmail(cEmail) }}, {{ formatOrcid(cOrcid) }})
+                        {% elif cEmail %}
+                          ({{ formatEmail(cEmail) }})
+                        {% elif cOrcid %}
+                          ({{ formatOrcid(cOrcid) }})
+                        {% endif %}
+                    {% endcall %}
+                  </li>
+                {% endif %}
+              {% endcall %}
+            {% endfor %}
+          </ul>
+        {% endif %}
+      </dd>
+    {% endcall %}
+    <dt>Based on</dt>
+    <dd>{{dmp.package.name}}, {{dmp.package.version}} (<span class="package-id"><span class="organization-id">{{dmp.package.organizationId}}</span>:<span class="km-id">{{dmp.package.kmId}}</span>:<span class="version">{{dmp.package.version}}</span></span>)</dd>
+    {% if dmp.config.nfigDTOLevelsEnabled.levelsEnabled %}
+    <dt>Project Phase</dt>
+    <dd>{{renderCurrentLevel()}}</dd>
+    {% endif %}
+    <dt>Generated at</dt>
+    <dd>{{dateformat(replace(dmp.createdAt, slice(dmp.createdAt,19), "Z"), "%d.%m.%Y")}}</dd>
+  </dl>
+</header>
