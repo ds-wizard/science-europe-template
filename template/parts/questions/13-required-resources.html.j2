@@ -1,0 +1,58 @@
+<div id="q-required-resources" class="question">
+  <h3>What resources will you require to deliver your plan?</h3>
+  {%- scope -%}
+  <div class="answer">
+    {# expertise and sw/hw requirements #}
+    {%- set expertiseUuid = "83c0d09d-e74c-4c81-a52c-aaa2e18415ac" -%}
+    {%- set expertiseNoAnswerUuid = "ccdadd45-8aa9-44ed-a669-1827c7813b0a" -%}
+    {%- set expertiseYesTrainAnswerUuid = "d4b4c6e3-e5c6-4938-a08a-e51cb7cdebeb" -%}
+    {%- set expertiseYesHireAnswerUuid = "596b251b-4e0e-429b-86cc-df32edeeefae" -%}
+    {%- set expertiseTrainUuid = "13dcbcd7-73d8-4480-8739-0a58702ced75" -%}
+    {%- set expertiseHireUuid = "a12944fa-aa71-4712-a586-394d1709c397" -%}
+    {%- set hwswRequirementsUuid = "09c7c989-6461-417f-b09e-228491c051c6" -%}
+    {%- set hwswRequirementsNoAnswerUuid = "f4da7f1d-f3c6-42e2-a7b5-41c4845ba352" -%}
+    {%- set hwswRequirementsYesAnswerUuid = "5d0b87a6-93d5-4b33-a13f-e8b5da23904f" -%}
+    {%- set hwswRequirementsTextUuid = "89af6cc3-cdc5-4d3f-9082-e02c063e0635" -%}
+    {%- call (requirementsReplies) mapReplies([
+      expertiseUuid, expertiseTrainUuid, expertiseHireUuid,
+      hwswRequirementsUuid, hwswRequirementsTextUuid
+    ]) -%}
+      {%- set expertiseAnswerUuid = requirementsReplies[0][0].value.value -%}
+      {%- set expertiseTrainText = requirementsReplies[1][0].value.value -%}
+      {%- set expertiseHireText = requirementsReplies[2][0].value.value -%}
+      {%- set hwswRequirementsAnswerUuid = requirementsReplies[3][0].value.value -%}
+      {%- set hwswRequirementsText = requirementsReplies[4][0].value.value -%}
+
+      {%- if expertiseAnswerUuid == expertiseNoAnswerUuid -%}
+        <p>To execute the DMP, no additional specialist expertise is required.</p>
+      {%- elif expertiseAnswerUuid == expertiseYesTrainAnswerUuid -%}
+        <p>
+          To execute the DMP, additional specialist expertise is required. We will be training existing staff.
+          {%- if expertiseTrainText %}
+            The training will be: {{ expertiseTrainText|capitalize }}{{ endswith(expertiseTrainText, ".") ? "" : "." }}
+          {%- endif -%}
+        </p>
+      {%- elif expertiseAnswerUuid == expertiseYesHireAnswerUuid -%}
+        <p>
+          To execute the DMP, additional specialist expertise is required. We will be hiring new people with additional expertise.
+          {%- if expertiseHireText %}
+            The required expertise from new people is: {{ expertiseHireText|capitalize }}{{ endswith(expertiseHireText, ".") ? "" : "." }}
+          {%- endif -%}
+        </p>
+      {%- endif -%}
+
+      {%- if hwswRequirementsAnswerUuid == hwswRequirementsNoAnswerUuid -%}
+        <p>We do not require any hardware or software in addition to what is usually available in the institute.</p>
+      {%- elif hwswRequirementsAnswerUuid == hwswRequirementsYesAnswerUuid -%}
+        {%- if hwswRequirementsText -%}
+          <p>We require the following hardware or software in addition to what is usually available in the institute: {{ hwswRequirementsText }}{{ endswith(hwswRequirementsText, ".") ? "" : "." }}</p>
+        {%- else -%}
+          <p>We require hardware or software in addition to what is usually available in the institute.</p>
+        {%- endif -%}
+      {%- endif -%}
+    {%- endcall -%}
+    <p></p>
+    <p>Charges applied by data repositories (if any) are mentioned already in Section E, Question 9.</p>
+  </div>
+  {%- endscope -%}
+</div>

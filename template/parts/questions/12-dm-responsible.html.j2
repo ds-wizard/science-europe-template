@@ -1,0 +1,37 @@
+<div id="q-dm-responsible" class="question">
+  <h3>Who will be responsible for data management?</h3>
+  {%- scope -%}
+  <div class="answer">
+
+  {% set dataCuratorAnswerUuid = "0ee99167-c1a2-4fe9-a799-ef07a31ccf35" %}
+  {% set dataCollectorAnswerUuid = "fe411838-170e-45d7-9d91-14f95ad347e6" %}
+  {% set dataManagerAnswerUuid = "6eef8c10-150a-496c-b02a-61c90e62e95b" %}
+  {% set distributorAnswerUuid = "ae91b0b1-a591-49d1-a85c-13071550c043" %}
+
+  <p>{{dmp.createdBy.name}} {{dmp.createdBy.surname}} is responsible for implementing the DMP, and ensuring it is reviewed and revised.</p>
+
+  {% call (contributorsReply) withReply(contributorsUuid) %}
+    {% set nContributors = contributorsReply.value.value %}
+    {% for i in range(nContributors - 1) %}
+      {% set pathPrefix = contributorsUuid ~ "." ~ i ~ "." %}
+      {% call (xreplies) mapReplies([
+          pathPrefix ~ contributorNameUuid,
+          pathPrefix ~ contributorTypeUuid
+          ]) %}
+        {% set cName = xreplies[0][0].value.value %}
+        {% set cType = xreplies[1][0].value.value %}
+        {% if cType == dataCuratorAnswerUuid %}
+          <p>{{ cName }} is responsible for reviewing, enhancing, cleaning, or standardizing metadata and the associated data submitted for storage, use and maintenance within a data centre or repository.</p>
+        {% elif cType == dataCollectorAnswerUuid %}
+          <p>{{ cName }} is responsible for finding, gathering/collecting data.</p>
+        {% elif cType == dataManagerAnswerUuid %}
+          <p>{{ cName }} is responsible for maintaining the finished resource.</p>
+        {% elif cType == distributorAnswerUuid %}
+          <p>{{ cName }} is responsible for generating/disseminating copies of the resouce in either electronic or print form.</p>
+        {% endif %}
+      {% endcall %}
+    {% endfor %}
+  {% endcall %}
+  </div>
+  {%- endscope -%}
+</div>

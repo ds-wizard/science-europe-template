@@ -1,0 +1,148 @@
+<div id="q-access-security" class="question">
+  <h3>How will you manage access and security?</h3>
+  {%- scope -%}
+  <div class="answer">
+    {%- set storeLabUuid = "90324a7b-f3c9-4ed8-b301-edc9869cb7b3" -%}
+    {%- set storeLabNoAnswerUuid = "17172079-ddce-40a7-b93a-f86dc6611452" -%}
+    {%- set carryHomeUuid = "abaf4a70-17d4-449c-9b95-5b3bcfed7e9b" -%}
+    {%- set carryHomeNoAnswerUuid = "3c8f999d-c962-42a4-a7c3-05b21a4029ab" -%}
+    {%- set carryHomeYesAnswerUuid = "c9fc7d94-0f37-40af-9d12-7c828d1252fc" -%}
+    {%- set carryHomeEncUuid = "6aff9a57-acea-4f6d-ac98-9a067e03cc8e" -%}
+    {%- set carryHomeEncNoAnswerUuid = "546d6e41-80ea-417b-b0e3-a1d9d75a3794" -%}
+    {%- set carryHomeEncYesAnswerUuid = "dda8513e-431d-474e-b00d-107ae995e0ee" -%}
+    {%- set certificationsUuid = "a454fffd-f4a4-426d-b758-6d70bc4ee96b" -%}
+    {%- set certificationsYesAnswerUuid = "a9629ff2-30b2-4295-ae35-98320cfdb254" -%}
+    {%- set httpsUuid = "39d8dad9-7666-405c-b35c-9e430c9691ed" -%}
+    {%- set httpsYesAnswerUuid = "bb176104-3bf1-4bc8-b8e8-a4b09e14b88c" -%}
+    {%- set instructedUuid = "dc327e53-cf4f-44e7-8e66-40ddf1b4ae0a" -%}
+    {%- set instructedYesAnswerUuid = "4f86bb87-06f6-4d52-a9c0-52fc97bb441c" -%}
+    {%- set informationLossUuid = "67c34ee1-2e71-423c-97a7-fe6aa3723465" -%}
+    {%- set informationLossSmallAnswerUuid = "a8a4dc7d-bf8c-44e3-b8b2-3e04f206f460" -%}
+    {%- set informationLossLowAnswerUuid = "a0ec7128-1c2d-4034-b621-211bd01a9839" -%}
+    {%- set informationLossWillAnswerUuid = "928db5fa-e16f-4c28-a321-ad62e1849b90" -%}
+    {%- set informationLeakUuid = "a20ddc5d-e883-4bc4-9948-36a2cb477d10" -%}
+    {%- set informationLeakSmallAnswerUuid = "7c9c8543-b8f8-47b0-8279-757dbc14922f" -%}
+    {%- set informationLeakLowAnswerUuid = "6306207c-7be6-4cdf-86c4-33e0d9898479" -%}
+    {%- set informationLeakWillAnswerUuid = "efec7b38-d9a9-4495-8ba7-625dd7da6a09" -%}
+    {%- set informationVandalismUuid = "8cd49d8f-9af0-4ea9-985a-5d45142ac388" -%}
+    {%- set informationVandalismSmallAnswerUuid = "ae0c3b93-f054-4052-91c0-fa9c518f5ca8" -%}
+    {%- set informationVandalismLowAnswerUuid = "b1e1861b-b55f-406f-b915-b440c64d8747" -%}
+    {%- set informationVandalismWillAnswerUuid = "e8943baf-4c0c-4f30-8b57-88c06f3bc4ad" -%}
+    {%- set personalDataUuid = "d5990471-0618-42cd-92cb-bbbfd4f61532" -%}
+    {%- set personalDataNotUsingAnswerUuid = "5d518250-a5d3-47f1-ada8-aa64c9ce3370" -%}
+    {%- set personalDataPseudoAnswerUuid = "75b86c10-4aeb-4f1a-89cd-8b380a2287b1" -%}
+    {%- set personalDataAnonymousAnswerUuid = "ca0df149-cb95-404a-a925-0a1fc5052d1d" -%}
+    {%- set personalDataAnonymizedAnswerUuid = "44348fa8-fd12-49ea-ad7f-48ff88215829" -%}
+    {%- set pseudonymizationUuid = "59748a7b-f729-404d-babe-3147e2c6b247" -%}
+    {%- set pseudonymizationInsideAnswerUuid = "72c0a64f-a3ec-4d9e-bf37-ee0b25c2a084" -%}
+    {%- set pseudonymizationPartyAnswerUuid = "1653a04e-20e2-4929-9fd5-8c35402ac359" -%}
+    {%- set pseudonymizationAnotherAnswerUuid = "c5bdfb9d-33a7-4d0b-82cf-cde1911ad5bc" -%}
+    {%- set pseudonymizationAnotherUuid = "eb876df3-5fb5-4885-9ab6-7dbfa6ba7427" -%}
+    {%- set accessControlUuid = "80d403f3-3f29-4f37-9040-b901ae9afa37" -%}
+    {%- set accessControlMembersRWAnswerUuid = "302e4b9b-9a9c-4fb0-9745-5f8ff4cca746" -%}
+    {%- set accessControlInstituteRAnswerUuid = "154cd5fc-a79f-4c2e-be67-6985813bbc8d" -%}
+    {%- set accessControlMembersRAnswerUuid = "b21c9f70-78e7-4975-b776-59e372285662" -%}
+    {%- set accessControlMembersRequestAnswerUuid = "b19ba76a-4b6a-45f6-8ab5-8bbfb92c7b2c" -%}
+    {%- call (securityReplies) mapReplies([
+      storeLabUuid, 
+      carryHomeUuid, 
+      carryHomeEncUuid, 
+      certificationsUuid, 
+      httpsUuid, 
+      instructedUuid,
+      informationLossUuid, 
+      informationLeakUuid, 
+      informationVandalismUuid, 
+      personalDataUuid,
+      pseudonymizationUuid, 
+      pseudonymizationAnotherUuid,
+      accessControlUuid
+    ]) -%}
+      {%- set storeLabAnswerUuid = securityReplies[0][0].value.value -%}
+      {%- set carryHomeAnswerUuid = securityReplies[1][0].value.value -%}
+      {%- set carryHomeEncAnswerUuid = securityReplies[2][0].value.value -%}
+      {%- set certificationsAnswerUuid = securityReplies[3][0].value.value -%}
+      {%- set httpsAnswerUuid = securityReplies[4][0].value.value -%}
+      {%- set instructedAnswerUuid = securityReplies[5][0].value.value -%}
+      {%- set informationLossAnswerUuid = securityReplies[6][0].value.value -%}
+      {%- set informationLeakAnswerUuid = securityReplies[7][0].value.value -%}
+      {%- set informationVandalismAnswerUuid = securityReplies[8][0].value.value -%}
+      {%- set personalDataAnswerUuid = securityReplies[9][0].value.value -%}
+      {%- set pseudonymizationAnswerUuid = securityReplies[10][0].value.value -%}
+      {%- set pseudonymizationAnotherText = securityReplies[11][0].value.value -%}
+      {%- set accessControlAnswerUuid = securityReplies[12][0].value.value -%}
+
+      {%- if storeLabAnswerUuid == storeLabNoAnswerUuid -%}
+        <p>Project members will not store data or software on computers in the lab or external hard drives connected to those computers.</p>
+      {%- endif -%}
+
+      {%- if carryHomeAnswerUuid == carryHomeNoAnswerUuid -%}
+        <p>Project members will not carry data with them (e.g. on laptops, USB sticks or other external media).</p>
+      {%- elif carryHomeAnswerUuid == carryHomeYesAnswerUuid && carryHomeEncAnswerUuid == carryHomeEncYesAnswerUuid -%}
+        <p>Project members can carry data with them on encrypted data carriers and password-protected laptops.</p>
+      {%- endif -%}
+
+      {%- if certificationsAnswerUuid == certificationsYesAnswerUuid -%}
+        <p>All data centers where project data is stored carry sufficient certifications.</p>
+      {%- endif -%}
+
+      {%- if httpsAnswerUuid == httpsYesAnswerUuid -%}
+        <p>All project web services addressed via secure http (https://).</p>
+      {%- endif -%}
+
+      {%- if informationLossAnswerUuid == informationLossSmallAnswerUuid -%}
+        <p>The possible impact to the project or organization if information is lost is small.</p>
+      {%- elif informationLossAnswerUuid == informationLossLowAnswerUuid -%}
+        <p>The risk of information loss in the project or organization is acceptably low.</p>
+      {%- elif informationLossAnswerUuid == informationLossWillAnswerUuid -%}
+        <p>We will mitigate information loss risk for the project or organization.</p>
+      {%- endif -%}
+
+      {%- if informationLeakAnswerUuid == informationLeakSmallAnswerUuid -%}
+        <p>The possible impact to the project or organization if information is leaked is small.</p>
+      {%- elif informationLeakAnswerUuid == informationLeakLowAnswerUuid -%}
+        <p>The risk of information leak in the project or organization is acceptably low.</p>
+      {%- elif informationLeakAnswerUuid == informationLeakWillAnswerUuid -%}
+        <p>We will mitigate information leak risk for the project or organization.</p>
+      {%- endif -%}
+
+      {%- if informationVandalismAnswerUuid == informationVandalismSmallAnswerUuid -%}
+        <p>The possible impact to the project or organization if information is vandalized is small.</p>
+      {%- elif informationVandalismAnswerUuid == informationVandalismLowAnswerUuid -%}
+        <p>The risk of information vandalism in the project or organization is acceptably low.</p>
+      {%- elif informationVandalismAnswerUuid == informationVandalismWillAnswerUuid -%}
+        <p>We will mitigate information vandalism risk for the project or organization.</p>
+      {%- endif -%}
+
+      {%- if personalDataAnswerUuid == personalDataNotUsingAnswerUuid -%}
+        <p>We are not using any personal information.</p>
+      {%- elif personalDataAnswerUuid == personalDataPseudoAnswerUuid -%}
+        <p>
+          All personal information will be processed in pseudonymized form only.
+          {%- if pseudonymizationAnswerUuid == pseudonymizationInsideAnswerUuid %}
+            We pseudonymize inside the project, only limited people can access the keys.
+          {%- elif pseudonymizationAnswerUuid == pseudonymizationPartyAnswerUuid %}
+            Pseudonymization is handled by an independent party in order to allow data coupling.
+          {%- elif pseudonymizationAnswerUuid == pseudonymizationAnotherAnswerUuid %}
+            We have a specific way of pseudonymization{{ pseudonymizationAnotherText ? ": " ~ pseudonymizationAnotherText : "" }}{{ endswith(pseudonymizationAnotherText, ".") ? "" : "." }}
+          {%- endif -%}
+        </p>
+      {%- elif personalDataAnswerUuid == personalDataAnonymousAnswerUuid -%}
+        <p>All personal data will be collected anonymously.</p>
+      {%- elif personalDataAnswerUuid == personalDataAnonymizedAnswerUuid -%}
+        <p>All personal data will be anonymized as early as possible.</p>
+      {%- endif -%}
+
+      {%- if accessControlAnswerUuid == accessControlMembersRWAnswerUuid -%}
+        <p>Only all project members have read/write access to the data.</p>
+      {%- elif accessControlAnswerUuid == accessControlInstituteRAnswerUuid -%}
+        <p>Anyone in the institute has read access to the data; all project members have read/write access.</p>
+      {%- elif accessControlAnswerUuid == accessControlMembersRAnswerUuid -%}
+        <p>Only project members will have read access; only selected project members will be able to write data.</p>
+      {%- elif accessControlAnswerUuid == accessControlMembersRequestAnswerUuid -%}
+        <p>Anyone in the institute can read data, only project members can request write access.</p>
+      {%- endif -%}
+    {%- endcall -%}
+  </div>
+  {%- endscope -%}
+</div>

@@ -1,0 +1,212 @@
+<div id="q-ethical-issues" class="question">
+  <h3>How will you manage copyright and Intellectual Property Rights (IPR) issues?</h3>
+  {%- scope -%}
+  <div class="answer">
+    {# Open philosophy #}
+    {%- set asOpenAsPossibleUuid = "6516eae1-98b2-48f2-9862-b5fb140cfad7" -%}
+    {%- set asOpenAsPossibleYesAnswerUuid = "67a8f6e1-50db-4b04-b1fa-d52941f4e535" -%}
+    {%- call (asOpenAsPossibleReply) withReply(asOpenAsPossibleUuid) -%}
+      {%- if asOpenAsPossibleReply.value.value == asOpenAsPossibleYesAnswerUuid -%}
+        <p>We will be working with the philosophy <em>as open as possible</em> for your data.</p>
+      {%- endif -%}
+    {%- endcall -%}
+
+    {# Can open data #}
+    {%- set canOpenUuid = "a549d10b-aa46-4c0c-863f-30219ac5ecce" -%}
+    {%- set canOpenNoAnswerUuid = "b3739ebd-2d8e-42d3-9425-a7d6d1b26c79" -%}
+    {%- set canOpenYesAnswerUuid = "8c33553c-9603-4156-82d7-85ab3d7de090" -%}
+    {%- set closedLegalReasonsUuid = "c010e830-bd89-460d-9498-cb41e7ffeb87" -%}
+    {%- set closedLegalReasonsYesAnswerUuid = "aac95530-2978-4759-803b-64721533faf0" -%}
+    {%- set closedBusinessReasonsUuid = "85a9d872-3d41-4560-82c4-b850a6e2d5ac" -%}
+    {%- set closedBusinessReasonsPatentsAnswerUuid = "1c377b4c-bd6f-457e-8e7e-06efcd1b6444" -%}
+    {%- set closedBusinessReasonsOtherAnswerUuid = "0cfc22ec-5551-4a37-84ec-308c85440af5" -%}
+    {%- set closedBusinessReasonsOtherUuid = "43370b85-0ee0-4f0f-b7de-9b04a54a2480" -%}
+    {%- set closedOtherReasonsUuid = "c10f9098-5b1c-4abc-adaa-bdef2fb537ca" -%}
+    {%- set closedOtherReasonsPapersAnswerUuid = "cb052963-c573-4567-a462-4a5444a87808" -%}
+    {%- set closedOtherReasonsOtherAnswerUuid = "2b755a90-8a43-41c0-9020-5e2b9ca8f88e" -%}
+    {%- set closedOtherReasonsOtherUuid = "b289fdcc-aedc-496e-8169-e0bbe2346d1f" -%}
+    {%- set limitedEmbargoUuid = "f5c12fcf-15d0-44ba-a53c-49ea9d7f620f" -%}
+    {%- set limitedEmbargoIndefinitelyAnswerUuid = "3da39a55-18e5-4b0a-8da1-5b7fc5260ad1" -%}
+    {%- set limitedEmbargoReleasedSoonAnswerUuid = "82f84d7e-338c-46bc-9785-42df560c01ed" -%}
+    {%- set limitedEmbargoReleasedFixedAnswerUuid = "1b120967-803b-458b-b565-dbee6a785509" -%}
+    {%- call (openDataReplies) mapReplies([
+      canOpenUuid, closedLegalReasonsUuid, closedBusinessReasonsUuid, closedOtherReasonsUuid, limitedEmbargoUuid, closedBusinessReasonsOtherUuid, closedOtherReasonsOtherUuid
+    ]) -%}
+      {%- set canOpenAnswerUuid = openDataReplies[0][0].value.value -%}
+      {%- if canOpenAnswerUuid == canOpenNoAnswerUuid -%}
+        {%- set closedLegalReasonsAnswerUuid = openDataReplies[1][0].value.value -%}
+        {%- set closedBusinessReasonsAnswerUuid = openDataReplies[2][0].value.value -%}
+        {%- set closedOtherReasonsAnswerUuid = openDataReplies[3][0].value.value -%}
+        {%- set limitedEmbargoAnswerUuid = openDataReplies[4][0].value.value -%}
+        {%- set closedBusinessReasonsOtherText = openDataReplies[5][0].value.value -%}
+        {%- set closedOtherReasonsOtherText = openDataReplies[6][0].value.value -%}
+        {%- set legalReasons = closedLegalReasonsAnswerUuid == closedLegalReasonsYesAnswerUuid -%}
+        {%- set businessReasons = closedBusinessReasonsAnswerUuid == closedBusinessReasonsPatentsAnswerUuid || closedBusinessReasonsAnswerUuid == closedBusinessReasonsOtherAnswerUuid -%}
+        {%- set otherReasons = closedOtherReasonsAnswerUuid == closedOtherReasonsPapersAnswerUuid || closedOtherReasonsAnswerUuid == closedOtherReasonsOtherAnswerUuid -%}
+        {%- set reasons = [legalReasons, businessReasons, otherReasons] -%}
+        {%- if any(reasons) -%}
+          <p>
+          The data cannot become completely open immediately because 
+          {%- if length(filter(reasons, (r) -> r)) == 1 -%}
+            {%- if legalReasons %}
+              of legal reasons.
+            {%- elif businessReasons && closedBusinessReasonsAnswerUuid == closedBusinessReasonsPatentsAnswerUuid %}
+              of patent-related business reasons.
+            {%- elif businessReasons && closedBusinessReasonsOtherAnswerUuid %}
+              of non-patent business reasons{{ closedBusinessReasonsOtherText ? ": " ~ closedBusinessReasonsOtherText|capitalize : "" }}{{ endswith(closedBusinessReasonsOtherText, ".") ? "" : "." }}
+            {%- elif otherReasons && closedOtherReasonsAnswerUuid == closedOtherReasonsPapersAnswerUuid %}
+              we want to publish a paper first.
+            {%- elif otherReasons && closedOtherReasonsAnswerUuid == closedOtherReasonsOtherAnswerUuid %}
+              we have other than paper-publishing reasons{{ closedOtherReasonsOtherText ? ": " ~ closedOtherReasonsOtherText|capitalize : "" }}{{ endswith(closedOtherReasonsOtherText, ".") ? "" : "." }}
+            {%- endif -%}
+          {%- else %}
+            of:
+            <ul>
+              {%- if legalReasons %}
+                <li>legal reasons</li>
+              {%- endif -%}
+              {%- if businessReasons && closedBusinessReasonsAnswerUuid == closedBusinessReasonsPatentsAnswerUuid %}
+                <li>patent-related business reasons</li>
+              {%- elif businessReasons && closedBusinessReasonsOtherAnswerUuid %}
+                <li>non-patent business reasons{{ closedBusinessReasonsOtherText ? ": " ~ closedBusinessReasonsOtherText : "" }}</li>
+              {%- endif -%}
+              {%- if otherReasons && closedOtherReasonsAnswerUuid == closedOtherReasonsPapersAnswerUuid %}
+                <li>we want to publish a paper first</li>
+              {%- elif otherReasons && closedOtherReasonsAnswerUuid == closedOtherReasonsOtherAnswerUuid -%}
+                <li>we have other than paper-publishing reasons{{ closedOtherReasonsOtherText ? ": " ~ closedOtherReasonsOtherText : "" }}</li>
+              {%- endif -%}
+            </ul>
+          {%- endif -%}
+          </p>
+        {%- else -%}
+          <p>The data cannot become completely open immediately.</p>
+        {%- endif -%}
+
+        {%- if limitedEmbargoAnswerUuid == limitedEmbargoIndefinitelyAnswerUuid -%}
+          <p>Limited embargo cannot be used because some restricted data will be embargoed indefinitely.</p>
+        {%- elif limitedEmbargoAnswerUuid == limitedEmbargoReleasedSoonAnswerUuid -%}
+          <p>Data will be released only as soon as restrictions are falling away.</p>
+        {%- elif limitedEmbargoAnswerUuid == limitedEmbargoReleasedFixedAnswerUuid -%}
+          <p>Data that is not legally restrained will be released after a fixed time period, unconditionally.</p>
+        {%- endif -%}
+      {%- elif canOpenAnswerUuid == canOpenYesAnswerUuid -%}
+        <p>All of our data can become completely open immediately.</p>
+      {%- endif -%}
+    {%- endcall -%}
+
+    {# (Non)reference data - license #}
+    {%- set referenceDataSetsUuid = "fcc51962-08df-4f4c-85ad-6bb932107010" -%}
+    {%- set nonReferenceDataSetsUuid = "be872000-cb98-442f-999c-ca3ef58dcfe8" -%}
+    {%- call (datasetsReplies) mapReplies([referenceDataSetsUuid, nonReferenceDataSetsUuid]) -%}
+      {%- set nReferenceDataSets = datasetsReplies[0][0].value.value -%}
+      {%- set nNonReferenceDataSets = datasetsReplies[1][0].value.value -%}
+      {%- set nDatasets = nReferenceDataSets + nNonReferenceDataSets -%}
+      {%- if nDatasets > 0 -%}
+        <h4>Data we reuse</h4>
+        <ul>
+        {%- for i in range(nReferenceDataSets - 1) -%}
+          {%- set pathPrefixR = referenceDataSetsUuid ~ "." ~ i ~ "." -%}
+          {%- set nameUuid = "93988527-5bff-4125-8834-3750e9a28683" -%}
+          {%- set conditionsUuid = "aee03da5-b399-4274-8db4-fac82c6210d3" -%}
+          {%- set conditionsCC0AnswerUuid = "de5d31e0-dadb-422b-bd88-34f006f11d60" -%}
+          {%- set conditionsCCBYAnswerUuid = "180bb426-9ebe-4210-b307-eaeb1be12c0e" -%}
+          {%- set conditionsOtherAnswerUuid = "85dcd5ee-002b-4db7-a0de-241a4b2f0688" -%}
+          {%- set conditionsOtherUuid = "dce3e924-717a-4b50-bdac-1b247e9ac18a" -%}
+          {%- call (consentReplies) mapReplies([
+            pathPrefixR ~ nameUuid, 
+            pathPrefixR ~ conditionsUuid,
+            pathPrefixR ~ conditionsUuid ~ "." ~ conditionsOtherAnswerUuid ~ "." ~ conditionsOtherUuid
+          ]) -%}            
+            {%- set dataSetNameReply = consentReplies[0][0] -%}
+            {%- set conditionsAnswerUuid = consentReplies[1][0].value.value -%}
+            {%- set conditionsOtherText = consentReplies[2][0].value.value -%}
+            {%- if conditionsAnswerUuid -%}
+              <li>
+                {%- if dataSetNameReply.value.value.type == "IntegrationValue" -%}
+                  {%- call (integration) getIntegrationForQuestion(nameUuid) -%}
+                    {%- call (integrationLink) createIntegrationLink(integration, dataSetNameReply.value.value.id) -%}
+                      <a href="{{ integrationLink }}" target="_blank"><strong>{{ dataSetNameReply.value.value.value }}</strong></a>
+                    {%- endcall -%}
+                  {%- endcall -%}
+                {%- else -%}
+                  <strong>{{ dataSetNameReply.value.value.value }}</strong>
+                {%- endif -%}
+                {%- if conditionsAnswerUuid == conditionsCC0AnswerUuid %}
+                  <span class="separator">-</span> freely available for any use (public domain or CC0)
+                {%- elif conditionsAnswerUuid == conditionsCCBYAnswerUuid %}
+                  <span class="separator">-</span> freely available with obligation to quote the source (e.g. CC-BY)
+                {%- elif conditionsAnswerUuid == conditionsOtherAnswerUuid %}
+                  <span class="separator">-</span> available under some restrictions, which we will follow in our project{{ conditionsOtherText ? ": " ~ conditionsOtherText : "" }}
+                {%- endif -%}
+              </li>
+            {%- endif -%}
+          {%- endcall -%}
+        {%- endfor -%}
+        {%- for i in range(nNonReferenceDataSets - 1) -%}
+          {%- set pathPrefixNR = nonReferenceDataSetsUuid ~ "." ~ i ~ "." -%}
+          {%- set nameUuid = "44120979-2840-4522-8297-df13f7fd1e3a" -%}
+          {%- set conditionsUuid = "69999c2c-2710-480e-b8ac-8a8fc6f582e5" -%}
+          {%- set conditionsCC0AnswerUuid = "cb713607-cd09-41b5-bd6a-bd403e584be6" -%}
+          {%- set conditionsCCBYAnswerUuid = "a278ac17-732d-4fa7-a194-683da6013401" -%}
+          {%- set conditionsOtherAnswerUuid = "97dc091d-8103-4119-87a2-c46a277ea303" -%}
+          {%- set conditionsOtherUuid = "283abe36-207b-42c3-8d8e-ec9343d6f6fd" -%}
+          {%- call (consentReplies) mapReplies([
+            pathPrefixNR ~ nameUuid, 
+            pathPrefixNR ~ conditionsUuid,
+            pathPrefixNR ~ conditionsUuid ~ "." ~ conditionsOtherAnswerUuid ~ "." ~ conditionsOtherUuid
+          ]) -%}            
+            {%- set dataSetNameReply = consentReplies[0][0] -%}
+            {%- set conditionsAnswerUuid = consentReplies[1][0].value.value -%}
+            {%- set conditionsOtherText = consentReplies[2][0].value.value -%}
+            {%- if conditionsAnswerUuid -%}
+              <li>
+                {%- if dataSetNameReply.value.value.type == "IntegrationValue" -%}
+                  {%- call (integration) getIntegrationForQuestion(dataSetNameUuid) -%}
+                    {%- call (integrationLink) createIntegrationLink(integration, dataSetNameReply.value.value.id) -%}
+                      <a href="{{ integrationLink }}" target="_blank"><strong>{{ dataSetNameReply.value.value.value }}</strong></a>
+                    {%- endcall -%}
+                  {%- endcall -%}
+                {%- else -%}
+                  <strong>{{ dataSetNameReply.value.value.value }}</strong>
+                {%- endif -%}
+                {%- if conditionsAnswerUuid == conditionsCC0AnswerUuid %}
+                  <span class="separator">-</span> freely available for any use (public domain or CC0)
+                {%- elif conditionsAnswerUuid == conditionsCCBYAnswerUuid %}
+                  <span class="separator">-</span> freely available with obligation to quote the source (e.g. CC-BY)
+                {%- elif conditionsAnswerUuid == conditionsOtherAnswerUuid %}
+                  <span class="separator">-</span> available under some restrictions, which we will follow in our project{{ conditionsOtherText ? ": " ~ conditionsOtherText : "" }}
+                {%- endif -%}
+              </li>
+            {%- endif -%}
+          {%- endcall -%}
+        {%- endfor -%}
+        </ul>
+      {%- endif -%}
+    {%- endcall -%}
+
+    {# Ownership #}
+    {%- set ownershipUuid = "cb7d17a8-30c0-489d-a43c-702b27d97611" -%}
+    {%- set ownershipNoOwnerAnswerUuid = "f310952b-e946-4315-bb32-bf127d1bf96a" -%}
+    {%- set ownershipPIAnswerUuid = "91d6ee6f-c501-4d1c-a6e7-9da1789f68de" -%}
+    {%- set ownershipInstituteAnswerUuid = "ef4ac36a-eea0-42b4-8292-b89090a1b5ef" -%}
+    {%- set ownershipConsortiumAnswerUuid = "115a165f-9d3f-440d-a822-4bd2795c264e" -%}
+    {%- set ownershipOtherAnswerUuid = "0fd3cd1c-e0e8-41d5-9beb-3f1faba0fb91" -%}
+    {%- set ownershipOtherUuid = "06655161-9a91-47f4-af3b-9d2a5e6db19b" -%}
+    {%- call (ownershipReplies) mapReplies([ownershipUuid, ownershipOtherUuid]) -%}
+      {%- set ownershipAnswerUuid = ownershipReplies[0][0].value.value -%}
+      {%- set ownershipOtherText = ownershipReplies[1][0].value.value -%}
+      {%- if ownershipAnswerUuid == ownershipNoOwnerAnswerUuid -%}
+        <p>Our data is legally not copyrightable, there is no legal owner.</p>
+      {%- elif ownershipAnswerUuid == ownershipPIAnswerUuid -%}
+        <p>All data will be owned by the Principal Investigator.</p>
+      {%- elif ownershipAnswerUuid == ownershipInstituteAnswerUuid -%}
+        <p>All data will be owned by the institute.</p>
+      {%- elif ownershipAnswerUuid == ownershipConsortiumAnswerUuid -%}
+        <p>We have a consortium agreement that arranges Intellectual Property.</p>
+      {%- elif (ownershipAnswerUuid == ownershipOtherAnswerUuid) && ownershipOtherText -%}
+        <p>We have made the following arrangements regarding the data ownership: {{ ownershipOtherText|capitalize }}{{ endswith(ownershipOtherText, ".") ? "" : "." }}</p>
+      {%- endif -%}
+    {%- endcall -%}
+  </div>
+  {%- endscope -%}
+</div>

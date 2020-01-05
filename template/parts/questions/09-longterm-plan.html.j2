@@ -1,0 +1,161 @@
+<div id="q-longterm-plan" class="question">
+  <h3>What is the longterm preservation plan for the dataset?</h3>
+  {%- scope -%}
+  <div class="answer">
+    {# Published datasets #}
+    {%- set publishedDataSetsUuid = "4e0c1edf-660c-4ebf-81f5-9fa959dead30" -%}
+    {%- set publishedDataSetNameUuid = "b0949d09-d179-4491-9fb4-14b0deb9f862" -%}
+    {%- set publishedDataSetRepositoryKindUuid = "80a682bd-8a5c-4a52-935d-680509838a4e" -%}
+    {%- set domainSpecificRepositoryAnswerUuid = "1dc412c6-da92-4cc2-8639-316c0c6ec5ff" -%}
+    {%- set nationalRepositoryAnswerUuid = "fb96d008-f31a-4a1a-b203-b3f9bb32fcc8" -%}
+    {%- set institutionalRepositoryAnswerUuid = "df0b2ee3-8e4d-42a1-9bb2-c69228074406" -%}
+    {%- set specialRepositoryAnswerUuid = "afd9f4d5-20e0-4fa0-a42a-376c132ff5b0" -%}
+    {%- set publishedDataSetCatalogueUuid = "46039bea-87e6-4c61-8567-4e819404b4d0" -%}
+    {%- set publishedDataSetCatalogueYesAnswerUuid = "9e39ea26-cdaf-483b-9502-d47fc4f69bab" -%}
+    {%- call (reply) withReply(publishedDataSetsUuid) -%}
+      {%- set pathPrefix = publishedDataSetsUuid ~ "." -%}
+      {%- set nDataSets = reply.value.value -%}
+      {%- if nDataSets > 0 -%}
+        We plan to publish the following datasets:
+        <ul>
+          {%- for i in range(nDataSets - 1) -%}
+            {%- set pathPrefixInner = i ~ "." -%}
+            {%- call (xreplies) mapReplies([
+              pathPrefixInner ~ publishedDataSetNameUuid,
+              pathPrefixInner ~ publishedDataSetRepositoryKindUuid,
+              pathPrefixInner ~ publishedDataSetCatalogueUuid
+            ]) -%}
+              {%- set publishedDataSetName = xreplies[0][0].value.value -%}
+              {%- set repositoryKindAnswerUuid = xreplies[1][0].value.value -%}
+              {%- set catalogueAnswerUuid = xreplies[2][0].value.value -%}
+              <li>
+                <strong>{{ publishedDataSetName ? publishedDataSetName : "(no name given)" }}</strong>
+                {%- if repositoryKindAnswerUuid -%}
+                  <p>
+                  It will be stored in
+                  {%- if repositoryKindAnswerUuid == domainSpecificRepositoryAnswerUuid %}
+                    {%- set pathPrefixRepository = pathPrefixInner ~ publishedDataSetRepositoryKindUuid ~ "." ~ domainSpecificRepositoryAnswerUuid ~ "." -%}
+                    {%- set repositoryNameUuid = "221c322e-dff5-438f-8a2e-90e762681156" -%}
+                    {%- set contactBeforeUuid = "b1492627-9cb6-465a-945a-a2a7ff9a8189" -%}
+                    {%- set contactBeforeNoAnswerUuid = "c86c80b4-72b3-4194-956a-27e40d3c23eb" -%}
+                    {%- set contactBeforeYesAlreadyAnswerUuid = "e09562c0-346c-4c95-b470-c5810aab18fa" -%}
+                    {%- set contactBeforeYesWillAnswerUuid = "93c590a5-60a6-481d-9482-9145435143a2" -%}
+                    {%- set contactBeforeOtherAnswerUuid = "620b1090-2a57-4f3c-b336-97c9e95da637" -%}
+                    {%- set contactBeforeOtherUuid = "fc0857c1-e4d2-47f5-86b1-0292bfc7eecf" -%}
+                    {%- call (contactReplies) mapReplies([
+                      pathPrefixRepository ~ repositoryNameUuid,
+                      pathPrefixRepository ~ contactBeforeUuid, 
+                      pathPrefixRepository ~ contactBeforeUuid ~ "." ~ contactBeforeOtherAnswerUuid ~ "." ~ contactBeforeOtherUuid
+                    ]) -%}
+                      {%- set repositoryNameReply = contactReplies[0][0] -%}
+                      {%- set contactBeforeAnswerUuid = contactReplies[1][0].value.value -%}
+                      {%- set contactBeforeOtherText = contactReplies[2][0].value.value -%}
+                      a domain-specific repository
+                      {%- if repositoryNameReply -%}
+                        :
+                        {%- if repositoryNameReply.value.value.type == "IntegrationValue" %}
+                          {%- call (integration) getIntegrationForQuestion(repositoryNameUuid) -%}
+                            {%- call (integrationLink) createIntegrationLink(integration, repositoryNameReply.value.value.id) -%}
+                              <a href="{{ integrationLink }}" target="_blank">{{ repositoryNameReply.value.value.value }}</a>{{ endswith(repositoryNameReply.value.value.value, ".") ? "" : "." }}
+                            {%- endcall -%}
+                          {%- endcall -%}
+                        {%- else %}
+                          {{ repositoryNameReply.value.value.value }}{{ endswith(repositoryNameReply.value.value.value, ".") ? "" : "." }}
+                        {%- endif -%}
+                      {%- endif -%}
+
+                      {%- if contactBeforeAnswerUuid == contactBeforeNoAnswerUuid %}
+                        We don't need to contact the repository because it is a routine for us.
+                      {%- elif contactBeforeAnswerUuid == contactBeforeYesAlreadyAnswerUuid %}
+                        We have already contected the repository.
+                      {%- elif contactBeforeAnswerUuid == contactBeforeYesWillAnswerUuid %}
+                        We are going to contact the repository.
+                      {%- elif contactBeforeAnswerUuid == contactBeforeOtherAnswerUuid %}
+                        We have made other arrangements{{ contactBeforeOtherText ? ": " ~ contactBeforeOtherText|capitalize : "" }}{{ endswith(contactBeforeOtherText, ".") ? "" : "." }}
+                      {%- endif -%}
+                    {%- endcall -%}
+                  {%- elif repositoryKindAnswerUuid == nationalRepositoryAnswerUuid %}
+                    our national repository.
+                  {%- elif repositoryKindAnswerUuid == institutionalRepositoryAnswerUuid %}
+                    our institutional repository.
+                  {%- elif repositoryKindAnswerUuid == specialRepositoryAnswerUuid %}
+                    a special-purpose repository for the project.
+                    {# deeper #}
+                    {%- set pathPrefixRepository = pathPrefixInner ~ publishedDataSetRepositoryKindUuid ~ "." ~ specialRepositoryAnswerUuid ~ "." -%}
+                    {%- set longTermSupportUuid = "f83a9afd-c6de-452b-be9f-bd76e5eb6b54" -%}
+                    {%- set longTermSupportNoAnswerUuid = "dc921fac-cf77-4d3d-bb9c-907d37f838ef" -%}
+                    {%- set longTermSupportYesAnswerUuid = "714e0a22-c059-4f80-9780-6f7f2e2ce53b" -%}
+                    {%- set serviceLevelUuid = "cbbfb0da-caf1-4c04-b72f-de39c4a8fb33" -%}
+                    {%- set serviceLevelDownloadAnswerUuid = "dc1082fd-1c90-492c-833c-3e0909c643bb" -%}
+                    {%- set serviceLevelSimpleAnswerUuid = "da6725a2-62bb-4fe7-a76f-a4e396646b19" -%}
+                    {%- set serviceLevelAdvancedAnswerUuid = "d65ddfda-9b08-4ab6-90e5-07df748d7929" -%}
+                    {%- call (repositoryReplies) mapReplies([
+                      pathPrefixRepository ~ longTermSupportUuid,
+                      pathPrefixRepository ~ serviceLevelUuid
+                    ]) -%}
+                      {%- set longTermSupportAnswerUuid = repositoryReplies[0][0].value.value -%}
+                      {%- set serviceLevelAnswerUuid = repositoryReplies[1][0].value.value -%}
+                      {%- set administrationAnswerUuid = repositoryReplies[2][0].value.value -%}
+                      {%- if longTermSupportAnswerUuid == longTermSupportYesAnswerUuid %}
+                        We will be able to support this repository for a sufficiently long time.
+                      {%- endif -%}
+                      {%- if serviceLevelAnswerUuid == serviceLevelDownloadAnswerUuid %}
+                        The repository will provide download-only service.
+                      {%- elif serviceLevelAnswerUuid == serviceLevelSimpleAnswerUuid %}
+                        The repository will provice a search and simple access interface.
+                      {%- elif serviceLevelAnswerUuid == serviceLevelAdvancedAnswerUuid %}
+                        The repository will provide an advanced processing service.
+                      {%- endif -%}
+                    {%- endcall -%}
+                  {%- endif -%}
+                  </p>
+                {%- endif -%}
+                {%- if catalogueAnswerUuid == publishedDataSetCatalogueYesAnswerUuid -%}
+                  <p>We will be adding a reference to the published data to at least one data catalogue.</p>
+                {%- endif -%}
+              </li>
+            {%- endcall -%}
+          {%- endfor -%}
+        </ul>
+      {%- endif -%}
+    {%- endcall -%}
+
+    {# Costs #}
+    {%- set repoChargesUuid = "de23bb94-b727-4907-9a5d-6f8c78c3e432" -%}
+    {%- set repoChargesNoAnswerUuid = "172043dd-d911-4bc7-9ba6-841d38d5822c" -%}
+    {%- set repoChargesYesAnswerUuid = "fe8ed36b-40e8-483b-ab31-061f6168d7ad" -%}
+    {%- set howPayUuid = "edc9b6d9-c121-4e00-ba83-710330c2e18d" -%}
+    {%- set howPayBudgetedAnswerUuid = "f613d751-f6dd-406e-863c-cdce486a5fc0" -%}
+    {%- set howPayDepartmentAnswerUuid = "9081d546-59d1-4ffb-987e-02f6ed002e73" -%}
+    {%- set howPayInstituteAnswerUuid = "aeafeb04-59e1-4e56-8c89-07d773474695" -%}
+    {%- set howPayOtherAnswerUuid = "6fb69263-d2cb-4d90-babe-523136c29bc4" -%}
+    {%- set howPayOtherUuid = "6e0704a2-cea3-4ae7-8ab5-5eb6db163639" -%}
+    {%- set timeEffortUuid = "13a7eeae-09f5-42bf-8e62-b2c1fe1b86f7" -%}
+    {%- set timeEffortYesAnswerUuid = "db44d6ca-efc2-413e-8abc-d92f92ed1d1d" -%}
+    {%- call (costsReplies) mapReplies([repoChargesUuid, howPayUuid, howPayOtherUuid, timeEffortUuid]) -%}
+      {%- set repoChargesAnswerUuid = costsReplies[0][0].value.value -%}
+      {%- set howPayAnswerUuid = costsReplies[1][0].value.value -%}
+      {%- set howPayOtherText = costsReplies[2][0].value.value -%}
+      {%- set timeEffortAnswerUuid = costsReplies[3][0].value.value -%}
+
+      {%- if repoChargesAnswerUuid == repoChargesNoAnswerUuid -%}
+        <p>None of the used repositories charge for their services.</p>
+      {%- elif repoChargesAnswerUuid == repoChargesYesAnswerUuid -%}
+        {%- if howPayAnswerUuid == howPayBudgetedAnswerUuid -%}
+          <p>We have budgeted for the costs in the project to pay charges of the used repositories.</p>
+        {%- elif howPayAnswerUuid == howPayDepartmentAnswerUuid -%}
+          <p>The costs related to the used repositories will be carried by (one of) the departments involved in the project.</p>
+        {%- elif howPayAnswerUuid == howPayInstituteAnswerUuid -%}
+          <p>The costs related to the used repositories will be carried by (one of) the institutes involved in the project.</p>
+        {%- elif (howPayAnswerUuid == howPayOtherAnswerUuid) && howPayOtherText -%}
+          <p>We will carry the costs related to the used repositories by: {{ howPayOtherText|capitalize }}{{ endswith(howPayOtherText, ".") ? "" : "." }}</p>
+        {%- endif -%}
+      {%- endif -%}
+
+      {%- if timeEffortAnswerUuid == timeEffortYesAnswerUuid -%}
+        <p>We have a reserved budget for the time and effort it will take to prepare the data for publication.</p>
+      {%- endif -%}
+    {%- endcall -%}
+  </div>
+  {%- endscope -%}
+</div>

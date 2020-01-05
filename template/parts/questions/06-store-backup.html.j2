@@ -1,0 +1,60 @@
+<div id="q-store-backup" class="question">
+  <h3>How will the data be stored and backed up during the research?</h3>
+  {%- scope -%}
+  <div class="answer">
+    {%- set allDataBackupUuid = "c1e83bdf-5914-44c2-8414-0a4e7fbaf272" -%}
+    {%- set allDataBackupYesAnswerUuid = "ec92df2d-f6db-4cc8-8317-ae24ab4fa08a" -%}
+    {%- set storageChangeUuid = "4ee4d67d-62c5-47f0-a741-f2629b65cf8a" -%}
+    {%- set storageChangeSameAnswerUuid = "eef277cb-1032-401e-b242-e74afde575dc" -%}
+    {%- set storageChangeLargeAnswerUuid = "014d23a8-93a8-4fd2-ba1c-8656177f37b2" -%}
+    {%- set storageChangeSmallAnswerUuid = "ab40db7f-ea89-4830-b507-4f2f08a9453e" -%}
+    {%- set storageChangeMiddleAnswerUuid = "51a8248e-8659-47fd-a8e3-112eed64f65b" -%}
+    {%- set preventLossUuid = "25e06912-08a2-40e4-af76-cfbc5ada9925" -%}
+    {%- set preventLossSufficientAnswerUuid = "44810299-8618-4a79-a732-13cc2ff21903" -%}
+    {%- set preventLossEssentialAnswerUuid = "766e16e4-21c7-4030-9eda-1973f51061d4" -%}
+    {%- set backupCopyUuid = "98d9789b-32fc-4e2f-876a-47760ad7c7ec" -%}
+    {%- set backupCopyLeftAnswerUuid = "7c732053-6df4-466b-8732-0db2bd1e1ffc" -%}
+    {%- set backupCopyNoDataAnswerUuid = "a1ead63a-1bc8-42e6-8bdc-3e1e8a901307" -%}
+    {%- set backupCopyAllSomewhereAnswerUuid = "278810f9-6396-4203-9fa6-6cd3a003159c" -%}
+    {%- set backupCopyBackupsAnswerUuid = "0884ac19-9bde-4bf1-afdd-0794c2c69092" -%}
+    {%- call (backupReplies) mapReplies([
+      allDataBackupUuid, storageChangeUuid, preventLossUuid, backupCopyUuid
+    ]) -%}
+      {%- set allDataBackupAnswerUuid = backupReplies[0][0].value.value -%}
+      {%- set storageChangeAnswerUuid = backupReplies[1][0].value.value -%}
+      {%- set preventLossAnswerUuid = backupReplies[2][0].value.value -%}
+      {%- set backupCopyAnswerUuid = backupReplies[3][0].value.value -%}
+      
+      {%- if allDataBackupAnswerUuid == allDataBackupYesAnswerUuid -%}
+        <p>Data that project members themselves store adequately backed up and traceable. Therefore data are protected against both equipment failure and human error.</p>
+      {%- endif -%}
+
+      {%- if storageChangeAnswerUuid == storageChangeSameAnswerUuid -%}
+        <p>Storage needs will be the same during the whole project.</p>
+      {%- elif storageChangeAnswerUuid == storageChangeLargeAnswerUuid -%}
+        <p>Storage needs are large at the beginning and will be reduced later.</p>
+      {%- elif storageChangeAnswerUuid == storageChangeSmallAnswerUuid -%}
+        <p>Storage needs are small at the beginning and will grow later.</p>
+      {%- elif storageChangeAnswerUuid == storageChangeMiddleAnswerUuid -%}
+        <p>Storage needs are largest in the middle of the project.</p>
+      {%- endif -%}
+
+      {%- if preventLossAnswerUuid == preventLossSufficientAnswerUuid -%}
+        <p>The work space provides sufficient guarantees in terms of preventing a total loss of data.</p>
+      {%- elif preventLossAnswerUuid == preventLossEssentialAnswerUuid -%}
+        <p>All essential data is also stored elsewhere to prevent a total loss of data.</p>
+      {%- endif -%}
+
+      {%- if backupCopyAnswerUuid == backupCopyLeftAnswerUuid -%}
+        <p>Backup of project data that is not in the work space is left to the project participants.</p>
+      {%- elif backupCopyAnswerUuid == backupCopyNoDataAnswerUuid -%}
+        <p>Data is stored only in the work space, therefore additional backup copies of files outside work space are not necessary.</p>
+      {%- elif backupCopyAnswerUuid == backupCopyAllSomewhereAnswerUuid -%}
+        <p>All project data stored outside of the working area will be adequately backed up.</p>
+      {%- elif backupCopyAnswerUuid == backupCopyBackupsAnswerUuid -%}
+        <p>We will make (automated) backups of all data stored outside of the working area.</p>
+      {%- endif -%}
+    {%- endcall -%}
+  </div>
+  {%- endscope -%}
+</div>

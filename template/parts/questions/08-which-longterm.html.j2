@@ -1,0 +1,54 @@
+<div id="q-which-longterm" class="question">
+  <h3>Which data are of long-term value and should be retained, shared, and/or preserved?</h3>
+  {%- scope -%}
+  <div class="answer">
+    {# Published datasets #}
+    {%- set publishedDataSetsUuid = "4e0c1edf-660c-4ebf-81f5-9fa959dead30" -%}
+    {%- set publishedDataSetNameUuid = "b0949d09-d179-4491-9fb4-14b0deb9f862" -%}
+    {%- set howLongUuid = "d4e6a244-07fb-4573-b93f-c20a9409ac7c" -%}
+    {%- set howLongTechnicalAnswerUuid = "59305ef2-2dd0-4553-8d7b-29186e0b8cd5" -%}
+    {%- set howLongLegalAnswerUuid = "bb6b4f0a-9908-4473-9982-30084ff4f6ab" -%}
+    {%- set howLongFixedAnswerUuid = "7b5f059a-ae7e-4f7f-92e8-119911e568b2" -%}
+    {%- set howLongFixedUuid = "346118ee-265f-4104-8409-161ea9a57f75" -%}
+    {%- set metadataPersistentUuid = "3b3fbcc6-c405-4151-8dce-e11dbd46b1bd" -%}
+    {%- set metadataPersistentYesAnswerUuid = "d21c32f1-c150-4c89-8472-2918d60dd547" -%}
+    {%- call (reply) withReply(publishedDataSetsUuid) -%}
+      {%- set pathPrefix = publishedDataSetsUuid ~ "." -%}
+      {%- set nDataSets = reply.value.value -%}
+      {%- if nDataSets > 0 -%}
+        <ul>
+          {%- for i in range(nDataSets - 1) -%}
+            {%- set pathPrefixInner = i ~ "." -%}
+            {%- call (xreplies) mapReplies([
+              pathPrefixInner ~ publishedDataSetNameUuid,
+              pathPrefixInner ~ howLongUuid,
+              pathPrefixInner ~ howLongUuid ~ "." ~ howLongFixedAnswerUuid ~ "." ~ howLongFixedUuid,
+              pathPrefixInner ~ metadataPersistentUuid
+            ]) -%}
+              {%- set publishedDataSetName = xreplies[0][0].value.value -%}
+              {%- set howLongAnswerUuid = xreplies[1][0].value.value -%}
+              {%- set howLongFixedText = xreplies[2][0].value.value -%}
+              {%- set metadataPersistentAnswerUuid = xreplies[3][0].value.value -%}
+              {%- if howLongAnswerUuid || (metadataPersistentAnswerUuid == metadataPersistentYesAnswerUuid) %}
+              <li>
+                <strong>{{ publishedDataSetName ? publishedDataSetName : "(no name given)" }}</strong>
+                {%- if howLongAnswerUuid == howLongTechnicalAnswerUuid -%}
+                  <p>This data set will be kept available as long as technically possible.</p>
+                {%- elif howLongAnswerUuid == howLongLegalAnswerUuid -%}
+                  <p>This data set will be kept available until it needs to be deleted for legal reasons.</p>
+                {%- elif howLongAnswerUuid == howLongFixedAnswerUuid -%}
+                  <p>This data set will be kept available for a fixed period (prepaid){{ howLongFixedText ? " of: " ~ howLongFixedText : "" }}{{ endswith(howLongFixedText, ".") ? "" : "." }}</p>
+                {%- endif -%}
+                {%- if metadataPersistentAnswerUuid == metadataPersistentYesAnswerUuid -%}
+                  <p>The metadata will be available even when the data no longer exists.</p>
+                {%- endif -%}
+              </li>
+              {%- endif -%}
+            {%- endcall -%}
+          {%- endfor -%}
+        </ul>
+      {%- endif -%}
+    {%- endcall -%}
+  </div>
+  {%- endscope -%}
+</div>

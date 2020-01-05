@@ -1,0 +1,365 @@
+<div id="q-what-data" class="question">
+  <h3>What data will you collect or create?</h3>
+  {%- scope -%}
+  <div class="answer">
+
+  {# Measured datasets #}
+  {% set dataSetsMeasuredUuid = "f5fef09d-ade5-4019-b089-f05bd89c34bc" %}
+  {% call (reply) withReply(dataSetsMeasuredUuid) %}
+    {% set nDataSets = reply.value.value %}
+    {% if nDataSets > 0 %}
+      The following instrument datasets will be acquired in the project:
+      <ul>
+        {% for i in range(nDataSets - 1) %}
+          {% set pathPrefix = dataSetsMeasuredUuid ~ "." ~ i ~ "." %}
+          <li>
+            {% set dataSetNameUuid = "a077aec4-83d2-45c2-8d9f-75a391bdee20" %}
+            {% call (dataSetNameReply) withReply(pathPrefix ~ dataSetNameUuid) %}
+              <strong>{{ dataSetNameReply.value.value }}</strong>
+            {% endcall %}
+
+            {% set dataSetCollectedByUuid = "ee59664e-4026-4796-a42a-e8003df6dadf" %}
+            {% call (dataSetCollectedByReply) withReply(pathPrefix ~ dataSetCollectedByUuid) %}
+              {% set pathPrefix = pathPrefix ~ dataSetCollectedByUuid ~ "."  %}
+              <br>
+              This dataset will be collected by 
+              {% set answerUuid = dataSetCollectedByReply.value.value %}
+              {% set byExpertsOwnUuid = "44ef09a4-5a78-439d-9fb4-940d3d84bfab" %}
+              {% set byExpertsOutUuid = "eb0b9a82-0379-47c3-967f-b35b40129af2" %}
+              {% set byExternalUuid = "f2784b7e-b0ed-4973-9d68-954c5c24e8bb" %}
+              {% if answerUuid == byExpertsOwnUuid %}
+                experts in the project, with our own equipment.
+              {% elif answerUuid == byExpertsOutUuid %}
+                experts in the project, at a specialized infrastructure.
+              {% elif answerUuid == byExternalUuid %}
+                {% set pathPrefix = pathPrefix ~ byExternalUuid ~ "."  %}
+                an external party.
+
+                {% set dataSetOwnershipUuid = "aa27852a-00f4-44a4-a85c-0e0fd3ac20d1" %}
+                {% call (dataSetOwnershipReply) withReply(pathPrefix ~ dataSetOwnershipUuid) %}
+                  {% set pathPrefix = pathPrefix ~ dataSetOwnershipUuid ~ "." %}
+                  {% set answerUuid = dataSetOwnershipReply.value.value %}
+                  {% set measuringPartyUuid = "786edd0d-ae07-489c-b078-423c18e02043" %}
+                  {% set projectPartnersUuid = "306f7ef4-97fd-47b0-84de-f192cb94ea3a" %}
+                  {% set otherArrangementsUuid = "399245d4-7988-461c-b940-ee813a1c99b1" %}
+                  {% if answerUuid == measuringPartyUuid %}
+                    The ownership of the resulting data will remain with the external party.
+                  {% elif answerUuid == projectPartnersUuid %}
+                    The project partners acquire full ownership of the data.
+                  {% elif answerUuid == otherArrangementsUuid %}
+                    {% set pathPrefix = pathPrefix ~ otherArrangementsUuid ~ "." %}
+                    {% set dataSetOwnershipArrangementsUuid = "227f056a-ada1-473b-af71-bb63d48b4940" %}
+                    {% call (dataSetOwnershipArrangementsReply) withReply(pathPrefix ~ dataSetOwnershipArrangementsUuid) %}
+                      For the ownership of the data we have made the following arrangements: {{ dataSetOwnershipArrangementsReply.value.value }}
+                    {% endcall %}
+                  {% endif %}
+                {% endcall %}
+              {% endif %}
+            {% endcall %}
+
+            {% set dataSetEquipmentUuid = "bce52f7f-2256-4afc-9801-2e4da8111470" %}
+            {% call (dataSetEquipmentReply) withReply(pathPrefix ~ dataSetEquipmentUuid) %}
+              <br>It is  
+              {% set answerUuid = dataSetEquipmentReply.value.value %}
+              {% set isDescribed = "cba473be-2489-4387-8877-ce49cf95a304" %}
+              {% set needCare = "526db9ec-a5a1-4431-9cc3-751fc6625217" %}
+              {% if answerUuid == isDescribed %}
+                very well described and known.
+              {% elif answerUuid == needCare %}
+                less well described or not completely standard, so we will need to take extra care documenting the process.
+              {% endif %}
+            {% endcall %}
+          </li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+  {% endcall %}
+
+  {# Non-equipment datasets #}
+  {% set nonEquipmentCaptureUuid = "f038bd46-ee4e-4f53-b7ea-482381c2c855" %}
+  {% call (reply) withReply(nonEquipmentCaptureUuid) %}
+    {% set captureTypes = [
+        {
+          "uuid": "85079340-7b80-4dc7-86ae-cc5f599ec737",
+          "answerYes": "81baba8e-d43c-48f9-b39a-c0adfad08f64",
+          "type": "questionnaires"
+        },
+        {
+          "uuid": "36a5ed1e-ecd5-4b86-a719-f1196e376a52",
+          "answerYes": "7fcce8f6-e52b-444e-88f6-74ba3e4ee37b",
+          "type": "case report forms"
+        },
+        {
+          "uuid": "7e456b72-72a1-427d-8e75-9da096bc9806",
+          "answerYes": "2d3d08b8-7d63-4645-9499-f465caa06204",
+          "type": "electronic patient records"
+        }
+      ]
+    %}
+    {% set replyUuids = replies|filter(
+        (r) -> endswith(r.path, "85079340-7b80-4dc7-86ae-cc5f599ec737") || endswith(r.path, "36a5ed1e-ecd5-4b86-a719-f1196e376a52") || endswith(r.path, "7e456b72-72a1-427d-8e75-9da096bc9806")
+      )|map(
+        (r) -> r.value.value
+      )
+    %}
+    {% set sources = captureTypes|filter((t) -> t.answerYes|in(replyUuids))|map((t) -> t.type) %}
+    {% if sources|length == 0 %}
+      We don't do any non-equipment data capture.
+    {% else %}
+      We also collect data from
+      {% if sources|length == 1 %}
+          {{ sources[0] }}.
+      {% elif sources|length == 2 %}
+          {{ sources[0] }} and {{ sources[1] }}.
+      {% elif sources|length == 3 %}
+          {{ sources[0] }}, {{ sources[1] }}, and {{ sources[2] }}.
+      {% endif %}
+    {% endif %}
+
+    {% set nonEquipmentDataSetsUuid = "b642c31d-a512-4ca7-8743-a2e0254006fa" %}
+    {% set nonEquipmentDataSetNameUuid = "d87a239f-9aee-4d6a-a5f6-fa83c73e67e1" %}
+    {% set nonEquipmentDataSetDescriptionUuid = "934f6592-a032-4ada-91b2-4448d740d157" %}
+    {% call (nonEquipmentDataSetsReply) withReply(nonEquipmentDataSetsUuid) %}
+      {% set nNonEquiementDataSets = nonEquipmentDataSetsReply.value.value %}
+      {% if nNonEquiementDataSets > 0 %}
+        Those non-equipment datasets are:
+        <ul>
+        {% for i in range(nNonEquiementDataSets-1) %}
+          {% set pathPrefix = nonEquipmentDataSetsUuid ~ "." ~ i ~ "." %}
+          {% call (xreplies) mapReplies([
+              pathPrefix ~ nonEquipmentDataSetNameUuid,
+              pathPrefix ~ nonEquipmentDataSetDescriptionUuid
+              ]) %}
+            {% set name = xreplies[0][0].value.value %}
+            {% set description = xreplies[1][0].value.value %}
+            <li><strong>{{ name ? name : "(no name given)" }}</strong> <span class="separator">-</span> {{ description }}</li>
+          {% endcall %}
+        {% endfor %}
+        </ul>
+      {% endif %}
+    {% endcall %}
+    <br>
+  {% endcall %}
+  
+  {# Reference datasets (reuse) #}
+  {% set referenceDataSetsUuid = "fcc51962-08df-4f4c-85ad-6bb932107010" %}
+  {% call (reply) withReply(referenceDataSetsUuid) %}
+    {% set nDataSets = reply.value.value %}
+    {% if nDataSets > 0 %}
+      We will use the following reference datasets:
+      <ul>
+        {% set uuidDataSetName = "93988527-5bff-4125-8834-3750e9a28683" %}
+        {% set dataSetWhereUuid = "7801fe70-a2ac-432b-9470-e326646c249f" %}
+
+        {% for i in range(nDataSets - 1) %}
+          <li>
+            {% set pathPrefix = uuidReferenceDataSets ~ "." ~ i ~ "." %}
+            {% call (dataSetNameReply) withReply(pathPrefix ~ uuidDataSetName) %}
+              {% if dataSetNameReply.value.value.type == "IntegrationValue" %}
+                {% call (integration) getIntegrationForQuestion(uuidDataSetName) %}
+                  {% call (integrationLink) createIntegrationLink(integration, dataSetNameReply.value.value.id) %}
+                    <a href="{{ integrationLink }}" target="_blank"><strong>{{ dataSetNameReply.value.value.value }}</strong></a>
+                  {% endcall %}
+                {% endcall %}
+              {% else %}
+                <strong>{{ dataSetNameReply.value.value.value }}</strong>
+              {% endif %}
+            {%- endcall -%}
+            {%- call (dataSetWhereReply) withReply(pathPrefix ~ dataSetWhereUuid) -%}
+              {% set dataSetWhere = dataSetWhereReply.value.value %}
+              {% set isHttp = slice(dataSetWhere, 0, 7) == "http://" %}
+              {% set isHttps = slice(dataSetWhere, 0, 8) == "https://" %}
+              {% set isFtp = slice(dataSetWhere, 0, 6) == "ftp://" %}
+              {%- if isHttp || isHttps || isFtp -%}
+                (<a href="{{ dataSetWhere }}" target="_blank">{{ dataSetWhere }}</a>)
+              {%- else -%}
+                ({{ dataSetWhere }})
+              {%- endif -%}
+            {%- endcall -%}
+            {% set versioningPrefix = pathPrefix ~ "10b6548c-21cd-44c8-a8de-47415e7b012e.842007ce-0951-4655-8acc-b0f582e82ea1." %}
+            {% set uuidVersion = "f00a28fb-ac77-4110-b285-c73c8bc62630" %}
+            {% set uuidUpdate = "481d0157-6d89-4f68-9f3b-cf1b05f8f15d" %}
+            {% call (versionReply) withReply(versioningPrefix ~ uuidVersion) %}
+              <br>
+              We will use version "{{ versionReply.value.value }}" of this dataset.
+            {% endcall %}
+            {% call (updateReply) withReply(versioningPrefix ~ uuidUpdate) %}
+              <br>
+              {% set answerUuid = updateReply.value.value %}
+              {% set noUpdate = "a4f6a1da-536b-43fa-9637-71e33327fa08" %}
+              {% set newUpdated = "069a0976-498c-4a47-b42f-33c6a1e40126" %}
+              {% set allUpdated = "dc8dbe60-43e8-4ed4-ab11-13bb74aea820" %}
+              If a new version becomes available during the project,
+              {% if answerUuid == noUpdate %}
+                we will stay with the old version.
+              {% elif answerUuid == newUpdated %}
+                new analyses will be done with the new version.
+              {% elif answerUuid == allUpdated %}
+                all analyses will be redone with the new version.
+              {% endif %}
+            {% endcall %}
+          </li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+  {% endcall %}
+
+  {# Non-reference datasets (reuse) #}
+  {% set nonReferenceDataSetsUuid = "be872000-cb98-442f-999c-ca3ef58dcfe8" %}
+  {% call (reply) withReply(nonReferenceDataSetsUuid) %}
+    {% set nDataSets = reply.value.value %}
+    {% if nDataSets > 0 %}
+      We will use the following already existing non-reference datasets:
+      <ul>
+        {% set uuidDataSetName = "44120979-2840-4522-8297-df13f7fd1e3a" %}
+        {% set uuidDataSetAccess = "62ddfc73-1680-4bbf-b198-6a7231875fb1" %}
+
+        {% for i in range(nDataSets - 1) %}
+          <li>
+            {% set pathPrefix = uuidNonReferenceDataSets ~ "." ~ i ~ "." %}
+            {% call (dataSetNameReply) withReply(pathPrefix ~ uuidDataSetName) %}
+              {% if dataSetNameReply.value.value.type == "IntegrationValue" %}
+                {% call (integration) getIntegrationForQuestion(uuidDataSetName) %}
+                  {% call (integrationLink) createIntegrationLink(integration, dataSetNameReply.value.value.id) %}
+                    <a href="{{ integrationLink }}" target="_blank"><strong>{{ dataSetNameReply.value.value.value }}</strong></a>
+                  {% endcall %}
+                {% endcall %}
+              {% else %}
+                <strong>{{ dataSetNameReply.value.value.value }}</strong>
+              {% endif %}
+            {% endcall %}
+            {% call (dataSetAccessReply) withReply(pathPrefix ~ uuidDataSetAccess) %}
+              <br>
+              {% set answerUuid = updateReply.value.value %}
+              {% set alreadyHaveCopy = "423f7c77-c3bd-4ece-a9f6-ad9e3d0428a1" %}
+              {% set willDownload = "4e183e8d-d4bd-442a-a663-d3accf4f9217" %}
+              {% set willOnline = "f5e1c4d3-79f7-4950-9b10-6a7738f21978" %}
+              {% if answerUuid == noUpdate %}
+                We already have a copy of this dataset.
+              {% elif answerUuid == newUpdated %}
+                We will download or get a copy.
+              {% elif answerUuid == allUpdated %}
+                We will use its online version without downloading it.
+              {% endif %}
+            {% endcall %}
+          </li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+  {% endcall %}
+
+  {# Format/Type with volume #}
+  {% set formatsTypesUuid = "b08fe063-33f8-4380-b3a9-ba1e586dedf2" %}
+  {% call (reply) withReply(formatsTypesUuid) %}
+    {% set nFormats = reply.value.value %}
+    {% if nFormats > 0 %}
+      We will be using the following file formats and types:
+      <ul>
+        {% for i in range(nFormats - 1) %}
+          {% set pathPrefix = formatsTypesUuid ~ "." ~ i ~ "." %}
+          <li>
+            {# Format name #}
+            {% set formatNameUuid = "f00cf643-5368-458a-97d4-b463c2000c66" %}
+            {% call (formatNameReply) withReply(pathPrefix ~ formatNameUuid) %}
+              {% if formatNameReply.value.value.type == "IntegrationValue" %}
+                {% call (integration) getIntegrationForQuestion(formatNameUuid) %}
+                  {% call (integrationLink) createIntegrationLink(integration, formatNameReply.value.value.id) %}
+                    <a href="{{ integrationLink }}" target="_blank"><strong>{{ formatNameReply.value.value.value }}</strong></a>
+                  {% endcall %}
+                {% endcall %}
+              {% else %}
+                <strong>{{ formatNameReply.value.value.value }}</strong>
+              {% endif %}
+            {% endcall %}
+            {# Format standard #}
+            {% set isFormatStandardUuid = "ecff019a-d4e6-44c6-a8fe-c84eb15ed8b7" %}
+            {% set isFormatStandardYesUuid = "d4ce2c56-b3df-4013-9220-289b28f922de" %}
+            {% set isFormatStandardNoUuid = "52b7aba3-d809-4a30-b3f8-90caa7a32a10" %}
+            {% set whyNonStandardUuid = "8bd3d76a-4f69-4a1e-82dd-5416739720b3" %}
+            {% set thereIsNoStandardUuid = "2da70314-879e-46f5-a1da-2794d71a12d3" %}
+            {% set itIsOptimizedUuid = "6c26d57b-468c-42ba-a01c-05d1334d0a6e" %}
+            {% set anotherReasonUuid = "ab19f42e-6204-409e-aa6d-6d87783cce44" %}
+            {% set theReasonUuid = "ea7420ef-3de3-4ca8-9ff8-ac1cdb0e506f" %}
+            {% call (ifFormatStandardReply) withReply(pathPrefix ~ isFormatStandardUuid) %}
+              {% set pathPrefix = pathPrefix ~ isFormatStandardUuid ~ "." %}
+              {% if ifFormatStandardReply.value.value == isFormatStandardYesUuid %}
+                (standard)
+              {% elif ifFormatStandardReply.value.value == isFormatStandardNoUuid %}
+                <br>
+                {% set pathPrefix = pathPrefix ~ isFormatStandardNoUuid ~ "." %}
+                {% call (whyNonStandardReply) withReply(pathPrefix ~ whyNonStandardUuid) %}
+                  {% set pathPrefix = pathPrefix ~ whyNonStandardUuid ~ "." %}
+                  {% if whyNonStandardReply.value.value == thereIsNoStandardUuid %}
+                    There is no standardized format for this data type.
+                  {% elif whyNonStandardReply.value.value == itIsOptimizedUuid %}
+                    It is optimized for processing speed and/or volume.
+                  {% elif whyNonStandardReply.value.value == anotherReasonUuid %}
+                    {% set pathPrefix = pathPrefix ~ anotherReasonUuid ~ "." %}
+                    {% call (theReasonReply) withReply(pathPrefix ~ theReasonUuid) %}
+                      {{ theReasonReply.value.value }}
+                    {% endcall %}
+                  {% endif %}
+                {% endcall %}
+              {% endif %}
+            {% endcall %}
+            {# Format suitable #}
+            {% set isLongTermSuitableUuid = "ced5a7c2-4034-4763-a1d5-3cb815cdfddb" %}
+            {% set isLongTermSuitableNoUuid = "86e547b8-e3ae-44b2-89ad-3a0d67decc56" %}
+            {% set convertLongTermSuitableUuid = "bf32374c-b24e-4b03-9898-a753cff56fcf" %}
+            {% set convertLongTermSuitableYesUuid = "7d8dc2f5-2699-4fb3-8bf6-e620868a0583" %}
+            {% set isLongTermSuitableYesUuid = "985e488d-257f-479d-8113-5dcbe105a08e" %}
+            {% call (isLongTermSuitableReply) withReply(pathPrefix ~ isLongTermSuitableUuid) %}
+              <br>
+              {% set pathPrefix = pathPrefix ~ isLongTermSuitableUuid ~ "." %}
+              {%- if isLongTermSuitableReply.value.value == isLongTermSuitableYesUuid -%}
+                This is a suitable format for long-term archiving.
+              {%- elif isLongTermSuitableReply.value.value == isLongTermSuitableNoUuid -%}
+               {% set pathPrefix = pathPrefix ~ isLongTermSuitableNoUuid ~ "." %}
+                {%- call (convertLongTermSuitableReply) withReplyDefault(pathPrefix ~ convertLongTermSuitableUuid, null) -%}
+                  {%- if convertLongTermSuitableReply.value.value == convertLongTermSuitableYesUuid -%}
+                    This is not a suitable format for long-term archiving; however, we plan to convert it to a suitable format before the end of the project.
+                  {%- else -%}
+                    We are aware that this is not a suitable format for long-term archiving.
+                  {%- endif -%}
+                {%- endcall -%}
+              {%- endif -%}
+            {% endcall %}
+            {# Volume #}
+            {% set volumeUuid = "ba9e42fc-2bf5-413f-85de-003f981aaf81" %}
+            {% set volumeSmallUuid = "7d3857a2-bb7d-4355-b2ca-bd6beb7cc3ea" %}
+            {% set volumeTotalUuid = "c2bc3d0b-a11b-4831-bd2c-5235dbf868b7" %}
+            {% set volumeTotalGBUuid = "4ae6452a-4ca6-434c-8453-7e3872e41847" %}
+            {% set volumeFileSizeUuid = "24dbd191-2d0c-4267-b858-d9063b21a486" %}
+            {% set volumeFilesUuid = "448403e9-578b-4155-9017-d4aa9119ea6a" %}
+            {% set volumeFileGBUuid = "624cfadf-6177-47b7-9ba8-b80b68aef0fd" %}
+            {% call (volumeReply) withReply(volumeUuid) %}
+              {% set pathPrefix = pathPrefix ~ volumeUuid ~ "." %}
+              {% if volumeReply.value.value == volumeSmallUuid %}
+                We will have only a small amount of data stored in this format.
+              {% elif volumeReply.value.value == volumeTotalUuid %}
+                {% set pathPrefix = pathPrefix ~ volumeTotalUuid ~ "." %}
+                {% call (volumeTotalGBReply) withReply(pathPrefix ~ volumeTotalGBUuid) %}
+                  We expect to have {{ volumeTotalGBReply.value.value }} GB of data in this format.
+                {% endcall %}
+              {% elif volumeReply.value.value == volumeFileSizeUuid %}
+                {% set pathPrefix = pathPrefix ~ volumeFileSizeUuid ~ "." %}
+                {% call (xreplies) mapReplies([
+                    pathPrefix ~ volumeFilesUuid,
+                    pathPrefix ~ volumeFileGBUuid
+                    ]) %}
+                  {% set numberOfFiles = xreplies[0][0].value.value %}
+                  {% set avgFileSize = xreplies[1][0].value.value %}
+                  {% if numberOfFiles && avgFileSize %}
+                    We expect to have {{ numberOfFiles }} files of average size {{ avgFileSize }} GB (i.e. approximatelly {{ numberOfFiles * avgFileSize }} GB in total). 
+                  {% endif %}
+                {% endcall %}
+              {% endif %}
+            {% endcall %}
+          </li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+  {% endcall %}
+  </div>
+  {%- endscope -%}
+</div>

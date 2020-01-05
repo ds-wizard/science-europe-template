@@ -1,0 +1,69 @@
+<div id="q-restrictions" class="question">
+  <h3>Are any restrictions on data sharing required?</h3>
+  {%- scope -%}
+  <div class="answer">
+    <p>Ethical and legal restrictions are documented under Section C. We have used the Data Stewardship Wizard, which made us aware of options to minimize the restrictions.</p>
+
+    {% set openDataQuestionUuid = "a549d10b-aa46-4c0c-863f-30219ac5ecce" %}
+    {% set openDataNoAnswerUuid = "b3739ebd-2d8e-42d3-9425-a7d6d1b26c79" %}
+    {% set openDataYesAnswerUuid = "8c33553c-9603-4156-82d7-85ab3d7de090" %}
+
+    {% set allowAuthenticatedAccessQuestionUuid = "55f03a4a-034b-422a-adf6-757416b7650a" %}
+    {% set allowAuthenticatedAccessYesAnswerUuid = "18a46146-25f6-4e5c-90ae-c6b9be9cc3f0" %}
+
+    {% set authenticatePotentialUsersQuestionUuid = "23909308-55cf-4e94-a616-2a74c809aa48" %}
+    {% set authenticatePotentialUsersMemberAnswerUuid = "ed47c9b7-9c2b-48ab-bdf4-efd8913f673e" %}
+    {% set authenticatePotentialUsersCommitteeAnswerUuid = "ca3b6db3-cd6c-4139-8d24-e5ded15c2796" %}
+    {% set authenticatePotentialUsersOtherCommitteeAnswerUuid  = "d010e09e-8ce8-47c6-a1f9-f281519ba936" %}
+    {% set authenticatePotentialUsersOtherCommitteeAnswerTextUuid = "0de7232f-802d-4e1f-a84c-2895d08901ce" %}
+    {% set authenticatePotentialUsersSpecialAnswerUuid  = "f57960de-3cfb-47da-a30b-da7c5d27a38e" %}
+    {% set authenticatePotentialUsersSpecialAnswerTextUuid = "346003fa-5ea6-41ed-a3b7-68d7e26a0b3e" %}
+
+    {% call whenReply(openDataQuestionUuid, openDataNoAnswerUuid) %}
+      {% set embargoPeriodQuestionUuid = "f5c12fcf-15d0-44ba-a53c-49ea9d7f620f" %}
+      {% set embargoPeriodYesAnswerUuid = "1b120967-803b-458b-b565-dbee6a785509" %}
+      {% set embargoPeriodYesAnswerTextUuid = "99a48a1a-5c27-4e15-9da0-515da815b4b8" %}
+
+      {% call (embargoPeriodReplies) mapReplies([
+        embargoPeriodQuestionUuid,
+        embargoPeriodYesAnswerTextUuid
+      ]) %}
+        {% set embargoPeriodAnswerUuid = embargoPeriodReplies[0][0].value.value %}
+        {% set embargoPeriodYesAnswerText = embargoPeriodReplies[1][0].value.value %}
+
+        {% if embargoPeriodAnswerUuid == embargoPeriodYesAnswerUuid && embargoPeriodYesAnswerText %}
+          <p>The embargo period will be: {{ embargoPeriodYesAnswerText }}</p>
+        {% endif %}
+      {% endcall %}
+
+      {% call whenReply(allowAuthenticatedAccessQuestionUuid, allowAuthenticatedAccessYesAnswerUuid) %}
+        <p>A data sharing agreement will be required.
+
+        {% call (authenticateReplies) mapReplies([
+          authenticatePotentialUsersQuestionUuid,
+          authenticatePotentialUsersOtherCommitteeAnswerTextUuid,
+          authenticatePotentialUsersSpecialAnswerTextUuid
+        ]) %}
+          {% set authenticatePotentialUsersAnswerUuid = authenticateReplies[0][0].value.value %}
+          {% set authenticatePotentialUsersOtherCommitteeAnswerText = authenticateReplies[1][0].value.value %}
+          {% set authenticatePotentialUsersSpecialAnswerText = authenticateReplies[2][0].value.value %}
+
+          {% if authenticatePotentialUsersAnswerUuid == authenticatePotentialUsersMemberAnswerUuid %}
+            People can apply to one of the project members.</p>
+          {% elif authenticatePotentialUsersAnswerUuid == authenticatePotentialUsersCommitteeAnswerUuid %}
+            People can apply to the data access committee.</p>
+          {% elif authenticatePotentialUsersAnswerUuid == authenticatePotentialUsersOtherCommitteeAnswerUuid %}
+            People can apply to the {{ authenticatePotentialUsersOtherCommitteeAnswerText }} data access committee.</p>
+          {% elif authenticatePotentialUsersAnswerUuid == authenticatePotentialUsersSpecialAnswerUuid %}
+            For the authorization of potential users, we will make special arrangements: {{ authenticatePotentialUsersSpecialAnswerText }}</p>
+          {% endif %}
+        {% endcall %}
+      {% endcall %}
+    {% endcall %}
+
+    {% call whenReply(openDataQuestionUuid, openDataYesAnswerUuid) %}
+      <p>No data sharing agreement will be required.</p>
+    {% endcall %}
+  </div>
+  {%- endscope -%}
+</div>

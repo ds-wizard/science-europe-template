@@ -1,0 +1,48 @@
+<div id="q-docs-metadata" class="question">
+  <h3>What documentation and meta-data will accompany the data?</h3>
+  {%- scope -%}
+  <div class="answer">
+    <p>List of data to be published is given in Section E, Question 9. This also includes information about catalogs where the data can be found. Information about data types used is given in Section A, Question 1.</p>
+
+    {# Good provenance (lab notebooks) #}
+    {%- set provenanceUuid = "948b5fd8-c1bd-457d-8f81-ea2fd093f541" -%}
+    {%- set provenanceLabNotebooksAnswerUuid = "7b450ee7-8783-4adc-9955-fd667fac5a56" -%}
+    {%- set provenanceELabNotebookAnswerUuid = "a1e67aee-77dd-486f-ab51-e5a6f39a32cc" -%}
+    {%- set provenanceOtherAnswerUuid = "ccdb5296-919c-44ac-89df-351fd2e564ae" -%}
+    {%- set provenanceOtherUuid = "b73b8310-3b4f-49c8-a5c0-4208883754ac" -%}
+    {%- call (provenanceReplies) mapReplies([provenanceUuid, provenanceOtherUuid]) -%}
+      {%- set provenanceAnswerUuid = provenanceReplies[0][0].value.value -%}
+      {%- set provenanceOtherText = provenanceReplies[1][0].value.value -%}
+      {%- if provenanceAnswerUuid == provenanceLabNotebooksAnswerUuid -%}
+        <p>We will use lab notebooks to make sure that there is good provenance of the data analysis.</p>
+      {%- elif provenanceAnswerUuid == provenanceELabNotebookAnswerUuid -%}
+        <p>We will use an electronic lab notebook to make sure that there is good provenance of the data analysis.</p>
+      {%- elif provenanceAnswerUuid == provenanceOtherAnswerUuid -%}
+        <p>We will use other solution than (electronic) lab notebooks to make sure that there is good provenance of the data analysis{{ provenanceOtherText ? ": " ~ provenanceOtherText : "" }}{{ endswith(provenanceOtherText, ".") ? "" : "." }}
+      {%- endif -%}
+    {%- endcall -%}
+
+    {# Documentation with metadata #}
+    {%- set documentDCUuid = "8d3b85e0-1683-48a5-a650-9f0d9bf8a1a4" -%}
+    {%- set documentDCYesAnswerUuid = "d29ca8b4-0cb6-4678-90fa-e8c72de9073f" -%}
+    {%- set documentW3CUuid = "106df534-f590-416b-8e4a-846edbdc4325" -%}
+    {%- set documentW3CYesAnswerUuid = "42502a61-5384-4611-a207-90cd02de022f" -%}
+    {%- call (documentReplies) mapReplies([documentDCUuid, documentW3CUuid]) -%}
+      {%- set usingDC = documentReplies[0][0].value.value == documentDCYesAnswerUuid -%}
+      {%- set usingW3C = documentReplies[1][0].value.value == documentW3CYesAnswerUuid -%}
+      {%- if usingDC || usingW3C %}
+        <p>
+          We will be documenting the data with
+          {%- if usingDC && usingW3C %}
+            Dublin Core metadata and W3C PROV provenance. 
+          {%- elif usingDC %}
+            Dublin Core metadata. 
+          {%- elif usingW3C %}
+            W3C PROV provenance. 
+          {%- endif -%}
+        </p>
+      {%- endif -%}
+    {%- endcall -%}
+  </div>
+  {%- endscope -%}
+</div>

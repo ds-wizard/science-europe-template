@@ -1,0 +1,113 @@
+<div id="q-ethical-issues" class="question">
+  <h3>How will you manage any ethical issues?</h3>
+  {%- scope -%}
+  <div class="answer">
+    {# Non reference data #}
+    {%- set nonReferenceDataSetsUuid = "be872000-cb98-442f-999c-ca3ef58dcfe8" -%}
+    {%- call (reply) withReply(nonReferenceDataSetsUuid) -%}
+      {%- set nNonReferenceDataSets = reply.value.value -%}
+      {%- if nNonReferenceDataSets > 0 -%}
+        <h4>Data we reuse</h4>
+        <ul>
+        {%- for i in range(nNonReferenceDataSets - 1) -%}
+          {%- set pathPrefix = nonReferenceDataSetsUuid ~ "." ~ i ~ "." -%}
+          {%- set nameUuid = "44120979-2840-4522-8297-df13f7fd1e3a" -%}
+          {%- set consentUuid = "467ff3ad-156c-4285-9efb-c91072b3544e" -%}
+          {%- set consentNotPersonalAnswerUuid = "19ee5b2f-4ed2-4508-9265-9773229dcc36" -%}
+          {%- set consentAnotherLegalAnswerUuid = "dfcd23a7-463d-46f7-99cc-589d9aaa91d2" -%}
+          {%- set consentCoversAnswerUuid = "1d732f5b-e532-4672-9f67-4aa4e4eef449" -%}
+          {%- set consentNewAnswerUuid = "e29f35b6-c138-401a-b3d8-9cdcff0b8223" -%}
+          {%- set consentOtherAnswerUuid = "f0eeb017-869a-4480-8b6a-0c46b8ec7587" -%}
+          {%- set consentOtherUuid = "db636108-c99c-41a7-89b5-70e0021384a1" -%}
+          {%- call (consentReplies) mapReplies([
+            pathPrefix ~ nameUuid, 
+            pathPrefix ~ consentUuid, 
+            pathPrefix ~ consentUuid ~ "." ~ consentOtherAnswerUuid ~ "." ~ consentOtherUuid
+          ]) -%}            
+            {%- set dataSetNameReply = consentReplies[0][0] -%}
+            {%- set consentAnswerUuid = consentReplies[1][0].value.value -%}
+            {%- set consentOtherText = consentReplies[2][0].value.value -%}
+            <li>
+              {%- if dataSetNameReply.value.value.type == "IntegrationValue" -%}
+                {%- call (integration) getIntegrationForQuestion(nameUuid) -%}
+                  {%- call (integrationLink) createIntegrationLink(integration, dataSetNameReply.value.value.id) -%}
+                    <a href="{{ integrationLink }}" target="_blank"><strong>{{ dataSetNameReply.value.value.value }}</strong></a>
+                  {%- endcall -%}
+                {%- endcall -%}
+              {%- else -%}
+                <strong>{{ dataSetNameReply.value.value.value }}</strong>
+              {%- endif -%}
+              {%- if consentAnswerUuid == consentNotPersonalAnswerUuid %}
+                does not need an extension of any consent because it is not personal data.
+              {%- elif consentAnswerUuid == consentAnotherLegalAnswerUuid %}
+                does not need an extension of any consent because we will use another legal base for the processing.
+              {%- elif consentAnswerUuid == consentCoversAnswerUuid %}
+                <span class="separator">-</span> the existing consent covers our reuse.
+              {%- elif consentAnswerUuid == consentNewAnswerUuid %}
+                does need a new consent to cover our usage of the data.
+              {%- elif consentAnswerUuid == consentOtherAnswerUuid %}
+                has special arragements{{ consentOtherText ? ": " ~ consentOtherText : "" }}{{ endswith(consentOtherText, ".") ? "" : "." }}
+              {%- endif -%}
+              </li>
+          {%- endcall -%}
+        {%- endfor -%}
+        </ul>
+      {%- endif -%}
+    {%- endcall -%}
+
+    {# Collected data #}
+    {%- scope -%}
+    {%- set needConsentUuid = "f5e162ee-1077-4ebe-a932-192bc7f67e98" -%}
+    {%- set needConsentNoNotCollectAnswerUuid = "d4375763-1af3-48a0-8738-f216b5ceeff0" -%}
+    {%- set needConsentNoAnotherLegalAnswerUuid = "e1ae38ed-14fb-4143-8a76-3883bd794b9b" -%}
+    {%- set needConsentYesSpecificAnswerUuid = "a484287c-fd7f-47ca-8dea-cdb36f48616d" -%}
+    {%- set needConsentYesReuseAnswerUuid = "08014631-8a8a-4efa-bd58-3766cc40c7ed" -%}
+    {%- set needConsentYesAnonymizeAnswerUuid = "3a77595a-87ae-484d-a9a6-052f312453ee" -%}
+    {%- set legalBaseUuid = "973d38a0-e363-4162-9aed-1803423e85fe" -%}
+    {%- set legalBaseComplianceAnswerUuid = "6dc3766a-79d7-4adc-b0e8-d72b73eb8d32" -%}
+    {%- set legalBaseContractAnswerUuid = "817feba4-9cbc-4efa-b79e-4ccb725b18ce" -%}
+    {%- set legalBaseVitalInterestsAnswerUuid = "9620fd08-f662-4f00-ae99-85fb71ba1430" -%}
+    {%- set legalBasePublicInterestsAnswerUuid = "23808dab-f991-4ac7-8900-80a84ec0a934" -%}
+    {%- set legalBaseLegitimateInterestsAnswerUuid = "4e717aa4-31ba-45df-ac2c-d1b8211aab24" -%}
+    {%- set legalBaseOtherAnswerUuid = "6dfaa1b8-4c72-45a6-a606-29382144326a" -%}
+    {%- set legalBaseOtherUuid = "868f29a5-2bff-431b-8308-b0d7c3678da1" -%}
+    {%- call (consentReplies) mapReplies([
+      needConsentUuid, legalBaseUuid, legalBaseOtherUuid
+    ]) -%}
+      {%- set needConsentAnswerUuid = consentReplies[0][0].value.value -%}
+      {%- set legalBaseAnswerUuid = consentReplies[1][0].value.value -%}
+      {%- set legalBaseOtherText = consentReplies[2][0].value.value -%}
+      {%- if needConsentAnswerUuid -%}
+        <h4>Data we collect</h4>
+        <p>
+        {%- if needConsentAnswerUuid == needConsentNoNotCollectAnswerUuid -%}
+          We don't need any consent for collected data because those are not personal.
+        {%- elif needConsentAnswerUuid == needConsentNoAnotherLegalAnswerUuid -%}
+          Our work on personal data can be done without consent using another legal base
+          {%- if legalBaseAnswerUuid == legalBaseComplianceAnswerUuid %}
+            <span class="separator">-</span> compliance with a legal obligation.
+          {%- elif legalBaseAnswerUuid == legalBaseContractAnswerUuid %}
+            <span class="separator">-</span> contractual performance.
+          {%- elif legalBaseAnswerUuid == legalBaseVitalInterestsAnswerUuid %}
+            <span class="separator">-</span> vital interests.
+          {%- elif legalBaseAnswerUuid == legalBasePublicInterestsAnswerUuid %}
+            <span class="separator">-</span> public interest or acting under official public authority.
+          {%- elif legalBaseAnswerUuid == legalBaseLegitimateInterestsAnswerUuid %}
+            <span class="separator">-</span> legitimate interests.
+          {%- elif legalBaseAnswerUuid == legalBaseOtherAnswerUuid -%}
+            {{ legalBaseOtherText ? ": " ~ legalBaseOtherText : " (not further specified)"}}{{ endswith(legalBaseOtherText, ".") ? "" : "." }}
+          {%- else %} (not further specified).{%- endif -%}
+        {%- elif needConsentAnswerUuid == needConsentYesSpecificAnswerUuid -%}
+          We will collect consent for our specific use of the data.
+        {%- elif needConsentAnswerUuid == needConsentYesReuseAnswerUuid -%}
+          We will collect consent for our use as well as reuse of the data.
+        {%- elif needConsentAnswerUuid == needConsentYesAnonymizeAnswerUuid -%}
+          We will collect consent for our use of the data, and will anonymize the data afterwards for reuse.
+        {%- endif -%}
+        </p>
+      {%- endif -%}
+    {%- endcall -%}
+    {%- endscope -%}
+  </div>
+  {%- endscope -%}
+</div>
