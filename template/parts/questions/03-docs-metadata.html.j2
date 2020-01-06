@@ -33,11 +33,11 @@
       {%- if usingDC || usingW3C %}
         <p>
           We will be documenting the data with
-          {%- if usingDC && usingW3C %}
+          {% if usingDC && usingW3C -%}
             Dublin Core metadata and W3C PROV provenance. 
-          {%- elif usingDC %}
+          {%- elif usingDC -%}
             Dublin Core metadata. 
-          {%- elif usingW3C %}
+          {%- elif usingW3C -%}
             W3C PROV provenance. 
           {%- endif -%}
         </p>

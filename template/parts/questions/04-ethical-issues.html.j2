@@ -27,6 +27,7 @@
             {%- set dataSetNameReply = consentReplies[0][0] -%}
             {%- set consentAnswerUuid = consentReplies[1][0].value.value -%}
             {%- set consentOtherText = consentReplies[2][0].value.value -%}
+            {%- if consentAnswerUuid -%}
             <li>
               {%- if dataSetNameReply.value.value.type == "IntegrationValue" -%}
                 {%- call (integration) getIntegrationForQuestion(nameUuid) -%}
@@ -42,13 +43,14 @@
               {%- elif consentAnswerUuid == consentAnotherLegalAnswerUuid %}
                 does not need an extension of any consent because we will use another legal base for the processing.
               {%- elif consentAnswerUuid == consentCoversAnswerUuid %}
-                <span class="separator">-</span> the existing consent covers our reuse.
+                <span class="separator">&ndash;</span> the existing consent covers our reuse.
               {%- elif consentAnswerUuid == consentNewAnswerUuid %}
                 does need a new consent to cover our usage of the data.
               {%- elif consentAnswerUuid == consentOtherAnswerUuid %}
                 has special arragements{{ consentOtherText ? ": " ~ consentOtherText : "" }}{{ endswith(consentOtherText, ".") ? "" : "." }}
               {%- endif -%}
-              </li>
+            </li>
+            {%- endif -%}
           {%- endcall -%}
         {%- endfor -%}
         </ul>
@@ -85,15 +87,15 @@
         {%- elif needConsentAnswerUuid == needConsentNoAnotherLegalAnswerUuid -%}
           Our work on personal data can be done without consent using another legal base
           {%- if legalBaseAnswerUuid == legalBaseComplianceAnswerUuid %}
-            <span class="separator">-</span> compliance with a legal obligation.
+            <span class="separator">&ndash;</span> compliance with a legal obligation.
           {%- elif legalBaseAnswerUuid == legalBaseContractAnswerUuid %}
-            <span class="separator">-</span> contractual performance.
+            <span class="separator">&ndash;</span> contractual performance.
           {%- elif legalBaseAnswerUuid == legalBaseVitalInterestsAnswerUuid %}
-            <span class="separator">-</span> vital interests.
+            <span class="separator">&ndash;</span> vital interests.
           {%- elif legalBaseAnswerUuid == legalBasePublicInterestsAnswerUuid %}
-            <span class="separator">-</span> public interest or acting under official public authority.
+            <span class="separator">&ndash;</span> public interest or acting under official public authority.
           {%- elif legalBaseAnswerUuid == legalBaseLegitimateInterestsAnswerUuid %}
-            <span class="separator">-</span> legitimate interests.
+            <span class="separator">&ndash;</span> legitimate interests.
           {%- elif legalBaseAnswerUuid == legalBaseOtherAnswerUuid -%}
             {{ legalBaseOtherText ? ": " ~ legalBaseOtherText : " (not further specified)"}}{{ endswith(legalBaseOtherText, ".") ? "" : "." }}
           {%- else %} (not further specified).{%- endif -%}

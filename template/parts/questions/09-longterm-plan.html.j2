@@ -16,7 +16,6 @@
       {%- set pathPrefix = publishedDataSetsUuid ~ "." -%}
       {%- set nDataSets = reply.value.value -%}
       {%- if nDataSets > 0 -%}
-        We plan to publish the following datasets:
         <ul>
           {%- for i in range(nDataSets - 1) -%}
             {%- set pathPrefixInner = i ~ "." -%}
@@ -30,9 +29,8 @@
               {%- set catalogueAnswerUuid = xreplies[2][0].value.value -%}
               <li>
                 <strong>{{ publishedDataSetName ? publishedDataSetName : "(no name given)" }}</strong>
-                {%- if repositoryKindAnswerUuid -%}
-                  <p>
-                  It will be stored in
+                {%- if repositoryKindAnswerUuid %}
+                  will be stored in
                   {%- if repositoryKindAnswerUuid == domainSpecificRepositoryAnswerUuid %}
                     {%- set pathPrefixRepository = pathPrefixInner ~ publishedDataSetRepositoryKindUuid ~ "." ~ domainSpecificRepositoryAnswerUuid ~ "." -%}
                     {%- set repositoryNameUuid = "221c322e-dff5-438f-8a2e-90e762681156" -%}
@@ -67,11 +65,11 @@
                       {%- if contactBeforeAnswerUuid == contactBeforeNoAnswerUuid %}
                         We don't need to contact the repository because it is a routine for us.
                       {%- elif contactBeforeAnswerUuid == contactBeforeYesAlreadyAnswerUuid %}
-                        We have already contected the repository.
+                        We have already contacted the repository.
                       {%- elif contactBeforeAnswerUuid == contactBeforeYesWillAnswerUuid %}
                         We are going to contact the repository.
                       {%- elif contactBeforeAnswerUuid == contactBeforeOtherAnswerUuid %}
-                        We have made other arrangements{{ contactBeforeOtherText ? ": " ~ contactBeforeOtherText|capitalize : "" }}{{ endswith(contactBeforeOtherText, ".") ? "" : "." }}
+                        We have made other arrangements{{ contactBeforeOtherText ? ": " ~ contactBeforeOtherText : "" }}{{ endswith(contactBeforeOtherText, ".") ? "" : "." }}
                       {%- endif -%}
                     {%- endcall -%}
                   {%- elif repositoryKindAnswerUuid == nationalRepositoryAnswerUuid %}
@@ -108,10 +106,9 @@
                       {%- endif -%}
                     {%- endcall -%}
                   {%- endif -%}
-                  </p>
                 {%- endif -%}
-                {%- if catalogueAnswerUuid == publishedDataSetCatalogueYesAnswerUuid -%}
-                  <p>We will be adding a reference to the published data to at least one data catalogue.</p>
+                {%- if catalogueAnswerUuid == publishedDataSetCatalogueYesAnswerUuid %}
+                  We will be adding a reference to the published data to at least one data catalogue.
                 {%- endif -%}
               </li>
             {%- endcall -%}
@@ -148,7 +145,7 @@
         {%- elif howPayAnswerUuid == howPayInstituteAnswerUuid -%}
           <p>The costs related to the used repositories will be carried by (one of) the institutes involved in the project.</p>
         {%- elif (howPayAnswerUuid == howPayOtherAnswerUuid) && howPayOtherText -%}
-          <p>We will carry the costs related to the used repositories by: {{ howPayOtherText|capitalize }}{{ endswith(howPayOtherText, ".") ? "" : "." }}</p>
+          <p>We will carry the costs related to the used repositories by: {{ howPayOtherText }}{{ endswith(howPayOtherText, ".") ? "" : "." }}</p>
         {%- endif -%}
       {%- endif -%}
 

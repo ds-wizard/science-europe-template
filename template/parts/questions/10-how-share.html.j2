@@ -50,12 +50,12 @@
               {%- if conditionsAnswerUuid || (willHaveDOIAnswerUuid == willHaveDOIYesAnswerUuid) -%}
                 <li>
                   <strong>{{ publishedDataSetName ? publishedDataSetName : "(no name given)" }}</strong>
-                  {%- if conditionsAnswerUuid == conditionsCC0AnswerUuid -%}
-                    <span class="separator">-</span> freely available for any use (public domain or CC0)
+                  {%- if conditionsAnswerUuid == conditionsCC0AnswerUuid %}
+                    <span class="separator">&ndash;</span> freely available for any use (public domain or CC0).
                   {%- elif conditionsAnswerUuid == conditionsCCBYAnswerUuid %}
-                    <span class="separator">-</span> freely available with obligation to quote the source (e.g. CC-BY)
+                    <span class="separator">&ndash;</span> freely available with obligation to quote the source (e.g. CC-BY).
                   {%- elif conditionsAnswerUuid == conditionsOtherAnswerUuid %}
-                    <span class="separator">-</span> available under some restrictions, which we will follow in our project{{ conditionsOtherText ? ": " ~ conditionsOtherText : "" }}{{ endswith(conditionsOtherText, ".") ? "" : "." }}
+                    <span class="separator">&ndash;</span> available under some restrictions, which we will follow in our project{{ conditionsOtherText ? ": " ~ conditionsOtherText : "" }}{{ endswith(conditionsOtherText, ".") ? "" : "." }}
                     {%- if conditionsAccessAnswerUuid == conditionsAccessRequestAnswerUuid %}
                       Re-users will be able to get access by request to the contact person.
                     {%- elif conditionsAccessAnswerUuid == conditionsAccessCommitteeAnswerUuid %}
@@ -68,10 +68,10 @@
                     {%- endif -%}
                   {%- endif -%}
                   
-                  {%- if willHaveDOIAnswerUuid == willHaveDOIYesAnswerUuid %}
-                    {%- if haveDOIText -%}
+                  {%- if willHaveDOIAnswerUuid == willHaveDOIYesAnswerUuid -%}
+                    {%- if haveDOIText %}
                       The DOI for this data set: {{ haveDOIText }}.
-                    {%- else -%}
+                    {%- else %}
                       We will get a DOI for this data set.
                     {%- endif -%}
                   {%- endif -%}

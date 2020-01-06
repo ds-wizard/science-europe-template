@@ -16,6 +16,7 @@
       {%- set pathPrefix = publishedDataSetsUuid ~ "." -%}
       {%- set nDataSets = reply.value.value -%}
       {%- if nDataSets > 0 -%}
+        We plan to publish the following datasets:
         <ul>
           {%- for i in range(nDataSets - 1) -%}
             {%- set pathPrefixInner = i ~ "." -%}
@@ -29,21 +30,22 @@
               {%- set howLongAnswerUuid = xreplies[1][0].value.value -%}
               {%- set howLongFixedText = xreplies[2][0].value.value -%}
               {%- set metadataPersistentAnswerUuid = xreplies[3][0].value.value -%}
-              {%- if howLongAnswerUuid || (metadataPersistentAnswerUuid == metadataPersistentYesAnswerUuid) %}
               <li>
                 <strong>{{ publishedDataSetName ? publishedDataSetName : "(no name given)" }}</strong>
-                {%- if howLongAnswerUuid == howLongTechnicalAnswerUuid -%}
-                  <p>This data set will be kept available as long as technically possible.</p>
-                {%- elif howLongAnswerUuid == howLongLegalAnswerUuid -%}
-                  <p>This data set will be kept available until it needs to be deleted for legal reasons.</p>
-                {%- elif howLongAnswerUuid == howLongFixedAnswerUuid -%}
-                  <p>This data set will be kept available for a fixed period (prepaid){{ howLongFixedText ? " of: " ~ howLongFixedText : "" }}{{ endswith(howLongFixedText, ".") ? "" : "." }}</p>
-                {%- endif -%}
-                {%- if metadataPersistentAnswerUuid == metadataPersistentYesAnswerUuid -%}
-                  <p>The metadata will be available even when the data no longer exists.</p>
+                {% if howLongAnswerUuid || (metadataPersistentAnswerUuid == metadataPersistentYesAnswerUuid) %}
+                  <span class="separator">&ndash;</span> 
+                  {% if howLongAnswerUuid == howLongTechnicalAnswerUuid -%}
+                    This data set will be kept available as long as technically possible.
+                  {%- elif howLongAnswerUuid == howLongLegalAnswerUuid -%}
+                    This data set will be kept available until it needs to be deleted for legal reasons.
+                  {%- elif howLongAnswerUuid == howLongFixedAnswerUuid -%}
+                    This data set will be kept available for a fixed period (prepaid){{ howLongFixedText ? " of: " ~ howLongFixedText : "" }}{{ endswith(howLongFixedText, ".") ? "" : "." }}
+                  {%- endif -%}
+                  {%- if metadataPersistentAnswerUuid == metadataPersistentYesAnswerUuid %}
+                    The metadata will be available even when the data no longer exists.
+                  {%- endif -%}
                 {%- endif -%}
               </li>
-              {%- endif -%}
             {%- endcall -%}
           {%- endfor -%}
         </ul>

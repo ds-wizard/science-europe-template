@@ -29,14 +29,14 @@
         <p>
           To execute the DMP, additional specialist expertise is required. We will be training existing staff.
           {%- if expertiseTrainText %}
-            The training will be: {{ expertiseTrainText|capitalize }}{{ endswith(expertiseTrainText, ".") ? "" : "." }}
+            The training will be: {{ expertiseTrainText }}{{ endswith(expertiseTrainText, ".") ? "" : "." }}
           {%- endif -%}
         </p>
       {%- elif expertiseAnswerUuid == expertiseYesHireAnswerUuid -%}
         <p>
           To execute the DMP, additional specialist expertise is required. We will be hiring new people with additional expertise.
           {%- if expertiseHireText %}
-            The required expertise from new people is: {{ expertiseHireText|capitalize }}{{ endswith(expertiseHireText, ".") ? "" : "." }}
+            The required expertise from new people is: {{ expertiseHireText }}{{ endswith(expertiseHireText, ".") ? "" : "." }}
           {%- endif -%}
         </p>
       {%- endif -%}

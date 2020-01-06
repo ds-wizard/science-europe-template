@@ -32,7 +32,7 @@
         {% set embargoPeriodYesAnswerText = embargoPeriodReplies[1][0].value.value %}
 
         {% if embargoPeriodAnswerUuid == embargoPeriodYesAnswerUuid && embargoPeriodYesAnswerText %}
-          <p>The embargo period will be: {{ embargoPeriodYesAnswerText }}</p>
+          <p>The embargo period will be: {{ embargoPeriodYesAnswerText }}.</p>
         {% endif %}
       {% endcall %}
 
@@ -48,14 +48,15 @@
           {% set authenticatePotentialUsersOtherCommitteeAnswerText = authenticateReplies[1][0].value.value %}
           {% set authenticatePotentialUsersSpecialAnswerText = authenticateReplies[2][0].value.value %}
 
-          {% if authenticatePotentialUsersAnswerUuid == authenticatePotentialUsersMemberAnswerUuid %}
+          {%- if authenticatePotentialUsersAnswerUuid == authenticatePotentialUsersMemberAnswerUuid -%}
             People can apply to one of the project members.</p>
-          {% elif authenticatePotentialUsersAnswerUuid == authenticatePotentialUsersCommitteeAnswerUuid %}
+          {%- elif authenticatePotentialUsersAnswerUuid == authenticatePotentialUsersCommitteeAnswerUuid -%}
             People can apply to the data access committee.</p>
-          {% elif authenticatePotentialUsersAnswerUuid == authenticatePotentialUsersOtherCommitteeAnswerUuid %}
+          {%- elif authenticatePotentialUsersAnswerUuid == authenticatePotentialUsersOtherCommitteeAnswerUuid -%}
             People can apply to the {{ authenticatePotentialUsersOtherCommitteeAnswerText }} data access committee.</p>
-          {% elif authenticatePotentialUsersAnswerUuid == authenticatePotentialUsersSpecialAnswerUuid %}
-            For the authorization of potential users, we will make special arrangements: {{ authenticatePotentialUsersSpecialAnswerText }}</p>
+          {%- elif authenticatePotentialUsersAnswerUuid == authenticatePotentialUsersSpecialAnswerUuid -%}
+            {%- set txt = authenticatePotentialUsersSpecialAnswerText -%}
+            For the authorization of potential users, we will make special arrangements{{ txt ? ": " : "" }}{{ txt }}{{ endswith(txt, ".") ? "" : "." }}</p>
           {% endif %}
         {% endcall %}
       {% endcall %}

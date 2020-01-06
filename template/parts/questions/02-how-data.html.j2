@@ -32,27 +32,29 @@
               {%- if nInstruments > 0 -%}
                 {%- set instrumentNameUuid = "2426addd-293b-4829-b87b-f3dd6b594516" -%}
                 {%- set instrumentDescriptionUuid = "45b61cd4-057a-40ff-873f-5558acf3568c" -%}
-                <p>We are using the following instruments:</p>
-                <ul>
-                {%- set pathPrefix = pathPrefix ~ instrumentsUuid ~ "." -%}
-                  {%- for j in range(nInstruments - 1) -%}
-                    {%- set pathPrefixInner = pathPrefix ~ j ~ "." -%}
-                    {%- call (xreplies) mapReplies([
-                        pathPrefixInner ~ instrumentNameUuid,
-                        pathPrefixInner ~ instrumentDescriptionUuid
-                        ]) -%}
-                      {%- set instrumentName = xreplies[0][0].value.value -%}
-                      {%- set instrumentDescription = xreplies[1][0].value.value -%}
-                      {%- if instrumentName || instrumentDescription -%}
-                        <li>
-                          <strong>{{ instrumentName }}</strong>
-                          {%- if instrumentName && instrumentDescription -%}<span class="separator">-</span>{%- endif -%}
-                          {{ instrumentDescription }}
-                        </li>
-                      {%- endif -%}
-                    {%- endcall -%}
-                  {%- endfor -%}
-                </ul>
+                <p>
+                  We are using the following instruments:
+                  <ul>
+                  {%- set pathPrefix = pathPrefix ~ instrumentsUuid ~ "." -%}
+                    {%- for j in range(nInstruments - 1) -%}
+                      {%- set pathPrefixInner = pathPrefix ~ j ~ "." -%}
+                      {%- call (xreplies) mapReplies([
+                          pathPrefixInner ~ instrumentNameUuid,
+                          pathPrefixInner ~ instrumentDescriptionUuid
+                          ]) -%}
+                        {%- set instrumentName = xreplies[0][0].value.value -%}
+                        {%- set instrumentDescription = xreplies[1][0].value.value -%}
+                        {%- if instrumentName || instrumentDescription -%}
+                          <li>
+                            <strong>{{ instrumentName }}</strong>
+                            {% if instrumentName && instrumentDescription -%}<span class="separator">&ndash;</span>{%- endif %}
+                            {{ instrumentDescription }}
+                          </li>
+                        {%- endif -%}
+                      {%- endcall -%}
+                    {%- endfor -%}
+                  </ul>
+                </p>
               {%- else -%}
                 <p>No instruments for this dataset have been specified.</p>
               {%- endif -%}
@@ -64,7 +66,7 @@
               {%- set qualityProcessNoUuid = "de365ac3-c5af-4a71-882c-d420dfe8e7e4" -%}
               {%- set qualityProcessYesUuid = "9a8dbe23-8fb2-4501-adde-3b6261dc1653" -%}
               {%- if qualityProcessAnswerUuid == qualityProcessNoUuid -%}
-                We will not be using quality process for this dataset.
+                <p>We will not be using quality process for this dataset.</p>
               {%- elif qualityProcessAnswerUuid == qualityProcessYesUuid -%}
                 {%- set pathPrefix = pathPrefix ~ qualityProcessYesUuid ~ "." -%}
                 {%- set calibatingUuid = "e458d2eb-ba1e-4c4c-8619-5f8f431715b4" -%}
@@ -116,30 +118,33 @@
                   {%- set vocabulariesAnswerUuid = processes[5] -%}
                   {%- set otherAnswerUuid = processes[6] -%}
 
-                  {# there is no reduce in Ginger #}
-                  {%- set pickedNamedProcesses = any(truths) -%}
+                  {%- set pickedNamedProcesses = truths|filter((x) -> x)|length > 0 -%}
                   {%- if pickedNamedProcesses -%}
-                    We will be using the following quality processes:
-                    <ul>
-                      {%- if calibatingAnswerUuid == calibatingYesUuid -%}
-                        <li>calibrating measurements</li>
-                      {%- endif -%}
-                      {%- if repetitionAnswerUuid == repetitionYesUuid -%}
-                        <li>repeat samples/measurements</li>
-                      {%- endif -%}
-                      {%- if standardizedAnswerUuid == standardizedYesUuid -%}
-                        <li>standardized data capture/recording</li>
-                      {%- endif -%}
-                      {%- if validationAnswerUuid == validationYesUuid -%}
-                        <li>Data Entry validation</li>
-                      {%- endif -%}
-                      {%- if peerReviewAnswerUuid == peerReviewYesUuid -%}
-                        <li>data peer review</li>
-                      {%- endif -%}
-                      {%- if vocabulariesAnswerUuid == vocabulariesYesUuid -%}
-                        <li>controlled vocabularies</li>
-                      {%- endif -%}
-                    </ul>
+                    <p>
+                      We will be using the following quality processes:
+                      <ul>
+                        {%- if calibatingAnswerUuid == calibatingYesUuid -%}
+                          <li>calibrating measurements</li>
+                        {%- endif -%}
+                        {%- if repetitionAnswerUuid == repetitionYesUuid -%}
+                          <li>repeat samples/measurements</li>
+                        {%- endif -%}
+                        {%- if standardizedAnswerUuid == standardizedYesUuid -%}
+                          <li>standardized data capture/recording</li>
+                        {%- endif -%}
+                        {%- if validationAnswerUuid == validationYesUuid -%}
+                          <li>Data Entry validation</li>
+                        {%- endif -%}
+                        {%- if peerReviewAnswerUuid == peerReviewYesUuid -%}
+                          <li>data peer review</li>
+                        {%- endif -%}
+                        {%- if vocabulariesAnswerUuid == vocabulariesYesUuid -%}
+                          <li>controlled vocabularies</li>
+                        {%- endif -%}
+                      </ul>
+                    </p>
+                  {%- else -%}
+                    <p>We will be using quality processes.<p>
                   {%- endif -%}
                   {%- if otherAnswerUuid == otherYesUuid -%}
                     {%- call (otherTextReply) withReply(otherTextUuid) -%}
@@ -159,7 +164,6 @@
   {%- endcall -%}
 
   {# Storage and file conventions #}
-  <h4>Storage and file conventions</h4>
   {%- set storageConventionsUuid = "bc5e3dbf-2923-4025-a49a-f204b01d4018" -%}
   {%- set storageConventionsExploreUuid = "f7f2ff16-eee0-42a7-a89a-bd7291cef5fc" -%}
   {%- set fileSystemUuid = "a12aa967-28a5-4a9b-8df8-f7c533205ea4" -%}
@@ -180,6 +184,7 @@
 
   {%- call (reply) withReply(storageConventionsUuid) -%}
     {%- if reply.value.value == storageConventionsExploreUuid -%}
+      <h4>Storage and file conventions</h4>
       {%- call (storages) mapReplies([
         fileSystemUuid, objectStoreUuid, relationalDatabaseUuid, graphDatabaseUuid, tripleStoreUuid
       ]) -%}
@@ -193,7 +198,6 @@
         {%- if fileSystemAnswerUuid == fileSystemNoUuid -%}
           We will not use a filesystem with files and folders.
         {%- elif fileSystemAnswerUuid == fileSystemYesUuid -%}
-          We will use a filesystem with files and folders
           {%- set subjectFoldersUuid = "cc76bce4-f4df-40e0-b28b-dc64b95b7c7b" -%}
           {%- set subjectFoldersNoUuid = "d8e75d4d-08b8-40d0-9894-becd7e282772" -%}
           {%- set subjectFoldersYesUuid = "b1fdd89d-7493-4f02-9d9f-d9b28caa5c2a" -%}
@@ -224,7 +228,7 @@
             {%- set analysisFolders = analysisFoldersAnswerUuid == analysisFoldersYesUuid -%}
             {%- set workflowStepFolders = workflowStepFoldersAnswerUuid == workflowStepFoldersYesUuid -%}
             {%- if subjectFolders || analysisFolders || workflowStepFolders -%}
-              with the following folder conventions:
+              We will use a filesystem with files and folders with the following folder conventions:
               <ul>
                {%- if subjectFolders -%}
                   <li>There will be a <strong>folder for each sample/subject</strong>. {{ subjectFoldersConventionsText ? "Each of those will use the following conventions: " : "" }}{{ subjectFoldersConventionsText|capitalize }}{{ (subjectFoldersConventionsText && (endswith(appointmentsText, ".") == false)) ? "." : "" }}</li>
@@ -236,12 +240,12 @@
                   <li>There will be a <strong>(sub)folder for each step in the analysis workflow</strong>. {{ workflowStepFoldersConventionsText ? "Each of those will use the following conventions: " : "" }}{{ workflowStepFoldersConventionsText|capitalize }}{{ (workflowStepFoldersConventionsText && (endswith(appointmentsText, ".") == false)) ? "." : "" }}</li>
                 {%- endif -%}
               </ul>
-            {%- else -%}.{%- endif -%}
+            {%- else -%}
+              We will use a filesystem with files and folders.
+            {%- endif -%}
             {%- if appointmentsText -%}
               Moreover, we have made appointments about naming the files. {{ appointmentsText|capitalize }}{{ (appointmentsText && (endswith(appointmentsText, ".") == False)) ? "." : "" }}
             {%- endif -%}
-
-
           {%- endcall -%}
         {%- endif -%}
         </p>
@@ -250,11 +254,15 @@
         {%- if objectStoreAnswerUuid == objectStoreNoUuid -%}
           We will not be storing data in an "object store" system.
         {%- elif objectStoreAnswerUuid == objectStoreYesUuid -%}
-          We will be storing data in an "object store" system
+         
           {%- set namingConventionsUuid = "7dcf6059-b22c-44e9-8048-c8b8b90764ca" -%}
           {%- call (namingConventionsReply) withReplyDefault(namingConventionsUuid, null) -%}
             {%- set namingConventionsText = namingConventionsReply.value.value -%}
-            {%- if namingConventionsText -%} using following conventions for objects in the store: {{ namingConventionsText|capitalize }}{{ (endswith(namingConventionsText, ".") == False) ? "." : "" }}{%- else -%}.{%- endif -%}
+            {%- if namingConventionsText -%} 
+              We will be storing data in an "object store" system using following conventions for objects in the store: {{ namingConventionsText }}{{ (endswith(namingConventionsText, ".") == False) ? "." : "" }}
+            {%- else -%}
+              We will be storing data in an "object store" system.
+            {%- endif -%}
           {%- endcall -%}
         {%- endif -%}
         </p>
@@ -275,7 +283,7 @@
             {%- elif handleChangesAnswerUuid == crudAnswerUuid -%}
               We will be allowing Create, Update and Delete operations for data in the database.
             {%- elif handleChangesAnswerUuid == expireAnswerUuid -%}
-              Modifications will be made by Expiring the existing data and Adding updated data.
+              Modifications will be made by <em>Expiring</em> the existing data and <em>Adding</em> updated data.
             {%- endif -%}
           {%- endcall -%}
         {%- endif -%}

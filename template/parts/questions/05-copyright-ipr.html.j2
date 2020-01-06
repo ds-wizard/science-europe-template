@@ -53,11 +53,11 @@
             {%- elif businessReasons && closedBusinessReasonsAnswerUuid == closedBusinessReasonsPatentsAnswerUuid %}
               of patent-related business reasons.
             {%- elif businessReasons && closedBusinessReasonsOtherAnswerUuid %}
-              of non-patent business reasons{{ closedBusinessReasonsOtherText ? ": " ~ closedBusinessReasonsOtherText|capitalize : "" }}{{ endswith(closedBusinessReasonsOtherText, ".") ? "" : "." }}
+              of non-patent business reasons{{ closedBusinessReasonsOtherText ? ": " ~ closedBusinessReasonsOtherText : "" }}{{ endswith(closedBusinessReasonsOtherText, ".") ? "" : "." }}
             {%- elif otherReasons && closedOtherReasonsAnswerUuid == closedOtherReasonsPapersAnswerUuid %}
               we want to publish a paper first.
             {%- elif otherReasons && closedOtherReasonsAnswerUuid == closedOtherReasonsOtherAnswerUuid %}
-              we have other than paper-publishing reasons{{ closedOtherReasonsOtherText ? ": " ~ closedOtherReasonsOtherText|capitalize : "" }}{{ endswith(closedOtherReasonsOtherText, ".") ? "" : "." }}
+              we have other than paper-publishing reasons{{ closedOtherReasonsOtherText ? ": " ~ closedOtherReasonsOtherText : "" }}{{ endswith(closedOtherReasonsOtherText, ".") ? "" : "." }}
             {%- endif -%}
           {%- else %}
             of:
@@ -91,6 +91,30 @@
         {%- endif -%}
       {%- elif canOpenAnswerUuid == canOpenYesAnswerUuid -%}
         <p>All of our data can become completely open immediately.</p>
+      {%- endif -%}
+    {%- endcall -%}
+    
+    {# Ownership #}
+    {%- set ownershipUuid = "cb7d17a8-30c0-489d-a43c-702b27d97611" -%}
+    {%- set ownershipNoOwnerAnswerUuid = "f310952b-e946-4315-bb32-bf127d1bf96a" -%}
+    {%- set ownershipPIAnswerUuid = "91d6ee6f-c501-4d1c-a6e7-9da1789f68de" -%}
+    {%- set ownershipInstituteAnswerUuid = "ef4ac36a-eea0-42b4-8292-b89090a1b5ef" -%}
+    {%- set ownershipConsortiumAnswerUuid = "115a165f-9d3f-440d-a822-4bd2795c264e" -%}
+    {%- set ownershipOtherAnswerUuid = "0fd3cd1c-e0e8-41d5-9beb-3f1faba0fb91" -%}
+    {%- set ownershipOtherUuid = "06655161-9a91-47f4-af3b-9d2a5e6db19b" -%}
+    {%- call (ownershipReplies) mapReplies([ownershipUuid, ownershipOtherUuid]) -%}
+      {%- set ownershipAnswerUuid = ownershipReplies[0][0].value.value -%}
+      {%- set ownershipOtherText = ownershipReplies[1][0].value.value -%}
+      {%- if ownershipAnswerUuid == ownershipNoOwnerAnswerUuid -%}
+        <p>Our data is legally not copyrightable, there is no legal owner.</p>
+      {%- elif ownershipAnswerUuid == ownershipPIAnswerUuid -%}
+        <p>All data will be owned by the Principal Investigator.</p>
+      {%- elif ownershipAnswerUuid == ownershipInstituteAnswerUuid -%}
+        <p>All data will be owned by the institute.</p>
+      {%- elif ownershipAnswerUuid == ownershipConsortiumAnswerUuid -%}
+        <p>We have a consortium agreement that arranges Intellectual Property.</p>
+      {%- elif (ownershipAnswerUuid == ownershipOtherAnswerUuid) && ownershipOtherText -%}
+        <p>We have made the following arrangements regarding the data ownership: {{ ownershipOtherText }}{{ endswith(ownershipOtherText, ".") ? "" : "." }}</p>
       {%- endif -%}
     {%- endcall -%}
 
@@ -130,13 +154,14 @@
                   {%- endcall -%}
                 {%- else -%}
                   <strong>{{ dataSetNameReply.value.value.value }}</strong>
-                {%- endif -%}
-                {%- if conditionsAnswerUuid == conditionsCC0AnswerUuid %}
-                  <span class="separator">-</span> freely available for any use (public domain or CC0)
-                {%- elif conditionsAnswerUuid == conditionsCCBYAnswerUuid %}
-                  <span class="separator">-</span> freely available with obligation to quote the source (e.g. CC-BY)
-                {%- elif conditionsAnswerUuid == conditionsOtherAnswerUuid %}
-                  <span class="separator">-</span> available under some restrictions, which we will follow in our project{{ conditionsOtherText ? ": " ~ conditionsOtherText : "" }}
+                {%- endif %}
+                <span class="separator">&ndash;</span>
+                {% if conditionsAnswerUuid == conditionsCC0AnswerUuid -%}
+                  freely available for any use (public domain or CC0)
+                {%- elif conditionsAnswerUuid == conditionsCCBYAnswerUuid -%}
+                  freely available with obligation to quote the source (e.g. CC-BY)
+                {%- elif conditionsAnswerUuid == conditionsOtherAnswerUuid -%}
+                  available under some restrictions, which we will follow in our project{{ conditionsOtherText ? ": " ~ conditionsOtherText : "" }}
                 {%- endif -%}
               </li>
             {%- endif -%}
@@ -168,43 +193,20 @@
                   {%- endcall -%}
                 {%- else -%}
                   <strong>{{ dataSetNameReply.value.value.value }}</strong>
-                {%- endif -%}
-                {%- if conditionsAnswerUuid == conditionsCC0AnswerUuid %}
-                  <span class="separator">-</span> freely available for any use (public domain or CC0)
+                {%- endif %}
+                <span class="separator">&ndash;</span>
+                {% if conditionsAnswerUuid == conditionsCC0AnswerUuid %}
+                  freely available for any use (public domain or CC0)
                 {%- elif conditionsAnswerUuid == conditionsCCBYAnswerUuid %}
-                  <span class="separator">-</span> freely available with obligation to quote the source (e.g. CC-BY)
+                  freely available with obligation to quote the source (e.g. CC-BY)
                 {%- elif conditionsAnswerUuid == conditionsOtherAnswerUuid %}
-                  <span class="separator">-</span> available under some restrictions, which we will follow in our project{{ conditionsOtherText ? ": " ~ conditionsOtherText : "" }}
+                  available under some restrictions, which we will follow in our project{{ conditionsOtherText ? ": " ~ conditionsOtherText : "" }}
                 {%- endif -%}
               </li>
             {%- endif -%}
           {%- endcall -%}
         {%- endfor -%}
         </ul>
-      {%- endif -%}
-    {%- endcall -%}
-
-    {# Ownership #}
-    {%- set ownershipUuid = "cb7d17a8-30c0-489d-a43c-702b27d97611" -%}
-    {%- set ownershipNoOwnerAnswerUuid = "f310952b-e946-4315-bb32-bf127d1bf96a" -%}
-    {%- set ownershipPIAnswerUuid = "91d6ee6f-c501-4d1c-a6e7-9da1789f68de" -%}
-    {%- set ownershipInstituteAnswerUuid = "ef4ac36a-eea0-42b4-8292-b89090a1b5ef" -%}
-    {%- set ownershipConsortiumAnswerUuid = "115a165f-9d3f-440d-a822-4bd2795c264e" -%}
-    {%- set ownershipOtherAnswerUuid = "0fd3cd1c-e0e8-41d5-9beb-3f1faba0fb91" -%}
-    {%- set ownershipOtherUuid = "06655161-9a91-47f4-af3b-9d2a5e6db19b" -%}
-    {%- call (ownershipReplies) mapReplies([ownershipUuid, ownershipOtherUuid]) -%}
-      {%- set ownershipAnswerUuid = ownershipReplies[0][0].value.value -%}
-      {%- set ownershipOtherText = ownershipReplies[1][0].value.value -%}
-      {%- if ownershipAnswerUuid == ownershipNoOwnerAnswerUuid -%}
-        <p>Our data is legally not copyrightable, there is no legal owner.</p>
-      {%- elif ownershipAnswerUuid == ownershipPIAnswerUuid -%}
-        <p>All data will be owned by the Principal Investigator.</p>
-      {%- elif ownershipAnswerUuid == ownershipInstituteAnswerUuid -%}
-        <p>All data will be owned by the institute.</p>
-      {%- elif ownershipAnswerUuid == ownershipConsortiumAnswerUuid -%}
-        <p>We have a consortium agreement that arranges Intellectual Property.</p>
-      {%- elif (ownershipAnswerUuid == ownershipOtherAnswerUuid) && ownershipOtherText -%}
-        <p>We have made the following arrangements regarding the data ownership: {{ ownershipOtherText|capitalize }}{{ endswith(ownershipOtherText, ".") ? "" : "." }}</p>
       {%- endif -%}
     {%- endcall -%}
   </div>
