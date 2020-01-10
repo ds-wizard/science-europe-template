@@ -1,5 +1,19 @@
 {
     "uuid": "43a3fdd1-8535-42e0-81a7-5edbff296e66",
     "name": "Science Europe DCC Template",
-    "rootFile": "parts/index.html.j2"
+    "rootFile": "parts/index.html.j2",
+    "allowedKMs": [
+        {
+            "orgId": "dsw",
+            "kmId": "root",
+            "minVersion": "2.0.0",
+            "maxVersion": null
+        },
+        {
+            "orgId": "dsw",
+            "kmId": "root-beta",
+            "minVersion": "2.0.16",
+            "maxVersion": null
+        }
+    ]
 }

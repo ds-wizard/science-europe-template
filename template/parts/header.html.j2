@@ -9,79 +9,72 @@
   </h1>
   <dl>
     <dt>Project name</dt>
-    {% set projectNameUuid = "f0ef08fd-d733-465c-bc66-5de0b826c41b" %}
-    {% call (projectNameReply) withReply(projectNameUuid) %}
-      <dd>{{projectNameReply.value.value}}</dd>
-    {% endcall %}
+    {%- set projectNamePath = join([adminDetailsCUuid, projectNameQUuid], ".") -%}
+    {%- set projectNameReply = repliesMap[projectNamePath] -%}
+    <dd>
+      {%- if projectNameReply -%}
+        {{ projectNameReply.value.value }}
+      {%- else -%}
+        <span class="empty-value">(project name not given)</span>
+      {%- endif -%}
+    </dd>
 
-    {% set contributorsUuid = "73d686bd-7939-412e-8631-502ee6d9ea7b" %}
-    {% set contributorNameUuid = "6155ad47-3d1e-4488-9f2a-742de1e56580" %}
-    {% set contributorEmailUuid = "3a2ffc13-6a0e-4976-bb34-14ab6d938348" %}
-    {% set contributorOrcidUuid = "6295a55d-48d7-4f3c-961a-45b38eeea41f" %}
-    {% set contributorTypeUuid = "829dcda6-db8a-40ac-819a-92b9b52490f5" %}
-    {% set contactPersonAnswerUuid = "f7468e79-c621-4ac9-95e0-263ebdf23c73" %}
-
-    {% call (contributorsReply) withReply(contributorsUuid) %}
-      {% set contactPeople = [] %}
-      {% set nContributors = contributorsReply.value.value %}
-
-      {% set contacts = filter(replies, (r) -> endswith(r.path, contributorTypeUuid) && r.value.value == contactPersonAnswerUuid) %}
-      
-      <dt>Contact {{ length(contacts) > 1 ? "people" : "person" }}</dt>
+    {%- set contributorsPath = join([adminDetailsCUuid, contributorsQUuid], ".") -%}
+    {%- set contributorsReply = repliesMap[contributorsPath] -%}
+    {%- if contributorsReply -%}
+      {%- set nContributors = contributorsReply.value.value -%}
+      {%- set nContacts = length(filter(
+        map(
+          range(nContributors - 1),
+          (i) -> repliesMap[
+            join([contributorsPath, i, contributorRoleQUuid], ".")
+          ]
+        ),
+        (r) -> endswith(
+          r.path, contributorTypeUuid) && r.value.value == contributorRoleContactPersonAUuid
+        ))
+      -%}
+      <dt>Contact {{ nContacts > 1 ? "people" : "person" }}</dt>
       <dd>
-        {% if length(contacts) == 0  %}
-          <i>There are no contact people define</i>
-        {% else %}
+        {%- if nContacts > 0 -%}
           <ul>
-            {% for i in range(nContributors - 1) %}
-              {% set pathPrefix = contributorsUuid ~ "." ~ i ~ "." %}
-              {% call (contactType) withReply(pathPrefix ~ contributorTypeUuid) %}
-                {% if contactType.value.value == contactPersonAnswerUuid %}
-                  <li>
-                    {% call (xreplies) mapReplies([
-                        pathPrefix ~ contributorNameUuid,
-                        pathPrefix ~ contributorEmailUuid,
-                        pathPrefix ~ contributorOrcidUuid
-                        ]) %}
-                        {% set cName = length(xreplies[0]) == 1 ? xreplies[0][0].value.value : null %}
-                        {% set cEmail = length(xreplies[1]) == 1 ? xreplies[1][0].value.value : null %}
-                        {% set cOrcid = length(xreplies[2]) == 1 ? xreplies[2][0].value.value : null %}
-                        {%- macro formatEmail(email) -%}
-                          <span class="contact-email"><a href="mailto:{{ email }}">{{ email }}</a></span>
-                        {%- endmacro -%}
-                        {%- macro formatOrcid(orcid) -%}
-                          <span class="mini-orcid-icon-16"></span> <span class="contact-orcid">{{ orcid }}</span>
-                        {%- endmacro -%}
+            {%- for i in range(nContributors - 1) -%}
+              {%- set pathPrefix = join([contributorsPath, i], ".") ~ "." -%}
+              {%- set contributorRole = repliesMap[pathPrefix ~ contributorRoleQUuid].value.value -%}
+              {%- if contributorRole == contributorRoleContactPersonAUuid -%}
+                <li>
+                  {%- set contributorName = repliesMap[pathPrefix ~ contributorNameQUuid].value.value -%}
+                  {%- set contributorEmail = repliesMap[pathPrefix ~ contributorEmailQUuid].value.value -%}
+                  {%- set contributorOrcid = repliesMap[pathPrefix ~ contributorOrcidQUuid].value.value -%}
 
-                        {% if cName %}
-                          <span class="contact-name">{{ cName }}</span>
-                        {% else %}
-                          <span class="contact-name missing">(name not given)</span>
-                        {% endif %}
-                        {% set contacts = [] %}
-                        {% if cEmail and cOrcid %}
-                          ({{ formatEmail(cEmail) }}, {{ formatOrcid(cOrcid) }})
-                        {% elif cEmail %}
-                          ({{ formatEmail(cEmail) }})
-                        {% elif cOrcid %}
-                          ({{ formatOrcid(cOrcid) }})
-                        {% endif %}
-                    {% endcall %}
-                  </li>
-                {% endif %}
-              {% endcall %}
-            {% endfor %}
+                  {%- if contributorName -%}
+                    <span class="contact-name">{{ contributorName }}</span>
+                  {%- else -%}
+                    <span class="contact-name missing">(name not given)</span>
+                  {%- endif -%}
+                  {%- if contributorEmail and contributorOrcid -%}
+                    ({{ formatEmail(contributorEmail) }}, {{ formatOrcid(contributorOrcid) }})
+                  {%- elif contributorEmail -%}
+                    ({{ formatEmail(cEmail) }})
+                  {%- elif contributorOrcid -%}
+                    ({{ formatOrcid(contributorOrcid) }})
+                  {%- endif -%}
+                </li>
+              {%- endif -%}
+            {%- endfor -%}
           </ul>
-        {% endif %}
+        {%- else -%}
+          <span class="empty-value">There are no contact people define</span>
+        {%- endif -%}
       </dd>
-    {% endcall %}
+    {%- endif -%}
     <dt>Based on</dt>
-    <dd>{{dmp.package.name}}, {{dmp.package.version}} (<span class="package-id"><span class="organization-id">{{dmp.package.organizationId}}</span>:<span class="km-id">{{dmp.package.kmId}}</span>:<span class="version">{{dmp.package.version}}</span></span>)</dd>
-    {% if dmp.config.nfigDTOLevelsEnabled.levelsEnabled %}
-    <dt>Project Phase</dt>
-    <dd>{{renderCurrentLevel()}}</dd>
-    {% endif %}
+    <dd>{{ dmp.package.name }}, {{ dmp.package.version }} (<span class="package-id"><span class="organization-id">{{ dmp.package.organizationId }}</span>:<span class="km-id">{{ dmp.package.kmId }}</span>:<span class="version">{{ dmp.package.version }}</span></span>)</dd>
+    {%- if dmp.config.levelsEnabled.levelsEnabled -%}
+    <dt>Project phase</dt>
+    <dd>{{ renderCurrentLevel() }}</dd>
+    {%- endif -%}
     <dt>Generated at</dt>
-    <dd>{{dateformat(replace(dmp.createdAt, slice(dmp.createdAt,19), "Z"), "%d.%m.%Y")}}</dd>
+    <dd>{{ dateformat(replace(dmp.createdAt, slice(dmp.createdAt,19), "Z"), "%d.%m.%Y") }}</dd>
   </dl>
 </header>

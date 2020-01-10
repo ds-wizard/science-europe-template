@@ -1,5 +1,6 @@
 {% set km = dmp.knowledgeModel %}
 {% set replies = dmp.questionnaireReplies %}
+{% set repliesMap = dmp.questionnaireRepliesMap %}
 {% set report = dmp.report %}
 {% set metricDefinitions = dmp.metrics %}
 {% set levelDefinitions = dmp.levels %}
@@ -51,3 +52,12 @@
     {% endif %}
   {% endfor %}
 {% endmacro %}
+
+{# Formatting macros #}
+{%- macro formatEmail(email) -%}
+  <span class="contact-email"><a href="mailto:{{ email }}">{{ email }}</a></span>
+{%- endmacro -%}
+
+{%- macro formatOrcid(orcid) -%}
+  <span class="mini-orcid-icon-16"></span> <span class="contact-orcid">{{ orcid }}</span>
+{%- endmacro -%}
