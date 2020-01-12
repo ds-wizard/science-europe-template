@@ -21,12 +21,12 @@
               will be stored in
               {%- if publishedDataRepositoryKindAUuid == publishedDataRepositoryDomainSpecificAUuid %}
                 a domain-specific repository
-                {# Name of the repository #}
                 {%- set domainSpecificRepoNamePath = join([publishedDataRepositoryKindPath, publishedDataRepositoryDomainSpecificAUuid, domainSpecificRepoNameQUuid], ".") -%}
                 {%- set domainSpecificRepoNameReply = repliesMap[domainSpecificRepoNamePath] -%}
                 {%- if domainSpecificRepoNameReply -%}
                   : {{ integrationValue(domainSpecificRepoNameReply, domainSpecificRepoNameQUuid) }}.
-                {%- else -%}.{%- endif -%}
+                {%- else -%}.
+                {% endif -%}
                 {# Contact the repository #}
                 {%- set domainSpecificRepoContactBeforePath = join([publishedDataRepositoryKindPath, publishedDataRepositoryDomainSpecificAUuid, domainSpecificRepoContactBeforeQUuid], ".") -%}
                 {%- set domainSpecificRepoContactBeforeAUuid = repliesMap[domainSpecificRepoContactBeforePath].value.value -%}
@@ -38,7 +38,7 @@
                   We are going to contact the repository.
                 {%- elif domainSpecificRepoContactBeforeAUuid == domainSpecificRepoContactBeforeOtherAUuid %}
                   {%- set domainSpecificRepoContactBeforeOtherPath = join([domainSpecificRepoContactBeforePath, domainSpecificRepoContactBeforeOtherAUuid, domainSpecificRepoContactBeforeOtherQUuid], ".") -%}
-                  {%- set domainSpecificRepoContactBeforeOther = repliesMap[domainSpecificRepoContactBeforeOtherPath].value.value -%}
+                  {%- set domainSpecificRepoContactBeforeOther = repliesMap[domainSpecificRepoContactBeforeOtherPath].value.value %}
                   We have made other arrangements{{ domainSpecificRepoContactBeforeOther ? ": " ~ domainSpecificRepoContactBeforeOther : "" }}{{ endswith(domainSpecificRepoContactBeforeOther, ".") ? "" : "." }}
                 {%- endif -%}
               {%- elif publishedDataRepositoryKindAUuid == publishedDataRepositoryNationalAUuid %}
