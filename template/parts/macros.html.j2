@@ -61,3 +61,14 @@
 {%- macro formatOrcid(orcid) -%}
   <span class="mini-orcid-icon-16"></span> <span class="contact-orcid">{{ orcid }}</span>
 {%- endmacro -%}
+
+{%- macro integrationValue(reply, questionUuid) -%}
+  {%- if reply.value.value.type == "IntegrationValue" -%}
+    {%- set question = km.entities.questions[questionUuid] -%}
+    {%- set integration = km.entities.integrations[question.integrationUuid] -%}
+    {%- set integrationLink = replace(integration.itemUrl, "${id}", reply.value.value.id) -%}
+    <a href="{{ integrationLink }}" target="_blank">{{ reply.value.value.value }}</a>
+  {%- else %}
+    {{ reply.value.value.value }}
+  {%- endif -%}
+{%- endmacro -%}

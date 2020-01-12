@@ -3,54 +3,42 @@
   {%- scope -%}
   <div class="answer">
     {# Published datasets #}
-    {%- set publishedDataSetsUuid = "4e0c1edf-660c-4ebf-81f5-9fa959dead30" -%}
-    {%- set publishedDataSetNameUuid = "b0949d09-d179-4491-9fb4-14b0deb9f862" -%}
-    {%- set howLongUuid = "d4e6a244-07fb-4573-b93f-c20a9409ac7c" -%}
-    {%- set howLongTechnicalAnswerUuid = "59305ef2-2dd0-4553-8d7b-29186e0b8cd5" -%}
-    {%- set howLongLegalAnswerUuid = "bb6b4f0a-9908-4473-9982-30084ff4f6ab" -%}
-    {%- set howLongFixedAnswerUuid = "7b5f059a-ae7e-4f7f-92e8-119911e568b2" -%}
-    {%- set howLongFixedUuid = "346118ee-265f-4104-8409-161ea9a57f75" -%}
-    {%- set metadataPersistentUuid = "3b3fbcc6-c405-4151-8dce-e11dbd46b1bd" -%}
-    {%- set metadataPersistentYesAnswerUuid = "d21c32f1-c150-4c89-8472-2918d60dd547" -%}
-    {%- call (reply) withReply(publishedDataSetsUuid) -%}
-      {%- set pathPrefix = publishedDataSetsUuid ~ "." -%}
-      {%- set nDataSets = reply.value.value -%}
-      {%- if nDataSets > 0 -%}
-        We plan to publish the following datasets:
-        <ul>
-          {%- for i in range(nDataSets - 1) -%}
-            {%- set pathPrefixInner = i ~ "." -%}
-            {%- call (xreplies) mapReplies([
-              pathPrefixInner ~ publishedDataSetNameUuid,
-              pathPrefixInner ~ howLongUuid,
-              pathPrefixInner ~ howLongUuid ~ "." ~ howLongFixedAnswerUuid ~ "." ~ howLongFixedUuid,
-              pathPrefixInner ~ metadataPersistentUuid
-            ]) -%}
-              {%- set publishedDataSetName = xreplies[0][0].value.value -%}
-              {%- set howLongAnswerUuid = xreplies[1][0].value.value -%}
-              {%- set howLongFixedText = xreplies[2][0].value.value -%}
-              {%- set metadataPersistentAnswerUuid = xreplies[3][0].value.value -%}
-              <li>
-                <strong>{{ publishedDataSetName ? publishedDataSetName : "(no name given)" }}</strong>
-                {% if howLongAnswerUuid || (metadataPersistentAnswerUuid == metadataPersistentYesAnswerUuid) %}
-                  <span class="separator">&ndash;</span> 
-                  {% if howLongAnswerUuid == howLongTechnicalAnswerUuid -%}
-                    This data set will be kept available as long as technically possible.
-                  {%- elif howLongAnswerUuid == howLongLegalAnswerUuid -%}
-                    This data set will be kept available until it needs to be deleted for legal reasons.
-                  {%- elif howLongAnswerUuid == howLongFixedAnswerUuid -%}
-                    This data set will be kept available for a fixed period (prepaid){{ howLongFixedText ? " of: " ~ howLongFixedText : "" }}{{ endswith(howLongFixedText, ".") ? "" : "." }}
-                  {%- endif -%}
-                  {%- if metadataPersistentAnswerUuid == metadataPersistentYesAnswerUuid %}
-                    The metadata will be available even when the data no longer exists.
-                  {%- endif -%}
-                {%- endif -%}
-              </li>
-            {%- endcall -%}
-          {%- endfor -%}
-        </ul>
-      {%- endif -%}
-    {%- endcall -%}
+    {%- set publishedDataPath = join([preservingCUuid, publishedDataQUuid], ".") -%}
+    {%- set publishedDataCount = repliesMap[publishedDataPath].value.value -%}
+    {%- if publishedDataCount && publishedDataCount > 0 -%}
+      <p>
+      We plan to publish the following datasets:
+      <ul>
+      {%- for i in range(publishedDataCount-1) -%}
+        {%- set pathPrefix = join([publishedDataPath, i], ".") -%}
+        {%- set publishedDataName = repliesMap[join([pathPrefix, publishedDataNameQUuid], ".")].value.value -%}
+        <li>
+          <strong>{{ publishedDataName ? publishedDataName : "(no name given)" }}</strong>
+          {# How long will be stored + Metadata FAIRness #}
+          {%- set publishedDataHowLongPath = join([pathPrefix, publishedDataHowLongQUuid], ".") -%}
+          {%- set publishedDataHowLongAUuid = repliesMap[publishedDataHowLongPath].value.value -%}
+          {%- set publishedDataMetadataPersistentPath = join([pathPrefix, publishedDataMetadataPersistentQUuid], ".") -%}
+          {%- set publishedDataMetadataPersistentAUuid = repliesMap[publishedDataMetadataPersistentPath].value.value -%}
+          {%- if publishedDataMetadataPersistentPath || (publishedDataMetadataPersistentAUuid == publishedDataMetadataPersistentYesAUuid) %}
+            <span class="separator">&ndash;</span> 
+            {% if publishedDataHowLongAUuid == publishedDataHowLongTechnicalAUuid -%}
+              This data set will be kept available as long as technically possible.
+            {%- elif publishedDataHowLongAUuid == publishedDataHowLongLegalAUuid -%}
+              This data set will be kept available until it needs to be deleted for legal reasons.
+            {%- elif publishedDataHowLongAUuid == publishedDataHowLongFixedAUuid -%}
+              {%- set publishedDataHowLongFixedPath = join([publishedDataHowLongPath, publishedDataHowLongFixedAUuid, publishedDataHowLongFixedQUuid], ".") -%}
+              {%- set publishedDataHowLongFixed = repliesMap[publishedDataHowLongFixedPath].value.value -%}
+              This data set will be kept available for a fixed period (prepaid){{ publishedDataHowLongFixed ? " of: " ~ publishedDataHowLongFixed : "" }}{{ endswith(publishedDataHowLongFixed, ".") ? "" : "." }}
+            {%- endif -%}
+            {%- if publishedDataMetadataPersistentAUuid == publishedDataMetadataPersistentYesAUuid %}
+              The metadata will be available even when the data no longer exists.
+            {%- endif -%}
+          {%- endif -%}
+        </li>
+      {%- endfor -%}
+      </ul>
+      </p>
+    {%- endif -%}
   </div>
   {%- endscope -%}
 </div>

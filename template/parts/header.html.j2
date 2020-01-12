@@ -37,8 +37,7 @@
             join([contributorsPath, i, contributorRoleQUuid], ".")
           ]
         ),
-        (r) -> endswith(
-          r.path, contributorTypeUuid) && r.value.value == contributorRoleContactPersonAUuid
+        (r) -> r.value.value == contributorRoleContactPersonAUuid
         ))
       -%}
       <dt>Contact {{ nContacts > 1 ? "people" : "person" }}</dt>
