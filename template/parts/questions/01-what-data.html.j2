@@ -212,114 +212,82 @@
       {%- endif -%}
     {%- endif -%}
   {%- endif -%}
-<hr>
-
   {# Format/Type with volume #}
-  {%- set formatsTypesUuid = "b08fe063-33f8-4380-b3a9-ba1e586dedf2" -%}
-  {%- call (reply) withReply(formatsTypesUuid) -%}
-    {%- set nFormats = reply.value.value -%}
-    {%- if nFormats > 0 -%}
-      <p>We will be using the following file formats and types:
-      <ul>
-        {% for i in range(nFormats - 1) %}
-          <li>
-            {%- set pathPrefix = formatsTypesUuid ~ "." ~ i ~ "." -%}
-            {%- set formatNameUuid = "f00cf643-5368-458a-97d4-b463c2000c66" -%}
-            {%- set isFormatStandardUuid = "ecff019a-d4e6-44c6-a8fe-c84eb15ed8b7" -%}
-            {%- set isFormatStandardYesUuid = "d4ce2c56-b3df-4013-9220-289b28f922de" -%}
-            {%- set isFormatStandardNoUuid = "52b7aba3-d809-4a30-b3f8-90caa7a32a10" -%}
-            {%- set whyNonStandardUuid = "8bd3d76a-4f69-4a1e-82dd-5416739720b3" -%}
-            {%- set thereIsNoStandardUuid = "2da70314-879e-46f5-a1da-2794d71a12d3" -%}
-            {%- set itIsOptimizedUuid = "6c26d57b-468c-42ba-a01c-05d1334d0a6e" -%}
-            {%- set anotherReasonUuid = "ab19f42e-6204-409e-aa6d-6d87783cce44" -%}
-            {%- set theReasonUuid = "ea7420ef-3de3-4ca8-9ff8-ac1cdb0e506f" -%}
-            {%- set isLongTermSuitableUuid = "ced5a7c2-4034-4763-a1d5-3cb815cdfddb" -%}
-            {%- set isLongTermSuitableNoUuid = "86e547b8-e3ae-44b2-89ad-3a0d67decc56" -%}
-            {%- set convertLongTermSuitableUuid = "bf32374c-b24e-4b03-9898-a753cff56fcf" -%}
-            {%- set convertLongTermSuitableYesUuid = "7d8dc2f5-2699-4fb3-8bf6-e620868a0583" -%}
-            {%- set convertLongTermSuitableNoUuid = "3159d107-d322-4126-958f-900fc011eeae" -%}
-            {%- set isLongTermSuitableYesUuid = "985e488d-257f-479d-8113-5dcbe105a08e" -%}
-            {%- set volumeUuid = "ba9e42fc-2bf5-413f-85de-003f981aaf81" -%}
-            {%- set volumeSmallUuid = "7d3857a2-bb7d-4355-b2ca-bd6beb7cc3ea" -%}
-            {%- set volumeTotalUuid = "c2bc3d0b-a11b-4831-bd2c-5235dbf868b7" -%}
-            {%- set volumeTotalGBUuid = "4ae6452a-4ca6-434c-8453-7e3872e41847" -%}
-            {%- set volumeFileSizeUuid = "24dbd191-2d0c-4267-b858-d9063b21a486" -%}
-            {%- set volumeFilesUuid = "448403e9-578b-4155-9017-d4aa9119ea6a" -%}
-            {%- set volumeFileGBUuid = "624cfadf-6177-47b7-9ba8-b80b68aef0fd" -%}
-            {%- call (xreplies) mapReplies([
-              pathPrefix ~ formatNameUuid,
-              pathPrefix ~ isFormatStandardUuid,
-              pathPrefix ~ isFormatStandardUuid ~ "." ~ isFormatStandardNoUuid ~ "." ~ whyNonStandardUuid,
-              pathPrefix ~ isFormatStandardUuid ~ "." ~ isFormatStandardNoUuid ~ "." ~ whyNonStandardUuid ~ "." ~ theReasonUuid,
-              pathPrefix ~ isLongTermSuitableUuid,
-              pathPrefix ~ isLongTermSuitableUuid ~ "." ~ isLongTermSuitableNoUuid ~ "." ~ convertLongTermSuitableUuid,
-              pathPrefix ~ volumeUuid,
-              pathPrefix ~ volumeUuid ~ "." ~ volumeTotalUuid ~ "." ~ volumeTotalGBUuid,
-              pathPrefix ~ volumeUuid ~ "." ~ volumeFileSizeUuid ~ "." ~ volumeFilesUuid,
-              pathPrefix ~ volumeUuid ~ "." ~ volumeFileSizeUuid ~ "." ~ volumeFileGBUuid
-              ]) -%}
-              {%- set formatNameReply = xreplies[0][0].value.value -%}
-              {%- set isFormatStandardAnswerUuid = xreplies[1][0].value.value -%}
-              {%- set whyNonStandardAnswerUuid = xreplies[2][0].value.value -%}
-              {%- set theReasonText = xreplies[3][0].value.value -%}
-              {%- set isLongTermSuitableAnswerUuid = xreplies[4][0].value.value -%}
-              {%- set convertLongTermSuitableAnswerUuid = xreplies[5][0].value.value -%}
-              {%- set volumeAnswerUuid = xreplies[6][0].value.value -%}
-              {%- set volumeTotalGBNumber = xreplies[7][0].value.value -%}
-              {%- set volumeFilesNumber = xreplies[8][0].value.value -%}
-              {%- set volumeFileGBNumber = xreplies[9][0].value.value -%}
-
-              {%- if formatNameReply.type == "IntegrationValue" -%}
-                {%- call (integration) getIntegrationForQuestion(formatNameUuid) -%}
-                  {%- call (integrationLink) createIntegrationLink(integration, formatNameReply.id) -%}
-                    <a href="{{ integrationLink }}" target="_blank"><strong>{{ formatNameReply.value }}</strong></a>
-                  {%- endcall -%}
-                {%- endcall -%}
-              {%- else -%}
-                <strong>{{ formatNameReply.value }}</strong>
+{%- set formatsQUuid = "b08fe063-33f8-4380-b3a9-ba1e586dedf2" -%}
+{%- set formatsNameQUuid = "f00cf643-5368-458a-97d4-b463c2000c66" -%}
+  {%- set formatsPath = join([creatingCUuid, formatsQUuid], ".") -%}
+  {%- set formatsCount = repliesMap[formatsPath].value.value -%}
+  {%- if formatsCount > 0 -%}
+    <h4>Data formats and types</h4>
+    <div>We will be using the following data formats and types:
+    <ul>
+      {%- for formatIndex in range(formatsCount - 1) -%}
+        {%- set formatPrefix = join([formatsPath, formatIndex], ".") -%}
+        {%- set formatNameReply = repliesMap[join([formatPrefix, formatsNameQUuid], ".")] -%}
+        {%- set formatsIsStandardPath = join([formatPrefix, formatsIsStandardQUuid], ".") -%}
+        {%- set formatsIsStandardAUuid = repliesMap[formatsIsStandardPath].value.value -%}
+        {%- set formatsIsLTSuitablePath = join([formatPrefix, formatsIsLTSuitableQUuid], ".") -%}
+        {%- set formatsIsLTSuitableAUuid = repliesMap[formatsIsLTSuitablePath].value.value -%}
+        {%- set formatsVolumePath = join([formatPrefix, formatsVolumeQUuid], ".") -%}
+        {%- set formatsVolumeAUuid = repliesMap[formatsVolumePath].value.value -%}
+        <li>
+          {# identification #}
+          <strong>{{ integrationValue(formatNameReply, formatsNameQUuid) }}</strong>
+          {%- if formatsIsStandardAUuid || formatsIsLTSuitableAUuid || formatsVolumeAUuid -%}
+            <p>
+            {# standard? #}
+            {%- if formatsIsStandardAUuid == formatsIsStandardYesAUuid %}
+              It is a standardized format.
+            {%- elif formatsIsStandardAUuid == formatsIsStandardNoAUuid -%}
+              {%- set formatsWhyNonStandardPath = join([formatsIsStandardPath, formatsIsStandardNoAUuid, formatsWhyNonStandardQUuid], ".") -%}
+              {%- set formatsWhyNonStandardAUuid = repliesMap[formatsWhyNonStandardPath].value.value -%}
+              {%- if formatsWhyNonStandardAUuid == formatsWhyNSThereIsNoStandardAUuid %}
+                It is not a standardized format because there is no standardized format for this data type.
+              {%- elif formatsWhyNonStandardAUuid == formatsWhyNSItIsOptimizedAUuid %}
+                It is not a standardized format but it is optimized for processing speed and/or volume.
+              {%- elif formatsWhyNSAnotherReasonAUuid == formatsWhyNSAnotherReasonAUuid -%}
+                {%- set formatsWhyNSAnotherReasonPath = join([formatsWhyNonStandardPath, formatsWhyNSAnotherReasonAUuid, formatsWhyNSAnotherReasonQUuid], ".") -%}
+                {%- set formatsWhyNSAnotherReason = repliesMap[formatsWhyNSAnotherReasonPath].value.value -%}
+                It is not a standardized format.
+                {%- if formatsWhyNSAnotherReason %}
+                  {{ capitalize(formatsWhyNSAnotherReason) }}{{ endswith(formatsWhyNSAnotherReason, ".") ? "" : "." }}
+                {%- endif -%}
               {%- endif -%}
-
-              {%- if isFormatStandardAnswerUuid || isLongTermSuitableAnswerUuid || volumeAnswerUuid -%}
-                <p>
-                  {# Format standard #}
-                  {%- if isFormatStandardAnswerUuid == isFormatStandardYesUuid %}
-                    It is not a standardized format.
-                  {%- elif isFormatStandardAnswerUuid == isFormatStandardNoUuid -%}
-                    {%- if whyNonStandardAnswerUuid == thereIsNoStandardUuid %}
-                      It is not a standardized format because there is no standardized format for this data type.
-                    {%- elif whyNonStandardAnswerUuid == itIsOptimizedUuid %}
-                      It is not a standardized format but it is optimized for processing speed and/or volume.
-                    {%- elif whyNonStandardAnswerUuid == anotherReasonUuid && theReasonText %}
-                      It is not a standardized format. {{ theReasonText }}{{ endswith(theReasonText, ".") ? "" : "." }}
-                    {%- endif -%}
-                  {%- endif -%}
-                  {# Format suitable #}
-                  {%- if isLongTermSuitableAnswerUuid == isLongTermSuitableYesUuid %}
-                    This is a suitable format for long-term archiving.
-                  {%- elif isLongTermSuitableAnswerUuid == isLongTermSuitableNoUuid %}
-                    {%- if convertLongTermSuitableAnswerUuid == convertLongTermSuitableYesUuid %}
-                      This is not a suitable format for long-term archiving; however, we plan to convert it to a suitable format before the end of the project.
-                    {%- elif convertLongTermSuitableAnswerUuid == convertLongTermSuitableNoUuid %}
-                      We are aware that this is not a suitable format for long-term archiving.
-                    {%- endif -%}
-                  {%- endif -%}
-                  {# Volume #}
-                  {%- if volumeAnswerUuid == volumeSmallUuid %}
-                    We will have only a small amount of data stored in this format.
-                  {%- elif volumeAnswerUuid == volumeTotalUuid && volumeTotalGBNumber %}
-                    We expect to have {{ volumeTotalGBNumber }} GB of data in this format.
-                  {%- elif volumeAnswerUuid == volumeFileSizeUuid && volumeFilesNumber && volumeFileGBNumber %}
-                      We expect to have {{ volumeFilesNumber }} files of average size {{ volumeFileGBNumber }} GB (i.e. approximatelly {{ volumeFilesNumber * volumeFileGBNumber }} GB in total). 
-                  {%- endif -%}
-                </p>
+            {%- endif -%}
+            {# long-term suitable? #}
+            {%- if formatsIsLTSuitableAUuid == formatsIsLTSuitableYesAUuid %}
+              This is a suitable format for long-term archiving.
+            {%- elif formatsIsLTSuitableAUuid == formatsIsLTSuitableNoAUuid -%}
+              {%- set formatsConvertLTSuitablePath = join([formatsIsLTSuitablePath, formatsIsLTSuitableNoAUuid, formatsConvertLTSuitableQUuid], ".") -%}
+              {%- set formatsConvertLTSuitableAUuid = repliesMap[formatsConvertLTSuitablePath].value.value -%}
+              {%- if formatsConvertLTSuitableAUuid == formatsConvertLTSuitableYesAUuid %}
+                This is not a suitable format for long-term archiving; however, we plan to convert it to a suitable format before the end of the project.
+              {%- elif formatsConvertLTSuitableAUuid == formatsConvertLTSuitableNoAUuid %}
+                We are aware that this is not a suitable format for long-term archiving.
               {%- endif -%}
-            {%- endcall -%}
-          </li>
-        {%- endfor -%}
-      </ul>
-      </p>
-    {%- endif -%}
-  {%- endcall -%}
+            {%- endif -%}
+            {# volume #}
+            {%- if formatsVolumeAUuid == formatsVolumeSmallAUuid %}
+              We will have only a small amount of data stored in this format.
+            {%- elif formatsVolumeAUuid == formatsVolumeTotalAUuid -%}
+              {%- set formatsVolumeTotalGB = repliesMap[join([formatsVolumePath, formatsVolumeTotalAUuid, formatsVolumeTotalGBQUuid], ".")].value.value -%}
+              {%- if formatsVolumeTotalGB %}
+                We expect to have {{ formatsVolumeTotalGB }} GB of data in this format.
+              {%- endif -%}
+            {%- elif formatsVolumeAUuid == formatsVolumeFileSizeAUuid -%}
+              {%- set formatsVolumeFiles = repliesMap[join([formatsVolumePath, formatsVolumeFileSizeAUuid, formatsVolumeFilesQUuid], ".")].value.value -%}
+              {%- set formatsVolumeFileGB = repliesMap[join([formatsVolumePath, formatsVolumeFileSizeAUuid, formatsVolumeFileGBQUuid], ".")].value.value -%}
+              {%- if formatsVolumeFiles && formatsVolumeFileGB %}
+                We expect to have {{ formatsVolumeFiles }} files of average size {{ formatsVolumeFileGB }} GB (i.e. approximatelly {{ formatsVolumeFiles * formatsVolumeFileGB }} GB in total).
+              {%- endif -%}
+            {%- endif -%}
+            </p>
+          {%- endif -%}
+        </li>
+      {%- endfor -%}
+    </ul>
+    </div>
+  {%- endif -%}
   </div>
   {%- endscope -%}
 </div>
