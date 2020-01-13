@@ -3,265 +3,216 @@
   {%- scope -%}
   <div class="answer">
 
+            
+  {# Create/collected data #}
+  {%- set measuredDataPath = join([creatingCUuid, measuredDataQUuid], ".") -%}
+  {%- set measuredDataCount = repliesMap[measuredDataPath].value.value -%}
   {# Measured datasets #}
-  {%- set dataSetsMeasuredUuid = "f5fef09d-ade5-4019-b089-f05bd89c34bc" -%}
-  {%- call (reply) withReply(dataSetsMeasuredUuid) -%}
-    {%- set nDataSets = reply.value.value -%}
-    {%- if nDataSets > 0 -%}
-      <p>The following instrument datasets will be acquired in the project:
-      <ul>
-        {%- for i in range(nDataSets - 1) -%}
-          {%- set pathPrefix = dataSetsMeasuredUuid ~ "." ~ i ~ "." -%}
-          <li>
-            {%- set dataSetNameUuid = "a077aec4-83d2-45c2-8d9f-75a391bdee20" -%}
-            {%- set dataSetCollectedByUuid = "ee59664e-4026-4796-a42a-e8003df6dadf" -%}
-            {%- set byExpertsOwnUuid = "44ef09a4-5a78-439d-9fb4-940d3d84bfab" -%}
-            {%- set byExpertsOutUuid = "eb0b9a82-0379-47c3-967f-b35b40129af2" -%}
-            {%- set byExternalUuid = "f2784b7e-b0ed-4973-9d68-954c5c24e8bb" -%}
-            {%- set dataSetOwnershipUuid = "aa27852a-00f4-44a4-a85c-0e0fd3ac20d1" -%}
-            {%- set measuringPartyUuid = "786edd0d-ae07-489c-b078-423c18e02043" -%}
-            {%- set projectPartnersUuid = "306f7ef4-97fd-47b0-84de-f192cb94ea3a" -%}
-            {%- set otherArrangementsUuid = "399245d4-7988-461c-b940-ee813a1c99b1" -%}
-            {%- set dataSetOwnershipArrangementsUuid = "227f056a-ada1-473b-af71-bb63d48b4940" -%}
-            {%- set dataSetEquipmentUuid = "bce52f7f-2256-4afc-9801-2e4da8111470" -%}
-            {%- set isDescribedUuid = "cba473be-2489-4387-8877-ce49cf95a304" -%}
-            {%- set needCareUuid = "526db9ec-a5a1-4431-9cc3-751fc6625217" -%}
-            {%- set pathPrefixExternalParty = pathPrefix ~ dataSetCollectedByUuid ~ "." ~ byExternalUuid ~ "." -%}
-            {% call (xreplies) mapReplies([
-              pathPrefix ~ dataSetNameUuid,
-              pathPrefix ~ dataSetCollectedByUuid,
-              pathPrefixExternalParty ~ dataSetOwnershipUuid,
-              pathPrefixExternalParty ~ dataSetOwnershipUuid ~ "." ~ otherArrangementsUuid ~ "." ~ dataSetOwnershipArrangementsUuid,
-              pathPrefix ~ dataSetEquipmentUuid
-              ]) %}
-                {%- set dataSetName = xreplies[0][0].value.value -%}
-                {%- set dataSetCollectedByAnswer = xreplies[1][0].value.value -%}
-                {%- set dataSetOwnershipAnswer = xreplies[2][0].value.value -%}
-                {%- set dataSetOwnershipArrangementsText = xreplies[3][0].value.value -%}
-                {%- set dataSetEquipmentAnswer = xreplies[4][0].value.value -%}
-                {%- if dataSetName -%}
-                  <strong>{{ dataSetName }}</strong>
-                  {%- if dataSetCollectedByAnswer -%}
-                    {%- if dataSetCollectedByAnswer == byExpertsOwnUuid -%}
-                      <p>This dataset will be collected by experts in the project, with our own equipment.</p>
-                    {%- elif dataSetCollectedByAnswer == byExpertsOutUuid -%}
-                      <p>This dataset will be collected by experts in the project, at a specialized infrastructure.</p>
-                    {%- elif dataSetCollectedByAnswer == byExternalUuid -%}
-                      <p>
-                        This dataset will be collected by an external party.
-                        {% if dataSetOwnershipAnswer == measuringPartyUuid -%}
-                          The ownership of the resulting data will remain with the external party.
-                        {%- elif dataSetOwnershipAnswer == projectPartnersUuid -%}
-                          The project partners acquire full ownership of the data.
-                        {%- elif dataSetOwnershipAnswer == otherArrangementsUuid && dataSetOwnershipArrangementsText -%}
-                          For the ownership of the data we have made the following arrangements: {{ dataSetOwnershipArrangementsText }}{{ endswith(dataSetOwnershipArrangementsText, ".") ? "" : "." }}
-                        {%- endif -%}
-                      </p>
-                    {%- endif -%}
-                    {% if dataSetEquipmentAnswer == isDescribedUuid -%}
-                      <p>The equipment is very well described and known.</p>
-                    {%- elif dataSetEquipmentAnswer == needCareUuid -%}
-                      <p>The equipment is less well described or not completely standard, so we will need to take extra care documenting the process.</p>
+  {%- if measuredDataCount > 0 -%}
+    <div>
+    <h4>Instrument datasets</h4>
+    The following instrument datasets will be acquired in the project:
+    <ul>
+      {%- for datasetIndex in range(measuredDataCount - 1) -%}
+        {%- set pathPrefix = join([measuredDataPath, datasetIndex], ".") -%}
+        <li>
+          {%- set measuredDataNamePath = join([pathPrefix, measuredDataNameQUuid], ".") -%}
+          {%- set measuredDataName = repliesMap[measuredDataNamePath].value.value -%}
+          {%- set measuredDataWhoPath = join([pathPrefix, measuredDataWhoQUuid], ".") -%}
+          {%- set measuredDataWhoAUuid = repliesMap[measuredDataWhoPath].value.value -%}
+          {%- set measuredDataEquipPath = join([pathPrefix, measuredDataEquipQUuid], ".") -%}
+          {%- set measuredDataEquipAUuid = repliesMap[measuredDataEquipPath].value.value -%}
+          <strong>{{ measuredDataName ? measuredDataName : "(no name given)" }}</strong>
+          {# Who will collect #}
+          {%- if measuredDataWhoAUuid == measuredDataWhoExpertsOwnAUuid -%}
+            <p>This dataset will be collected by experts in the project, with our own equipment.</p>
+          {%- elif measuredDataWhoAUuid == measuredDataWhoExpertsOutAUuid -%}
+            <p>This dataset will be collected by experts in the project, at a specialized infrastructure.</p>
+          {%- elif measuredDataWhoAUuid == measuredDataWhoExternalAUuid -%}
+            {%- set mdExternalOwnershipPath = join([measuredDataWhoPath, measuredDataWhoExternalAUuid, mdExternalOwnershipQUuid], ".") -%}
+            {%- set mdExternalOwnershipAUuid = repliesMap[mdExternalOwnershipPath].value.value -%}
+            <p>
+              This dataset will be collected by an external party.
+              {% if mdExternalOwnershipAUuid == mdExternalOwnershipPartyAUuid -%}
+                The ownership of the resulting data will remain with the external party.
+              {%- elif mdExternalOwnershipAUuid == mdExternalOwnershipPartnersAUuid -%}
+                The project partners acquire full ownership of the data.
+              {%- elif mdExternalOwnershipAUuid == mdExternalOwnershipOtherAUuid -%}
+                {%- set mdExternalOwnershipOtherPath = join([mdExternalOwnershipPath, mdExternalOwnershipOtherAUuid, mdExternalOwnershipOtherQUuid], ".") -%}
+                {%- set mdExternalOwnershipOther = repliesMap[mdExternalOwnershipOtherPath].value.value -%}
+                {%- if mdExternalOwnershipOther -%}
+                  For the ownership of the data we have made the following arrangements: {{ mdExternalOwnershipOther }}{{ endswith(mdExternalOwnershipOther, ".") ? "" : "." }}
+                {%- endif -%}
+              {%- endif -%}
+            </p>
+          {%- endif -%}
+          {# Equipment standard? #}
+          {% if measuredDataEquipAUuid == measuredDataEquipDescribedAUuid -%}
+            <p>The equipment is very well described and known.</p>
+          {%- elif measuredDataEquipAUuid == measuredDataEquipCareAUuid -%}
+            <p>The equipment is less well described or not completely standard, so we will need to take extra care documenting the process.</p>
+          {%- endif -%}
+        </li>
+      {%- endfor -%}
+    </ul>
+    </div>
+  {%- endif -%}
+  {# Non-equipment datasets #}
+  {%- set neqDataPath = join([creatingCUuid, neqDataQUuid], ".") -%}
+  {%- set neqDataAUuid = repliesMap[neqDataPath].value.value -%}
+  {%- if neqDataAUuid == neqDataYesAUuid -%}
+    {%- set neqDataPrefix = join([neqDataPath, neqDataYesAUuid], ".") -%}
+    {%- set neqDataQuestPath = join([neqDataPrefix, neqDataQuestQUuid], ".") -%}
+    {%- set neqDataQuestAUuid = repliesMap[neqDataQuestPath].value.value -%}
+    {%- set neqDataCaseReportPath = join([neqDataPrefix, neqDataCaseReportQUuid], ".") -%}
+    {%- set neqDataCaseReportAUuid = repliesMap[neqDataCaseReportPath].value.value -%}
+    {%- set neqDataERecordsPath = join([neqDataPrefix, neqDataERecordsQUuid], ".") -%}
+    {%- set neqDataERecordsAUuid = repliesMap[neqDataERecordsPath].value.value -%}
+    {%- set neqDataSetsPath = join([neqDataPrefix, neqDataSetsQUuid], ".") -%}
+    {%- set neqDataSetsCount = repliesMap[neqDataSetsPath].value.value -%}
+    {%- scope -%}
+    {%- set questionnaires = neqDataQuestAUuid == neqDataQuestYesAUuid -%}
+    {%- set caseReport = neqDataCaseReportAUuid == neqDataCaseReportYesAUuid -%}
+    {%- set eRecords = neqDataERecordsAUuid == neqDataERecordsYesAUuid -%}
+    {%- if questionnaires || caseReport || eRecords || neqDataSetsCount > 0 -%}
+      <div>
+      <h4>Non-equipment datasets</h4>
+      {# Types #}
+      {%- set typesBools = [questionnaires, caseReport, eRecords] -%}
+      {%- set typesNames = ["questionnaires", "case report forms", "electronic patient records"] -%}
+      {%- set types = map(filter(zip(typesBools, typesNames), (x) -> x[0]), (x) -> x[1]) -%}
+      {%- set typesCount = length(types) -%}
+      <p>
+        {%- if typesCount > 0 -%}
+          We also collect data from
+          {% if typesCount == 1 -%}
+              {{ types[0] }}.
+          {%- elif typesCount == 2 -%}
+              {{ types[0] }} and {{ types[1] }}.
+          {%- else -%}
+              {{ join(slice(types, 0, length(types)-1), ", ") }}, and {{ slice(types, -1) }}.
+          {%- endif -%}
+        {% endif %}
+        {# Datasets #}
+        {%- if neqDataSetsCount > 0 -%}
+          The non-equipment datasets are:
+          <ul>
+          {%- for neqDataSetIndex in range(neqDataSetsCount - 1) -%}
+            {%- set pathPrefix = join([neqDataSetsPath, neqDataSetIndex], ".") -%}
+            {%- set neqDataSetsName = repliesMap[join([pathPrefix, neqDataSetsNameQUuid], ".")].value.value -%}
+            {%- set neqDataSetsDesc = repliesMap[join([pathPrefix, neqDataSetsDescQUuid], ".")].value.value -%}
+            <li>
+              <strong>{{ neqDataSetsName ? neqDataSetsName : "(no name given)" }}</strong>
+              {% if neqDataSetsDesc -%}<span class="separator">&ndash;</span> {{ neqDataSetsDesc }}{%- endif -%}
+            </li>
+          {%- endfor -%}
+          </ul>
+        {%- endif -%}
+      </p>
+      </div>
+    {%- endif -%}
+    {%- endscope -%}
+  {%- endif -%}
+
+  {%- set preexistingPath = join([reusingCUuid, preexistingQUuid], ".") -%}
+  {%- set preexistingAUuid = repliesMap[preexistingPath].value.value -%}
+  {%- if preexistingAUuid == preexistingYesAUuid -%}
+    {%- set usingPreexistingPath = join([preexistingPath, preexistingYesAUuid, usingPreexistingQUuid], ".") -%}
+    {%- set usingPreexistingAUuid = repliesMap[usingPreexistingPath].value.value -%}
+    {%- if usingPreexistingAUuid == usingPreexistingYesAUuid -%}
+      {%- set refDataPath = join([usingPreexistingPath, usingPreexistingYesAUuid, refDataQUuid], ".") -%}
+      {%- set refDataCount = repliesMap[refDataPath].value.value -%}
+      {%- set nrefDataPath = join([usingPreexistingPath, usingPreexistingYesAUuid, nrefDataQUuid], ".") -%}
+      {%- set nrefDataCount = repliesMap[nrefDataPath].value.value -%}
+      {%- if (refDataCount + nrefDataCount) > 0 -%}
+        <div>
+          <h4>Re-used datasets</h4>
+          {%- if refDataCount > 0 -%}
+            <div>We will use the following reference datasets:
+            <ul>
+              {%- for refDataIndex in range(refDataCount - 1) -%}
+                {%- set refDataPrefix = join([refDataPath, refDataIndex], ".") -%}
+                {%- set refDataNameReply = repliesMap[join([refDataPrefix, refDataNameQUuid], ".")] -%}
+                {%- set refDataWhere = repliesMap[join([refDataPrefix, refDataWhereQUuid], ".")].value.value -%}
+                <li>
+                  {# identification #}
+                  <strong>{{ integrationValue(refDataNameReply, refDataNameQUuid) }}</strong>
+                  {%- if refDataWhere -%}
+                    {%- if (slice(refDataWhere, 0, 7) == "http://") || (slice(refDataWhere, 0, 8) == "https://") || (slice(refDataWhere, 0, 6) == "ftp://") %}
+                      (<a href="{{ refDataWhere }}" target="_blank">{{ refDataWhere }}</a>)
+                    {%- else %}
+                      ({{ refDataWhere }})
                     {%- endif -%}
                   {%- endif -%}
-                {%- endif -%}
-              {% endcall %}
-          </li>
-        {%- endfor -%}
-      </ul>
-      </p>
-    {%- endif -%}
-  {%- endcall -%}
-
-  {# Non-equipment datasets #}
-  {%- set nonEquipmentCaptureUuid = "f038bd46-ee4e-4f53-b7ea-482381c2c855" -%}
-  {%- call (reply) withReply(nonEquipmentCaptureUuid) -%}
-    {%- set captureTypes = [
-        {
-          "uuid": "85079340-7b80-4dc7-86ae-cc5f599ec737",
-          "answerYes": "81baba8e-d43c-48f9-b39a-c0adfad08f64",
-          "type": "questionnaires"
-        },
-        {
-          "uuid": "36a5ed1e-ecd5-4b86-a719-f1196e376a52",
-          "answerYes": "7fcce8f6-e52b-444e-88f6-74ba3e4ee37b",
-          "type": "case report forms"
-        },
-        {
-          "uuid": "7e456b72-72a1-427d-8e75-9da096bc9806",
-          "answerYes": "2d3d08b8-7d63-4645-9499-f465caa06204",
-          "type": "electronic patient records"
-        }
-      ]
-    -%}
-    {%- set replyUuids = replies|filter(
-        (r) -> endswith(r.path, "85079340-7b80-4dc7-86ae-cc5f599ec737") || endswith(r.path, "36a5ed1e-ecd5-4b86-a719-f1196e376a52") || endswith(r.path, "7e456b72-72a1-427d-8e75-9da096bc9806")
-      )|map(
-        (r) -> r.value.value
-      )
-    -%}
-    {%- set sources = captureTypes|filter((t) -> t.answerYes|in(replyUuids))|map((t) -> t.type) -%}
-    <p>
-      {%- if sources|length == 0 -%}
-        We don't do any non-equipment data capture.
-      {%- else -%}
-        We also collect data from
-        {% if sources|length == 1 -%}
-            {{ sources[0] }}.
-        {%- elif sources|length == 2 -%}
-            {{ sources[0] }} and {{ sources[1] }}.
-        {%- elif sources|length == 3 -%}
-            {{ sources[0] }}, {{ sources[1] }}, and {{ sources[2] }}.
-        {%- endif -%}
-      {% endif %}
-    </p>
-
-    {%- set nonEquipmentDataSetsUuid = "b642c31d-a512-4ca7-8743-a2e0254006fa" -%}
-    {%- set nonEquipmentDataSetNameUuid = "d87a239f-9aee-4d6a-a5f6-fa83c73e67e1" -%}
-    {%- set nonEquipmentDataSetDescriptionUuid = "934f6592-a032-4ada-91b2-4448d740d157" -%}
-    {%- call (nonEquipmentDataSetsReply) withReply(nonEquipmentDataSetsUuid) -%}
-      {%- set nNonEquiementDataSets = nonEquipmentDataSetsReply.value.value -%}
-      {%- if nNonEquiementDataSets > 0 -%}
-        <p>Those non-equipment datasets are:
-        <ul>
-        {%- for i in range(nNonEquiementDataSets-1) -%}
-          {%- set pathPrefix = nonEquipmentDataSetsUuid ~ "." ~ i ~ "." -%}
-          {%- call (xreplies) mapReplies([
-              pathPrefix ~ nonEquipmentDataSetNameUuid,
-              pathPrefix ~ nonEquipmentDataSetDescriptionUuid
-              ]) -%}
-            {%- set name = xreplies[0][0].value.value -%}
-            {%- set description = xreplies[1][0].value.value -%}
-            <li>
-              <strong>{{ name ? name : "(no name given)" }}</strong>
-              {% if description -%}<span class="separator">&ndash;</span> {{ description }}{%- endif -%}
-            </li>
-          {%- endcall -%}
-        {%- endfor -%}
-        </ul>
-        </p>
+                  {# version #}
+                  {%- set refDataVersionedPath = join([refDataPrefix, refDataVersionedQUuid], ".") -%}
+                  {%- set refDataVersionedAUuid = repliesMap[refDataVersionedPath].value.value -%}
+                  {%- if refDataVersionedAUuid == refDataVersionedYesAUuid -%}
+                    {%- set refDataVersionedWhichPath = join([refDataVersionedPath, refDataVersionedYesAUuid, refDataVersionedWhichQUuid], ".") -%}
+                    {%- set refDataVersionedWhich = repliesMap[refDataVersionedWhichPath].value.value -%}
+                    {%- set refDataVersionedChangePath = join([refDataVersionedPath, refDataVersionedYesAUuid, refDataVersionedChangeQUuid], ".") -%}
+                    {%- set refDataVersionedChangeAUuid = repliesMap[refDataVersionedChangePath].value.value -%}
+                    {%- if refDataVersionedWhich || refDataVersionedChangeAUuid  %}
+                      <p>
+                      {% if refDataVersionedWhich -%}
+                        We will use version "{{ refDataVersionedWhich }}" of this dataset.
+                      {%- endif -%}
+                      {%- if refDataVersionedChangeAUuid == refDataVersionedChangeStayAUuid %}
+                        If a new version becomes available during the project, we will stay with the old version.
+                      {%- elif refDataVersionedChangeAUuid == refDataVersionedChangeNewAUuid %}
+                        If a new version becomes available during the project, new analyses will be done with the new version.
+                      {%- elif refDataVersionedChangeAUuid == refDataVersionedChangeAllAUuid %}
+                        If a new version becomes available during the project, all analyses will be redone with the new version.
+                      {%- endif -%}
+                      </p>
+                    {%- endif -%}
+                  {%- endif -%}
+                </li>
+              {%- endfor -%}
+            </ul>
+            </div>
+          {%- endif -%}
+          {%- if nrefDataCount > 0 -%}
+            <div>We will use the following already existing non-reference datasets:
+            <ul>
+              {%- for nrefDataIndex in range(nrefDataCount - 1) -%}
+                {%- set nrefDataNamePath = join([nrefDataPath, nrefDataIndex, nrefDataNameQUuid], ".") -%}
+                {%- set nrefDataNameReply = repliesMap[nrefDataNamePath] -%}
+                {%- set nrefDataWhere = repliesMap[join([nrefDataPrefix, nrefDataWhereQUuid], ".")].value.value -%}
+                <li>
+                  {# identification #}
+                  <strong>{{ integrationValue(nrefDataNameReply, nrefDataNameQUuid) }}</strong>
+                  {%- if nrefDataWhere -%}
+                    {%- if (slice(nrefDataWhere, 0, 7) == "http://") || (slice(nrefDataWhere, 0, 8) == "https://") || (slice(nrefDataWhere, 0, 6) == "ftp://") %}
+                      (<a href="{{ nrefDataWhere }}" target="_blank">{{ nrefDataWhere }}</a>)
+                    {%- else %}
+                      ({{ nrefDataWhere }})
+                    {%- endif -%}
+                  {%- endif -%}
+                  {# data access #}
+                  {%- set nrefDataAccessPath = join([nrefDataPath, nrefDataIndex, nrefDataAccessQUuid], ".") -%}
+                  {%- set nrefDataAccessAUuid = repliesMap[nrefDataAccessPath].value.value -%}
+                  {%- if nrefDataAccessAUuid %}
+                    <p>
+                    {% if nrefDataAccessAUuid == nrefDataAccessHaveCopyAUuid -%}
+                      We already have a copy of this dataset.
+                    {%- elif nrefDataAccessAUuid == nrefDataAccessWillDownloadAUuid -%}
+                      We will download or get a copy.
+                    {%- elif nrefDataAccessAUuid == nrefDataAccessWillOnlineAUuid -%}
+                      We will use its online version without downloading it.
+                    {%- endif -%}
+                    </p>
+                  {%- endif -%}
+                </li>
+              {%- endfor -%}
+            </ul>
+            </div>
+          {%- endif -%}
+        </div>
       {%- endif -%}
-    {%- endcall -%}
-  {%- endcall -%}
-  
-  {# Reference datasets (reuse) #}
-  {%- set referenceDataSetsUuid = "fcc51962-08df-4f4c-85ad-6bb932107010" -%}
-  {%- call (reply) withReply(referenceDataSetsUuid) -%}
-    {%- set nDataSets = reply.value.value -%}
-    {%- if nDataSets > 0 -%}
-      <p>We will use the following reference datasets:
-      <ul>
-        {% for i in range(nDataSets - 1) %}
-          <li>
-            {%- set pathPrefix = uuidReferenceDataSets ~ "." ~ i ~ "." -%}
-            {%- set dataSetNameUuid = "93988527-5bff-4125-8834-3750e9a28683" -%}
-            {%- set dataSetWhereUuid = "7801fe70-a2ac-432b-9470-e326646c249f" -%}
-            {%- set versioningPrefix = pathPrefix ~ "10b6548c-21cd-44c8-a8de-47415e7b012e.842007ce-0951-4655-8acc-b0f582e82ea1." -%}
-            {%- set versionUuid = "f00a28fb-ac77-4110-b285-c73c8bc62630" -%}
-            {%- set updateUuid = "481d0157-6d89-4f68-9f3b-cf1b05f8f15d" -%}
-            {%- set noUpdate = "a4f6a1da-536b-43fa-9637-71e33327fa08" -%}
-            {%- set newUpdated = "069a0976-498c-4a47-b42f-33c6a1e40126" -%}
-            {%- set allUpdated = "dc8dbe60-43e8-4ed4-ab11-13bb74aea820" -%}
-            {%- call (xreplies) mapReplies([
-              pathPrefix ~ dataSetNameUuid,
-              pathPrefix ~ dataSetWhereUuid,
-              versioningPrefix ~ versionUuid,
-              versioningPrefix ~ updateUuid
-              ]) -%}
-              {%- set dataSetNameReply = xreplies[0][0].value.value -%}
-              {%- set dataSetWhereText = xreplies[1][0].value.value -%}
-              {%- set versionAnswerText = xreplies[2][0].value.value -%}
-              {%- set updateAnswerUuid = xreplies[3][0].value.value -%}
-
-              {%- if dataSetNameReply.type == "IntegrationValue" -%}
-                {%- call (integration) getIntegrationForQuestion(dataSetNameUuid) -%}
-                  {%- call (integrationLink) createIntegrationLink(integration, dataSetNameReply.id) %}
-                    <a href="{{ integrationLink }}" target="_blank"><strong>{{ dataSetNameReply.value }}</strong></a>
-                  {%- endcall -%}
-                {%- endcall -%}
-              {%- else -%}
-                <strong>{{ dataSetNameReply.value }}</strong>
-              {%- endif -%}
-
-              {%- set isHttp = slice(dataSetWhereText, 0, 7) == "http://" -%}
-              {%- set isHttps = slice(dataSetWhereText, 0, 8) == "https://" -%}
-              {%- set isFtp = slice(dataSetWhereText, 0, 6) == "ftp://" -%}
-              {%- if isHttp || isHttps || isFtp %}
-                (<a href="{{ dataSetWhereText }}" target="_blank">{{ dataSetWhereText }}</a>)
-              {%- else %}
-                ({{ dataSetWhereText }})
-              {%- endif -%}
-                
-              {%- if versionAnswerText || updateAnswerUuid  %}
-                <p>
-                {% if versionAnswerText -%}
-                  We will use version "{{ versionAnswerText }}" of this dataset.
-                {%- endif -%}
-                {%- if updateAnswerUuid == noUpdate %}
-                  If a new version becomes available during the project, we will stay with the old version.
-                {%- elif updateAnswerUuid == newUpdated %}
-                  If a new version becomes available during the project, new analyses will be done with the new version.
-                {%- elif updateAnswerUuid == allUpdated %}
-                  If a new version becomes available during the project, all analyses will be redone with the new version.
-                {%- endif -%}
-                </p>
-              {%- endif -%}
-            {%- endcall -%}
-          </li>
-        {% endfor %}
-      </ul>
-    {% endif %}
-  {% endcall %}
-
-  {# Non-reference datasets (reuse) #}
-  {%- set nonReferenceDataSetsUuid = "be872000-cb98-442f-999c-ca3ef58dcfe8" -%}
-  {%- call (reply) withReply(nonReferenceDataSetsUuid) -%}
-    {%- set nDataSets = reply.value.value -%}
-    {%- if nDataSets > 0 -%}
-      <p>We will use the following already existing non-reference datasets:
-      <ul>
-        {% for i in range(nDataSets - 1) %}
-          <li>
-            {%- set pathPrefix = uuidNonReferenceDataSets ~ "." ~ i ~ "." -%}
-            {%- set dataSetNameUuid = "44120979-2840-4522-8297-df13f7fd1e3a" -%}
-            {%- set dataSetAccessUuid = "62ddfc73-1680-4bbf-b198-6a7231875fb1" -%}
-            {%- set alreadyHaveCopy = "423f7c77-c3bd-4ece-a9f6-ad9e3d0428a1" -%}
-            {%- set willDownload = "4e183e8d-d4bd-442a-a663-d3accf4f9217" -%}
-            {%- set willOnline = "f5e1c4d3-79f7-4950-9b10-6a7738f21978" -%}
-            {%- call (xreplies) mapReplies([
-              pathPrefix ~ dataSetNameUuid,
-              pathPrefix ~ dataSetAccessUuid
-              ]) -%}
-              {%- set dataSetNameReply = xreplies[0][0].value.value -%}
-              {%- set dataSetAccessAnswerUuid = xreplies[1][0].value.value -%}
-
-              {%- if dataSetNameReply.type == "IntegrationValue" -%}
-                {%- call (integration) getIntegrationForQuestion(dataSetNameUuid) -%}
-                  {%- call (integrationLink) createIntegrationLink(integration, dataSetNameReply.id) -%}
-                    <a href="{{ integrationLink }}" target="_blank"><strong>{{ dataSetNameReply.value }}</strong></a>
-                  {%- endcall -%}
-                {%- endcall -%}
-              {%- else -%}
-                <strong>{{ dataSetNameReply.value }}</strong>
-              {%- endif -%}
-              {%- if dataSetAccessAnswerUuid %}
-                <p>
-                {% if dataSetAccessAnswerUuid == alreadyHaveCopy -%}
-                  We already have a copy of this dataset.
-                {%- elif dataSetAccessAnswerUuid == willDownload -%}
-                  We will download or get a copy.
-                {%- elif dataSetAccessAnswerUuid == willOnline -%}
-                  We will use its online version without downloading it.
-                {%- endif -%}
-                </p>
-              {%- endif -%}
-            {%- endcall -%}
-          </li>
-        {%- endfor -%}
-      </ul>
-      </p>
     {%- endif -%}
-  {%- endcall -%}
+  {%- endif -%}
+<hr>
 
   {# Format/Type with volume #}
   {%- set formatsTypesUuid = "b08fe063-33f8-4380-b3a9-ba1e586dedf2" -%}
