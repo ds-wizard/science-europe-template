@@ -1,86 +1,86 @@
-/**************************/
-/* GENERAL STYLE          */
-/**************************/
+@import url('https://fonts.googleapis.com/css?family=Noto+Serif:400,400i,700,700i&display=swap&subset=cyrillic,cyrillic-ext,greek,greek-ext,latin-ext,vietnamese');
 
-body {
-  max-width: 1000px;
-  margin: auto;
-  font-family: sans-serif;
-  font-size: .95rem;
+/* Layout and global styles */
+
+@page {
+  margin: 2.5cm;
 }
 
 h1, h2, h3, h4, h5, h6 {
-  color: #333;
+  page-break-inside: avoid !important;
+  page-break-after: avoid !important;
 }
 
-h3, h4 {
-  margin-top: 0.2em;
-  margin-bottom: 0.5em;
+html, body {
+  height: 100%;
 }
 
-a {
-  color: #868e96;
+body {
+  font-family: 'Noto Serif', serif;
+  font-size: 11pt;
+  counter-reset: section;
+  counter-reset: question;
 }
 
-.text-light {
-  color: #868e96!important;
+/* Sections */
+
+section {
+  margin-bottom: 4rem;
 }
 
-.text-muted {
-  color: #AEA79F!important;
+.dmp-section .question + .question {
+  margin-top: 1cm;
 }
 
-/**************************/
+/* First page */
 
 header {
-  padding-bottom: 1rem;
-  border-bottom: solid 3px #aaaaaa;
+  padding-top: 5cm;
+  width: 100vw;
+  height: 24cm;
+  box-sizing: border-box;
+  page-break-after: always;
+  position: relative;
 }
 
-header > h1 {
-  font-size: 200%;
-  margin: 0.5rem 0 ;
-  line-height: 3rem;
-  vertical-align: middle;
+header .dmp::after {
+  font-size: 18pt;
+  content: 'Data Management Plan';
 }
 
-header > h1 > div.headline {
-  float: left;
-  margin-left: 1rem;
+h1 {
+  font-size: 24pt;
 }
 
-header > h1 > div.headline > span.km-name {
-  color: #868e96;
-  font-size: 75%;
+header div {
+  position: absolute;
+  bottom: 0;
+}
+
+header .contact-orcid {
+  white-space: nowrap;
+}
+
+header .dsw {
+  margin-top: 2cm;
+  text-align: center;
+  font-size: 10pt;
   font-style: italic;
 }
 
-header > h1 > svg {
-  float: left;
-  height: 40px;
-  width: 50px;
-  vertical-align: middle;
-  margin: 0.5rem;
-}
-
-header h1::after,
-header::after {
-  content: "";
-  display: block;
+dl::after {
+  content: ' ';
+  display: table;
   clear: both;
-}
-
-/**************************/
-
-dl {
-  color: #868e96;
 }
 
 dl dt {
   display: inline-block;
-  width: 15%;
-  padding: 0.2rem 0;
+  width: 20%;
+  margin: 0;
+  margin-bottom: 0.5rem;
   float: left;
+  white-space: nowrap;
 }
 
 dl dt::after {
@@ -89,217 +89,47 @@ dl dt::after {
 
 dl dd {
   display: inline-block;
-  width: 85%;
+  width: 80%;
   margin: 0;
-  padding: 0.2rem 0;
+  margin-bottom: 0.5rem;
   float: left;
   font-style: italic;
 }
 
-dl dt > span.package-id {
-  font-family: monospace;
-  font-style: normal;
+dl dd ul {
+  padding: 0;
+  margin: 0;
 }
 
-/**************************/
-
-table {
-  border-spacing: 0;
+dl dd ul li {
+  list-style: none;
 }
 
-table th {
-  padding: 0.5rem;
-  border-right: 1px solid #E1E1E1;
-  border-top: 1px solid #E1E1E1;
-}
-
-table th:first-child {
-  border-left: 1px solid #E1E1E1;
-}
-
-table tr:first-child td {
-  border-top: 1px solid #E1E1E1;
-}
-
-table td {
-  padding: 0.5rem;
-  border-right: 1px solid #E1E1E1;
-  border-bottom: 1px solid #E1E1E1;
-  text-align: center;
-}
-
-table td:first-child {
-  border-left: 1px solid #E1E1E1;
-  text-align: left;
-}
-
-/**************************/
-
-footer {
-  padding: 0.5em 0.5em 0.5em 0.5em;
-  text-align: center;
-  font-size: 90%;
-}
-
-/**************************/
-/* KM-SPECIFIC STYLE      */
-/**************************/
-
-.report {
-  margin-bottom: 1rem;
-}
-
-/**************************/
-
-.chapter {
-  border-bottom: solid 2px #cccccc;
-}
-
-/**************************/
-
-.question, .answer-item {
-  padding: 0.5em;
-  margin-top: 1em;
-  border-left: 5px solid #ddd;
-}
-
-.question:last-child, .answer-item:last-child {
-  padding-bottom: 5px;
-}
-
-.answer-item > .followups > .question, .questions > .question {
-  border: none;
-  padding-left: 0;
-}
-
-.question > h4 {
-  margin-top: 0;
+dl dd ul li:not(:last-child) {
   margin-bottom: 0.5rem;
-  font-size: 0.95rem;
+}
+
+dl .contact-name {
   font-weight: bold;
 }
 
-.question .title .human-identifier {
-  display: inline-block;
-  padding: 0.1rem 0.5rem;
-  margin-bottom: 0.25rem;
-  margin-right: 0.25rem;
-  border: 1px solid #999;
-  border-radius: 0.25rem;
-  color: #999;
-  font-size: 0.75rem;
-  vertical-align: middle;
+/* Abstract */
+
+.abstract {
+  page-break-after: always;
 }
 
-.question .text {
-  margin-top: 0;
-  margin-bottom: 0.75rem;
-}
-
-.question > .extra-data {
-  margin-bottom: 0.75rem;
-}
-
-.question b {
-  font-weight: normal;
-}
-
-/**************************/
-
-.tags, .experts, .references {
-  color: #868e96;
-  line-height: 1.5;
-}
-
-.tags b, .experts b, .reference b,
-.tags i, .experts a, .reference a {
-  vertical-align: middle;
-}
-
-.tags svg, .experts svg, .references svg {
-  width: 13px;
-  height: 14px;
-  margin-right: 7px;
-  vertical-align: middle;
-  color: #495057;
-}
-
-.tag::after, .expert::after, .reference::after {
-  content: ",";
-}
-
-.tag:last-of-type::after, .expert:last-of-type::after, .reference:last-of-type::after {
-  content: " ";
-}
-
-/**************************/
-
-.answer-block .answer {
-  font-style: italic;
-}
-
-.answer-block .answer span {
-  vertical-align: middle;
-}
-
-.answer-block .answer svg,
-.no-answer svg {
-  height: 20px;
-  width: 20px;
-  margin-right: 0.3rem;
-  vertical-align: middle;
-}
-
-.answer-item > .answer:first-child {
-  margin-top: 0;
-  margin-bottom: 25px;
-}
-
-.no-answer {
-  font-weight: bold;
-}
-
-.no-answer span {
-  vertical-align: middle;
-}
-
-.question.required .no-answer {
-  color: #D0021B;
-}
-
-.question.optional .no-answer {
-  color: #9B9B9B;
-}
-
-.integration-link {
-  display: flex;
-  align-items: center;
-}
-
-.integration-link img {
-  max-height: 2rem;
-  margin-right: .5rem;
-}
-
-.metrics > p {
-  font-style: italic;
-  margin-top: 0;
+.abstract p {
+  text-align: justify;
 }
 
 /* custom */
-span.mini-orcid-icon-16 {
+
+.mini-orcid-icon-16 {
   background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAASCAYAAABWzo5XAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAABmJLR0QAAAAAAAD5Q7t/AAAACXBIWXMAAAsSAAALEgHS3X78AAABnElEQVQ4y52UvUtCURjGf968lmQhFGXYEH3QUg0JhkPR4l5T0IUosMGxv6C1KdpahCZbGxscGiXBloIKo0ESEYpEM71+3NvgvXW0j3vp2c57zvPjPQ/nPWCheDrkiKdDDqtzjl/MQSAChAG/Uc4BCSCmBJKpP0HxdGgQOAY2LRo4BaJKIFn6BjIgCSDolPrQ9Caa3vwLlgLCJkwSNo6BIEBoYp8537ZVLEHD89WRkcmlWex3+WhqNeqtMrLk/nTWWxVA7wYuKYFkymksIuLO/FiEYjXDazXD6tQhJTWLLLmRezxkns+4zsfQdQ3B+wkK/9Z/Sc1yfrsFgFseYnnyAE1vcJM/QfSaGfmxoWrjhaunI2aG18WyvztsW6rUC/Q6vd/qJihnFzTuXeG5ciOWcgBmRglg9yejLLkZHVhEcrgY8SwwPbzGxcOeeCQhgmIi6LV6z5uaR20WKdYemR3ZQNMalNUs53c7vNcLIigGnS87jvVodOtUCSSV7rCjtJ+9XaUMT0fYGDMTpj2Qlp0gzFnH1UT95xuxlN2P7QOpwZChGlWkWQAAAABJRU5ErkJggg==) no-repeat;
-  background-size: 14px 14px;
-  width: 14px;
-  height: 14px;
+  background-size: 0.5cm 0.5cm;
+  width: 0.5cm;
+  height: 0.5cm;
   display: inline-block;
   margin: -2px 0 -2px 2px;
-}
-
-span.numbering {
-  color: gray;
-  font-style: italic;
-}
-span.numbering::after {
-  content: ":";
 }

@@ -1,5 +1,5 @@
 <div id="q-which-longterm" class="question">
-  <h3>Which data are of long-term value and should be retained, shared, and/or preserved?</h3>
+  <h3>8. Which data are of long-term value and should be retained, shared, and/or preserved?</h3>
   {%- scope -%}
   <div class="answer">
     {# Published datasets #}
@@ -20,18 +20,17 @@
           {%- set publishedDataMetadataPersistentPath = join([pathPrefix, publishedDataMetadataPersistentQUuid], ".") -%}
           {%- set publishedDataMetadataPersistentAUuid = repliesMap[publishedDataMetadataPersistentPath].value.value -%}
           {%- if publishedDataMetadataPersistentPath || (publishedDataMetadataPersistentAUuid == publishedDataMetadataPersistentYesAUuid) %}
-            <span class="separator">&ndash;</span> 
             {% if publishedDataHowLongAUuid == publishedDataHowLongTechnicalAUuid -%}
-              This data set will be kept available as long as technically possible.
+              <span class="separator">&ndash;</span> This data set will be kept available as long as technically possible.
             {%- elif publishedDataHowLongAUuid == publishedDataHowLongLegalAUuid -%}
-              This data set will be kept available until it needs to be deleted for legal reasons.
+              <span class="separator">&ndash;</span> This data set will be kept available until it needs to be deleted for legal reasons.
             {%- elif publishedDataHowLongAUuid == publishedDataHowLongFixedAUuid -%}
               {%- set publishedDataHowLongFixedPath = join([publishedDataHowLongPath, publishedDataHowLongFixedAUuid, publishedDataHowLongFixedQUuid], ".") -%}
               {%- set publishedDataHowLongFixed = repliesMap[publishedDataHowLongFixedPath].value.value -%}
-              This data set will be kept available for a fixed period (prepaid){{ publishedDataHowLongFixed ? " of: " ~ publishedDataHowLongFixed : "" }}{{ endswith(publishedDataHowLongFixed, ".") ? "" : "." }}
+              <span class="separator">&ndash;</span> This data set will be kept available for a fixed period (prepaid){{ publishedDataHowLongFixed ? " of: " ~ publishedDataHowLongFixed : "" }}{{ endswith(publishedDataHowLongFixed, ".") ? "" : "." }}
             {%- endif -%}
             {%- if publishedDataMetadataPersistentAUuid == publishedDataMetadataPersistentYesAUuid %}
-              The metadata will be available even when the data no longer exists.
+              <span class="separator">&ndash;</span> The metadata will be available even when the data no longer exists.
             {%- endif -%}
           {%- endif -%}
         </li>
