@@ -1,36 +1,37 @@
 <div id="q-docs-metadata" class="question">
   <h3>3. What documentation and meta-data will accompany the data?</h3>
-  {%- scope -%}
+
   <div class="answer">
     <p>List of data to be published is given in Section E, Question 9. This also includes information about catalogs where the data can be found. Information about data types used is given in Section A, Question 1.</p>
 
     {# Good provenance (lab notebooks) #}
-    {%- set provenancePath = join([preservingCUuid, provenanceQUuid], ".") -%}
-    {%- set provenanceAUuid = repliesMap[provenancePath].value.value -%}
-    {%- if provenanceAUuid == provenanceLabNotebooksAUuid -%}
+    {%- set provenancePath = [uuids.preservingCUuid, uuids.provenanceQUuid]|reply_path -%}
+    {%- set provenanceAUuid = repliesMap[provenancePath]|reply_str_value -%}
+    {%- if provenanceAUuid == uuids.provenanceLabNotebooksAUuid -%}
       <p>We will use lab notebooks to make sure that there is good provenance of the data analysis.</p>
-    {%- elif provenanceAUuid == provenanceELabNotebookAUuid -%}
+    {%- elif provenanceAUuid == uuids.provenanceELabNotebookAUuid -%}
       <p>We will use an electronic lab notebook to make sure that there is good provenance of the data analysis.</p>
-    {%- elif provenanceAUuid == provenanceOtherAUuid -%}
-      {%- set provenanceOtherPath = join([provenancePath, provenanceOtherAUuid, provenanceOtherQUuid], ".") -%}
-      {%- set provenanceOther = repliesMap[provenanceOtherPath].value.value -%}
-      <p>We will use other solution than (electronic) lab notebooks to make sure that there is good provenance of the data analysis{{ provenanceOther ? ": " ~ provenanceOther : "" }}{{ endswith(provenanceOther, ".") ? "" : "." }}
+    {%- elif provenanceAUuid == uuids.provenanceOtherAUuid -%}
+      {%- set provenanceOtherPath = [provenancePath, uuids.provenanceOtherAUuid, uuids.provenanceOtherQUuid]|reply_path -%}
+      {%- set provenanceOtherReply = repliesMap[provenanceOtherPath] -%}
+      {%- set provenanceOther = provenanceOtherReply.value.value if provenanceOtherReply else "" -%}
+      <p>We will use other solution than (electronic) lab notebooks to make sure that there is good provenance of the data analysis{{ ": " ~ provenanceOther|dot if provenanceOther else "." }}
     {%- endif -%}
 
     {# Documentation with metadata #}
-    {%- set documentDataPath = join([preservingCUuid, documentDataQUuid], ".") -%}
-    {%- set documentDataAUuid = repliesMap[documentDataPath].value.value -%}
-    {%- if documentDataAUuid == documentDataExploreAUuid -%}
-      {%- set documentDataDCPath = join([documentDataPath, documentDataExploreAUuid, documentDataDCQUuid], ".") -%}
-      {%- set documentDataDCAUuid = repliesMap[documentDataDCPath].value.value -%}
-      {%- set documentDataW3CPath = join([documentDataPath, documentDataExploreAUuid, documentDataW3CQUuid], ".") -%}
-      {%- set documentDataW3CAUuid = repliesMap[documentDataW3CPath].value.value -%}
-      {%- set usingDC = documentDataDCAUuid == documentDataDCYesAUuid -%}
-      {%- set usingW3C = documentDataW3CAUuid == documentDataW3CYesAUuid -%}
-      {%- if usingDC || usingW3C %}
+    {%- set documentDataPath = [uuids.preservingCUuid, uuids.documentDataQUuid]|reply_path -%}
+    {%- set documentDataAUuid = repliesMap[documentDataPath]|reply_str_value -%}
+    {%- if documentDataAUuid == uuids.documentDataExploreAUuid -%}
+      {%- set documentDataDCPath = [documentDataPath, uuids.documentDataExploreAUuid, uuids.documentDataDCQUuid]|reply_path -%}
+      {%- set documentDataDCAUuid = repliesMap[documentDataDCPath]|reply_str_value -%}
+      {%- set documentDataW3CPath = [documentDataPath, uuids.documentDataExploreAUuid, uuids.documentDataW3CQUuid]|reply_path -%}
+      {%- set documentDataW3CAUuid = repliesMap[documentDataW3CPath]|reply_str_value -%}
+      {%- set usingDC = documentDataDCAUuid == uuids.documentDataDCYesAUuid -%}
+      {%- set usingW3C = documentDataW3CAUuid == uuids.documentDataW3CYesAUuid -%}
+      {%- if usingDC or usingW3C %}
         <p>
           We will be documenting the data with
-          {% if usingDC && usingW3C -%}
+          {% if usingDC and usingW3C -%}
             Dublin Core metadata and W3C PROV provenance. 
           {%- elif usingDC -%}
             Dublin Core metadata. 
@@ -41,5 +42,4 @@
       {%- endif -%}
     {%- endif -%}
   </div>
-  {%- endscope -%}
 </div>

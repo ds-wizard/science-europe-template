@@ -1,9 +1,9 @@
 <header>
   <p class="dmp"></p>
   <h1>
-    {%- set projectNamePath = join([adminDetailsCUuid, projectNameQUuid], ".") -%}
+    {%- set projectNamePath = [uuids.adminDetailsCUuid, uuids.projectNameQUuid]|join(".") -%}
     {%- set projectNameReply = repliesMap[projectNamePath] -%}
-    {%- if projectNameReply -%}
+    {%- if projectNameReply and projectNameReply.value.value != "" -%}
       {{ projectNameReply.value.value }}
     {%- else -%}
       <span class="empty-value">(project name not given)</span>
@@ -11,57 +11,53 @@
   </h1>
   <div>
     <dl>
-      {%- set grantNumberPath = join([adminDetailsCUuid, grantNumberQUuid], ".") -%}
+      {%- set grantNumberPath = [uuids.adminDetailsCUuid, uuids.grantNumberQUuid]|join(".") -%}
       {%- set grantNumberReply = repliesMap[grantNumberPath] -%}
       {%- if grantNumberReply %}
         <dt>Grant number</dt>
         <dd>{{ grantNumberReply.value.value }}</dd>
       {%- endif -%}
 
-      {%- set contributorsPath = join([adminDetailsCUuid, contributorsQUuid], ".") -%}
+      {%- set contributorsPath = [uuids.adminDetailsCUuid, uuids.contributorsQUuid]|join(".") -%}
       {%- set contributorsReply = repliesMap[contributorsPath] -%}
       {%- if contributorsReply -%}
         {%- set nContributors = contributorsReply.value.value -%}
-        {%- set nContacts = length(filter(
-          map(
-            range(nContributors - 1),
-            (i) -> repliesMap[
-              join([contributorsPath, i, contributorRoleQUuid], ".")
-            ]
-          ),
-          (r) -> r.value.value == contributorRoleContactPersonAUuid
-          ))
-        -%}
-        <dt>Contact {{ nContacts > 1 ? "people" : "person" }}</dt>
+        {%- set contacts = [] -%}
+        {%- for i in range(nContributors) -%}
+          {%- set pathPrefix = [contributorsPath, i]|join(".") ~ "." -%}
+          {%- set contributorRole = repliesMap[pathPrefix ~ uuids.contributorRoleQUuid] -%}
+          {%- if contributorRole and contributorRole.value.value == uuids.contributorRoleContactPersonAUuid -%}
+            {% do contacts.append(pathPrefix)  %}
+          {%- endif -%}
+        {%- endfor -%}
+        {%- set nContacts = contacts|length -%}
+        <dt>Contact {{ "people" if (nContacts > 1) else "person" }}</dt>
         <dd>
           {%- if nContacts > 0 -%}
             <ul>
-              {%- for i in range(nContributors - 1) -%}
-                {%- set pathPrefix = join([contributorsPath, i], ".") ~ "." -%}
-                {%- set contributorRole = repliesMap[pathPrefix ~ contributorRoleQUuid].value.value -%}
-                {%- if contributorRole == contributorRoleContactPersonAUuid -%}
-                  <li>
-                    {%- set contributorName = repliesMap[pathPrefix ~ contributorNameQUuid].value.value -%}
-                    {%- set contributorEmail = repliesMap[pathPrefix ~ contributorEmailQUuid].value.value -%}
-                    {%- set contributorOrcid = repliesMap[pathPrefix ~ contributorOrcidQUuid].value.value -%}
-                    {%- set contributorAffiliation = repliesMap[pathPrefix ~ contributorAffiliationQUuid].value.value -%}
-                    {%- if contributorName -%}
-                      <span class="contact-name">{{ contributorName }}</span>
-                    {%- else -%}
-                      <span class="contact-name missing">(name not given)</span>
-                    {%- endif -%}
-                    {%- if contributorEmail and contributorOrcid %}
-                      ({{ formatEmail(contributorEmail) }}, {{ formatOrcid(contributorOrcid) }})
-                    {%- elif contributorEmail %}
-                      ({{ formatEmail(contributorEmail) }})
-                    {%- elif contributorOrcid %}
-                      ({{ formatOrcid(contributorOrcid) }})
-                    {%- endif -%}
-                    {%- if contributorAffiliation %}
-                      <br>{{ contributorAffiliation }}
-                    {%- endif -%}
-                  </li>
-                {%- endif -%}
+              {%- for pathPrefix in contacts -%}
+                <li>
+                  {%- set contributorName = repliesMap[pathPrefix ~ uuids.contributorNameQUuid] -%}
+                  {%- set contributorEmail = repliesMap[pathPrefix ~ uuids.contributorEmailQUuid] -%}
+                  {%- set contributorOrcid = repliesMap[pathPrefix ~ uuids.contributorOrcidQUuid] -%}
+                  {%- set contributorAffiliation = repliesMap[pathPrefix ~ uuids.contributorAffiliationQUuid] -%}
+
+                  {%- if contributorName and contributorName.value.value -%}
+                    <span class="contact-name">{{ contributorName.value.value }}</span>
+                  {%- else -%}
+                    <span class="contact-name missing">(name not given)</span>
+                  {%- endif -%}
+                  {%- if contributorEmail and contributorEmail.value.value and contributorOrcid and contributorOrcid.value.value %}
+                    ({{ macros.formatEmail(contributorEmail.value.value) }}, {{ macros.formatOrcid(contributorOrcid.value.value) }})
+                  {%- elif contributorEmail and contributorEmail.value.value %}
+                    ({{ macros.formatEmail(contributorEmail.value.value) }})
+                  {%- elif contributorOrcid and contributorOrcid.value.value %}
+                    ({{ macros.formatOrcid(contributorOrcid.value.value) }})
+                  {%- endif -%}
+                  {%- if contributorAffiliation and contributorAffiliation.value.value %}
+                    <br>{{ contributorAffiliation.value.value }}
+                  {%- endif -%}
+                </li>
               {%- endfor -%}
             </ul>
           {%- else -%}
@@ -70,7 +66,7 @@
         </dd>
       {%- endif -%}
 
-      {# {%- set projectAbstractPath = join([adminDetailsCUuid, projectAbstractQUuid], ".") -%}
+      {# {%- set projectAbstractPath = join([uuids.adminDetailsCUuid, uuids.projectAbstractQUuid], ".") -%}
       {%- set projectAbstractReply = repliesMap[projectAbstractPath] -%}
       {%- if projectAbstractReply %}
         <dt>Project abstract</dt>
@@ -78,13 +74,13 @@
       {%- endif -%} #}
 
       <dt>Based on</dt>
-      <dd>{{ dmp.package.name }}, {{ dmp.package.version }} (<span class="package-id"><span class="organization-id">{{ dmp.package.organizationId }}</span>:<span class="km-id">{{ dmp.package.kmId }}</span>:<span class="version">{{ dmp.package.version }}</span></span>)</dd>
-      {%- if dmp.config.levelsEnabled.levelsEnabled -%}
+      <dd>{{ ctx.package.name }}, {{ ctx.package.version }} (<span class="package-id"><span class="organization-id">{{ ctx.package.organizationId }}</span>:<span class="km-id">{{ ctx.package.kmId }}</span>:<span class="version">{{ ctx.package.version }}</span></span>)</dd>
+      {%- if ctx.config.levelsEnabled.levelsEnabled -%}
       <dt>Project phase</dt>
-      <dd>{{ renderCurrentLevel() }}</dd>
+      <dd>{{ macros.renderCurrentLevel() }}</dd>
       {%- endif -%}
       <dt>Generated on</dt>
-      <dd>{{ dateformat(replace(dmp.createdAt, slice(dmp.createdAt,19), "Z"), "%d. %m. %Y") }}</dd>
+      <dd>{{ ctx.createdAt|datetime_format("%d %b %Y") }}</dd>
     </dl>
     <p class="dsw">
       Data Management Plan created in Data Stewardship Wizard <<a href="https://ds-wizard.org" target="_blank">https://ds-wizard.org</a>>
@@ -93,12 +89,12 @@
 </header>
 
 
-{%- set projectAbstractPath = join([adminDetailsCUuid, projectAbstractQUuid], ".") -%}
+{%- set projectAbstractPath = [uuids.adminDetailsCUuid, uuids.projectAbstractQUuid]|join(".") -%}
 {%- set projectAbstractReply = repliesMap[projectAbstractPath] -%}
-{%- if projectAbstractReply %}
+{%- if projectAbstractReply and projectAbstractReply.value.value %}
 <section class="abstract">
   <h2>Abstract</h2>
-  {%- set paragraphs = split(projectAbstractReply.value.value, '\n') -%}
+  {%- set paragraphs = projectAbstractReply.value.value.split('\n') -%}
   {% for paragraph in paragraphs %}
   <p>{{ paragraph }}</p>
   {% endfor %}

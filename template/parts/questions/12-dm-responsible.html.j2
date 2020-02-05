@@ -1,30 +1,31 @@
 <div id="q-dm-responsible" class="question">
   <h3>12. Who will be responsible for data management?</h3>
-  {%- scope -%}
+
   <div class="answer">
-    {# TODO: Public questionnaires does not have "dmp.createdBy" filled #}
-    {%- if dmp.createdBy %}
-      <p>{{dmp.createdBy.name}} {{dmp.createdBy.surname}} is responsible for implementing the DMP, and ensuring it is reviewed and revised.</p>
+    {# TODO: Public questionnaires does not have "ctx.createdBy" filled #}
+    {%- if ctx.createdBy %}
+      <p>{{ctx.createdBy.name}} {{ctx.createdBy.surname}} is responsible for implementing the DMP, and ensuring it is reviewed and revised.</p>
     {%- endif -%}
 
-    {%- set contributorsPath = join([adminDetailsCUuid, contributorsQUuid], ".") -%}
+    {%- set contributorsPath = [uuids.adminDetailsCUuid, uuids.contributorsQUuid]|reply_path -%}
     {%- set contributorsReply = repliesMap[contributorsPath] -%}
     {%- if contributorsReply -%}
       {%- macro contributorsResponsibility(nContributors, contributorRoleAUuid, responsibility) -%}
-        {%- set names = filter(map(
-            filter(
-              range(nContributors - 1),
-              (i) -> repliesMap[join([contributorsPath, i, contributorRoleQUuid], ".")].value.value == contributorRoleAUuid
-            ),
-            (i) -> repliesMap[
-              join([contributorsPath, i, contributorNameQUuid], ".")].value.value
-          ), (name) -> length(name) > 0)
-        -%}
-        {%- set nNames = length(names) -%}
+        {%- set names = [] -%}
+        {%- for i in range(nContributors) -%}
+          {%- set role = repliesMap[[contributorsPath, i, uuids.contributorRoleQUuid]|reply_path]|reply_str_value -%}
+          {%- set name = repliesMap[[contributorsPath, i, uuids.contributorNameQUuid]|reply_path]|reply_str_value -%}
+          {%- if role == contributorRoleAUuid and name -%}
+            {%- do names.append(name) -%}
+          {%- endif -%}
+        {%- endfor -%}
+        {%- set nNames = names|length -%}
         {%- if nNames > 0 -%}
           <p>
-            {%- if nNames > 1 -%}
-              {{ slice(names, 0, nNames-1)|join(", ") }}, and {{ slice(names, -1) }} are {{ responsibility }}
+            {%- if nNames > 2 -%}
+              {{ names[0:-1]|join(", ") }}, and {{ names[-1] }} are {{ responsibility }}
+            {%- elif nNames == 2 -%}
+              {{ names[0] }} and {{ names[1] }} are {{ responsibility }}
             {%- else -%}
               {{ names[0] }} is {{ responsibility }}
             {%- endif %}
@@ -34,14 +35,13 @@
 
       {%- set nContributors = contributorsReply.value.value -%}
       {# Data curators #}
-      {{ contributorsResponsibility(nContributors, contributorRoleDataCuratorAUuid, "responsible for reviewing, enhancing, cleaning, or standardizing metadata and the associated data submitted for storage, use and maintenance within a data centre or repository.") }}
+      {{ contributorsResponsibility(nContributors, uuids.contributorRoleDataCuratorAUuid, "responsible for reviewing, enhancing, cleaning, or standardizing metadata and the associated data submitted for storage, use and maintenance within a data centre or repository.") }}
       {# Data collectors #}
-      {{ contributorsResponsibility(nContributors, contributorRoleDataCollectorAUuid, "responsible for finding, gathering, and collecting data.") }}
+      {{ contributorsResponsibility(nContributors, uuids.contributorRoleDataCollectorAUuid, "responsible for finding, gathering, and collecting data.") }}
       {# Data managers #}
-      {{ contributorsResponsibility(nContributors, contributorRoleDataManagerAUuid, "responsible for maintaining the finished resource.") }}
+      {{ contributorsResponsibility(nContributors, uuids.contributorRoleDataManagerAUuid, "responsible for maintaining the finished resource.") }}
       {# Distributors #}
-      {{ contributorsResponsibility(nContributors, contributorRoleDistributorAUuid, "responsible for generating/disseminating copies of the resouce in either electronic or print form.") }}
+      {{ contributorsResponsibility(nContributors, uuids.contributorRoleDistributorAUuid, "responsible for generating/disseminating copies of the resouce in either electronic or print form.") }}
     {%- endif -%}
   </div>
-  {%- endscope -%}
 </div>

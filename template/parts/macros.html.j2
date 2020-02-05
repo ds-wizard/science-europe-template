@@ -1,13 +1,6 @@
-{% set km = dmp.knowledgeModel %}
-{% set replies = dmp.questionnaireReplies %}
-{% set repliesMap = dmp.questionnaireRepliesMap %}
-{% set report = dmp.report %}
-{% set metricDefinitions = dmp.metrics %}
-{% set levelDefinitions = dmp.levels %}
-
 {% macro renderCurrentLevel() %}
   {% for levelDefinition in levelDefinitions %}
-    {% if levelDefinition.level == dmp.level %}
+    {% if levelDefinition.level == ctx.level %}
       {{levelDefinition.title}}
     {% endif %}
   {% endfor %}
@@ -23,12 +16,12 @@
 {%- endmacro -%}
 
 {%- macro integrationValue(reply, questionUuid) -%}
-  {%- if reply.value.value.type == "IntegrationValue" -%}
+  {%- if reply and reply.value.value.type == "IntegrationValue" -%}
     {%- set question = km.entities.questions[questionUuid] -%}
     {%- set integration = km.entities.integrations[question.integrationUuid] -%}
-    {%- set integrationLink = replace(integration.itemUrl, "${id}", reply.value.value.id) -%}
+    {%- set integrationLink = integration.itemUrl|replace("${id}", reply.value.value.id) -%}
     <a href="{{ integrationLink }}" target="_blank">{{ reply.value.value.value }}</a>
-  {%- else %}
+  {%- elif reply %}
     {{ reply.value.value.value }}
   {%- endif -%}
 {%- endmacro -%}

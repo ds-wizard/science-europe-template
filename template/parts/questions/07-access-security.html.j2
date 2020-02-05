@@ -1,110 +1,109 @@
 <div id="q-access-security" class="question">
   <h3>7. How will you manage access and security?</h3>
-  {%- scope -%}
+
   <div class="answer">
-    {%- set risksPathPrefix = join([processingCUuid, risksQUuid, risksExploreAUuid], ".") -%}
-    {%- set sharedWorkspacePrefix = join([processingCUuid, sharedWorkspaceQUuid, sharedWorkspaceYesAUuid], ".") -%}
+    {%- set risksPathPrefix = [uuids.processingCUuid, uuids.risksQUuid, uuids.risksExploreAUuid]|reply_path -%}
+    {%- set sharedWorkspacePrefix = [uuids.processingCUuid, uuids.sharedWorkspaceQUuid, uuids.sharedWorkspaceYesAUuid]|reply_path -%}
     {# Basic risks #}
-    {%- set risksStoreLabPath = join([risksPathPrefix, risksStoreLabQUuid], ".") -%}
-    {%- set risksStoreLabAUuid = repliesMap[risksStoreLabPath].value.value -%}
-    {%- set risksCarryHomePath = join([risksPathPrefix, risksCarryHomeQUuid], ".") -%}
-    {%- set risksCarryHomeAUuid = repliesMap[risksCarryHomePath].value.value -%}
-    {%- set risksCarryHomeEncPath = join([risksCarryHomePath, risksCarryHomeYesAUuid, risksCarryHomeEncQUuid], ".") -%}
-    {%- set risksCarryHomeEncAUuid = repliesMap[risksCarryHomeEncPath].value.value -%}
-    {%- set risksCertificationsPath = join([risksPathPrefix, risksCertificationsQUuid], ".") -%}
-    {%- set risksCertificationsAUuid = repliesMap[risksCertificationsPath].value.value -%}
-    {%- set risksHttpsPath = join([risksPathPrefix, risksHttpsQUuid], ".") -%}
-    {%- set risksHttpsAUuid = repliesMap[risksHttpsPath].value.value -%}
-    {%- set risksInstructedPath = join([risksPathPrefix, risksInstructedQUuid], ".") -%}
-    {%- set risksInstructedAUuid = repliesMap[risksInstructedPath].value.value -%}
-    {%- if (risksStoreLabAUuid == risksStoreLabNoAUuid) || (risksCarryHomeAUuid == risksCarryHomeNoAUuid) || (risksCarryHomeAUuid == risksCarryHomeYesAUuid && risksCarryHomeEncAUuid == risksCarryHomeEncYesAUuid) || (risksCertificationsAUuid == risksCertificationsYesAUuid) || (risksHttpsAUuid == risksHttpsYesAUuid) || (risksInstructedAUuid == risksInstructedYesAUuid) %}
+    {%- set risksStoreLabPath = [risksPathPrefix, uuids.risksStoreLabQUuid]|reply_path -%}
+    {%- set risksStoreLabAUuid = repliesMap[risksStoreLabPath]|reply_str_value -%}
+    {%- set risksCarryHomePath = [risksPathPrefix, uuids.risksCarryHomeQUuid]|reply_path -%}
+    {%- set risksCarryHomeAUuid = repliesMap[risksCarryHomePath]|reply_str_value -%}
+    {%- set risksCarryHomeEncPath = [risksCarryHomePath, uuids.risksCarryHomeYesAUuid, uuids.risksCarryHomeEncQUuid]|reply_path -%}
+    {%- set risksCarryHomeEncAUuid = repliesMap[risksCarryHomeEncPath]|reply_str_value -%}
+    {%- set risksCertificationsPath = [risksPathPrefix, uuids.risksCertificationsQUuid]|reply_path -%}
+    {%- set risksCertificationsAUuid = repliesMap[risksCertificationsPath]|reply_str_value -%}
+    {%- set risksHttpsPath = [risksPathPrefix, uuids.risksHttpsQUuid]|reply_path -%}
+    {%- set risksHttpsAUuid = repliesMap[risksHttpsPath]|reply_str_value -%}
+    {%- set risksInstructedPath = [risksPathPrefix, uuids.risksInstructedQUuid]|reply_path -%}
+    {%- set risksInstructedAUuid = repliesMap[risksInstructedPath]|reply_str_value -%}
+    {%- if (risksStoreLabAUuid == uuids.risksStoreLabNoAUuid) or (risksCarryHomeAUuid == uuids.risksCarryHomeNoAUuid) or (risksCarryHomeAUuid == uuids.risksCarryHomeYesAUuid and risksCarryHomeEncAUuid == uuids.risksCarryHomeEncYesAUuid) or (risksCertificationsAUuid == uuids.risksCertificationsYesAUuid) or (risksHttpsAUuid == uuids.risksHttpsYesAUuid) or (risksInstructedAUuid == uuids.risksInstructedYesAUuid) %}
       <p>
-        {%- if risksStoreLabAUuid == risksStoreLabNoAUuid %}
+        {%- if risksStoreLabAUuid == uuids.risksStoreLabNoAUuid %}
           Project members will not store data or software on computers in the lab or external hard drives connected to those computers.
         {%- endif -%}
-        {%- if risksCarryHomeAUuid == risksCarryHomeNoAUuid %}
-          {%- if risksStoreLabAUuid == risksStoreLabNoAUuid -%}They{%- else -%}Project members{%- endif %} will not carry data with them (e.g. on laptops, USB sticks, or other external media).
-        {%- elif risksCarryHomeEncAUuid == risksCarryHomeEncYesAUuid %}
-          {%- if risksStoreLabAUuid == risksStoreLabNoAUuid -%}They{%- else -%}Project members{%- endif %} can carry data with them on encrypted data carriers and password-protected laptops.
+        {%- if risksCarryHomeAUuid == uuids.risksCarryHomeNoAUuid %}
+          {%- if risksStoreLabAUuid == uuids.risksStoreLabNoAUuid -%}They{%- else -%}Project members{%- endif %} will not carry data with them (e.g. on laptops, USB sticks, or other external media).
+        {%- elif risksCarryHomeEncAUuid == uuids.risksCarryHomeEncYesAUuid %}
+          {%- if risksStoreLabAUuid == uuids.risksStoreLabNoAUuid -%}They{%- else -%}Project members{%- endif %} can carry data with them on encrypted data carriers and password-protected laptops.
         {%- endif -%}
-        {%- if risksCertificationsAUuid == risksCertificationsYesAUuid %}
+        {%- if risksCertificationsAUuid == uuids.risksCertificationsYesAUuid %}
           All data centers where project data is stored carry sufficient certifications.
         {%- endif -%}
-        {%- if risksHttpsAUuid == risksHttpsYesAUuid %}
+        {%- if risksHttpsAUuid == uuids.risksHttpsYesAUuid %}
           All project web services addressed via secure http (https://...).
         {%- endif -%}
-        {%- if risksInstructedAUuid == risksInstructedYesAUuid %}
+        {%- if risksInstructedAUuid == uuids.risksInstructedYesAUuid %}
           Project members have been instructed about both generic and specific risks to the project.
         {%- endif -%}
       </p>
     {%- endif -%}
     {# Information loss, leak, and vandalism #}
-    {%- set risksInfoLossPath = join([risksPathPrefix, risksInfoLossQUuid], ".") -%}
-    {%- set risksInfoLossAUuid = repliesMap[risksInfoLossPath].value.value -%}
-    {%- set risksInfoLeakPath = join([risksPathPrefix, risksInfoLeakQUuid], ".") -%}
-    {%- set risksInfoLeakAUuid = repliesMap[risksInfoLeakPath].value.value -%}
-    {%- set risksInfoVandalismPath = join([risksPathPrefix, risksInfoVandalismQUuid], ".") -%}
-    {%- set risksInfoVandalismAUuid = repliesMap[risksInfoVandalismPath].value.value -%}
+    {%- set risksInfoLossPath = [risksPathPrefix, uuids.risksInfoLossQUuid]|reply_path -%}
+    {%- set risksInfoLossAUuid = repliesMap[risksInfoLossPath]|reply_str_value -%}
+    {%- set risksInfoLeakPath = [risksPathPrefix, uuids.risksInfoLeakQUuid]|reply_path -%}
+    {%- set risksInfoLeakAUuid = repliesMap[risksInfoLeakPath]|reply_str_value -%}
+    {%- set risksInfoVandalismPath = [risksPathPrefix, uuids.risksInfoVandalismQUuid]|reply_path -%}
+    {%- set risksInfoVandalismAUuid = repliesMap[risksInfoVandalismPath]|reply_str_value -%}
     {%- set risksInfoLossTexts = {
-      risksInfoLossSmallAUuid: "The possible impact to the project or organization if information is lost is small.",
-      risksInfoLossLowAUuid: "The risk of information loss in the project or organization is acceptably low.",
-      risksInfoLossWillAUuid: "We will mitigate information loss risk for the project or organization."
+      uuids.risksInfoLossSmallAUuid: "The possible impact to the project or organization if information is lost is small.",
+      uuids.risksInfoLossLowAUuid: "The risk of information loss in the project or organization is acceptably low.",
+      uuids.risksInfoLossWillAUuid: "We will mitigate information loss risk for the project or organization."
     } -%}
     {%- set risksInfoLeakTexts = {
-      risksInfoLeakSmallAUuid: "The possible impact to the project or organization if information is leaked is small.",
-      risksInfoLeakLowAUuid: "The risk of information leak in the project or organization is acceptably low.",
-      risksInfoLeakWillAUuid: "We will mitigate information leak risk for the project or organization."
+      uuids.risksInfoLeakSmallAUuid: "The possible impact to the project or organization if information is leaked is small.",
+      uuids.risksInfoLeakLowAUuid: "The risk of information leak in the project or organization is acceptably low.",
+      uuids.risksInfoLeakWillAUuid: "We will mitigate information leak risk for the project or organization."
     } -%}
     {%- set risksInfoVandalismTexts = {
-      risksInfoVandalismSmallAUuid: "The possible impact to the project or organization if information is vandalised is small.",
-      risksInfoVandalismLowAUuid: "The risk of information vandalism in the project or organization is acceptably low.",
-      risksInfoVandalismWillAUuid: "We will mitigate information vandalism risk for the project or organization."
+      uuids.risksInfoVandalismSmallAUuid: "The possible impact to the project or organization if information is vandalised is small.",
+      uuids.risksInfoVandalismLowAUuid: "The risk of information vandalism in the project or organization is acceptably low.",
+      uuids.risksInfoVandalismWillAUuid: "We will mitigate information vandalism risk for the project or organization."
     } -%}
-    {% set risksInfoXText = join([
+    {% set risksInfoXText = [
       risksInfoLossTexts[risksInfoLossAUuid],
       risksInfoLeakTexts[risksInfoLeakAUuid],
       risksInfoVandalismTexts[risksInfoVandalismAUuid]
-    ], " ") %}
-    {%- if length(risksInfoXText) > 0 -%}
+    ]|join(" ") %}
+    {%- if risksInfoXText|length > 0 -%}
       <p>{{ risksInfoXText }}</p>
     {%- endif -%}
     {# Personal data #}
-    {%- set risksPersonalDataPath = join([risksPathPrefix, risksPersonalDataQUuid], ".") -%}
-    {%- set risksPersonalDataAUuid = repliesMap[risksPersonalDataPath].value.value -%}
-    {%- if risksPersonalDataAUuid == risksPersonalDataNotUsingAUuid -%}
+    {%- set risksPersonalDataPath = [risksPathPrefix, uuids.risksPersonalDataQUuid]|reply_path -%}
+    {%- set risksPersonalDataAUuid = repliesMap[risksPersonalDataPath]|reply_str_value -%}
+    {%- if risksPersonalDataAUuid == uuids.risksPersonalDataNotUsingAUuid -%}
       <p>We are not using any personal information.</p>
-    {%- elif risksPersonalDataAUuid == risksPersonalDataPseudoAUuid -%}
+    {%- elif risksPersonalDataAUuid == uuids.risksPersonalDataPseudoAUuid -%}
       <p>
         All personal information will be processed in pseudonymized form only.
-        {%- set risksPseudonymizationPath = join([risksPersonalDataPath, risksPersonalDataPseudoAUuid, risksPseudonymizationQUuid], ".") -%}
-        {%- set risksPseudonymizationAUuid = repliesMap[risksPseudonymizationPath].value.value -%}
-        {%- if risksPseudonymizationAUuid == risksPseudonymizationInsideAUuid %}
+        {%- set risksPseudonymizationPath = [risksPersonalDataPath, uuids.risksPersonalDataPseudoAUuid, uuids.risksPseudonymizationQUuid]|reply_path -%}
+        {%- set risksPseudonymizationAUuid = repliesMap[risksPseudonymizationPath]|reply_str_value -%}
+        {%- if risksPseudonymizationAUuid == uuids.risksPseudonymizationInsideAUuid %}
           We pseudonymize inside the project, only limited people can access the keys.
-        {%- elif risksPseudonymizationAUuid == risksPseudonymizationPartyAUuid %}
+        {%- elif risksPseudonymizationAUuid == uuids.risksPseudonymizationPartyAUuid %}
           Pseudonymization is handled by an independent party in order to allow data coupling.
-        {%- elif risksPseudonymizationAUuid == risksPseudonymizationAnotherAUuid -%}
-          {%- set risksPseudonymizationAnotherQUuid = join([risksPseudonymizationPath, risksPseudonymizationAnotherAUuid, risksPseudonymizationAnotherQUuid], ".") -%}
-          {%- set risksPseudonymizationAnother = repliesMap[risksPseudonymizationAnotherQUuid].value.value %}
-          We have a specific way of pseudonymization{{ risksPseudonymizationAnother ? ": " ~ risksPseudonymizationAnother : "" }}{{ endswith(risksPseudonymizationAnother, ".") ? "" : "." }}
+        {%- elif risksPseudonymizationAUuid == uuids.risksPseudonymizationAnotherAUuid -%}
+          {%- set risksPseudonymizationAnotherQUuid = [risksPseudonymizationPath, uuids.risksPseudonymizationAnotherAUuid, uuids.risksPseudonymizationAnotherQUuid]|reply_path -%}
+          {%- set risksPseudonymizationAnother = repliesMap[risksPseudonymizationAnotherQUuid]|reply_str_value %}
+          We have a specific way of pseudonymization{{ ": " ~ risksPseudonymizationAnother|dot if risksPseudonymizationAnother else "." }}
         {%- endif -%}
       </p>
-    {%- elif risksPersonalDataAUuid == risksPersonalDataAnonymousAUuid -%}
+    {%- elif risksPersonalDataAUuid == uuids.risksPersonalDataAnonymousAUuid -%}
       <p>All personal data will be collected anonymously.</p>
-    {%- elif risksPersonalDataAUuid == risksPersonalDataAnonymizedAUuid -%}
+    {%- elif risksPersonalDataAUuid == uuids.risksPersonalDataAnonymizedAUuid -%}
       <p>All personal data will be anonymized as early as possible.</p>
     {%- endif -%}
     {# Access control in shared workspace #}
-    {%- set sharedAccessControlPath = join([sharedWorkspacePrefix, sharedAccessControlQUuid], ".") -%}
-    {%- set sharedAccessControlAUuid = repliesMap[sharedAccessControlPath].value.value -%}
-    {%- if sharedAccessControlAUuid == sharedAccessControlMembersRWAUuid -%}
+    {%- set sharedAccessControlPath = [sharedWorkspacePrefix, uuids.sharedAccessControlQUuid]|reply_path -%}
+    {%- set sharedAccessControlAUuid = repliesMap[sharedAccessControlPath]|reply_str_value -%}
+    {%- if sharedAccessControlAUuid == uuids.sharedAccessControlMembersRWAUuid -%}
       <p>Only all project members have read/write access to the data.</p>
-    {%- elif sharedAccessControlAUuid == sharedAccessControlInstituteRAUuid -%}
+    {%- elif sharedAccessControlAUuid == uuids.sharedAccessControlInstituteRAUuid -%}
       <p>Anyone in the institute has read access to the data; all project members have read/write access.</p>
-    {%- elif sharedAccessControlAUuid == sharedAccessControlMembersRAUuid -%}
+    {%- elif sharedAccessControlAUuid == uuids.sharedAccessControlMembersRAUuid -%}
       <p>Only project members will have read access; only selected project members will be able to write data.</p>
-    {%- elif sharedAccessControlAUuid == sharedAccessControlMembersRequestAUuid -%}
+    {%- elif sharedAccessControlAUuid == uuids.sharedAccessControlMembersRequestAUuid -%}
       <p>Anyone in the institute can read data, only project members can request write access.</p>
     {%- endif -%}
   </div>
-  {%- endscope -%}
 </div>

@@ -1,34 +1,34 @@
 <div id="q-how-data" class="question">
   <h3>2. How will the data be collected or created?</h3>
-  {%- scope -%}
+
   <div class="answer">
   {# Measured datasets #}
-  {%- set measuredDataPath = join([creatingCUuid, measuredDataQUuid], ".") -%}
-  {%- set measuredDataCount = repliesMap[measuredDataPath].value.value -%}
+  {%- set measuredDataPath = [uuids.creatingCUuid, uuids.measuredDataQUuid]|reply_path -%}
+  {%- set measuredDataCount = repliesMap[measuredDataPath]|reply_int_value -%}
   {%- if measuredDataCount > 0 -%}
     <h4>Instrument datasets</h4>
     <ul>
-      {%- for datasetIndex in range(measuredDataCount - 1) -%}
-        {%- set pathPrefix = join([measuredDataPath, datasetIndex], ".") -%}
+      {%- for datasetIndex in range(measuredDataCount) -%}
+        {%- set pathPrefix = [measuredDataPath, datasetIndex]|reply_path -%}
         <li>
-          {%- set measuredDataNamePath = join([pathPrefix, measuredDataNameQUuid], ".") -%}
-          {%- set measuredDataName = repliesMap[measuredDataNamePath].value.value -%}
-          <strong>{{ measuredDataName ? measuredDataName : "(no name given)" }}</strong>
+          {%- set measuredDataNamePath = [pathPrefix, uuids.measuredDataNameQUuid]|reply_path -%}
+          {%- set measuredDataName = repliesMap[measuredDataNamePath]|reply_str_value -%}
+          <strong>{{ measuredDataName if measuredDataName else "(no name given)" }}</strong>
           {# Instruments #}
-          {%- set measuredDataInstrPath = join([pathPrefix, measuredDataInstrQUuid], ".") -%}
-          {%- set measuredDataInstrCount = repliesMap[measuredDataInstrPath].value.value -%}
+          {%- set measuredDataInstrPath = [pathPrefix, uuids.measuredDataInstrQUuid]|reply_path -%}
+          {%- set measuredDataInstrCount = repliesMap[measuredDataInstrPath]|reply_int_value -%}
           {%- if measuredDataInstrCount > 0 -%}
             <p>For this dataset, we are using the following instruments:
             <ul>
-              {%- for instrIndex in range(measuredDataInstrCount - 1) -%}
-                {%- set instrPathPrefix = join([measuredDataInstrPath, instrIndex], ".") -%}
+              {%- for instrIndex in range(measuredDataInstrCount) -%}
+                {%- set instrPathPrefix = [measuredDataInstrPath, instrIndex]|reply_path -%}
                 <li>
-                  {%- set measuredDataInstrNamePath = join([instrPathPrefix, measuredDataInstrNameQUuid], ".") -%}
-                  {%- set measuredDataInstrName = repliesMap[measuredDataInstrNamePath].value.value -%}
-                  {%- set measuredDataInstrDescPath = join([instrPathPrefix, measuredDataInstrDescQUuid], ".") -%}
-                  {%- set measuredDataInstrDesc = repliesMap[measuredDataInstrDescPath].value.value -%}
+                  {%- set measuredDataInstrNamePath = [instrPathPrefix, uuids.measuredDataInstrNameQUuid]|reply_path -%}
+                  {%- set measuredDataInstrName = repliesMap[measuredDataInstrNamePath]|reply_str_value -%}
+                  {%- set measuredDataInstrDescPath = [instrPathPrefix, uuids.measuredDataInstrDescQUuid]|reply_path -%}
+                  {%- set measuredDataInstrDesc = repliesMap[measuredDataInstrDescPath]|reply_str_value -%}
                   <strong>{{ measuredDataInstrName }}</strong>
-                  {% if measuredDataInstrName && measuredDataInstrDesc -%}<span class="separator">&ndash;</span>{%- endif %}
+                  {% if measuredDataInstrName and measuredDataInstrDesc -%}<span class="separator">&ndash;</span>{%- endif %}
                   {{ measuredDataInstrDesc }}
                 </li>
               {%- endfor -%}
@@ -38,21 +38,27 @@
             <p>No instruments for this dataset have been specified.</p>
           {%- endif -%}
           {# Quality #}
-          {%- set measuredDataQualityPath = join([pathPrefix, measuredDataQualityQUuid], ".") -%}
-          {%- set measuredDataQualityAUuid = repliesMap[measuredDataQualityPath].value.value -%}
-          {%- if measuredDataQualityAUuid == measuredDataQualityNoAUuid -%}
+          {%- set measuredDataQualityPath = [pathPrefix, uuids.measuredDataQualityQUuid]|reply_path -%}
+          {%- set measuredDataQualityAUuid = repliesMap[measuredDataQualityPath]|reply_str_value -%}
+          {%- if measuredDataQualityAUuid == uuids.measuredDataQualityNoAUuid -%}
             <p>We will not be using quality process for this dataset.</p>
-          {%- elif measuredDataQualityAUuid == measuredDataQualityYesAUuid -%}
+          {%- elif measuredDataQualityAUuid == uuids.measuredDataQualityYesAUuid -%}
             {# Named quality processes #}
-            {%- set mdqPrefix = join([measuredDataQualityPath, measuredDataQualityYesAUuid], ".") -%}
-            {%- set calibrating = repliesMap[join([mdqPrefix, mdQualityCalibatingQUuid], ".")].value.value == mdQualityCalibatingYesAUuid -%}
-            {%- set repetition = repliesMap[join([mdqPrefix, mdQualityRepetitionQUuid], ".")].value.value == mdQualityRepetitionYesAUuid -%}
-            {%- set standardized = repliesMap[join([mdqPrefix, mdQualityStandardizedQUuid], ".")].value.value == mdQualityStandardizedYesAUuid -%}
-            {%- set validation = repliesMap[join([mdqPrefix, mdQualityValidationQUuid], ".")].value.value == mdQualityValidationYesAUuid -%}
-            {%- set peerReview = repliesMap[join([mdqPrefix, mdQualityPeerReviewQUuid], ".")].value.value == mdQualityPeerReviewYesAUuid -%}
-            {%- set vocabularies = repliesMap[join([mdqPrefix, mdQualityVocabulariesQUuid], ".")].value.value == mdQualityVocabulariesYesAUuid -%}
+            {%- set mdqPrefix = [measuredDataQualityPath, uuids.measuredDataQualityYesAUuid]|reply_path -%}
+            {%- set calibratingAUuid = repliesMap[[mdqPrefix, uuids.mdQualityCalibatingQUuid]|reply_path]|reply_str_value -%}
+            {%- set repetitionAUuid = repliesMap[[mdqPrefix, uuids.mdQualityRepetitionQUuid]|reply_path]|reply_str_value -%}
+            {%- set standardizedAUuid = repliesMap[[mdqPrefix, uuids.mdQualityStandardizedQUuid]|reply_path]|reply_str_value -%}
+            {%- set validationAUuid = repliesMap[[mdqPrefix, uuids.mdQualityValidationQUuid]|reply_path]|reply_str_value -%}
+            {%- set peerReviewAUuid = repliesMap[[mdqPrefix, uuids.mdQualityPeerReviewQUuid]|reply_path]|reply_str_value -%}
+            {%- set vocabulariesAUuid = repliesMap[[mdqPrefix, uuids.mdQualityVocabulariesQUuid]|reply_path]|reply_str_value -%}
+            {%- set calibrating = calibratingAUuid == uuids.mdQualityCalibatingYesAUuid -%}
+            {%- set repetition = repetitionAUuid == uuids.mdQualityRepetitionYesAUuid -%}
+            {%- set standardized = standardizedAUuid == uuids.mdQualityStandardizedYesAUuid -%}
+            {%- set validation = validationAUuid == uuids.mdQualityValidationYesAUuid -%}
+            {%- set peerReview = peerReviewAUuid == uuids.mdQualityPeerReviewYesAUuid -%}
+            {%- set vocabularies = vocabulariesAUuid == uuids.mdQualityVocabulariesYesAUuid -%}
             {%- set qualityProcesses = [calibrating, repetition, standardized, validation, peerReview, vocabularies] -%}
-            {%- set qualityCount = length(filter(qualityProcesses, (x) -> x)) -%}
+            {%- set qualityCount = qualityProcesses|select("true")|list|length -%}
             {%- if qualityCount == 1 -%}
               <p>
                 We will be using
@@ -104,13 +110,13 @@
               <p>We will be using quality processes.<p>
             {%- endif -%}
             {# Other quality processes #}
-            {%- set mdQualityOtherPath = join([mdqPrefix, mdQualityOtherQUuid], ".") -%}
-            {%- set mdQualityOtherAUuid = repliesMap[mdQualityOtherPath].value.value -%}
-            {%- if mdQualityOtherAUuid == mdQualityOtherYesAUuid -%}
-              {%- set mdQualityOtherYesPath = join([mdQualityOtherPath, mdQualityOtherYesAUuid, mdQualityOtherYesQUuid], ".") -%}
-              {%- set mdQualityOther = repliesMap[mdQualityOtherYesPath].value.value -%}
+            {%- set mdQualityOtherPath = [mdqPrefix, uuids.mdQualityOtherQUuid]|reply_path -%}
+            {%- set mdQualityOtherAUuid = repliesMap[mdQualityOtherPath]|reply_str_value -%}
+            {%- if mdQualityOtherAUuid == uuids.mdQualityOtherYesAUuid -%}
+              {%- set mdQualityOtherYesPath = [mdQualityOtherPath, mdQualityOtherYesAUuid, mdQualityOtherYesQUuid]|reply_path -%}
+              {%- set mdQualityOther = repliesMap[mdQualityOtherYesPath]|reply_str_value -%}
               {%- if mdQualityOther -%}
-                <p>{{ qualityCount > 0 ? "Additional" : "Our" }} quality processes are: {{ mdQualityOther }}</p>
+                <p>{{ "Additional" if qualityCount > 0 else "Our" }} quality processes are: {{ mdQualityOther|dot }}</p>
               {%- endif -%}
             {%- endif -%}
           {%- endif -%}
@@ -121,67 +127,66 @@
     There will be no instrument dataset in this project.
   {%- endif -%}
   {# Storage and file conventions #}
-  {%- set storageConvPath = join([processingCUuid, storageConvQUuid], ".") -%}
-  {%- set storageConvAUuid = repliesMap[storageConvPath].value.value -%}
-  {%- if storageConvAUuid == storageConvExploreAUuid -%}
-    {%- set stConvPrefix = join([storageConvPath, storageConvExploreAUuid], ".") -%}
-    {%- set storageConvFSysPath = join([stConvPrefix, storageConvFSysQUuid], ".") -%}
-    {%- set storageConvFSysAUuid = repliesMap[storageConvFSysPath].value.value -%}
-    {%- set storageConvObjStorePath = join([stConvPrefix, storageConvObjStoreQUuid], ".") -%}
-    {%- set storageConvObjStoreAUuid = repliesMap[storageConvObjStorePath].value.value -%}
-    {%- set storageConvRelDbPath = join([stConvPrefix, storageConvRelDbQUuid], ".") -%}
-    {%- set storageConvRelDbAUuid = repliesMap[storageConvRelDbPath].value.value -%}
-    {%- set storageConvGraphDbPath = join([stConvPrefix, storageConvGraphDbQUuid], ".") -%}
-    {%- set storageConvGraphDbAUuid = repliesMap[storageConvGraphDbPath].value.value -%}
-    {%- set storageConvTripleStorePath = join([stConvPrefix, storageConvTripleStoreQUuid], ".") -%}
-    {%- set storageConvTripleStoreAUuid = repliesMap[storageConvTripleStorePath].value.value -%}
-    {%- if storageConvFSysAUuid || storageConvObjStoreAUuid || storageConvRelDbAUuid || storageConvGraphDbAUuid || storageConvTripleStoreAUuid -%}
+  {%- set storageConvPath = [uuids.processingCUuid, uuids.storageConvQUuid]|reply_path -%}
+  {%- set storageConvAUuid = repliesMap[storageConvPath]|reply_str_value -%}
+  {%- if storageConvAUuid == uuids.storageConvExploreAUuid -%}
+    {%- set stConvPrefix = [storageConvPath, uuids.storageConvExploreAUuid]|reply_path -%}
+    {%- set storageConvFSysPath = [stConvPrefix, uuids.storageConvFSysQUuid]|reply_path -%}
+    {%- set storageConvFSysAUuid = repliesMap[storageConvFSysPath]|reply_str_value -%}
+    {%- set storageConvObjStorePath = [stConvPrefix, uuids.storageConvObjStoreQUuid]|reply_path -%}
+    {%- set storageConvObjStoreAUuid = repliesMap[storageConvObjStorePath]|reply_str_value -%}
+    {%- set storageConvRelDbPath = [stConvPrefix, uuids.storageConvRelDbQUuid]|reply_path -%}
+    {%- set storageConvRelDbAUuid = repliesMap[storageConvRelDbPath]|reply_str_value -%}
+    {%- set storageConvGraphDbPath = [stConvPrefix, uuids.storageConvGraphDbQUuid]|reply_path -%}
+    {%- set storageConvGraphDbAUuid = repliesMap[storageConvGraphDbPath]|reply_str_value -%}
+    {%- set storageConvTripleStorePath = [stConvPrefix, uuids.storageConvTripleStoreQUuid]|reply_path -%}
+    {%- set storageConvTripleStoreAUuid = repliesMap[storageConvTripleStorePath]|reply_str_value -%}
+    {%- if storageConvFSysAUuid or storageConvObjStoreAUuid or storageConvRelDbAUuid or storageConvGraphDbAUuid or storageConvTripleStoreAUuid -%}
       <h4>Storage and file conventions</h4>
       {# File System #}
       <p>
-      {%- if storageConvFSysAUuid == storageConvFSysNoAUuid -%}
+      {%- if storageConvFSysAUuid == uuids.storageConvFSysNoAUuid -%}
         We will not use a filesystem with files and folders.
-      {%- elif storageConvFSysAUuid == storageConvFSysYesAUuid -%}
-        {%- set scFSysPrefix = join([storageConvFSysPath, storageConvFSysYesAUuid], ".") -%}
+      {%- elif storageConvFSysAUuid == uuids.storageConvFSysYesAUuid -%}
+        {%- set scFSysPrefix = [storageConvFSysPath, uuids.storageConvFSysYesAUuid]|reply_path -%}
         {# Folder types #}
-        {%- set scFSysSubjFoldersPath = join([scFSysPrefix, scFSysSubjFoldersQUuid], ".") -%}
-        {%- set scFSysSubjFoldersAUuid = repliesMap[scFSysSubjFoldersPath].value.value -%}
-        {%- set scFSysAnalysisFoldersPath = join([scFSysPrefix, scFSysAnalysisFoldersQUuid], ".") -%}
-        {%- set scFSysAnalysisFoldersAUuid = repliesMap[scFSysAnalysisFoldersPath].value.value -%}
-        {%- set scFSysWorkflowStepFoldersPath = join([scFSysPrefix, scFSysWorkflowStepFoldersQUuid], ".") -%}
-        {%- set scFSysWorkflowStepFoldersAUuid = repliesMap[scFSysWorkflowStepFoldersPath].value.value -%}
-        {%- set subjectFolders = scFSysSubjFoldersAUuid == scFSysSubjFoldersYesAUuid -%}
-        {%- set analysisFolders = scFSysAnalysisFoldersAUuid == scFSysAnalysisFoldersYesAUuid -%}
-        {%- set workflowStepFolders = scFSysWorkflowStepFoldersAUuid == scFSysWorkflowStepFoldersYesAUuid -%}
+        {%- set scFSysSubjFoldersPath = [scFSysPrefix, uuids.scFSysSubjFoldersQUuid]|reply_path -%}
+        {%- set scFSysSubjFoldersAUuid = repliesMap[scFSysSubjFoldersPath]|reply_str_value -%}
+        {%- set scFSysAnalysisFoldersPath = [scFSysPrefix, uuids.scFSysAnalysisFoldersQUuid]|reply_path -%}
+        {%- set scFSysAnalysisFoldersAUuid = repliesMap[scFSysAnalysisFoldersPath]|reply_str_value -%}
+        {%- set scFSysWorkflowStepFoldersPath = [scFSysPrefix, uuids.scFSysWorkflowStepFoldersQUuid]|reply_path -%}
+        {%- set scFSysWorkflowStepFoldersAUuid = repliesMap[scFSysWorkflowStepFoldersPath]|reply_str_value -%}
+        {%- set subjectFolders = scFSysSubjFoldersAUuid == uuids.scFSysSubjFoldersYesAUuid -%}
+        {%- set analysisFolders = scFSysAnalysisFoldersAUuid == uuids.scFSysAnalysisFoldersYesAUuid -%}
+        {%- set workflowStepFolders = scFSysWorkflowStepFoldersAUuid == uuids.scFSysWorkflowStepFoldersYesAUuid -%}
         {%- set folders = [subjectFolders, analysisFolders, workflowStepFolders] -%}
-        {%- set foldersCount = length(filter(folders, (x) -> x)) -%}
-        {%- if foldersCount > 0 -%}
+        {%- if folders|any -%}
           We will use a filesystem with files and folders with the following folder conventions:
           <ul>
             {%- if subjectFolders -%}
-              {%- set scFSysSubjFoldersConvs = repliesMap[join([scFSysSubjFoldersPath, scFSysSubjFoldersYesAUuid, scFSysSubjFoldersConvsQUuid], ".")].value.value -%}
+              {%- set scFSysSubjFoldersConvs = repliesMap[[scFSysSubjFoldersPath, uuids.scFSysSubjFoldersYesAUuid, uuids.scFSysSubjFoldersConvsQUuid]|reply_path]|reply_str_value -%}
               <li>
                 There will be a <strong>folder for each sample/subject</strong>.
                 {% if scFSysSubjFoldersConvs %}
-                  Each of those will use the following conventions: {{ scFSysSubjFoldersConvs }}{{ endswith(scFSysSubjFoldersConvs, ".") ? "" : "." }}
+                  Each of those will use the following conventions: {{ scFSysSubjFoldersConvs|dot }}
                 {%- endif -%}
               </li>
             {%- endif -%}
             {%- if analysisFolders -%}
-              {%- set scFSysAnalysisFoldersConvs = repliesMap[join([scFSysAnalysisFoldersPath, scFSysAnalysisFoldersYesAUuid, scFSysAnalysisFoldersConvsQUuid], ".")].value.value -%}
+              {%- set scFSysAnalysisFoldersConvs = repliesMap[[scFSysAnalysisFoldersPath, uuids.scFSysAnalysisFoldersYesAUuid, uuids.scFSysAnalysisFoldersConvsQUuid]|reply_path]|reply_str_value -%}
               <li>
                 There will be  a <strong>(sub)folder for each (repeated) analysis</strong>. 
                 {% if scFSysAnalysisFoldersConvs %}
-                  Each of those will use the following conventions: {{ scFSysAnalysisFoldersConvs }}{{ endswith(scFSysAnalysisFoldersConvs, ".") ? "" : "." }}
+                  Each of those will use the following conventions: {{ scFSysAnalysisFoldersConvs|dot }}
                 {%- endif -%}
               </li>
             {%- endif -%}
             {%- if workflowStepFolders -%}
-              {%- set scFSysWorkflowStepFoldersConvs = repliesMap[join([scFSysWorkflowStepFoldersPath, scFSysWorkflowStepFoldersYesAUuid, scFSysWorkflowStepFoldersConvsQUuid], ".")].value.value -%}
+              {%- set scFSysWorkflowStepFoldersConvs = repliesMap[[scFSysWorkflowStepFoldersPath, uuids.scFSysWorkflowStepFoldersYesAUuid, uuids.scFSysWorkflowStepFoldersConvsQUuid]|reply_path]|reply_str_value -%}
               <li>
                 There will be a <strong>(sub)folder for each step in the analysis workflow</strong>.
                 {% if scFSysWorkflowStepFoldersConvs %}
-                  Each of those will use the following conventions: {{ scFSysWorkflowStepFoldersConvs }}{{ endswith(scFSysWorkflowStepFoldersConvs, ".") ? "" : "." }}
+                  Each of those will use the following conventions: {{ scFSysWorkflowStepFoldersConvs|dot }}
                 {%- endif -%}
               </li>
             {%- endif -%}
@@ -190,22 +195,22 @@
           We will use a filesystem with files and folders.
         {%- endif -%}
         {# Other appointments #}
-        {%- set scFSysAppointmentsPath = join([scFSysPrefix, scFSysAppointmentsQUuid], ".") -%}
-        {%- set scFSysAppointments = repliesMap[scFSysAppointmentsPath].value.value -%}
+        {%- set scFSysAppointmentsPath = [scFSysPrefix, uuids.scFSysAppointmentsQUuid]|reply_path -%}
+        {%- set scFSysAppointments = repliesMap[scFSysAppointmentsPath]|reply_str_value -%}
         {%- if scFSysAppointments %}
-          {{ foldersCount > 0 ? "Moreover, we" : "We" }} have made appointments about naming the files. {{ appointmentsText|capitalize }}{{ (appointmentsText && (endswith(appointmentsText, ".") == False)) ? "." : "" }}
+          {{ "Moreover, we" if folders|any else "We" }} have made appointments about naming the files. {{ appointmentsText|capitalize|dot }}
         {%- endif -%}
       {%- endif -%}
       </p>
       {# Object Store #}
       <p>
-      {%- if storageConvObjStoreAUuid == storageConvObjStoreNoAUuid -%}
+      {%- if storageConvObjStoreAUuid == uuids.storageConvObjStoreNoAUuid -%}
         We will not be storing data in an "object store" system.
-      {%- elif storageConvObjStoreAUuid == storageConvObjStoreYesAUuid -%}
-        {%- set scObjStoreNamingQUuid = join([storageConvObjStorePath, storageConvObjStoreYesAUuid, scObjStoreNamingQUuid], ".") -%}
-        {%- set scObjStoreNaming = repliesMap[scObjStoreNamingQUuid].value.value -%}
+      {%- elif storageConvObjStoreAUuid == uuids.storageConvObjStoreYesAUuid -%}
+        {%- set scObjStoreNamingQUuid = [storageConvObjStorePath, uuids.storageConvObjStoreYesAUuid, uuids.scObjStoreNamingQUuid]|reply_path -%}
+        {%- set scObjStoreNaming = repliesMap[scObjStoreNamingQUuid]|reply_str_value -%}
         {%- if scObjStoreNaming -%} 
-          We will be storing data in an "object store" system using following naming conventions for objects in the store: {{ scObjStoreNaming }}{{ (endswith(scObjStoreNaming, ".") == False) ? "." : "" }}
+          We will be storing data in an "object store" system using following naming conventions for objects in the store: {{ scObjStoreNaming|dot }}
         {%- else -%}
           We will be storing data in an "object store" system.
         {%- endif -%}
@@ -213,39 +218,38 @@
       </p>
       {# Relational Database #}
       <p>
-      {%- if storageConvRelDbAUuid == storageConvRelDbNoAUuid -%}
+      {%- if storageConvRelDbAUuid == uuids.storageConvRelDbNoAUuid -%}
         We will not use a relational database system to store project data.
-      {%- elif storageConvRelDbAUuid == storageConvRelDbYesAUuid -%}
+      {%- elif storageConvRelDbAUuid == uuids.storageConvRelDbYesAUuid -%}
         We will use a relational database system to store project data.
-        {%- set scRelDbHandleChangesPath = join([storageConvRelDbPath, storageConvRelDbYesAUuid, scRelDbHandleChangesQUuid], ".") -%}
-        {%- set scRelDbHandleChangesAUuid = repliesMap[scRelDbHandleChangesPath].value.value -%}
-        {%- if scRelDbHandleChangesAUuid == scRelDbReadOnlyAnswerUuid %}
+        {%- set scRelDbHandleChangesPath = [storageConvRelDbPath, uuids.storageConvRelDbYesAUuid, uuids.scRelDbHandleChangesQUuid]|reply_path -%}
+        {%- set scRelDbHandleChangesAUuid = repliesMap[scRelDbHandleChangesPath]|reply_str_value -%}
+        {%- if scRelDbHandleChangesAUuid == uuids.scRelDbReadOnlyAnswerUuid %}
           Data in the database will be read-only.
-        {%- elif scRelDbHandleChangesAUuid == scRelDbCrudAnswerUuid %}
+        {%- elif scRelDbHandleChangesAUuid == uuids.scRelDbCrudAnswerUuid %}
           We will be allowing Create, Update and Delete operations for data in the database.
-        {%- elif scRelDbHandleChangesAUuid == scRelDbExpireAnswerUuid %}
+        {%- elif scRelDbHandleChangesAUuid == uuids.scRelDbExpireAnswerUuid %}
           Modifications will be made by <em>Expiring</em> the existing data and <em>Adding</em> updated data.
         {%- endif -%}
       {%- endif -%}
       </p>
       {# Graph Database #}
       <p>
-      {%- if storageConvGraphDbAUuid == storageConvGraphDbNoAUuid -%}
+      {%- if storageConvGraphDbAUuid == uuids.storageConvGraphDbNoAUuid -%}
         We will not use a graph database for data in the project.
-      {%- elif storageConvGraphDbAUuid == storageConvGraphDbYesAUuid -%}
+      {%- elif storageConvGraphDbAUuid == uuids.storageConvGraphDbYesAUuid -%}
         We will use a graph database for data in the project.
       {%- endif -%}
       </p>
       {# Triple Store #}
       <p>
-      {%- if storageConvTripleStoreAUuid == storageConvTripleStoreNoAUuid -%}
+      {%- if storageConvTripleStoreAUuid == uuids.storageConvTripleStoreNoAUuid -%}
         We will not be storing data in a triple store.
-      {%- elif storageConvTripleStoreAUuid == storageConvTripleStoreYesAUuid -%}
+      {%- elif storageConvTripleStoreAUuid == uuids.storageConvTripleStoreYesAUuid -%}
         We will be storing data in a triple store.
       {%- endif -%}
       </p>
     {%- endif -%}
   {%- endif -%}
   </div>
-  {%- endscope -%}
 </div>

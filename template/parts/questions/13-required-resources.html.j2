@@ -1,41 +1,41 @@
 <div id="q-required-resources" class="question">
   <h3>13. What resources will you require to deliver your plan?</h3>
-  {%- scope -%}
+
   <div class="answer">
     {# additional expertise #}
-    {%- set expertisePath = join([adminDetailsCUuid, additionalExpertiseQUuid], ".") -%}
-    {%- set expertiseAUuid = repliesMap[expertisePath].value.value -%}
-    {%- if expertiseAUuid == additionalExpertiseNoAUuid -%}
+    {%- set expertisePath = [uuids.adminDetailsCUuid, uuids.additionalExpertiseQUuid]|reply_path -%}
+    {%- set expertiseAUuid = repliesMap[expertisePath]|reply_str_value -%}
+    {%- if expertiseAUuid == uuids.additionalExpertiseNoAUuid -%}
       <p>To execute the DMP, no additional specialist expertise is required.</p>
-    {%- elif expertiseAUuid == additionalExpertiseYesTrainAUuid -%}
+    {%- elif expertiseAUuid == uuids.additionalExpertiseYesTrainAUuid -%}
       <p>
         To execute the DMP, additional specialist expertise is required. We will be training existing staff.
-        {%- set expertiseTrainPath = join([expertisePath, additionalExpertiseYesTrainAUuid, additionalExpertiseYesTrainTrainingQUuid], ".") -%}
-        {%- set expertiseTrainText = repliesMap[expertiseTrainPath].value.value -%}
+        {%- set expertiseTrainPath = [expertisePath, uuids.additionalExpertiseYesTrainAUuid, uuids.additionalExpertiseYesTrainTrainingQUuid]|reply_path -%}
+        {%- set expertiseTrainText = repliesMap[expertiseTrainPath]|reply_str_value -%}
         {%- if additionalExpertiseTrainText %}
-          The training will be: {{ expertiseTrainText }}{{ endswith(expertiseTrainText, ".") ? "" : "." }}
+          The training will be: {{ expertiseTrainText|dot }}
         {%- endif -%}
       </p>
-    {%- elif expertiseAUuid == additionalExpertiseYesHireAUuid -%}
+    {%- elif expertiseAUuid == uuids.additionalExpertiseYesHireAUuid -%}
       <p>
         To execute the DMP, additional specialist expertise is required. We will be hiring new people with additional expertise.
-        {%- set expertiseHirePath = join([expertisePath, additionalExpertiseYesHireAUuid, additionalExpertiseYesHireExpertiseQUuid], ".") -%}
-        {%- set expertiseHireText = repliesMap[expertiseHirePath].value.value -%}
+        {%- set expertiseHirePath = [expertisePath, uuids.additionalExpertiseYesHireAUuid, uuids.additionalExpertiseYesHireExpertiseQUuid]|reply_path -%}
+        {%- set expertiseHireText = repliesMap[expertiseHirePath]|reply_str_value -%}
         {%- if expertiseHireText %}
-          The required expertise from new people is: {{ expertiseHireText }}{{ endswith(expertiseHireText, ".") ? "" : "." }}
+          The required expertise from new people is: {{ expertiseHireText|dot }}
         {%- endif -%}
       </p>
     {%- endif -%}
     {# additional hw/sw #}
-    {%- set additionalHWSWPath = join([adminDetailsCUuid, additionalHWSWQUuid], ".") -%}
-    {%- set additionalHWSWAUuid = repliesMap[additionalHWSWPath].value.value -%}
-    {%- if additionalHWSWAUuid == additionalHWSWNoAUuid -%}
+    {%- set additionalHWSWPath = [uuids.adminDetailsCUuid, uuids.additionalHWSWQUuid]|reply_path -%}
+    {%- set additionalHWSWAUuid = repliesMap[additionalHWSWPath]|reply_str_value -%}
+    {%- if additionalHWSWAUuid == uuids.additionalHWSWNoAUuid -%}
       <p>We do not require any hardware or software in addition to what is usually available in the institute.</p>
-    {%- elif additionalHWSWAUuid == additionalHWSWYesAUuid -%}
-      {%- set additionalHWSWWhatPath = join([additionalHWSWPath, additionalHWSWYesAUuid, additionalHWSWYesWhatQUuid], ".") -%}
-      {%- set additionalHWSWWhat = repliesMap[additionalHWSWWhatPath].value.value -%}
+    {%- elif additionalHWSWAUuid == uuids.additionalHWSWYesAUuid -%}
+      {%- set additionalHWSWWhatPath = [additionalHWSWPath, uuids.additionalHWSWYesAUuid, uuids.additionalHWSWYesWhatQUuid]|reply_path -%}
+      {%- set additionalHWSWWhat = repliesMap[additionalHWSWWhatPath]|reply_str_value -%}
       {%- if additionalHWSWWhat -%}
-        <p>We require the following hardware or software in addition to what is usually available in the institute: {{ additionalHWSWWhat }}{{ endswith(additionalHWSWWhat, ".") ? "" : "." }}</p>
+        <p>We require the following hardware or software in addition to what is usually available in the institute: {{ additionalHWSWWhat|dot }}</p>
       {%- else -%}
         <p>We require hardware or software in addition to what is usually available in the institute.</p>
       {%- endif -%}
@@ -43,5 +43,4 @@
     {# charges #}
     <p>Charges applied by data repositories (if any) are mentioned already in Section E, Question 9.</p>
   </div>
-  {%- endscope -%}
 </div>

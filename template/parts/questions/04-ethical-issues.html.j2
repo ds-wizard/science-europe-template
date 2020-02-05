@@ -1,43 +1,45 @@
 <div id="q-ethical-issues" class="question">
   <h3>4. How will you manage any ethical issues?</h3>
-  {%- scope -%}
+
   <div class="answer">
     {# Non reference data #}
-    {%- set preexistingPath = join([reusingCUuid, preexistingQUuid], ".") -%}
-    {%- set preexistingAUuid = repliesMap[preexistingPath].value.value -%}
-    {%- if preexistingAUuid == preexistingYesAUuid -%}
-      {%- set usingPreexistingPath = join([preexistingPath, preexistingYesAUuid, usingPreexistingQUuid], ".") -%}
-      {%- set usingPreexistingAUuid = repliesMap[usingPreexistingPath].value.value -%}
-      {%- if usingPreexistingAUuid == usingPreexistingYesAUuid -%}
-        {%- set nrefDataPath = join([usingPreexistingPath, usingPreexistingYesAUuid, nrefDataQUuid], ".") -%}
-        {%- set nrefDataCount = repliesMap[nrefDataPath].value.value -%}
-        {%- set answeredNRefData = length(filter(
-          range(nrefDataCount-1), 
-          (i) -> repliesMap[join([nrefDataPath, i, nrefDataConsentQUuid], ".")]
-        )) -%}
-        {%- if answeredNRefData > 0 -%}
+    {%- set preexistingPath = [uuids.reusingCUuid, uuids.preexistingQUuid]|reply_path -%}
+    {%- set preexistingAUuid = repliesMap[preexistingPath]|reply_str_value -%}
+    {%- if preexistingAUuid == uuids.preexistingYesAUuid -%}
+      {%- set usingPreexistingPath = [preexistingPath, uuids.preexistingYesAUuid, uuids.usingPreexistingQUuid]|reply_path -%}
+      {%- set usingPreexistingAUuid = repliesMap[usingPreexistingPath]|reply_str_value -%}
+      {%- if usingPreexistingAUuid == uuids.usingPreexistingYesAUuid -%}
+        {%- set nrefDataPath = [usingPreexistingPath, uuids.usingPreexistingYesAUuid, uuids.nrefDataQUuid]|reply_path -%}
+        {%- set nrefDataCount = repliesMap[nrefDataPath]|reply_int_value -%}
+        {%- set answeredNRefData = [] -%}
+        {%- for i in range(nrefDataCount) -%}
+          {%- if repliesMap[[nrefDataPath, i, uuids.nrefDataConsentQUuid]|reply_path] -%}
+            {%- do answeredNRefData.append(i) -%}
+          {%- endif -%}
+        {%- endfor -%}
+        {%- if answeredNRefData|length > 0 -%}
           <h4>Data we reuse</h4>
           <ul>
-            {%- for i in range(nrefDataCount - 1) -%}
-              {%- set nrefDataNamePath = join([nrefDataPath, i, nrefDataNameQUuid], ".") -%}
+            {%- for i in answeredNRefData -%}
+              {%- set nrefDataNamePath = [nrefDataPath, i, uuids.nrefDataNameQUuid]|reply_path -%}
               {%- set nrefDataNameReply = repliesMap[nrefDataNamePath] -%}
-              {%- set nrefDataConsentPath = join([nrefDataPath, i, nrefDataConsentQUuid], ".") -%}
-              {%- set nrefDataConsentAUuid = repliesMap[nrefDataConsentPath].value.value -%}
+              {%- set nrefDataConsentPath = [nrefDataPath, i, uuids.nrefDataConsentQUuid]|reply_path -%}
+              {%- set nrefDataConsentAUuid = repliesMap[nrefDataConsentPath]|reply_str_value -%}
               {%- if nrefDataConsentAUuid -%}
               <li>
-                <strong>{{ integrationValue(nrefDataNameReply, nrefDataNameQUuid) }}</strong>
-                {%- if nrefDataConsentAUuid == nrefDataConsentNotPersonalAUuid %}
+                <strong>{{ macros.integrationValue(nrefDataNameReply, uuids.nrefDataNameQUuid) }}</strong>
+                {%- if nrefDataConsentAUuid == uuids.nrefDataConsentNotPersonalAUuid %}
                   does not need an extension of any consent because it is not personal data.
-                {%- elif nrefDataConsentAUuid == nrefDataConsentAnotherLegalAUuid %}
+                {%- elif nrefDataConsentAUuid == uuids.nrefDataConsentAnotherLegalAUuid %}
                   does not need an extension of any consent because we will use another legal base for the processing.
-                {%- elif nrefDataConsentAUuid == nrefDataConsentCoversAUuid %}
+                {%- elif nrefDataConsentAUuid == uuids.nrefDataConsentCoversAUuid %}
                   <span class="separator">&ndash;</span> the existing consent covers our reuse.
-                {%- elif nrefDataConsentAUuid == nrefDataConsentNewAUuid %}
+                {%- elif nrefDataConsentAUuid == uuids.nrefDataConsentNewAUuid %}
                   does need a new consent to cover our usage of the data.
-                {%- elif nrefDataConsentAUuid == nrefDataConsentOtherAUuid %}
-                  {%- set nrefDataConsentOtherPath = join([nrefDataConsentPath, nrefDataConsentOtherAUuid, nrefDataConsentOtherQUuid], ".") -%}
-                  {%- set nrefDataConsentOther = repliesMap[nrefDataConsentOtherPath].value.value %}
-                  has special arragements{{ nrefDataConsentOther ? ": " ~ nrefDataConsentOther : "" }}{{ endswith(nrefDataConsentOther, ".") ? "" : "." }}
+                {%- elif nrefDataConsentAUuid == uuids.nrefDataConsentOtherAUuid %}
+                  {%- set nrefDataConsentOtherPath = [nrefDataConsentPath, uuids.nrefDataConsentOtherAUuid, uuids.nrefDataConsentOtherQUuid]|reply_path -%}
+                  {%- set nrefDataConsentOther = repliesMap[nrefDataConsentOtherPath]|reply_str_value %}
+                  has special arragements{{ ": " ~ nrefDataConsentOther|dot if nrefDataConsentOther else "." }}
                 {%- endif -%}
               </li>
               {%- endif -%}
@@ -48,41 +50,40 @@
     {%- endif -%}
 
     {# Collected data #}
-    {%- set needConsentPath = join([creatingCUuid, needConsentQUuid], ".") -%}
-    {%- set needConsentAUuid = repliesMap[needConsentPath].value.value -%}
+    {%- set needConsentPath = [uuids.creatingCUuid, uuids.needConsentQUuid]|reply_path -%}
+    {%- set needConsentAUuid = repliesMap[needConsentPath]|reply_str_value -%}
     {%- if needConsentAUuid -%}
       <h4>Data we collect</h4>
       <p>
-      {%- if needConsentAUuid == needConsentNoNotCollectAUuid -%}
+      {%- if needConsentAUuid == uuids.needConsentNoNotCollectAUuid -%}
         We don't need any consent for collected data because those are not personal.
-      {%- elif needConsentAUuid == needConsentNoAnotherLegalAUuid -%}
+      {%- elif needConsentAUuid == uuids.needConsentNoAnotherLegalAUuid -%}
         Our work on personal data can be done without consent using another legal base
-        {%- set legalBasePath = join([needConsentPath, needConsentNoAnotherLegalAUuid, legalBaseQUuid], ".") -%}
-        {%- set legalBaseAUuid = repliesMap[legalBasePath].value.value -%}
-        {%- if legalBaseAUuid == legalBaseComplianceAUuid %}
+        {%- set legalBasePath = [needConsentPath, uuids.needConsentNoAnotherLegalAUuid, uuids.legalBaseQUuid]|reply_path -%}
+        {%- set legalBaseAUuid = repliesMap[legalBasePath]|reply_str_value -%}
+        {%- if legalBaseAUuid == uuids.legalBaseComplianceAUuid %}
           <span class="separator">&ndash;</span> compliance with a legal obligation.
-        {%- elif legalBaseAUuid == legalBaseContractAUuid %}
+        {%- elif legalBaseAUuid == uuids.legalBaseContractAUuid %}
           <span class="separator">&ndash;</span> contractual performance.
-        {%- elif legalBaseAUuid == legalBaseVitalInterestsAUuid %}
+        {%- elif legalBaseAUuid == uuids.legalBaseVitalInterestsAUuid %}
           <span class="separator">&ndash;</span> vital interests.
-        {%- elif legalBaseAUuid == legalBasePublicInterestsAUuid %}
+        {%- elif legalBaseAUuid == uuids.legalBasePublicInterestsAUuid %}
           <span class="separator">&ndash;</span> public interest or acting under official public authority.
-        {%- elif legalBaseAUuid == legalBaseLegitimateInterestsAUuid %}
+        {%- elif legalBaseAUuid == uuids.legalBaseLegitimateInterestsAUuid %}
           <span class="separator">&ndash;</span> legitimate interests.
-        {%- elif legalBaseAUuid == legalBaseOtherAUuid -%}
-          {%- set legalBaseOtherPath = join([legalBasePath, legalBaseOtherAUuid, legalBaseOtherQUuid], ".") -%}
-          {%- set legalBaseOther = repliesMap[legalBaseOtherPath].value.value -%}
-          {{ legalBaseOther ? ": " ~ legalBaseOther : " (not further specified)"}}{{ endswith(legalBaseOther, ".") ? "" : "." }}
+        {%- elif legalBaseAUuid == uuids.legalBaseOtherAUuid -%}
+          {%- set legalBaseOtherPath = [legalBasePath, uuids.legalBaseOtherAUuid, uuids.legalBaseOtherQUuid]|reply_path -%}
+          {%- set legalBaseOther = repliesMap[legalBaseOtherPath]|reply_str_value -%}
+          {{ ": " ~ legalBaseOther|dot if legalBaseOther else " (not further specified)."}}
         {%- else %} (not further specified).{%- endif -%}
-      {%- elif needConsentAUuid == needConsentYesSpecificAUuid -%}
+      {%- elif needConsentAUuid == uuids.needConsentYesSpecificAUuid -%}
         We will collect consent for our specific use of the data.
-      {%- elif needConsentAUuid == needConsentYesReuseAUuid -%}
+      {%- elif needConsentAUuid == uuids.needConsentYesReuseAUuid -%}
         We will collect consent for our use as well as reuse of the data.
-      {%- elif needConsentAUuid == needConsentYesAnonymizeAUuid -%}
+      {%- elif needConsentAUuid == uuids.needConsentYesAnonymizeAUuid -%}
         We will collect consent for our use of the data, and will anonymize the data afterwards for reuse.
       {%- endif -%}
       </p>
     {%- endif -%}
   </div>
-  {%- endscope -%}
 </div>
