@@ -15,5 +15,6 @@
             "minVersion": "2.0.16",
             "maxVersion": null
         }
-    ]
+    ],
+    "wkhtmltopdf": "--disable-smart-shrinking --footer-center [page] --footer-font-name \"Noto Serif\" --footer-spacing 10 --footer-font-size 10 -B 25mm -L 25mm -R 25mm -T 25mm"
 }

@@ -1,6 +1,12 @@
 <!DOCTYPE HTML>
-{% include "macros.html.j2" %}
-{% include "uuids.j2" %}
+{%- set km = ctx.knowledgeModel -%}
+{%- set replies = ctx.questionnaireReplies -%}
+{%- set repliesMap = ctx.questionnaireRepliesMap -%}
+{%- set report = ctx.report -%}
+{%- set metricDefinitions = ctx.metrics -%}
+{%- set levelDefinitions = ctx.levels -%}
+{% import "macros.html.j2" as macros with context %}
+{% import "uuids.j2" as uuids with context %}
 <html>
   <head>
     <title>Data Management Plan</title>
@@ -11,8 +17,8 @@
   </head>
   <body>
     <article class="dmp">
-      {% include "header.html.j2" %}
-      {% include "content.html.j2" %}
+      {% include "header.html.j2" with context %}
+      {% include "content.html.j2" with context %}
     </article>
   </body>
 </html>

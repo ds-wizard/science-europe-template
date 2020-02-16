@@ -1,71 +1,71 @@
 <div id="q-longterm-plan" class="question">
   <h3>9. What is the longterm preservation plan for the dataset?</h3>
-  {%- scope -%}
+
   <div class="answer">
     {# Published datasets #}
-    {%- set publishedDataPath = join([preservingCUuid, publishedDataQUuid], ".") -%}
-    {%- set publishedDataCount = repliesMap[publishedDataPath].value.value -%}
-    {%- if publishedDataCount && publishedDataCount > 0 -%}
+    {%- set publishedDataPath = [uuids.preservingCUuid, uuids.publishedDataQUuid]|reply_path -%}
+    {%- set publishedDataCount = repliesMap[publishedDataPath]|reply_int_value -%}
+    {%- if publishedDataCount > 0 -%}
       <ul>
-      {%- for i in range(publishedDataCount-1) -%}
-        {%- set pathPrefix = join([publishedDataPath, i], ".") -%}
-        {%- set publishedDataName = repliesMap[join([pathPrefix, publishedDataNameQUuid], ".")].value.value -%}
-        {%- set publishedDataRepositoryKindPath = join([pathPrefix, publishedDataRepositoryKindQUuid], ".") -%}
-        {%- set publishedDataRepositoryKindAUuid = repliesMap[publishedDataRepositoryKindPath].value.value -%}
-        {%- set publishedDataCataloguePath = join([pathPrefix, publishedDataCatalogueQUuid], ".") -%}
-        {%- set publishedDataCatalogueAUuid = repliesMap[publishedDataCataloguePath].value.value -%}
-        {%- if publishedDataRepositoryKindAUuid || publishedDataCatalogueAUuid -%}
+      {%- for i in range(publishedDataCount) -%}
+        {%- set pathPrefix = [publishedDataPath, i]|reply_path -%}
+        {%- set publishedDataName = repliesMap[[pathPrefix, uuids.publishedDataNameQUuid]|reply_path]|reply_str_value -%}
+        {%- set publishedDataRepositoryKindPath = [pathPrefix, uuids.publishedDataRepositoryKindQUuid]|reply_path -%}
+        {%- set publishedDataRepositoryKindAUuid = repliesMap[publishedDataRepositoryKindPath]|reply_str_value -%}
+        {%- set publishedDataCataloguePath = [pathPrefix, uuids.publishedDataCatalogueQUuid]|reply_path -%}
+        {%- set publishedDataCatalogueAUuid = repliesMap[publishedDataCataloguePath]|reply_str_value -%}
+        {%- if publishedDataRepositoryKindAUuid or publishedDataCatalogueAUuid -%}
           <li>
-            <strong>{{ publishedDataName ? publishedDataName : "(no name given)" }}</strong>
+            <strong>{{ publishedDataName if publishedDataName else "(no name given)" }}</strong>
             {%- if publishedDataRepositoryKindAUuid %}
               will be stored in
-              {%- if publishedDataRepositoryKindAUuid == publishedDataRepositoryDomainSpecificAUuid %}
+              {%- if publishedDataRepositoryKindAUuid == uuids.publishedDataRepositoryDomainSpecificAUuid %}
                 a domain-specific repository
-                {%- set domainSpecificRepoNamePath = join([publishedDataRepositoryKindPath, publishedDataRepositoryDomainSpecificAUuid, domainSpecificRepoNameQUuid], ".") -%}
+                {%- set domainSpecificRepoNamePath = [publishedDataRepositoryKindPath, uuids.publishedDataRepositoryDomainSpecificAUuid, uuids.domainSpecificRepoNameQUuid]|reply_path -%}
                 {%- set domainSpecificRepoNameReply = repliesMap[domainSpecificRepoNamePath] -%}
                 {%- if domainSpecificRepoNameReply -%}
-                  : {{ integrationValue(domainSpecificRepoNameReply, domainSpecificRepoNameQUuid) }}.
+                  : {{ macros.integrationValue(domainSpecificRepoNameReply, uuids.domainSpecificRepoNameQUuid) }}.
                 {%- else -%}.
                 {% endif -%}
                 {# Contact the repository #}
-                {%- set domainSpecificRepoContactBeforePath = join([publishedDataRepositoryKindPath, publishedDataRepositoryDomainSpecificAUuid, domainSpecificRepoContactBeforeQUuid], ".") -%}
-                {%- set domainSpecificRepoContactBeforeAUuid = repliesMap[domainSpecificRepoContactBeforePath].value.value -%}
-                {%- if domainSpecificRepoContactBeforeAUuid == domainSpecificRepoContactBeforeNoAUuid %}
+                {%- set domainSpecificRepoContactBeforePath = [publishedDataRepositoryKindPath, uuids.publishedDataRepositoryDomainSpecificAUuid, uuids.domainSpecificRepoContactBeforeQUuid]|reply_path -%}
+                {%- set domainSpecificRepoContactBeforeAUuid = repliesMap[domainSpecificRepoContactBeforePath]|reply_str_value -%}
+                {%- if domainSpecificRepoContactBeforeAUuid == uuids.domainSpecificRepoContactBeforeNoAUuid %}
                   We don't need to contact the repository because it is a routine for us.
-                {%- elif domainSpecificRepoContactBeforeAUuid == domainSpecificRepoContactBeforeYesAlreadyAUuid %}
+                {%- elif domainSpecificRepoContactBeforeAUuid == uuids.domainSpecificRepoContactBeforeYesAlreadyAUuid %}
                   We have already contacted the repository.
-                {%- elif domainSpecificRepoContactBeforeAUuid == domainSpecificRepoContactBeforeYesWillAUuid %}
+                {%- elif domainSpecificRepoContactBeforeAUuid == uuids.domainSpecificRepoContactBeforeYesWillAUuid %}
                   We are going to contact the repository.
-                {%- elif domainSpecificRepoContactBeforeAUuid == domainSpecificRepoContactBeforeOtherAUuid %}
-                  {%- set domainSpecificRepoContactBeforeOtherPath = join([domainSpecificRepoContactBeforePath, domainSpecificRepoContactBeforeOtherAUuid, domainSpecificRepoContactBeforeOtherQUuid], ".") -%}
-                  {%- set domainSpecificRepoContactBeforeOther = repliesMap[domainSpecificRepoContactBeforeOtherPath].value.value %}
-                  We have made other arrangements{{ domainSpecificRepoContactBeforeOther ? ": " ~ domainSpecificRepoContactBeforeOther : "" }}{{ endswith(domainSpecificRepoContactBeforeOther, ".") ? "" : "." }}
+                {%- elif domainSpecificRepoContactBeforeAUuid == uuids.domainSpecificRepoContactBeforeOtherAUuid %}
+                  {%- set domainSpecificRepoContactBeforeOtherPath = [domainSpecificRepoContactBeforePath, uuids.domainSpecificRepoContactBeforeOtherAUuid, uuids.domainSpecificRepoContactBeforeOtherQUuid]|reply_path -%}
+                  {%- set domainSpecificRepoContactBeforeOther = repliesMap[domainSpecificRepoContactBeforeOtherPath]|reply_str_value %}
+                  We have made other arrangements{{ ": " ~ domainSpecificRepoContactBeforeOther|dot if domainSpecificRepoContactBeforeOther else "." }}
                 {%- endif -%}
-              {%- elif publishedDataRepositoryKindAUuid == publishedDataRepositoryNationalAUuid %}
+              {%- elif publishedDataRepositoryKindAUuid == uuids.publishedDataRepositoryNationalAUuid %}
                 our national repository.
-              {%- elif publishedDataRepositoryKindAUuid == publishedDataRepositoryInstitutionalAUuid %}
+              {%- elif publishedDataRepositoryKindAUuid == uuids.publishedDataRepositoryInstitutionalAUuid %}
                 our institutional repository.
-              {%- elif publishedDataRepositoryKindAUuid == publishedDataRepositorySpecialAUuid %}
+              {%- elif publishedDataRepositoryKindAUuid == uuids.publishedDataRepositorySpecialAUuid %}
                 a special-purpose repository for the project.
                 {# Long-term support #}
-                {%- set specialRepoLongTermSupportPath = join([publishedDataRepositoryKindPath, publishedDataRepositorySpecialAUuid, specialRepoLongTermSupportQUuid], ".") -%}
-                {%- set specialRepoLongTermSupportAUuid = repliesMap[specialRepoLongTermSupportPath].value.value -%}
-                {%- if specialRepoLongTermSupportAUuid == specialRepoLongTermSupportYesAUuid %}
+                {%- set specialRepoLongTermSupportPath = [publishedDataRepositoryKindPath, uuids.publishedDataRepositorySpecialAUuid, uuids.specialRepoLongTermSupportQUuid]|reply_path -%}
+                {%- set specialRepoLongTermSupportAUuid = repliesMap[specialRepoLongTermSupportPath]|reply_str_value -%}
+                {%- if specialRepoLongTermSupportAUuid == uuids.specialRepoLongTermSupportYesAUuid %}
                   We will be able to support this repository for a sufficiently long time.
                 {%- endif -%}
                 {# Service level #}
-                {%- set specialRepoServiceLevelPath = join([publishedDataRepositoryKindPath, publishedDataRepositorySpecialAUuid, specialRepoServiceLevelQUuid], ".") -%}
-                {%- set specialRepoServiceLevelAUuid = repliesMap[specialRepoServiceLevelPath].value.value -%}
-                {%- if specialRepoServiceLevelAUuid == specialRepoServiceLevelDownloadAUuid %}
+                {%- set specialRepoServiceLevelPath = [publishedDataRepositoryKindPath, uuids.publishedDataRepositorySpecialAUuid, uuids.specialRepoServiceLevelQUuid]|reply_path -%}
+                {%- set specialRepoServiceLevelAUuid = repliesMap[specialRepoServiceLevelPath]|reply_str_value -%}
+                {%- if specialRepoServiceLevelAUuid == uuids.specialRepoServiceLevelDownloadAUuid %}
                   The repository will provide download-only service.
-                {%- elif specialRepoServiceLevelAUuid == specialRepoServiceLevelSimpleAUuid %}
+                {%- elif specialRepoServiceLevelAUuid == uuids.specialRepoServiceLevelSimpleAUuid %}
                   The repository will provice a search and simple access interface.
-                {%- elif specialRepoServiceLevelAUuid == specialRepoServiceLevelAdvancedAUuid %}
+                {%- elif specialRepoServiceLevelAUuid == uuids.specialRepoServiceLevelAdvancedAUuid %}
                   The repository will provide an advanced processing service.
                 {%- endif -%}
               {%- endif -%}
             {%- endif -%}
-            {%- if publishedDataCatalogueAUuid == publishedDataCatalogueYesAUuid -%}
+            {%- if publishedDataCatalogueAUuid == uuids.publishedDataCatalogueYesAUuid -%}
               {%- if publishedDataRepositoryKindAUuid %}
                 We
               {%- else %}
@@ -79,33 +79,32 @@
       </ul>
     {%- endif -%}
     {# Repository charges #}
-    {%- set repoChargesPath = join([preservingCUuid, repoChargesQUuid], ".") -%}
-    {%- set repoChargesAUuid = repliesMap[repoChargesPath].value.value -%}
-    {%- if repoChargesAUuid == repoChargesNoAUuid -%}
+    {%- set repoChargesPath = [uuids.preservingCUuid, uuids.repoChargesQUuid]|reply_path -%}
+    {%- set repoChargesAUuid = repliesMap[repoChargesPath]|reply_str_value -%}
+    {%- if repoChargesAUuid == uuids.repoChargesNoAUuid -%}
       <p>None of the used repositories charge for their services.</p>
-    {%- elif repoChargesAUuid == repoChargesYesAUuid -%}
-      {%- set repoChargesHowPayPath = join([repoChargesPath, repoChargesYesAUuid, repoChargesHowPayQUuid], ".") -%}
-      {%- set repoChargesHowPayAUuid = repliesMap[repoChargesHowPayPath].value.value -%}
-      {%- if repoChargesHowPayAUuid == repoChargesHowPayBudgetedAUuid -%}
+    {%- elif repoChargesAUuid == uuids.repoChargesYesAUuid -%}
+      {%- set repoChargesHowPayPath = [repoChargesPath, uuids.repoChargesYesAUuid, uuids.repoChargesHowPayQUuid]|reply_path -%}
+      {%- set repoChargesHowPayAUuid = repliesMap[repoChargesHowPayPath]|reply_str_value -%}
+      {%- if repoChargesHowPayAUuid == uuids.repoChargesHowPayBudgetedAUuid -%}
         <p>We have budgeted for the costs in the project to pay charges of the used repositories.</p>
-      {%- elif repoChargesHowPayAUuid == repoChargesHowPayDepartmentAUuid -%}
+      {%- elif repoChargesHowPayAUuid == uuids.repoChargesHowPayDepartmentAUuid -%}
         <p>The costs related to the used repositories will be carried by (one of) the departments involved in the project.</p>
-      {%- elif repoChargesHowPayAUuid == repoChargesHowPayInstituteAUuid -%}
+      {%- elif repoChargesHowPayAUuid == uuids.repoChargesHowPayInstituteAUuid -%}
         <p>The costs related to the used repositories will be carried by (one of) the institutes involved in the project.</p>
-      {%- elif repoChargesHowPayAUuid == repoChargesHowPayOtherAUuid -%}
-        {%- set repoChargesHowPayOtherPath = join([repoChargesHowPayPath, repoChargesHowPayOtherAUuid, repoChargesHowPayOtherQUuid], ".") -%}
-        {%- set repoChargesHowPayOther = repliesMap[repoChargesHowPayOtherPath].value.value -%}
+      {%- elif repoChargesHowPayAUuid == uuids.repoChargesHowPayOtherAUuid -%}
+        {%- set repoChargesHowPayOtherPath = [repoChargesHowPayPath, uuids.repoChargesHowPayOtherAUuid, uuids.repoChargesHowPayOtherQUuid]|reply_path -%}
+        {%- set repoChargesHowPayOther = repliesMap[repoChargesHowPayOtherPath]|reply_str_value -%}
         {%- if repoChargesHowPayOther -%}
-          <p>We will carry the costs related to the used repositories by: {{ repoChargesHowPayOther }}{{ endswith(repoChargesHowPayOther, ".") ? "" : "." }}</p>
+          <p>We will carry the costs related to the used repositories by: {{ repoChargesHowPayOther|dot }}</p>
         {%- endif -%}
       {%- endif -%}
     {%- endif -%}
     {# Budget time and effort #}
-    {%- set budgetTimeEffortPath = join([preservingCUuid, budgetTimeEffortQUuid], ".") -%}
-    {%- set budgetTimeEffortAUuid = repliesMap[budgetTimeEffortPath].value.value -%}
-    {%- if budgetTimeEffortAUuid == budgetTimeEffortYesAUuid -%}
+    {%- set budgetTimeEffortPath = [uuids.preservingCUuid, uuids.budgetTimeEffortQUuid]|reply_path -%}
+    {%- set budgetTimeEffortAUuid = repliesMap[budgetTimeEffortPath]|reply_str_value -%}
+    {%- if budgetTimeEffortAUuid == uuids.budgetTimeEffortYesAUuid -%}
       <p>We have a reserved budget for the time and effort it will take to prepare the data for publication.</p>
     {%- endif -%}
   </div>
-  {%- endscope -%}
 </div>

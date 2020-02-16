@@ -1,56 +1,54 @@
 <div id="q-restrictions" class="question">
   <h3>11. Are any restrictions on data sharing required?</h3>
-  {%- scope -%}
+
   <div class="answer">
     <p>Ethical and legal restrictions are documented under Section C. We have used the Data Stewardship Wizard, which made us aware of options to minimize the restrictions.</p>
 
-    {%- set openImmediatelyPath = join([accessCUuid, openImmediatelyQUuid], ".") -%}
-    {%- set openImmediatelyAUuid = repliesMap[openImmediatelyPath].value.value -%}
-    {%- if openImmediatelyAUuid == openImmediatelyYesAUuid -%}
+    {%- set openImmediatelyPath = [uuids.accessCUuid, uuids.openImmediatelyQUuid]|reply_path -%}
+    {%- set openImmediatelyAUuid = repliesMap[openImmediatelyPath]|reply_str_value -%}
+    {%- if openImmediatelyAUuid == uuids.openImmediatelyYesAUuid -%}
       <p>No data sharing agreement will be required.</p>
-    {%- elif openImmediatelyAUuid == openImmediatelyNoAUuid -%}
-      {%- set pathPrefix = join([openImmediatelyPath, openImmediatelyNoAUuid], ".") -%}
-
-      {%- set notOpenLimitedEmbargoPath = join([pathPrefix, notOpenLimitedEmbargoQUuid], ".") -%}
-      {%- set notOpenLimitedEmbargoAUuid = repliesMap[notOpenLimitedEmbargoPath].value.value -%}
-      {%- if notOpenLimitedEmbargoAUuid == notOpenLimitedEmbargoYesAUuid -%}
-        {%- set notOpenLimitedEmbargoPeriodPath = join([notOpenLimitedEmbargoPath, notOpenLimitedEmbargoYesAUuid, notOpenLimitedEmbargoPeriodQUuid], ".") -%}
-        {%- set notOpenLimitedEmbargoPeriod = repliesMap[notOpenLimitedEmbargoPeriodPath].value.value -%}
+    {%- elif openImmediatelyAUuid == uuids.openImmediatelyNoAUuid -%}
+      {%- set pathPrefix = [openImmediatelyPath, uuids.openImmediatelyNoAUuid]|reply_path -%}
+      {%- set notOpenLimitedEmbargoPath = [pathPrefix, uuids.notOpenLimitedEmbargoQUuid]|reply_path -%}
+      {%- set notOpenLimitedEmbargoAUuid = repliesMap[notOpenLimitedEmbargoPath]|reply_str_value -%}
+      {%- if notOpenLimitedEmbargoAUuid == uuids.notOpenLimitedEmbargoYesAUuid -%}
+        {%- set notOpenLimitedEmbargoPeriodPath = [notOpenLimitedEmbargoPath, uuids.notOpenLimitedEmbargoYesAUuid, uuids.notOpenLimitedEmbargoPeriodQUuid]|reply_path -%}
+        {%- set notOpenLimitedEmbargoPeriod = repliesMap[notOpenLimitedEmbargoPeriodPath]|reply_str_value -%}
         <p>
           Data cannot be completely open due to legal reasons. But data that is not legally restrained will be released after a fixed time period.
           {%- if notOpenLimitedEmbargoPeriod %}
-            The embargo period will be {{ notOpenLimitedEmbargoPeriod }}.
+            The embargo period will be {{ notOpenLimitedEmbargoPeriod|dot }}
           {%- endif %}
         </p>
       {%- endif -%}
 
-      {%- set legalReasonsAuthenticatedPath = join([pathPrefix, notOpenLegalReasonsQUuid, notOpenLegalReasonsYesAUuid, legalReasonsAuthenticatedQUuid], ".") -%}
-      {%- set legalReasonsAuthenticatedAUuid = repliesMap[legalReasonsAuthenticatedPath].value.value -%}
-      {%- if legalReasonsAuthenticatedAUuid == legalReasonsAuthenticatedYesAUuid -%}
+      {%- set legalReasonsAuthenticatedPath = [pathPrefix, uuids.notOpenLegalReasonsQUuid, uuids.notOpenLegalReasonsYesAUuid, uuids.legalReasonsAuthenticatedQUuid]|reply_path -%}
+      {%- set legalReasonsAuthenticatedAUuid = repliesMap[legalReasonsAuthenticatedPath]|reply_str_value -%}
+      {%- if legalReasonsAuthenticatedAUuid == uuids.legalReasonsAuthenticatedYesAUuid -%}
         <p>
           A data sharing agreement will be required.
-          {%- set legalReasonsAuthorizePath = join([legalReasonsAuthenticatedPath, legalReasonsAuthenticatedYesAUuid, legalReasonsAuthorizeQUuid], ".") -%}
-          {%- set legalReasonsAuthorizeAUuid = repliesMap[legalReasonsAuthorizePath].value.value -%}
-          {%- if legalReasonsAuthorizeAUuid == legalReasonsAuthorizeMemberAUuid %}
+          {%- set legalReasonsAuthorizePath = [legalReasonsAuthenticatedPath, uuids.legalReasonsAuthenticatedYesAUuid, uuids.legalReasonsAuthorizeQUuid]|reply_path -%}
+          {%- set legalReasonsAuthorizeAUuid = repliesMap[legalReasonsAuthorizePath]|reply_str_value -%}
+          {%- if legalReasonsAuthorizeAUuid == uuids.legalReasonsAuthorizeMemberAUuid %}
             People can apply to one of the project members.
-          {%- elif legalReasonsAuthorizeAUuid == legalReasonsAuthorizeNewCommitteeAUuid %}
+          {%- elif legalReasonsAuthorizeAUuid == uuids.legalReasonsAuthorizeNewCommitteeAUuid %}
             People can apply to the data access committee that we will set up.
-          {%- elif legalReasonsAuthorizeAUuid == legalReasonsAuthorizeOldCommitteeAUuid %}
-            {%- set legalReasonsAuthorizeOldCommitteePath = join([legalReasonsAuthorizePath, legalReasonsAuthorizeOldCommitteeAUuid, legalReasonsAuthorizeOldCommitteeQUuid], ".") -%}
-            {%- set legalReasonsAuthorizeOldCommittee = repliesMap[legalReasonsAuthorizeOldCommitteePath].value.value -%}
+          {%- elif legalReasonsAuthorizeAUuid == uuids.legalReasonsAuthorizeOldCommitteeAUuid %}
+            {%- set legalReasonsAuthorizeOldCommitteePath = [legalReasonsAuthorizePath, uuids.legalReasonsAuthorizeOldCommitteeAUuid, uuids.legalReasonsAuthorizeOldCommitteeQUuid]|reply_path -%}
+            {%- set legalReasonsAuthorizeOldCommittee = repliesMap[legalReasonsAuthorizeOldCommitteePath]|reply_str_value -%}
             {%- if legalReasonsAuthorizeOldCommittee %}
               People can apply to the <em>{{ legalReasonsAuthorizeOldCommittee }}</em> data access committee.
             {%- else -%}
               People can apply to an existing data access committee.
             {%- endif -%}
-          {%- elif legalReasonsAuthorizeAUuid == legalReasonsAuthorizeOtherAUuid %}
-            {%- set legalReasonsAuthorizeOtherPath = join([legalReasonsAuthorizePath, legalReasonsAuthorizeOtherAUuid, legalReasonsAuthorizeOtherQUuid], ".") -%}
-            {%- set legalReasonsAuthorizeOther = repliesMap[legalReasonsAuthorizeOtherPath].value.value %}
-            For the authorization of potential users, we will make special arrangements{{ legalReasonsAuthorizeOther ? ": " : "" }}{{ legalReasonsAuthorizeOther }}{{ endswith(legalReasonsAuthorizeOther, ".") ? "" : "." }}
+          {%- elif legalReasonsAuthorizeAUuid == uuids.legalReasonsAuthorizeOtherAUuid %}
+            {%- set legalReasonsAuthorizeOtherPath = [legalReasonsAuthorizePath, uuids.legalReasonsAuthorizeOtherAUuid, uuids.legalReasonsAuthorizeOtherQUuid]|reply_path -%}
+            {%- set legalReasonsAuthorizeOther = repliesMap[legalReasonsAuthorizeOtherPath]|reply_str_value %}
+            For the authorization of potential users, we will make special arrangements{{ ": " ~ legalReasonsAuthorizeOther|dot if legalReasonsAuthorizeOther else "." }}
           {%- endif -%}
         </p>
       {%- endif -%}
     {%- endif -%}
   </div>
-  {%- endscope -%}
 </div>

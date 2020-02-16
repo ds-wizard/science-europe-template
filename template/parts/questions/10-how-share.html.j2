@@ -1,49 +1,49 @@
 <div id="q-how-share" class="question">
   <h3>10. How will you share the data?</h3>
-  {%- scope -%}
+
   <div class="answer">
     {# Published datasets #}
-    {%- set publishedDataPath = join([preservingCUuid, publishedDataQUuid], ".") -%}
-    {%- set publishedDataCount = repliesMap[publishedDataPath].value.value -%}
-    {%- if publishedDataCount && publishedDataCount > 0 -%}
+    {%- set publishedDataPath = [uuids.preservingCUuid, uuids.publishedDataQUuid]|reply_path -%}
+    {%- set publishedDataCount = repliesMap[publishedDataPath]|reply_int_value -%}
+    {%- if publishedDataCount > 0 -%}
       <ul>
-      {%- for i in range(publishedDataCount-1) -%}
-        {%- set pathPrefix = join([publishedDataPath, i], ".") -%}
-        {%- set publishedDataName = repliesMap[join([pathPrefix, publishedDataNameQUuid], ".")].value.value -%}
-        {%- set publishedDataLicensePath = join([pathPrefix, publishedDataLicenseQUuid], ".") -%}
-        {%- set publishedDataLicenseAUuid = repliesMap[publishedDataLicensePath].value.value -%}
-        {%- set publishedDataDOIPath = join([pathPrefix, publishedDataDOIQUuid], ".") -%}
-        {%- set publishedDataDOIAUuid = repliesMap[publishedDataDOIPath].value.value -%}
-        {%- if publishedDataLicenseAUuid || (publishedDataDOIAUuid == publishedDataDOIYesAUuid) -%}
+      {%- for i in range(publishedDataCount) -%}
+        {%- set pathPrefix = [publishedDataPath, i]|reply_path -%}
+        {%- set publishedDataName = repliesMap[[pathPrefix, uuids.publishedDataNameQUuid]|reply_path]|reply_str_value -%}
+        {%- set publishedDataLicensePath = [pathPrefix, uuids.publishedDataLicenseQUuid]|reply_path -%}
+        {%- set publishedDataLicenseAUuid = repliesMap[publishedDataLicensePath]|reply_str_value -%}
+        {%- set publishedDataDOIPath = [pathPrefix, uuids.publishedDataDOIQUuid]|reply_path -%}
+        {%- set publishedDataDOIAUuid = repliesMap[publishedDataDOIPath]|reply_str_value -%}
+        {%- if publishedDataLicenseAUuid or (publishedDataDOIAUuid == uuids.publishedDataDOIYesAUuid) -%}
           <li>
-            <strong>{{ publishedDataName ? publishedDataName : "(no name given)" }}</strong>
-            {%- if publishedDataLicenseAUuid == publishedDataLicenseCC0AUuid %}
+            <strong>{{ publishedDataName if publishedDataName else "(no name given)" }}</strong>
+            {%- if publishedDataLicenseAUuid == uuids.publishedDataLicenseCC0AUuid %}
               <span class="separator">&ndash;</span> freely available for any use (public domain or CC0).
-            {%- elif publishedDataLicenseAUuid == publishedDataLicenseCCBYAUuid %}
+            {%- elif publishedDataLicenseAUuid == uuids.publishedDataLicenseCCBYAUuid %}
               <span class="separator">&ndash;</span> freely available with obligation to quote the source (e.g. CC-BY).
-            {%- elif publishedDataLicenseAUuid == publishedDataLicenseRestrictAUuid -%}
-              {%- set licenseRestrictConditionsPath = join([publishedDataLicensePath, publishedDataLicenseRestrictAUuid, licenseRestrictConditionsQUuid], ".") -%}
-              {%- set licenseRestrictConditions = repliesMap[licenseRestrictConditionsPath].value.value -%}
-              {%- set licenseRestrictAccessPath = join([publishedDataLicensePath, publishedDataLicenseRestrictAUuid, licenseRestrictAccessQUuid], ".") -%}
-              {%- set licenseRestrictAccessAUuid = repliesMap[licenseRestrictAccessPath].value.value -%}
-              {%- set licenseRestrictMetadataPath = join([publishedDataLicensePath, publishedDataLicenseRestrictAUuid, licenseRestrictMetadataQUuid], ".") -%}
-              {%- set licenseRestrictMetadataAUuid = repliesMap[licenseRestrictMetadataPath].value.value %}
-              <span class="separator">&ndash;</span> available under some restrictions, which we will follow in our project{{ licenseRestrictConditions ? ": " ~ licenseRestrictConditions : "" }}{{ endswith(licenseRestrictConditions, ".") ? "" : "." }}
-              {%- if licenseRestrictAccessAUuid == licenseRestrictAccessRequestAUuid %}
+            {%- elif publishedDataLicenseAUuid == uuids.publishedDataLicenseRestrictAUuid -%}
+              {%- set licenseRestrictConditionsPath = [publishedDataLicensePath, uuids.publishedDataLicenseRestrictAUuid, uuids.licenseRestrictConditionsQUuid]|reply_path -%}
+              {%- set licenseRestrictConditions = repliesMap[licenseRestrictConditionsPath]|reply_str_value -%}
+              {%- set licenseRestrictAccessPath = [publishedDataLicensePath, uuids.publishedDataLicenseRestrictAUuid, uuids.licenseRestrictAccessQUuid]|reply_path -%}
+              {%- set licenseRestrictAccessAUuid = repliesMap[licenseRestrictAccessPath]|reply_str_value -%}
+              {%- set licenseRestrictMetadataPath = [publishedDataLicensePath, uuids.publishedDataLicenseRestrictAUuid, uuids.licenseRestrictMetadataQUuid]|reply_path -%}
+              {%- set licenseRestrictMetadataAUuid = repliesMap[licenseRestrictMetadataPath]|reply_str_value %}
+              <span class="separator">&ndash;</span> available under some restrictions, which we will follow in our project{{ ": " ~ licenseRestrictConditions|dot if licenseRestrictConditions else "." }}
+              {%- if licenseRestrictAccessAUuid == uuids.licenseRestrictAccessRequestAUuid %}
                 Re-users will be able to get access by request to the contact person.
-              {%- elif licenseRestrictAccessAUuid == licenseRestrictAccessCommitteeAUuid %}
+              {%- elif licenseRestrictAccessAUuid == uuids.licenseRestrictAccessCommitteeAUuid %}
                 Re-users will be able to get access through a <em>Data Access Committee</em> for the project.
-              {%- elif licenseRestrictAccessAUuid == licenseRestrictAccessAnotherAUuid -%}
-                {%- set licenseRestrictAccessAnotherPath = join([licenseRestrictAccessPath, licenseRestrictAccessAnotherAUuid, licenseRestrictAccessAnotherQUuid], ".") -%}
-                {%- set licenseRestrictAccessAnother = repliesMap[licenseRestrictAccessAnotherPath].value.value %}
-                Re-users will be able to get access through a specialized process{{ licenseRestrictAccessAnother ? ": " ~ licenseRestrictAccessAnother : "" }}{{ endswith(licenseRestrictAccessAnother, ".") ? "" : "." }}
+              {%- elif licenseRestrictAccessAUuid == uuids.licenseRestrictAccessAnotherAUuid -%}
+                {%- set licenseRestrictAccessAnotherPath = [licenseRestrictAccessPath, uuids.licenseRestrictAccessAnotherAUuid, uuids.licenseRestrictAccessAnotherQUuid]|reply_path -%}
+                {%- set licenseRestrictAccessAnother = repliesMap[licenseRestrictAccessAnotherPath]|reply_str_value %}
+                Re-users will be able to get access through a specialized process{{ ": " ~ licenseRestrictAccessAnother|dot if licenseRestrictAccessAnother else "." }}
               {%- endif -%}
-              {%- if licenseRestrictMetadataAUuid == licenseRestrictMetadataYesAUuid %}
+              {%- if licenseRestrictMetadataAUuid == uuids.licenseRestrictMetadataYesAUuid %}
                 The conditions will be published as part of open metadata.
               {%- endif -%}
-              {%- if publishedDataDOIAUuid == publishedDataDOIYesAUuid -%}
-                {%- set publishedDataDOIYesWhatPath = join([publishedDataDOIPath, publishedDataDOIYesAUuid, publishedDataDOIYesWhatQUuid], ".") -%}
-                {%- set publishedDataDOIYesWhat = repliesMap[publishedDataDOIYesWhatPath].value.value -%}
+              {%- if publishedDataDOIAUuid == uuids.publishedDataDOIYesAUuid -%}
+                {%- set publishedDataDOIYesWhatPath = [publishedDataDOIPath, uuids.publishedDataDOIYesAUuid, uuids.publishedDataDOIYesWhatQUuid]|reply_path -%}
+                {%- set publishedDataDOIYesWhat = repliesMap[publishedDataDOIYesWhatPath]|reply_str_value -%}
                 {%- if publishedDataDOIYesWhat %}
                   The DOI for this data set is <a href="https://doi.org/{{ publishedDataDOIYesWhat }}" target="_blank">{{ publishedDataDOIYesWhat }}</a>.
                 {%- else %}
@@ -61,5 +61,4 @@
 
     <p>Embargo on the data is described in Section C, Question 5, and Section F, Question 11.</p>
   </div>
-  {%- endscope -%}
 </div>

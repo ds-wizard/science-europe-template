@@ -1,35 +1,35 @@
 <div id="q-which-longterm" class="question">
   <h3>8. Which data are of long-term value and should be retained, shared, and/or preserved?</h3>
-  {%- scope -%}
+
   <div class="answer">
     {# Published datasets #}
-    {%- set publishedDataPath = join([preservingCUuid, publishedDataQUuid], ".") -%}
-    {%- set publishedDataCount = repliesMap[publishedDataPath].value.value -%}
-    {%- if publishedDataCount && publishedDataCount > 0 -%}
+    {%- set publishedDataPath = [uuids.preservingCUuid, uuids.publishedDataQUuid]|reply_path -%}
+    {%- set publishedDataCount = repliesMap[publishedDataPath]|reply_int_value -%}
+    {%- if publishedDataCount > 0 -%}
       <p>
       We plan to publish the following datasets:
       <ul>
-      {%- for i in range(publishedDataCount-1) -%}
-        {%- set pathPrefix = join([publishedDataPath, i], ".") -%}
-        {%- set publishedDataName = repliesMap[join([pathPrefix, publishedDataNameQUuid], ".")].value.value -%}
+      {%- for i in range(publishedDataCount) -%}
+        {%- set pathPrefix = [publishedDataPath, i]|reply_path -%}
+        {%- set publishedDataName = repliesMap[[pathPrefix, uuids.publishedDataNameQUuid]|reply_path]|reply_str_value -%}
         <li>
-          <strong>{{ publishedDataName ? publishedDataName : "(no name given)" }}</strong>
+          <strong>{{ publishedDataName if publishedDataName else "(no name given)" }}</strong>
           {# How long will be stored + Metadata FAIRness #}
-          {%- set publishedDataHowLongPath = join([pathPrefix, publishedDataHowLongQUuid], ".") -%}
-          {%- set publishedDataHowLongAUuid = repliesMap[publishedDataHowLongPath].value.value -%}
-          {%- set publishedDataMetadataPersistentPath = join([pathPrefix, publishedDataMetadataPersistentQUuid], ".") -%}
-          {%- set publishedDataMetadataPersistentAUuid = repliesMap[publishedDataMetadataPersistentPath].value.value -%}
-          {%- if publishedDataMetadataPersistentPath || (publishedDataMetadataPersistentAUuid == publishedDataMetadataPersistentYesAUuid) %}
-            {% if publishedDataHowLongAUuid == publishedDataHowLongTechnicalAUuid -%}
+          {%- set publishedDataHowLongPath = [pathPrefix, uuids.publishedDataHowLongQUuid]|reply_path -%}
+          {%- set publishedDataHowLongAUuid = repliesMap[publishedDataHowLongPath]|reply_str_value -%}
+          {%- set publishedDataMetadataPersistentPath = [pathPrefix, uuids.publishedDataMetadataPersistentQUuid]|reply_path -%}
+          {%- set publishedDataMetadataPersistentAUuid = repliesMap[publishedDataMetadataPersistentPath]|reply_str_value -%}
+          {%- if publishedDataHowLongAUuid or (publishedDataMetadataPersistentAUuid == uuids.publishedDataMetadataPersistentYesAUuid) %}
+            {% if publishedDataHowLongAUuid == uuids.publishedDataHowLongTechnicalAUuid -%}
               <span class="separator">&ndash;</span> This data set will be kept available as long as technically possible.
-            {%- elif publishedDataHowLongAUuid == publishedDataHowLongLegalAUuid -%}
+            {%- elif publishedDataHowLongAUuid == uuids.publishedDataHowLongLegalAUuid -%}
               <span class="separator">&ndash;</span> This data set will be kept available until it needs to be deleted for legal reasons.
-            {%- elif publishedDataHowLongAUuid == publishedDataHowLongFixedAUuid -%}
-              {%- set publishedDataHowLongFixedPath = join([publishedDataHowLongPath, publishedDataHowLongFixedAUuid, publishedDataHowLongFixedQUuid], ".") -%}
-              {%- set publishedDataHowLongFixed = repliesMap[publishedDataHowLongFixedPath].value.value -%}
-              <span class="separator">&ndash;</span> This data set will be kept available for a fixed period (prepaid){{ publishedDataHowLongFixed ? " of: " ~ publishedDataHowLongFixed : "" }}{{ endswith(publishedDataHowLongFixed, ".") ? "" : "." }}
+            {%- elif publishedDataHowLongAUuid == uuids.publishedDataHowLongFixedAUuid -%}
+              {%- set publishedDataHowLongFixedPath = [publishedDataHowLongPath, uuids.publishedDataHowLongFixedAUuid, uuids.publishedDataHowLongFixedQUuid]|reply_path -%}
+              {%- set publishedDataHowLongFixed = repliesMap[publishedDataHowLongFixedPath]|reply_str_value -%}
+              <span class="separator">&ndash;</span> This data set will be kept available for a fixed period (prepaid){{ " of: " ~ publishedDataHowLongFixed|dot if publishedDataHowLongFixed else "." }}
             {%- endif -%}
-            {%- if publishedDataMetadataPersistentAUuid == publishedDataMetadataPersistentYesAUuid %}
+            {%- if publishedDataMetadataPersistentAUuid == uuids.publishedDataMetadataPersistentYesAUuid %}
               <span class="separator">&ndash;</span> The metadata will be available even when the data no longer exists.
             {%- endif -%}
           {%- endif -%}
@@ -39,5 +39,4 @@
       </p>
     {%- endif -%}
   </div>
-  {%- endscope -%}
 </div>
