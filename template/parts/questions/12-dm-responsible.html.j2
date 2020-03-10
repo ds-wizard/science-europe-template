@@ -2,9 +2,9 @@
   <h3>12. Who will be responsible for data management?</h3>
 
   <div class="answer">
-    {# TODO: Public questionnaires does not have "ctx.createdBy" filled #}
+    {# NOTE: Public questionnaires does not have "ctx.createdBy" filled #}
     {%- if ctx.createdBy %}
-      <p>{{ctx.createdBy.name}} {{ctx.createdBy.surname}} is responsible for implementing the DMP, and ensuring it is reviewed and revised.</p>
+      <p>{{ctx.createdBy.firstName}} {{ctx.createdBy.lastName}} is responsible for implementing the DMP, and ensuring it is reviewed and revised.</p>
     {%- endif -%}
 
     {%- set contributorsPath = [uuids.adminDetailsCUuid, uuids.contributorsQUuid]|reply_path -%}
