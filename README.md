@@ -2,8 +2,6 @@
 
 According to https://www.scienceeurope.org/media/nsxdyvqn/se_guidance_document_rdmps.pdf
 
-## Things to do
+## Installation
 
-* Versioning?
-* Styling (@janslifka)
-* Verification with all cases (@MarekSuchanek)
+Just `git clone` into your `templates/dmp` folder.
