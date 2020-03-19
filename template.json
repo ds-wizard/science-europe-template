@@ -1,20 +1,144 @@
 {
-    "uuid": "43a3fdd1-8535-42e0-81a7-5edbff296e66",
-    "name": "Science Europe DCC Template",
-    "rootFile": "parts/index.html.j2",
-    "allowedKMs": [
+  "uuid": "43a3fdd1-8535-42e0-81a7-5edbff296e66",
+  "name": "Science Europe DCC Template",
+  "allowedKMs": [
+    {
+        "orgId": "dsw",
+        "kmId": "root",
+        "minVersion": "2.0.0",
+        "maxVersion": null
+    },
+    {
+        "orgId": "dsw",
+        "kmId": "root-beta",
+        "minVersion": "2.0.16",
+        "maxVersion": null
+    }
+  ],
+  "formats": [
+    {
+      "uuid": "a9293d08-59a4-4e6b-ae62-7a6a570b031c",
+      "name": "HTML Document",
+      "icon": "far fa-file-code",
+      "steps": [
         {
-            "orgId": "dsw",
-            "kmId": "root",
-            "minVersion": "2.0.0",
-            "maxVersion": null
+          "name": "jinja",
+          "options": {
+            "template": "parts/index.html.j2",
+            "content-type": "text/html",
+            "extension": "html"
+          }
+        }
+      ]
+    },
+    {
+      "uuid": "68c26e34-5e77-4e15-9bf7-06ff92582257",
+      "name": "PDF Document",
+      "icon": "far fa-file-pdf",
+      "steps": [
+        {
+          "name": "jinja",
+          "options": {
+            "template": "parts/index.html.j2",
+            "content-type": "text/html",
+            "extension": "html"
+          }
         },
         {
-            "orgId": "dsw",
-            "kmId": "root-beta",
-            "minVersion": "2.0.16",
-            "maxVersion": null
+          "name": "wkhtmltopdf",
+          "options": {
+              "args": "--disable-smart-shrinking --footer-center [page] --footer-font-name \"Noto Serif\" --footer-spacing 10 --footer-font-size 10 -B 25mm -L 25mm -R 25mm -T 25mm"
+          }
         }
-    ],
-    "wkhtmltopdf": "--disable-smart-shrinking --footer-center [page] --footer-font-name \"Noto Serif\" --footer-spacing 10 --footer-font-size 10 -B 25mm -L 25mm -R 25mm -T 25mm"
+      ]
+    },
+    {
+      "uuid": "dbc94579-40d7-42c3-975c-71e30d07778b",
+      "name": "LaTeX Document",
+      "icon": "far fa-file-alt",
+      "steps": [
+        {
+          "name": "jinja",
+          "options": {
+            "template": "parts/index.html.j2",
+            "content-type": "text/html",
+            "extension": "html"
+          }
+        },
+        {
+          "name": "pandoc",
+          "options": {
+            "from": "html",
+            "to": "latex"
+          }
+        }
+      ]
+    },
+    {
+      "uuid": "f4bd941a-dfbe-4226-a1fc-200fb5269311",
+      "name": "MS Word Document",
+      "icon": "far fa-file-word",
+      "steps": [
+        {
+          "name": "jinja",
+          "options": {
+            "template": "parts/index.html.j2",
+            "content-type": "text/html",
+            "extension": "html"
+          }
+        },
+        {
+          "name": "pandoc",
+          "options": {
+            "from": "html",
+            "to": "docx"
+          }
+        }
+      ]
+    },
+    {
+      "uuid": "15e53172-bbae-4a0c-a4d9-8f3ddf60e7b6",
+      "name": "OpenDocument Text",
+      "icon": "far fa-file-alt",
+      "steps": [
+        {
+          "name": "jinja",
+          "options": {
+            "template": "parts/index.html.j2",
+            "content-type": "text/html",
+            "extension": "html"
+          }
+        },
+        {
+          "name": "pandoc",
+          "options": {
+            "from": "html",
+            "to": "odt"
+          }
+        }
+      ]
+    },
+    {
+      "uuid": "f0533e48-f4c5-4af2-b2c1-5a47d4a247c0",
+      "name": "Markdown Document",
+      "icon": "far fa-file-alt",
+      "steps": [
+        {
+          "name": "jinja",
+          "options": {
+            "template": "parts/index.html.j2",
+            "content-type": "text/html",
+            "extension": "html"
+          }
+        },
+        {
+          "name": "pandoc",
+          "options": {
+            "from": "html",
+            "to": "markdown"
+          }
+        }
+      ]
+    }
+  ]
 }
