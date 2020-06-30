@@ -1,7 +1,13 @@
 {
-  "uuid": "43a3fdd1-8535-42e0-81a7-5edbff296e66",
-  "name": "Science Europe DCC Template",
-  "allowedKMs": [
+  "id": "dsw:science-europe:1.0.0",
+  "organizationId": "dsw",
+  "templateId": "science-europe",
+  "version": "1.0.0",
+  "name": "Science Europe DMP Template",
+  "description": "Default DCC DMP Template recommended by Science Europe",
+  "readme": "# Science Europe DMP Template\n\nThis is the DMP template recommended by [Science Europe](https://www.scienceeurope.org) in their [Science Europe Guidance Document](https://www.scienceeurope.org/media/nsxdyvqn/se_guidance_document_rdmps.pdf) designed for use in [Data Stewardship Wizard](https://ds-wizard.org) with *Common Data Stewardship knowledge model*. It applies various rules and synthesizes the text answers from questionnaire replies to relevant questions.\n\n## Changelog\n\n### 1.0.0\n\n- Compatible with `dsw:root:2.0.0` and up to `dsw:root:2.1.0`\n- Initial version of DMP template created during [ELIXIR BioHackathon Europe 2019](https://www.biohackathon-europe.org)\n",
+  "recommendedPackageId": "dsw:root:2.1.0",
+  "allowedPackages": [
     {
         "orgId": "dsw",
         "kmId": "root",
@@ -13,13 +19,27 @@
         "kmId": "root-beta",
         "minVersion": "2.0.16",
         "maxVersion": null
+    },
+    {
+        "orgId": "dsw",
+        "kmId": "lifesciences",
+        "minVersion": "2.0.0",
+        "maxVersion": null
+    },
+    {
+        "orgId": "elixir.no",
+        "kmId": "lifesciences-elixir-norway",
+        "minVersion": "0.0.13",
+        "maxVersion": null
     }
   ],
   "formats": [
     {
       "uuid": "a9293d08-59a4-4e6b-ae62-7a6a570b031c",
       "name": "HTML Document",
+      "shortName": "html",
       "icon": "far fa-file-code",
+      "color": "#497F13",
       "steps": [
         {
           "name": "jinja",
@@ -34,7 +54,9 @@
     {
       "uuid": "68c26e34-5e77-4e15-9bf7-06ff92582257",
       "name": "PDF Document",
+      "shortName": "pdf",
       "icon": "far fa-file-pdf",
+      "color": "#E02222",
       "steps": [
         {
           "name": "jinja",
@@ -55,7 +77,9 @@
     {
       "uuid": "dbc94579-40d7-42c3-975c-71e30d07778b",
       "name": "LaTeX Document",
+      "shortName": "latex",
       "icon": "far fa-file-alt",
+      "color": "#44D7B6",
       "steps": [
         {
           "name": "jinja",
@@ -77,7 +101,9 @@
     {
       "uuid": "f4bd941a-dfbe-4226-a1fc-200fb5269311",
       "name": "MS Word Document",
+      "shortName": "docx",
       "icon": "far fa-file-word",
+      "color": "#0991FF",
       "steps": [
         {
           "name": "jinja",
@@ -99,7 +125,9 @@
     {
       "uuid": "15e53172-bbae-4a0c-a4d9-8f3ddf60e7b6",
       "name": "OpenDocument Text",
+      "shortName": "odt",
       "icon": "far fa-file-alt",
+      "color": "#32C5FF",
       "steps": [
         {
           "name": "jinja",
@@ -121,7 +149,9 @@
     {
       "uuid": "f0533e48-f4c5-4af2-b2c1-5a47d4a247c0",
       "name": "Markdown Document",
+      "shortName": "md",
       "icon": "far fa-file-alt",
+      "color": "#6D7278",
       "steps": [
         {
           "name": "jinja",
