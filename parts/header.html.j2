@@ -1,23 +1,10 @@
 <header>
   <p class="dmp"></p>
   <h1>
-    {%- set projectNamePath = [uuids.adminDetailsCUuid, uuids.projectNameQUuid]|join(".") -%}
-    {%- set projectNameReply = repliesMap[projectNamePath] -%}
-    {%- if projectNameReply and projectNameReply.value.value != "" -%}
-      {{ projectNameReply.value.value }}
-    {%- else -%}
-      <span class="empty-value">(project name not given)</span>
-    {%- endif -%}
+    {{ ctx.questionnaireName }}
   </h1>
   <div>
     <dl>
-      {%- set grantNumberPath = [uuids.adminDetailsCUuid, uuids.grantNumberQUuid]|join(".") -%}
-      {%- set grantNumberReply = repliesMap[grantNumberPath] -%}
-      {%- if grantNumberReply %}
-        <dt>Grant number</dt>
-        <dd>{{ grantNumberReply.value.value }}</dd>
-      {%- endif -%}
-
       {%- set contributorsPath = [uuids.adminDetailsCUuid, uuids.contributorsQUuid]|join(".") -%}
       {%- set contributorsReply = repliesMap[contributorsPath] -%}
       {%- if contributorsReply -%}
@@ -66,37 +53,24 @@
         </dd>
       {%- endif -%}
 
-      {# {%- set projectAbstractPath = join([uuids.adminDetailsCUuid, uuids.projectAbstractQUuid], ".") -%}
-      {%- set projectAbstractReply = repliesMap[projectAbstractPath] -%}
-      {%- if projectAbstractReply %}
-        <dt>Project abstract</dt>
-        <dd>{{ projectAbstractReply.value.value }}</dd>
-      {%- endif -%} #}
-
       <dt>Based on</dt>
       <dd>{{ ctx.package.name }}, {{ ctx.package.version }} (<span class="package-id"><span class="organization-id">{{ ctx.package.organizationId }}</span>:<span class="km-id">{{ ctx.package.kmId }}</span>:<span class="version">{{ ctx.package.version }}</span></span>)</dd>
+
       {%- if ctx.config.levelsEnabled.levelsEnabled -%}
       <dt>Project phase</dt>
       <dd>{{ macros.renderCurrentLevel() }}</dd>
       {%- endif -%}
+
+      {%- if ctx.createdBy -%}
+      <dt>Created by</dt>
+      <dd><span class="contact-name">{{ ctx.createdBy.firstName }} {{ ctx.createdBy.lastName }}</span> ({{ macros.formatEmail(ctx.createdBy.email) }}){% if ctx.createdBy.affiliation %}<br>{{ ctx.createdBy.affiliation }}{% endif %}</dd>
+      {%- endif -%}
+
       <dt>Generated on</dt>
       <dd>{{ ctx.createdAt|datetime_format("%d %b %Y") }}</dd>
     </dl>
     <p class="dsw">
-      Data Management Plan created in Data Stewardship Wizard <<a href="https://ds-wizard.org" target="_blank">https://ds-wizard.org</a>>
+      Data Management Plan created in Data Stewardship Wizard &laquo;<a href="https://ds-wizard.org" target="_blank">ds-wizard.org</a>&raquo;
     </p>
   </div>
 </header>
-
-
-{%- set projectAbstractPath = [uuids.adminDetailsCUuid, uuids.projectAbstractQUuid]|join(".") -%}
-{%- set projectAbstractReply = repliesMap[projectAbstractPath] -%}
-{%- if projectAbstractReply and projectAbstractReply.value.value %}
-<section class="abstract">
-  <h2>Abstract</h2>
-  {%- set paragraphs = projectAbstractReply.value.value.split('\n') -%}
-  {% for paragraph in paragraphs %}
-  <p>{{ paragraph }}</p>
-  {% endfor %}
-</section>
-{%- endif -%}
