@@ -7,7 +7,7 @@
 {%- set levelDefinitions = ctx.levels -%}
 {% import "parts/macros.html.j2" as macros with context %}
 {% import "parts/uuids.j2" as uuids with context %}
-<html>
+<html lang="en">
   <head>
     <title>Data Management Plan</title>
     <meta charset="utf-8">
@@ -18,6 +18,7 @@
   <body>
     <article class="dmp">
       {% include "parts/header.html.j2" with context %}
+      {% include "parts/projects.html.j2" with context %}
       {% include "parts/content.html.j2" with context %}
     </article>
   </body>

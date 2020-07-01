@@ -1,0 +1,63 @@
+{%- set projectsPath = [uuids.adminDetailsCUuid, uuids.projectsQUuid]|reply_path -%}
+{%- set projectsCount = repliesMap[projectsPath]|reply_int_value -%}
+<div id="dmp-projects">
+  <h2>Projects</h2>
+
+  <p>We will be working on the following projects and for those are the data and work described in this DMP.</p>
+
+  {% for projectIndex in range(projectsCount) %}
+    <div class="project">
+    {%- set projectNamePath = [projectsPath, projectIndex, uuids.projectNameQUuid]|reply_path -%}
+    {%- set projectName = repliesMap[projectNamePath]|reply_str_value -%}
+    {%- if projectName -%}
+      <h3>{{ projectName }}</h3>
+    {%- else -%}
+      <h3 class="empty-value">(project name not given)</h3>
+    {%- endif -%}
+
+    {%- set projectStartPath = [projectsPath, projectIndex, uuids.projectStartQUuid]|reply_path -%}
+    {%- set projectStart = repliesMap[projectStartPath]|reply_str_value -%}
+    {%- set projectEndPath = [projectsPath, projectIndex, uuids.projectEndQUuid]|reply_path -%}
+    {%- set projectEnd = repliesMap[projectEndPath]|reply_str_value -%}
+    {%- set fundersPath = [projectsPath, projectIndex, uuids.fundersQUuid]|reply_path -%}
+    {%- set fundersCount = repliesMap[fundersPath]|reply_int_value -%}
+      <dl>
+        <dt>Start date</dt>
+        <dd>{{ projectStart if projectStart else "N/A" }}</dd>
+        <dt>End date</dt>
+        <dd>{{ projectEnd if projectEnd else "N/A" }}</dd>
+        <dt>Funding</dt>
+        <dd>
+          {%- if fundersCount > 0 %}
+            <ul>
+            {%- for funderIndex in range(fundersCount) %}
+              {%- set funderNamePath = [fundersPath, funderIndex, uuids.funderNameQUuid]|reply_path -%}
+              {%- set funderNameReply = repliesMap[funderNamePath] -%}
+              {%- set grantNumberPath = [fundersPath, funderIndex, uuids.grantNumberQUuid]|reply_path -%}
+              {%- set grantNumber = repliesMap[grantNumberPath]|reply_str_value -%}
+              {%- set funderStatusPath = [fundersPath, funderIndex, uuids.funderStatusQUuid]|reply_path -%}
+              {%- set funderStatus = repliesMap[funderStatusPath]|reply_str_value %}
+              <li>{{ macros.integrationValue(funderNameReply, uuids.funderNameQUuid) }}: {{ grantNumber if grantNumber else "grant number not yet given" }} {% if funderStatus == uuids.funderStatusPlannedAUuid %}(planned){% elif funderStatus == uuids.funderStatusAppliedAUuid %}(applied){% elif funderStatus == uuids.funderStatusGrantedAUuid %}(granted){% elif funderStatus == uuids.funderStatusRejectedAUuid %}(rejected){% endif %}</li>
+            {%- endfor %}
+            </ul>
+          {%- else -%}
+            Did not apply for any funding yet.
+          {%- endif -%}
+        </dd>
+      </dl>
+
+    {%- set projectAbstractPath = [projectsPath, projectIndex, uuids.projectAbstractQUuid]|reply_path -%}
+    {%- set projectAbstract = repliesMap[projectAbstractPath]|reply_str_value -%}
+    {%- if projectAbstract %}
+      <section class="abstract">
+        {%- set paragraphs = projectAbstract.split('\n') -%}
+        {% for paragraph in paragraphs %}
+        <p>{{ paragraph }}</p>
+        {% endfor %}
+      </section>
+    {%- endif -%}
+    </div>
+  {% else %}
+    <div style="font-style:italic;">There are no projects described for this DMP.</div>
+  {% endfor %}
+</div>
