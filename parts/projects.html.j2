@@ -15,18 +15,6 @@
       <h3 class="empty-value">(project name not given)</h3>
     {%- endif -%}
 
-    {%- set projectAbstractPath = [projectsPath, projectIndex, uuids.projectAbstractQUuid]|reply_path -%}
-    {%- set projectAbstract = repliesMap[projectAbstractPath]|reply_str_value -%}
-    {%- if projectAbstract %}
-      <section class="abstract">
-        <h2>Abstract</h2>
-        {%- set paragraphs = projectAbstract.split('\n') -%}
-        {% for paragraph in paragraphs %}
-        <p>{{ paragraph }}</p>
-        {% endfor %}
-      </section>
-    {%- endif -%}
-
     {%- set projectStartPath = [projectsPath, projectIndex, uuids.projectStartQUuid]|reply_path -%}
     {%- set projectStart = repliesMap[projectStartPath]|reply_str_value -%}
     {%- set projectEndPath = [projectsPath, projectIndex, uuids.projectEndQUuid]|reply_path -%}
@@ -57,8 +45,19 @@
           {%- endif -%}
         </dd>
       </dl>
+
+    {%- set projectAbstractPath = [projectsPath, projectIndex, uuids.projectAbstractQUuid]|reply_path -%}
+    {%- set projectAbstract = repliesMap[projectAbstractPath]|reply_str_value -%}
+    {%- if projectAbstract %}
+      <section class="abstract">
+        {%- set paragraphs = projectAbstract.split('\n') -%}
+        {% for paragraph in paragraphs %}
+        <p>{{ paragraph }}</p>
+        {% endfor %}
+      </section>
+    {%- endif -%}
     </div>
   {% else %}
-    <span style="font-style:italic;">There are no projects described</span>
+    <div style="font-style:italic;">There are no projects described for this DMP.</div>
   {% endfor %}
 </div>

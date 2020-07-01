@@ -2,18 +2,26 @@
   <h3>8. Which data are of long-term value and should be retained, shared, and/or preserved?</h3>
 
   <div class="answer">
-    {# Published datasets #}
-    {%- set publishedDataPath = [uuids.preservingCUuid, uuids.publishedDataQUuid]|reply_path -%}
-    {%- set publishedDataCount = repliesMap[publishedDataPath]|reply_int_value -%}
-    {%- if publishedDataCount > 0 -%}
+    {# Produced datasets #}
+    {%- set producedDataPath = [uuids.preservingCUuid, uuids.producedDataQUuid]|reply_path -%}
+    {%- set producedDataCount = repliesMap[producedDataPath]|reply_int_value -%}
+    {%- if producedDataCount > 0 -%}
       <p>
-      We plan to publish the following datasets:
+      We plan to produce the following datasets:
       <ul>
-      {%- for i in range(publishedDataCount) -%}
-        {%- set pathPrefix = [publishedDataPath, i]|reply_path -%}
-        {%- set publishedDataName = repliesMap[[pathPrefix, uuids.publishedDataNameQUuid]|reply_path]|reply_str_value -%}
+      {%- for i in range(producedDataCount) -%}
+        {%- set pathPrefix = [producedDataPath, i]|reply_path -%}
+        {%- set producedDataName = repliesMap[[pathPrefix, uuids.producedDataNameQUuid]|reply_path]|reply_str_value -%}
         <li>
-          <strong>{{ publishedDataName if publishedDataName else "(no name given)" }}</strong>
+          <strong>{{ producedDataName if producedDataName else "(no name given)" }}</strong>
+          {# If will be published #}
+          {%- set isPublishedDataPath = [pathPrefix, uuids.isPublishedDataQUuid]|reply_path -%}
+          {%- set isPublishedDataAUuid = repliesMap[isPublishedDataPath]|reply_str_value -%}
+          {% if isPublishedDataAUuid == uuids.isPublishedDataNoAUuid %}
+            (not published)
+          {% elif isPublishedDataAUuid == uuids.isPublishedDataYesAUuid %}
+            (published)
+          {% endif -%}
           {# How long will be stored + Metadata FAIRness #}
           {%- set publishedDataHowLongPath = [pathPrefix, uuids.publishedDataHowLongQUuid]|reply_path -%}
           {%- set publishedDataHowLongAUuid = repliesMap[publishedDataHowLongPath]|reply_str_value -%}
