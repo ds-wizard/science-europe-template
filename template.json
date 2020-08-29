@@ -7,6 +7,7 @@
   "description": "Default DCC DMP Template recommended by Science Europe",
   "readme": "# Science Europe DMP Template\n\nThis is the DMP template recommended by [Science Europe](https://www.scienceeurope.org) in their [Science Europe Guidance Document](https://www.scienceeurope.org/media/nsxdyvqn/se_guidance_document_rdmps.pdf) designed for use in [Data Stewardship Wizard](https://ds-wizard.org) with *Common Data Stewardship knowledge model*. It applies various rules and synthesizes the text answers from questionnaire replies to relevant questions.\n\n## Changelog\n\n### 1.1.0\n\n- Compatible with `dsw:root:2.2.0`\n- Updated projects and front page as there can be multiple projects specified for a single DMP\n- Questions 8, 9, and 10 updated according to DMP Common Standard with dataset - distribution - license hierarchy\n\n### 1.0.0\n\n- Compatible with `dsw:root:2.0.0` and up to `dsw:root:2.1.0`\n- Initial version of DMP template created during [ELIXIR BioHackathon Europe 2019](https://www.biohackathon-europe.org)\n",
   "recommendedPackageId": "dsw:root:2.2.0",
+  "metamodelVersion": 2,
   "allowedPackages": [
     {
         "orgId": "dsw",

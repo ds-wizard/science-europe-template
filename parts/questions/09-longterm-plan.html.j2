@@ -4,10 +4,10 @@
   <div class="answer">
     {# Produced datasets #}
     {%- set producedDataPath = [uuids.preservingCUuid, uuids.producedDataQUuid]|reply_path -%}
-    {%- set producedDataCount = repliesMap[producedDataPath]|reply_int_value -%}
-    {%- if producedDataCount > 0 -%}
+    {%- set producedDataItems = repliesMap[producedDataPath]|reply_items -%}
+    {%- if producedDataItems|length > 0 -%}
       <ul>
-      {%- for i in range(producedDataCount) -%}
+      {%- for i in producedDataItems -%}
         {%- set pathPrefix = [producedDataPath, i]|reply_path -%}
         {%- set producedDataName = repliesMap[[pathPrefix, uuids.producedDataNameQUuid]|reply_path]|reply_str_value -%}
         <li>
@@ -21,11 +21,11 @@
             (published)
           {# Distributions #}
           {% set distrosPath = [isPublishedDataPath, uuids.isPublishedDataYesAUuid, uuids.publishedDistrosQUuid]|reply_path -%}
-          {%- set distrosCount = repliesMap[distrosPath]|reply_int_value -%}
-          {%- if distrosCount > 0 -%}
+          {%- set distrosItems = repliesMap[distrosPath]|reply_items -%}
+          {%- if distrosItems|length > 0 -%}
             <br>The distributions will be stored in:
             <ul>
-            {%- for j in range(distrosCount) -%}
+            {%- for j in distrosItems -%}
               {%- set distroPrefix = [distrosPath, j]|reply_path -%}
               {%- set distroRepositoryKindPath = [distroPrefix, uuids.publishedDataRepositoryKindQUuid]|reply_path -%}
               {%- set distroRepositoryKindAUuid = repliesMap[distroRepositoryKindPath]|reply_str_value -%}

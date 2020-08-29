@@ -3,23 +3,23 @@
   <div class="answer">
 
   {%- set measuredDataPath = [uuids.creatingCUuid, uuids.measuredDataQUuid]|reply_path -%}
-  {%- set measuredDataCount = repliesMap[measuredDataPath]|reply_int_value -%}
+  {%- set measuredDataItems = repliesMap[measuredDataPath]|reply_items -%}
   {# Measured datasets #}
-  {%- if measuredDataCount > 0 -%}
+  {%- if measuredDataItems|length > 0 -%}
     <div>
     <h4>Instrument datasets</h4>
     The following instrument datasets will be acquired in the project:
     <ul>
-      {%- for datasetIndex in range(measuredDataCount) -%}
-        {%- set pathPrefix = [measuredDataPath, datasetIndex]|reply_path -%}
+      {%- for datasetItem in measuredDataItems -%}
+        {%- set pathPrefix = [measuredDataPath, datasetItem]|reply_path -%}
         <li>
           {%- set measuredDataNamePath = [pathPrefix, uuids.measuredDataNameQUuid]|reply_path -%}
-          {%- set measuredDataName = repliesMap[measuredDataNamePath] -%}
+          {%- set measuredDataName = repliesMap[measuredDataNamePath]|reply_str_value -%}
           {%- set measuredDataWhoPath = [pathPrefix, uuids.measuredDataWhoQUuid]|reply_path -%}
           {%- set measuredDataWhoAUuid = repliesMap[measuredDataWhoPath]|reply_str_value -%}
           {%- set measuredDataEquipPath = [pathPrefix, uuids.measuredDataEquipQUuid]|reply_path -%}
           {%- set measuredDataEquipAUuid = repliesMap[measuredDataEquipPath]|reply_str_value -%}
-          <strong>{{ measuredDataName.value.value if (measuredDataName and measuredDataName.value.value) else "(no name given)" }}</strong>
+          <strong>{{ measuredDataName if measuredDataName else "(no name given)" }}</strong>
           {# Who will collect #}
           {%- if measuredDataWhoAUuid == uuids.measuredDataWhoExpertsOwnAUuid -%}
             <p>This dataset will be collected by experts in the project, with our own equipment.</p>
@@ -66,12 +66,12 @@
     {%- set neqDataERecordsPath = [neqDataPrefix, uuids.neqDataERecordsQUuid]|reply_path -%}
     {%- set neqDataERecordsAUuid = repliesMap[neqDataERecordsPath]|reply_str_value -%}
     {%- set neqDataSetsPath = [neqDataPrefix, uuids.neqDataSetsQUuid]|reply_path -%}
-    {%- set neqDataSetsCount = repliesMap[neqDataSetsPath]|reply_int_value -%}
+    {%- set neqDataSetsItems = repliesMap[neqDataSetsPath]|reply_items -%}
 
     {%- set questionnaires = neqDataQuestAUuid == uuids.neqDataQuestYesAUuid -%}
     {%- set caseReport = neqDataCaseReportAUuid == uuids.neqDataCaseReportYesAUuid -%}
     {%- set eRecords = neqDataERecordsAUuid == uuids.neqDataERecordsYesAUuid -%}
-    {%- if questionnaires or caseReport or eRecords or neqDataSetsCount > 0 -%}
+    {%- if questionnaires or caseReport or eRecords or neqDataSetsItems|length > 0 -%}
       <div>
       <h4>Non-equipment datasets</h4>
       {# Types #}
@@ -92,11 +92,11 @@
           {%- endif -%}
         {% endif %}
         {# Datasets #}
-        {%- if neqDataSetsCount > 0 -%}
+        {%- if neqDataSetsItems|length > 0 -%}
           The non-equipment datasets are:
           <ul>
-          {%- for neqDataSetIndex in range(neqDataSetsCount) -%}
-            {%- set pathPrefix = [neqDataSetsPath, neqDataSetIndex]|reply_path -%}
+          {%- for neqDataSetItem in neqDataSetsItems -%}
+            {%- set pathPrefix = [neqDataSetsPath, neqDataSetItem]|reply_path -%}
             {%- set neqDataSetsName = repliesMap[[pathPrefix, uuids.neqDataSetsNameQUuid]|reply_path]|reply_str_value -%}
             {%- set neqDataSetsDesc = repliesMap[[pathPrefix, uuids.neqDataSetsDescQUuid]|reply_path]|reply_str_value -%}
             <li>
@@ -118,17 +118,17 @@
     {%- set usingPreexistingAUuid = repliesMap[usingPreexistingPath]|reply_str_value -%}
     {%- if usingPreexistingAUuid == uuids.usingPreexistingYesAUuid -%}
       {%- set refDataPath = [usingPreexistingPath, uuids.usingPreexistingYesAUuid, uuids.refDataQUuid]|reply_path -%}
-      {%- set refDataCount = repliesMap[refDataPath]|reply_int_value -%}
+      {%- set refDataItems = repliesMap[refDataPath]|reply_items -%}
       {%- set nrefDataPath = [usingPreexistingPath, uuids.usingPreexistingYesAUuid, uuids.nrefDataQUuid]|reply_path -%}
-      {%- set nrefDataCount = repliesMap[nrefDataPath]|reply_int_value -%}
-      {%- if (refDataCount + nrefDataCount) > 0 -%}
+      {%- set nrefDataItems = repliesMap[nrefDataPath]|reply_items -%}
+      {%- if (refDataItems|length + nrefDataItems|length) > 0 -%}
         <div>
           <h4>Re-used datasets</h4>
-          {%- if refDataCount > 0 -%}
+          {%- if refDataItems|length > 0 -%}
             <div>We will use the following reference datasets:
             <ul>
-              {%- for refDataIndex in range(refDataCount) -%}
-                {%- set refDataPrefix = [refDataPath, refDataIndex]|reply_path -%}
+              {%- for refDataItem in refDataItems -%}
+                {%- set refDataPrefix = [refDataPath, refDataItem]|reply_path -%}
                 {%- set refDataNameReply = repliesMap[[refDataPrefix, uuids.refDataNameQUuid]|reply_path] -%}
                 {%- set refDataWhere = repliesMap[[refDataPrefix, uuids.refDataWhereQUuid]|reply_path]|reply_str_value -%}
                 <li>
@@ -169,11 +169,11 @@
             </ul>
             </div>
           {%- endif -%}
-          {%- if nrefDataCount > 0 -%}
+          {%- if nrefDataItems|length > 0 -%}
             <div>We will use the following already existing non-reference datasets:
             <ul>
-              {%- for nrefDataIndex in range(nrefDataCount) -%}
-                {%- set nrefDataNamePath = [nrefDataPath, nrefDataIndex, uuids.nrefDataNameQUuid]|reply_path -%}
+              {%- for nrefDataItem in nrefDataItems -%}
+                {%- set nrefDataNamePath = [nrefDataPath, nrefDataItem, uuids.nrefDataNameQUuid]|reply_path -%}
                 {%- set nrefDataNameReply = repliesMap[nrefDataNamePath] -%}
                 {%- set nrefDataWhere = repliesMap[[nrefDataPrefix, uuids.nrefDataWhereQUuid]|reply_path]|reply_str_value -%}
                 <li>
@@ -187,7 +187,7 @@
                     {%- endif -%}
                   {%- endif -%}
                   {# data access #}
-                  {%- set nrefDataAccessPath = [nrefDataPath, nrefDataIndex, uuids.nrefDataAccessQUuid]|reply_path -%}
+                  {%- set nrefDataAccessPath = [nrefDataPath, nrefDataItem, uuids.nrefDataAccessQUuid]|reply_path -%}
                   {%- set nrefDataAccessAUuid = repliesMap[nrefDataAccessPath]|reply_str_value -%}
                   {%- if nrefDataAccessAUuid %}
                     <p>
@@ -211,14 +211,13 @@
   {%- endif -%}
   {# Format/Type with volume #}
   {%- set formatsPath = [uuids.creatingCUuid, uuids.formatsQUuid]|reply_path -%}
-  {%- set formatsCountReply = repliesMap[formatsPath] -%}
-  {%- set formatsCount = formatsCountReply.value.value if formatsCountReply else 0 -%}
-  {%- if formatsCount > 0 -%}
+  {%- set formatsItems = repliesMap[formatsPath]|reply_items -%}
+  {%- if formatsItems|length > 0 -%}
     <h4>Data formats and types</h4>
     <div>We will be using the following data formats and types:
     <ul>
-      {%- for formatIndex in range(formatsCount) -%}
-        {%- set formatPrefix = [formatsPath, formatIndex]|reply_path -%}
+      {%- for formatItem in formatsItems -%}
+        {%- set formatPrefix = [formatsPath, formatItem]|reply_path -%}
         {%- set formatNameReply = repliesMap[[formatPrefix, uuids.formatsNameQUuid]|reply_path] -%}
         {%- set formatsIsStandardPath = [formatPrefix, uuids.formatsIsStandardQUuid]|reply_path -%}
         {%- set formatsIsStandardAUuid = repliesMap[formatsIsStandardPath]|reply_str_value -%}

@@ -4,12 +4,12 @@
   <div class="answer">
     {# Produced datasets #}
     {%- set producedDataPath = [uuids.preservingCUuid, uuids.producedDataQUuid]|reply_path -%}
-    {%- set producedDataCount = repliesMap[producedDataPath]|reply_int_value -%}
-    {%- if producedDataCount > 0 -%}
+    {%- set producedDataItems = repliesMap[producedDataPath]|reply_items -%}
+    {%- if producedDataItems|length > 0 -%}
       <p>
       We plan to produce the following datasets:
       <ul>
-      {%- for i in range(producedDataCount) -%}
+      {%- for i in producedDataItems -%}
         {%- set pathPrefix = [producedDataPath, i]|reply_path -%}
         {%- set producedDataName = repliesMap[[pathPrefix, uuids.producedDataNameQUuid]|reply_path]|reply_str_value -%}
         <li>

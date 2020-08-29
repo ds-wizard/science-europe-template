@@ -13,8 +13,7 @@
       <p>We will use an electronic lab notebook to make sure that there is good provenance of the data analysis.</p>
     {%- elif provenanceAUuid == uuids.provenanceOtherAUuid -%}
       {%- set provenanceOtherPath = [provenancePath, uuids.provenanceOtherAUuid, uuids.provenanceOtherQUuid]|reply_path -%}
-      {%- set provenanceOtherReply = repliesMap[provenanceOtherPath] -%}
-      {%- set provenanceOther = provenanceOtherReply.value.value if provenanceOtherReply else "" -%}
+      {%- set provenanceOther = repliesMap[provenanceOtherPath]|reply_str_value -%}
       <p>We will use other solution than (electronic) lab notebooks to make sure that there is good provenance of the data analysis{{ ": " ~ provenanceOther|dot if provenanceOther else "." }}
     {%- endif -%}
 

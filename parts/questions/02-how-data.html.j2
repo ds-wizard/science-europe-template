@@ -4,24 +4,24 @@
   <div class="answer">
   {# Measured datasets #}
   {%- set measuredDataPath = [uuids.creatingCUuid, uuids.measuredDataQUuid]|reply_path -%}
-  {%- set measuredDataCount = repliesMap[measuredDataPath]|reply_int_value -%}
-  {%- if measuredDataCount > 0 -%}
+  {%- set measuredDataItems = repliesMap[measuredDataPath]|reply_items -%}
+  {%- if measuredDataItems|length > 0 -%}
     <h4>Instrument datasets</h4>
     <ul>
-      {%- for datasetIndex in range(measuredDataCount) -%}
-        {%- set pathPrefix = [measuredDataPath, datasetIndex]|reply_path -%}
+      {%- for datasetItem in measuredDataItems -%}
+        {%- set pathPrefix = [measuredDataPath, datasetItem]|reply_path -%}
         <li>
           {%- set measuredDataNamePath = [pathPrefix, uuids.measuredDataNameQUuid]|reply_path -%}
           {%- set measuredDataName = repliesMap[measuredDataNamePath]|reply_str_value -%}
           <strong>{{ measuredDataName if measuredDataName else "(no name given)" }}</strong>
           {# Instruments #}
           {%- set measuredDataInstrPath = [pathPrefix, uuids.measuredDataInstrQUuid]|reply_path -%}
-          {%- set measuredDataInstrCount = repliesMap[measuredDataInstrPath]|reply_int_value -%}
-          {%- if measuredDataInstrCount > 0 -%}
+          {%- set measuredDataInstrItems = repliesMap[measuredDataInstrPath]|reply_items -%}
+          {%- if measuredDataInstrItems|length > 0 -%}
             <p>For this dataset, we are using the following instruments:
             <ul>
-              {%- for instrIndex in range(measuredDataInstrCount) -%}
-                {%- set instrPathPrefix = [measuredDataInstrPath, instrIndex]|reply_path -%}
+              {%- for instrItem in measuredDataInstrItems -%}
+                {%- set instrPathPrefix = [measuredDataInstrPath, instrItem]|reply_path -%}
                 <li>
                   {%- set measuredDataInstrNamePath = [instrPathPrefix, uuids.measuredDataInstrNameQUuid]|reply_path -%}
                   {%- set measuredDataInstrName = repliesMap[measuredDataInstrNamePath]|reply_str_value -%}

@@ -6,14 +6,13 @@
   <div>
     <dl>
       {%- set contributorsPath = [uuids.adminDetailsCUuid, uuids.contributorsQUuid]|join(".") -%}
-      {%- set contributorsReply = repliesMap[contributorsPath] -%}
-      {%- if contributorsReply -%}
-        {%- set nContributors = contributorsReply.value.value -%}
+      {%- set contributorsItems = repliesMap[contributorsPath]|reply_items -%}
+      {%- if contributorsItems|length > 0 -%}
         {%- set contacts = [] -%}
-        {%- for i in range(nContributors) -%}
+        {%- for i in contributorsItems -%}
           {%- set pathPrefix = [contributorsPath, i]|join(".") ~ "." -%}
-          {%- set contributorRole = repliesMap[pathPrefix ~ uuids.contributorRoleQUuid] -%}
-          {%- if contributorRole and contributorRole.value.value == uuids.contributorRoleContactPersonAUuid -%}
+          {%- set contributorRole = repliesMap[pathPrefix ~ uuids.contributorRoleQUuid]|reply_str_value -%}
+          {%- if contributorRole == uuids.contributorRoleContactPersonAUuid -%}
             {% do contacts.append(pathPrefix)  %}
           {%- endif -%}
         {%- endfor -%}
@@ -24,25 +23,25 @@
             <ul>
               {%- for pathPrefix in contacts -%}
                 <li>
-                  {%- set contributorName = repliesMap[pathPrefix ~ uuids.contributorNameQUuid] -%}
-                  {%- set contributorEmail = repliesMap[pathPrefix ~ uuids.contributorEmailQUuid] -%}
-                  {%- set contributorOrcid = repliesMap[pathPrefix ~ uuids.contributorOrcidQUuid] -%}
+                  {%- set contributorName = repliesMap[pathPrefix ~ uuids.contributorNameQUuid]|reply_str_value -%}
+                  {%- set contributorEmail = repliesMap[pathPrefix ~ uuids.contributorEmailQUuid]|reply_str_value -%}
+                  {%- set contributorOrcid = repliesMap[pathPrefix ~ uuids.contributorOrcidQUuid]|reply_str_value -%}
                   {%- set contributorAffiliation = repliesMap[pathPrefix ~ uuids.contributorAffiliationQUuid] -%}
 
-                  {%- if contributorName and contributorName.value.value -%}
-                    <span class="contact-name">{{ contributorName.value.value }}</span>
+                  {%- if contributorName -%}
+                    <span class="contact-name">{{ contributorName }}</span>
                   {%- else -%}
                     <span class="contact-name missing">(name not given)</span>
                   {%- endif -%}
-                  {%- if contributorEmail and contributorEmail.value.value and contributorOrcid and contributorOrcid.value.value %}
-                    ({{ macros.formatEmail(contributorEmail.value.value) }}, {{ macros.formatOrcid(contributorOrcid.value.value) }})
-                  {%- elif contributorEmail and contributorEmail.value.value %}
-                    ({{ macros.formatEmail(contributorEmail.value.value) }})
-                  {%- elif contributorOrcid and contributorOrcid.value.value %}
-                    ({{ macros.formatOrcid(contributorOrcid.value.value) }})
+                  {%- if contributorEmail and contributorOrcid %}
+                    ({{ macros.formatEmail(contributorEmail) }}, {{ macros.formatOrcid(contributorOrcid) }})
+                  {%- elif contributorEmail %}
+                    ({{ macros.formatEmail(contributorEmail) }})
+                  {%- elif contributorOrcid %}
+                    ({{ macros.formatOrcid(contributorOrcid) }})
                   {%- endif -%}
-                  {%- if contributorAffiliation and contributorAffiliation.value.value %}
-                    <br>{{ contributorAffiliation.value.value }}
+                  {%- if contributorAffiliation %}
+                    <br>{{ contributorAffiliation }}
                   {%- endif -%}
                 </li>
               {%- endfor -%}

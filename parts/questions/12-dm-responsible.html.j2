@@ -8,11 +8,11 @@
     {%- endif -%}
 
     {%- set contributorsPath = [uuids.adminDetailsCUuid, uuids.contributorsQUuid]|reply_path -%}
-    {%- set contributorsReply = repliesMap[contributorsPath] -%}
-    {%- if contributorsReply -%}
-      {%- macro contributorsResponsibility(nContributors, contributorRoleAUuid, responsibility) -%}
+    {%- set contributorsItems = repliesMap[contributorsPath]|reply_items -%}
+    {%- if contributorsItems|length > 0 -%}
+      {%- macro contributorsResponsibility(contributors, contributorRoleAUuid, responsibility) -%}
         {%- set names = [] -%}
-        {%- for i in range(nContributors) -%}
+        {%- for i in contributors -%}
           {%- set role = repliesMap[[contributorsPath, i, uuids.contributorRoleQUuid]|reply_path]|reply_str_value -%}
           {%- set name = repliesMap[[contributorsPath, i, uuids.contributorNameQUuid]|reply_path]|reply_str_value -%}
           {%- if role == contributorRoleAUuid and name -%}
@@ -32,16 +32,14 @@
           </p>
         {%- endif -%}
       {%- endmacro -%}
-
-      {%- set nContributors = contributorsReply.value.value -%}
       {# Data curators #}
-      {{ contributorsResponsibility(nContributors, uuids.contributorRoleDataCuratorAUuid, "responsible for reviewing, enhancing, cleaning, or standardizing metadata and the associated data submitted for storage, use and maintenance within a data centre or repository.") }}
+      {{ contributorsResponsibility(contributorsItems, uuids.contributorRoleDataCuratorAUuid, "responsible for reviewing, enhancing, cleaning, or standardizing metadata and the associated data submitted for storage, use and maintenance within a data centre or repository.") }}
       {# Data collectors #}
-      {{ contributorsResponsibility(nContributors, uuids.contributorRoleDataCollectorAUuid, "responsible for finding, gathering, and collecting data.") }}
+      {{ contributorsResponsibility(contributorsItems, uuids.contributorRoleDataCollectorAUuid, "responsible for finding, gathering, and collecting data.") }}
       {# Data managers #}
-      {{ contributorsResponsibility(nContributors, uuids.contributorRoleDataManagerAUuid, "responsible for maintaining the finished resource.") }}
+      {{ contributorsResponsibility(contributorsItems, uuids.contributorRoleDataManagerAUuid, "responsible for maintaining the finished resource.") }}
       {# Distributors #}
-      {{ contributorsResponsibility(nContributors, uuids.contributorRoleDistributorAUuid, "responsible for generating/disseminating copies of the resouce in either electronic or print form.") }}
+      {{ contributorsResponsibility(contributorsItems, uuids.contributorRoleDistributorAUuid, "responsible for generating/disseminating copies of the resouce in either electronic or print form.") }}
     {%- endif -%}
   </div>
 </div>

@@ -10,9 +10,9 @@
       {%- set usingPreexistingAUuid = repliesMap[usingPreexistingPath]|reply_str_value -%}
       {%- if usingPreexistingAUuid == uuids.usingPreexistingYesAUuid -%}
         {%- set nrefDataPath = [usingPreexistingPath, uuids.usingPreexistingYesAUuid, uuids.nrefDataQUuid]|reply_path -%}
-        {%- set nrefDataCount = repliesMap[nrefDataPath]|reply_int_value -%}
+        {%- set nrefDataItems = repliesMap[nrefDataPath]|reply_items -%}
         {%- set answeredNRefData = [] -%}
-        {%- for i in range(nrefDataCount) -%}
+        {%- for i in nrefDataItems -%}
           {%- if repliesMap[[nrefDataPath, i, uuids.nrefDataConsentQUuid]|reply_path] -%}
             {%- do answeredNRefData.append(i) -%}
           {%- endif -%}
