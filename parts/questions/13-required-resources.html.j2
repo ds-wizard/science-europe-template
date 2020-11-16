@@ -7,6 +7,8 @@
     {%- set expertiseAUuid = repliesMap[expertisePath]|reply_str_value -%}
     {%- if expertiseAUuid == uuids.additionalExpertiseNoAUuid -%}
       <p>To execute the DMP, no additional specialist expertise is required.</p>
+    {%- elif expertiseAUuid == uuids.additionalExpertiseYesAvailableAUuid -%}
+      <p>To execute the DMP, additional specialist expertise is required and we have such trained support staff available.</p>
     {%- elif expertiseAUuid == uuids.additionalExpertiseYesTrainAUuid -%}
       <p>
         To execute the DMP, additional specialist expertise is required. We will be training existing staff.

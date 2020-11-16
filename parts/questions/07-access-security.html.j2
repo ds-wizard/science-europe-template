@@ -11,21 +11,32 @@
     {%- set risksCarryHomeAUuid = repliesMap[risksCarryHomePath]|reply_str_value -%}
     {%- set risksCarryHomeEncPath = [risksCarryHomePath, uuids.risksCarryHomeYesAUuid, uuids.risksCarryHomeEncQUuid]|reply_path -%}
     {%- set risksCarryHomeEncAUuid = repliesMap[risksCarryHomeEncPath]|reply_str_value -%}
+    {%- set risksCarryHomePassPath = [risksCarryHomePath, uuids.risksCarryHomeYesAUuid, uuids.risksCarryHomePassQUuid]|reply_path -%}
+    {%- set risksCarryHomePassAUuid = repliesMap[risksCarryHomePassPath]|reply_str_value -%}
     {%- set risksCertificationsPath = [risksPathPrefix, uuids.risksCertificationsQUuid]|reply_path -%}
     {%- set risksCertificationsAUuid = repliesMap[risksCertificationsPath]|reply_str_value -%}
     {%- set risksHttpsPath = [risksPathPrefix, uuids.risksHttpsQUuid]|reply_path -%}
     {%- set risksHttpsAUuid = repliesMap[risksHttpsPath]|reply_str_value -%}
     {%- set risksInstructedPath = [risksPathPrefix, uuids.risksInstructedQUuid]|reply_path -%}
     {%- set risksInstructedAUuid = repliesMap[risksInstructedPath]|reply_str_value -%}
-    {%- if (risksStoreLabAUuid == uuids.risksStoreLabNoAUuid) or (risksCarryHomeAUuid == uuids.risksCarryHomeNoAUuid) or (risksCarryHomeAUuid == uuids.risksCarryHomeYesAUuid and risksCarryHomeEncAUuid == uuids.risksCarryHomeEncYesAUuid) or (risksCertificationsAUuid == uuids.risksCertificationsYesAUuid) or (risksHttpsAUuid == uuids.risksHttpsYesAUuid) or (risksInstructedAUuid == uuids.risksInstructedYesAUuid) %}
+
+    {%- set homeEncrypted = risksCarryHomeEncAUuid == uuids.risksCarryHomeEncYesAUuid -%}
+    {%- set homePassword = risksCarryHomePassAUuid == uuids.risksCarryHomePassYesAUuid -%}
+    {%- set storeLab = risksStoreLabAUuid == uuids.risksStoreLabNoAUuid -%}
+
+    {%- if storeLab or (risksCarryHomeAUuid == uuids.risksCarryHomeNoAUuid) or (risksCarryHomeAUuid == uuids.risksCarryHomeYesAUuid and (homeEncrypted or homePassword)) or (risksCertificationsAUuid == uuids.risksCertificationsYesAUuid) or (risksHttpsAUuid == uuids.risksHttpsYesAUuid) or (risksInstructedAUuid == uuids.risksInstructedYesAUuid) %}
       <p>
-        {%- if risksStoreLabAUuid == uuids.risksStoreLabNoAUuid %}
+        {%- if storeLab %}
           Project members will not store data or software on computers in the lab or external hard drives connected to those computers.
         {%- endif -%}
         {%- if risksCarryHomeAUuid == uuids.risksCarryHomeNoAUuid %}
-          {%- if risksStoreLabAUuid == uuids.risksStoreLabNoAUuid -%}They{%- else -%}Project members{%- endif %} will not carry data with them (e.g. on laptops, USB sticks, or other external media).
-        {%- elif risksCarryHomeEncAUuid == uuids.risksCarryHomeEncYesAUuid %}
-          {%- if risksStoreLabAUuid == uuids.risksStoreLabNoAUuid -%}They{%- else -%}Project members{%- endif %} can carry data with them on encrypted data carriers and password-protected laptops.
+          {%- if storeLab -%}They{%- else -%}Project members{%- endif %} will not carry data with them (e.g. on laptops, USB sticks, or other external media).
+        {%- elif homeEncrypted and homePassword %}
+          {%- if storeLab -%}They{%- else -%}Project members{%- endif %} can carry data with them on encrypted data carriers and password-protected laptops.
+        {%- elif homeEncrypted %}
+          {%- if storeLab -%}They{%- else -%}Project members{%- endif %} can carry data with them on encrypted data carriers.
+        {%- elif homePassword %}
+          {%- if storeLab -%}They{%- else -%}Project members{%- endif %} can carry data with them on password-protected laptops.
         {%- endif -%}
         {%- if risksCertificationsAUuid == uuids.risksCertificationsYesAUuid %}
           All data centers where project data is stored carry sufficient certifications.

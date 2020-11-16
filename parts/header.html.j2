@@ -26,7 +26,7 @@
                   {%- set contributorName = repliesMap[pathPrefix ~ uuids.contributorNameQUuid]|reply_str_value -%}
                   {%- set contributorEmail = repliesMap[pathPrefix ~ uuids.contributorEmailQUuid]|reply_str_value -%}
                   {%- set contributorOrcid = repliesMap[pathPrefix ~ uuids.contributorOrcidQUuid]|reply_str_value -%}
-                  {%- set contributorAffiliation = repliesMap[pathPrefix ~ uuids.contributorAffiliationQUuid] -%}
+                  {%- set contributorAffiliationReply = repliesMap[pathPrefix ~ uuids.contributorAffiliationQUuid] -%}
 
                   {%- if contributorName -%}
                     <span class="contact-name">{{ contributorName }}</span>
@@ -40,8 +40,8 @@
                   {%- elif contributorOrcid %}
                     ({{ macros.formatOrcid(contributorOrcid) }})
                   {%- endif -%}
-                  {%- if contributorAffiliation %}
-                    <br>{{ contributorAffiliation }}
+                  {%- if contributorAffiliationReply %}
+                    <br>{{ macros.integrationValue(contributorAffiliationReply, uuids.contributorAffiliationQUuid) }}
                   {%- endif -%}
                 </li>
               {%- endfor -%}

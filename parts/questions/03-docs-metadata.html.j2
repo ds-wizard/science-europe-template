@@ -4,40 +4,65 @@
   <div class="answer">
     <p>List of data to be published is given in Section E, Question 9. This also includes information about catalogs where the data can be found. Information about data types used is given in Section A, Question 1.</p>
 
-    {# Good provenance (lab notebooks) #}
-    {%- set provenancePath = [uuids.preservingCUuid, uuids.provenanceQUuid]|reply_path -%}
-    {%- set provenanceAUuid = repliesMap[provenancePath]|reply_str_value -%}
-    {%- if provenanceAUuid == uuids.provenanceLabNotebooksAUuid -%}
-      <p>We will use lab notebooks to make sure that there is good provenance of the data analysis.</p>
-    {%- elif provenanceAUuid == uuids.provenanceELabNotebookAUuid -%}
-      <p>We will use an electronic lab notebook to make sure that there is good provenance of the data analysis.</p>
-    {%- elif provenanceAUuid == uuids.provenanceOtherAUuid -%}
-      {%- set provenanceOtherPath = [provenancePath, uuids.provenanceOtherAUuid, uuids.provenanceOtherQUuid]|reply_path -%}
-      {%- set provenanceOther = repliesMap[provenanceOtherPath]|reply_str_value -%}
-      <p>We will use other solution than (electronic) lab notebooks to make sure that there is good provenance of the data analysis{{ ": " ~ provenanceOther|dot if provenanceOther else "." }}
-    {%- endif -%}
+    {# Metadata #}
+    {%- set metadataPath = [uuids.preservingCUuid, uuids.metadataQUuid]|reply_path -%}
+    {%- set metadataAUuid = repliesMap[metadataQUuid]|reply_str_value -%}
+    {%- if metadataAUuid == uuids.metadataExploreAUuid -%}
+      {# Good provenance (lab notebooks) #}
+      {%- set provenancePath = [metadataPath, uuids.metadataExploreAUuid, uuids.provenanceQUuid]|reply_path -%}
+      {%- set provenanceAUuid = repliesMap[provenancePath]|reply_str_value -%}
+      {%- if provenanceAUuid == uuids.provenanceLabNotebooksAUuid -%}
+        <p>We will use lab notebooks to make sure that there is good provenance of the data analysis.</p>
+      {%- elif provenanceAUuid == uuids.provenanceELabNotebookAUuid -%}
+        <p>We will use an electronic lab notebook to make sure that there is good provenance of the data analysis.</p>
+      {%- elif provenanceAUuid == uuids.provenanceOtherAUuid -%}
+        {%- set provenanceOtherPath = [provenancePath, uuids.provenanceOtherAUuid, uuids.provenanceOtherQUuid]|reply_path -%}
+        {%- set provenanceOther = repliesMap[provenanceOtherPath]|reply_str_value -%}
+        <p>We will use other solution than (electronic) lab notebooks to make sure that there is good provenance of the data analysis{{ ": " ~ provenanceOther|dot if provenanceOther else "." }}
+      {%- endif -%}
 
-    {# Documentation with metadata #}
-    {%- set documentDataPath = [uuids.preservingCUuid, uuids.documentDataQUuid]|reply_path -%}
-    {%- set documentDataAUuid = repliesMap[documentDataPath]|reply_str_value -%}
-    {%- if documentDataAUuid == uuids.documentDataExploreAUuid -%}
-      {%- set documentDataDCPath = [documentDataPath, uuids.documentDataExploreAUuid, uuids.documentDataDCQUuid]|reply_path -%}
-      {%- set documentDataDCAUuid = repliesMap[documentDataDCPath]|reply_str_value -%}
-      {%- set documentDataW3CPath = [documentDataPath, uuids.documentDataExploreAUuid, uuids.documentDataW3CQUuid]|reply_path -%}
-      {%- set documentDataW3CAUuid = repliesMap[documentDataW3CPath]|reply_str_value -%}
-      {%- set usingDC = documentDataDCAUuid == uuids.documentDataDCYesAUuid -%}
-      {%- set usingW3C = documentDataW3CAUuid == uuids.documentDataW3CYesAUuid -%}
-      {%- if usingDC or usingW3C %}
-        <p>
-          We will be documenting the data with
-          {% if usingDC and usingW3C -%}
-            Dublin Core metadata and W3C PROV provenance. 
-          {%- elif usingDC -%}
-            Dublin Core metadata. 
-          {%- elif usingW3C -%}
-            W3C PROV provenance. 
-          {%- endif -%}
-        </p>
+      {# Metadata standards #}
+      {%- set metadataSentences = [] -%}
+      {%- set metadataStandardsPath = [metadataPath, uuids.metadataExploreAUuid, uuids.metadataStandardsQUuid]|reply_path -%}
+      {%- set metadataStandardsAUuid = repliesMap[metadataStandardsPath]|reply_str_value -%}
+      {%- if metadataStandardsAUuid == uuids.metadataStandardsExploreAUuid -%}
+        {%- set metadataStandardsDCPath = [metadataStandardsPath, uuids.metadataStandardsExploreAUuid, uuids.metadataStandardsDCQUuid]|reply_path -%}
+        {%- set metadataStandardsDCAUuid = repliesMap[metadataStandardsDCPath]|reply_str_value -%}
+        {%- set metadataStandardsDataCityPath = [metadataStandardsPath, uuids.metadataStandardsExploreAUuid, uuids.metadataStandardsDataCiteQUuid]|reply_path -%}
+        {%- set metadataStandardsDataCityAUuid = repliesMap[metadataStandardsDataCityPath]|reply_str_value -%}
+        {%- set metadataStandardsDDIPath = [metadataStandardsPath, uuids.metadataStandardsExploreAUuid, uuids.metadataStandardsDDIQUuid]|reply_path -%}
+        {%- set metadataStandardsDDIAUuid = repliesMap[metadataStandardsDDIPath]|reply_str_value -%}
+
+        {%- set documentDataW3CPath = [metadataStandardsPath, uuids.metadataStandardsExploreAUuid, uuids.documentDataW3CQUuid]|reply_path -%}
+        {%- set documentDataW3CAUuid = repliesMap[documentDataW3CPath]|reply_str_value -%}
+
+        {%- set metadataStandards = [] -%}
+        {%- if metadataStandardsDCAUuid == uuids.metadataStandardsDCYesAUuid -%}
+          {%- do metadataStandards.append("Dublin Core") -%}
+        {%- endif -%}
+        {%- if metadataStandardsDCAUuid == uuids.metadataStandardsDataCiteYesAUuid -%}
+          {%- do metadataStandards.append("DataCite") -%}
+        {%- endif -%}
+        {%- if metadataStandardsDCAUuid == uuids.metadataStandardsDCYesAUuid -%}
+          {%- do metadataStandards.append("DDI (Data Documentation Initiative)") -%}
+        {%- endif -%}
+        {%- if metadataStandards|length == 1 -%}
+          {%- do metadataSentences.append("We will be documenting the data with " ~ metadataStandards[0] ~ " metadata standard.") -%}
+        {%- elif metadataStandards|length == 2 -%}
+          {%- do metadataSentences.append("We will be documenting the data with " ~ metadataStandards[0] ~ " and " ~ metadataStandards[1] ~ " metadata standard.") -%}
+        {%- elif metadataStandards|length == 3 -%}
+          {%- do metadataSentences.append("We will be documenting the data with " ~ metadataStandards[0] ~ ", " ~ metadataStandards[1] ~ ", and " ~ metadataStandards[2] ~ " metadata standard.") -%}
+        {%- endif -%}
+      {%- endif -%}
+
+      {%- set provenanceW3CPath = [metadataPath, uuids.metadataExploreAUuid, uuids.provenanceW3CQUuid]|reply_path -%}
+      {%- set provenanceW3CAUuid = repliesMap[provenanceW3CPath]|reply_str_value -%}
+      {%- if provenanceW3CAUuid == uuids.provenanceW3CYesAUuid -%}
+          {%- do metadataSentences.append("The provenance will be captured using W3C PROV.") -%}
+      {%- endif -%}
+
+      {%- if metadataSentences|length > 0 -%}
+        <p>{{ metadataSentences|join(" ") }}</p>
       {%- endif -%}
     {%- endif -%}
   </div>

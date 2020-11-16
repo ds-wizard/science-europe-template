@@ -24,9 +24,11 @@
 {%- set contributorRoleDataCuratorAUuid = "0ee99167-c1a2-4fe9-a799-ef07a31ccf35" -%}
 {%- set contributorRoleDataCollectorAUuid = "fe411838-170e-45d7-9d91-14f95ad347e6" -%}
 {%- set contributorRoleDataManagerAUuid = "6eef8c10-150a-496c-b02a-61c90e62e95b" -%}
+{%- set contributorRoleDataStewardAUuid = "3eec8106-b82c-4ce4-8fde-0a5270c55b10" -%}
 {%- set contributorRoleDistributorAUuid = "ae91b0b1-a591-49d1-a85c-13071550c043" -%}
 {%- set additionalExpertiseQUuid = "83c0d09d-e74c-4c81-a52c-aaa2e18415ac" -%}
 {%- set additionalExpertiseNoAUuid = "ccdadd45-8aa9-44ed-a669-1827c7813b0a" -%}
+{%- set additionalExpertiseYesAvailableAUuid = "8993a53e-f7e0-4a16-a240-b8e0835e86b2" -%}
 {%- set additionalExpertiseYesTrainAUuid = "d4b4c6e3-e5c6-4938-a08a-e51cb7cdebeb" -%}
 {%- set additionalExpertiseYesTrainTrainingQUuid = "13dcbcd7-73d8-4480-8739-0a58702ced75" -%}
 {%- set additionalExpertiseYesHireAUuid = "596b251b-4e0e-429b-86cc-df32edeeefae" -%}
@@ -100,6 +102,26 @@
 {%- set formatsVolumeFileSizeAUuid = "24dbd191-2d0c-4267-b858-d9063b21a486" -%}
 {%- set formatsVolumeFilesQUuid = "448403e9-578b-4155-9017-d4aa9119ea6a" -%}
 {%- set formatsVolumeFileGBQUuid = "624cfadf-6177-47b7-9ba8-b80b68aef0fd" -%}
+{%- set metadataQUuid = "8c962e6f-17ee-4b22-8ebb-9f06f779e3b3" -%}
+{%- set metadataExploreAUuid = "6d18bfff-0f53-469b-934e-9806dda9d4fb" -%}
+{%- set metadataStandardsQUuid = "1440afd6-d516-44f6-9c02-6abb13900b66" -%}
+{%- set metadataStandardsExploreAUuid = "aec37b0d-490d-4d75-8814-8ed78ea5b8dd" -%}
+{%- set metadataStandardsDCQUuid = "8d3b85e0-1683-48a5-a650-9f0d9bf8a1a4" -%}
+{%- set metadataStandardsDCYesAUuid = "d29ca8b4-0cb6-4678-90fa-e8c72de9073f" -%}
+{%- set metadataStandardsDataCiteQUuid = "035a37e5-1dda-44a1-8b66-d0612e99cd14" -%}
+{%- set metadataStandardsDataCiteYesAUuid = "3a738380-58e6-422b-ae73-e570d44ea6ca" -%}
+{%- set metadataStandardsDDIQUuid = "9320bf04-824b-46b3-ae8b-55240e2d04b9" -%}
+{%- set metadataStandardsDDIYesAUuid = "8f537593-c01d-4df0-bc68-fbc2f397d527" -%}
+{%- set provenanceQUuid = "948b5fd8-c1bd-457d-8f81-ea2fd093f541" -%}
+{%- set provenanceLabNotebooksAUuid = "7b450ee7-8783-4adc-9955-fd667fac5a56" -%}
+{%- set provenanceELabNotebookAUuid = "a1e67aee-77dd-486f-ab51-e5a6f39a32cc" -%}
+{%- set provenanceOtherAUuid = "ccdb5296-919c-44ac-89df-351fd2e564ae" -%}
+{%- set provenanceOtherQUuid = "b73b8310-3b4f-49c8-a5c0-4208883754ac" -%}
+{%- set provenanceW3CQUuid = "106df534-f590-416b-8e4a-846edbdc4325" -%}
+{%- set provenanceW3CYesAUuid = "42502a61-5384-4611-a207-90cd02de022f" -%}
+{%- set measuredQUuid = "f87c331d-794a-42c8-a910-61a2a9110dab" -%}
+{%- set measuredNoAUuid = "8d384c38-653a-476c-bda1-47ab7d38c9c2" -%}
+{%- set measuredYesAUuid = "e4ca2d31-137a-46d3-96cd-3e9e8c5e9a76" -%}
 {%- set measuredDataQUuid = "f5fef09d-ade5-4019-b089-f05bd89c34bc" -%}
 {%- set measuredDataNameQUuid = "a077aec4-83d2-45c2-8d9f-75a391bdee20" -%}
 {%- set measuredDataWhoQUuid = "ee59664e-4026-4796-a42a-e8003df6dadf" -%}
@@ -248,6 +270,9 @@
 {%- set risksCarryHomeEncQUuid = "6aff9a57-acea-4f6d-ac98-9a067e03cc8e" -%}
 {%- set risksCarryHomeEncNoAUuid = "546d6e41-80ea-417b-b0e3-a1d9d75a3794" -%}
 {%- set risksCarryHomeEncYesAUuid = "dda8513e-431d-474e-b00d-107ae995e0ee" -%}
+{%- set risksCarryHomePassQUuid = "26c19dc0-3e75-4ff6-a3b8-126ac54894aa" -%}
+{%- set risksCarryHomePassNoAUuid = "f2d273c1-8e6e-4656-93ba-6b78d7d6785f" -%}
+{%- set risksCarryHomePassYesAUuid = "3e17a9da-5390-4c2f-9657-0790a9887122" -%}
 {%- set risksCertificationsQUuid = "a454fffd-f4a4-426d-b758-6d70bc4ee96b" -%}
 {%- set risksCertificationsYesAUuid = "a9629ff2-30b2-4295-ae35-98320cfdb254" -%}
 {%- set risksHttpsQUuid = "39d8dad9-7666-405c-b35c-9e430c9691ed" -%}
@@ -351,17 +376,6 @@
 {%- set repoChargesHowPayOtherQUuid = "6e0704a2-cea3-4ae7-8ab5-5eb6db163639" -%}
 {%- set budgetTimeEffortQUuid = "13a7eeae-09f5-42bf-8e62-b2c1fe1b86f7" -%}
 {%- set budgetTimeEffortYesAUuid = "db44d6ca-efc2-413e-8abc-d92f92ed1d1d" -%}
-{%- set provenanceQUuid = "948b5fd8-c1bd-457d-8f81-ea2fd093f541" -%}
-{%- set provenanceLabNotebooksAUuid = "7b450ee7-8783-4adc-9955-fd667fac5a56" -%}
-{%- set provenanceELabNotebookAUuid = "a1e67aee-77dd-486f-ab51-e5a6f39a32cc" -%}
-{%- set provenanceOtherAUuid = "ccdb5296-919c-44ac-89df-351fd2e564ae" -%}
-{%- set provenanceOtherQUuid = "b73b8310-3b4f-49c8-a5c0-4208883754ac" -%}
-{%- set documentDataQUuid = "2f5dfefc-a42e-4c40-a676-7d187b22cb72" -%}
-{%- set documentDataExploreAUuid = "3564eac9-121e-4fd7-81f1-15d0495aa9d7" -%}
-{%- set documentDataDCQUuid = "8d3b85e0-1683-48a5-a650-9f0d9bf8a1a4" -%}
-{%- set documentDataDCYesAUuid = "d29ca8b4-0cb6-4678-90fa-e8c72de9073f" -%}
-{%- set documentDataW3CQUuid = "106df534-f590-416b-8e4a-846edbdc4325" -%}
-{%- set documentDataW3CYesAUuid = "42502a61-5384-4611-a207-90cd02de022f" -%}
 {# Chapter 7 - Giving access to data #}
 {%- set accessCUuid = "6be88f7c-f868-460f-bba7-91e1c659adfd" -%}
 {%- set asOpenAsPossibleQUuid = "6516eae1-98b2-48f2-9862-b5fb140cfad7" -%}
@@ -395,5 +409,3 @@
 {%- set notOpenLimitedEmbargoReleasedSoonAUuid = "82f84d7e-338c-46bc-9785-42df560c01ed" -%}
 {%- set notOpenLimitedEmbargoYesAUuid = "1b120967-803b-458b-b565-dbee6a785509" -%}
 {%- set notOpenLimitedEmbargoPeriodQUuid = "99a48a1a-5c27-4e15-9da0-515da815b4b8" -%}
-
-

@@ -2,58 +2,63 @@
   <h3>1. What data will you collect or create?</h3>
   <div class="answer">
 
-  {%- set measuredDataPath = [uuids.creatingCUuid, uuids.measuredDataQUuid]|reply_path -%}
-  {%- set measuredDataItems = repliesMap[measuredDataPath]|reply_items -%}
-  {# Measured datasets #}
-  {%- if measuredDataItems|length > 0 -%}
-    <div>
-    <h4>Instrument datasets</h4>
-    The following instrument datasets will be acquired in the project:
-    <ul>
-      {%- for datasetItem in measuredDataItems -%}
-        {%- set pathPrefix = [measuredDataPath, datasetItem]|reply_path -%}
-        <li>
-          {%- set measuredDataNamePath = [pathPrefix, uuids.measuredDataNameQUuid]|reply_path -%}
-          {%- set measuredDataName = repliesMap[measuredDataNamePath]|reply_str_value -%}
-          {%- set measuredDataWhoPath = [pathPrefix, uuids.measuredDataWhoQUuid]|reply_path -%}
-          {%- set measuredDataWhoAUuid = repliesMap[measuredDataWhoPath]|reply_str_value -%}
-          {%- set measuredDataEquipPath = [pathPrefix, uuids.measuredDataEquipQUuid]|reply_path -%}
-          {%- set measuredDataEquipAUuid = repliesMap[measuredDataEquipPath]|reply_str_value -%}
-          <strong>{{ measuredDataName if measuredDataName else "(no name given)" }}</strong>
-          {# Who will collect #}
-          {%- if measuredDataWhoAUuid == uuids.measuredDataWhoExpertsOwnAUuid -%}
-            <p>This dataset will be collected by experts in the project, with our own equipment.</p>
-          {%- elif measuredDataWhoAUuid == uuids.measuredDataWhoExpertsOutAUuid -%}
-            <p>This dataset will be collected by experts in the project, at a specialized infrastructure.</p>
-          {%- elif measuredDataWhoAUuid == uuids.measuredDataWhoExternalAUuid -%}
-            {%- set mdExternalOwnershipPath = [measuredDataWhoPath, uuids.measuredDataWhoExternalAUuid, uuids.mdExternalOwnershipQUuid]|reply_path -%}
-            {%- set mdExternalOwnershipAUuid = repliesMap[mdExternalOwnershipPath]|reply_str_value -%}
-            <p>
-              This dataset will be collected by an external party.
-              {% if mdExternalOwnershipAUuid == uuids.mdExternalOwnershipPartyAUuid -%}
-                The ownership of the resulting data will remain with the external party.
-              {%- elif mdExternalOwnershipAUuid == uuids.mdExternalOwnershipPartnersAUuid -%}
-                The project partners acquire full ownership of the data.
-              {%- elif mdExternalOwnershipAUuid == uuids.mdExternalOwnershipOtherAUuid -%}
-                {%- set mdExternalOwnershipOtherPath = [mdExternalOwnershipPath, uuids.mdExternalOwnershipOtherAUuid, uuids.mdExternalOwnershipOtherQUuid]|reply_path -%}
-                {%- set mdExternalOwnershipOther = repliesMap[mdExternalOwnershipOtherPath]|reply_str_value -%}
-                {%- if mdExternalOwnershipOther -%}
-                  For the ownership of the data we have made the following arrangements: {{ mdExternalOwnershipOther|dot }}
+  {%- set measuredPath = [uuids.creatingCUuid, uuids.measuredQUuid]|reply_path -%}
+  {%- set measuredAUuid = repliesMap[measuredPath]|reply_items -%}
+  {%- if measuredAUuid == uuids.measuredYesAUuid -%}
+    {%- set measuredDataPath = [measuredPath, uuids.measuredYesAUuid, uuids.measuredDataQUuid]|reply_path -%}
+    {%- set measuredDataItems = repliesMap[measuredDataPath]|reply_items -%}
+    {# Measured datasets #}
+    {%- if measuredDataItems|length > 0 -%}
+      <div>
+      <h4>Instrument datasets</h4>
+      The following instrument datasets will be acquired in the project:
+      <ul>
+        {%- for datasetItem in measuredDataItems -%}
+          {%- set pathPrefix = [measuredDataPath, datasetItem]|reply_path -%}
+          <li>
+            {%- set measuredDataNamePath = [pathPrefix, uuids.measuredDataNameQUuid]|reply_path -%}
+            {%- set measuredDataName = repliesMap[measuredDataNamePath]|reply_str_value -%}
+            {%- set measuredDataWhoPath = [pathPrefix, uuids.measuredDataWhoQUuid]|reply_path -%}
+            {%- set measuredDataWhoAUuid = repliesMap[measuredDataWhoPath]|reply_str_value -%}
+            {%- set measuredDataEquipPath = [pathPrefix, uuids.measuredDataEquipQUuid]|reply_path -%}
+            {%- set measuredDataEquipAUuid = repliesMap[measuredDataEquipPath]|reply_str_value -%}
+            <strong>{{ measuredDataName if measuredDataName else "(no name given)" }}</strong>
+            {# Who will collect #}
+            {%- if measuredDataWhoAUuid == uuids.measuredDataWhoExpertsOwnAUuid -%}
+              <p>This dataset will be collected by experts in the project, with our own equipment.</p>
+            {%- elif measuredDataWhoAUuid == uuids.measuredDataWhoExpertsOutAUuid -%}
+              <p>This dataset will be collected by experts in the project, at a specialized infrastructure.</p>
+            {%- elif measuredDataWhoAUuid == uuids.measuredDataWhoExternalAUuid -%}
+              {%- set mdExternalOwnershipPath = [measuredDataWhoPath, uuids.measuredDataWhoExternalAUuid, uuids.mdExternalOwnershipQUuid]|reply_path -%}
+              {%- set mdExternalOwnershipAUuid = repliesMap[mdExternalOwnershipPath]|reply_str_value -%}
+              <p>
+                This dataset will be collected by an external party.
+                {% if mdExternalOwnershipAUuid == uuids.mdExternalOwnershipPartyAUuid -%}
+                  The ownership of the resulting data will remain with the external party.
+                {%- elif mdExternalOwnershipAUuid == uuids.mdExternalOwnershipPartnersAUuid -%}
+                  The project partners acquire full ownership of the data.
+                {%- elif mdExternalOwnershipAUuid == uuids.mdExternalOwnershipOtherAUuid -%}
+                  {%- set mdExternalOwnershipOtherPath = [mdExternalOwnershipPath, uuids.mdExternalOwnershipOtherAUuid, uuids.mdExternalOwnershipOtherQUuid]|reply_path -%}
+                  {%- set mdExternalOwnershipOther = repliesMap[mdExternalOwnershipOtherPath]|reply_str_value -%}
+                  {%- if mdExternalOwnershipOther -%}
+                    For the ownership of the data we have made the following arrangements: {{ mdExternalOwnershipOther|dot }}
+                  {%- endif -%}
                 {%- endif -%}
-              {%- endif -%}
-            </p>
-          {%- endif -%}
-          {# Equipment standard? #}
-          {% if measuredDataEquipAUuid == uuids.measuredDataEquipDescribedAUuid -%}
-            <p>The equipment is very well described and known.</p>
-          {%- elif measuredDataEquipAUuid == uuids.measuredDataEquipCareAUuid -%}
-            <p>The equipment is less well described or not completely standard, so we will need to take extra care documenting the process.</p>
-          {%- endif -%}
-        </li>
-      {%- endfor -%}
-    </ul>
-    </div>
+              </p>
+            {%- endif -%}
+            {# Equipment standard? #}
+            {% if measuredDataEquipAUuid == uuids.measuredDataEquipDescribedAUuid -%}
+              <p>The equipment is very well described and known.</p>
+            {%- elif measuredDataEquipAUuid == uuids.measuredDataEquipCareAUuid -%}
+              <p>The equipment is less well described or not completely standard, so we will need to take extra care documenting the process.</p>
+            {%- endif -%}
+          </li>
+        {%- endfor -%}
+      </ul>
+      </div>
+    {%- endif -%}
   {%- endif -%}
+
   {# Non-equipment datasets #}
   {%- set neqDataPath = [uuids.creatingCUuid, uuids.neqDataQUuid]|reply_path -%}
   {%- set neqDataAUuid = repliesMap[neqDataPath]|reply_str_value -%}
