@@ -8,6 +8,10 @@ This template is available through [DSW Registry](https://registry.ds-wizard.org
 
 ## Changelog
 
+### 1.4.1
+
+- Fix displaying answers related to measured datasets
+
 ### 1.4.0
 
 - Adjusted to template metamodel version 3 (released in DSW 2.12.0)

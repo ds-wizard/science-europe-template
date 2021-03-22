@@ -5,7 +5,7 @@
 
   
   {%- set measuredPath = [uuids.creatingCUuid, uuids.measuredQUuid]|reply_path -%}
-  {%- set measuredAUuid = repliesMap[measuredPath]|reply_items -%}
+  {%- set measuredAUuid = repliesMap[measuredPath]|reply_str_value -%}
   {%- if measuredAUuid == uuids.measuredYesAUuid -%}
     {# Measured datasets #}
     {%- set measuredDataPath = [measuredPath, uuids.measuredYesAUuid, uuids.measuredDataQUuid]|reply_path -%}
