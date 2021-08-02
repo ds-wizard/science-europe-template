@@ -1,11 +1,3 @@
-{% macro renderCurrentLevel() %}
-  {% for levelDefinition in levelDefinitions %}
-    {% if levelDefinition.level == ctx.level %}
-      {{levelDefinition.title}}
-    {% endif %}
-  {% endfor %}
-{% endmacro %}
-
 {# Formatting macros #}
 {%- macro formatEmail(email) -%}
   <span class="contact-email"><a href="mailto:{{ email }}">{{ email }}</a></span>

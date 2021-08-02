@@ -55,9 +55,9 @@
       <dt>Based on</dt>
       <dd>{{ ctx.package.name }}, {{ ctx.package.version }} (<span class="package-id"><span class="organization-id">{{ ctx.package.organizationId }}</span>:<span class="km-id">{{ ctx.package.kmId }}</span>:<span class="version">{{ ctx.package.version }}</span></span>)</dd>
 
-      {%- if ctx.config.levelsEnabled.levelsEnabled -%}
+      {%- if ctx.phaseUuid -%}
       <dt>Project phase</dt>
-      <dd>{{ macros.renderCurrentLevel() }}</dd>
+      <dd>{{ km.entities.phases[ctx.phaseUuid].title }}</dd>
       {%- endif -%}
 
       {%- if ctx.createdBy -%}
