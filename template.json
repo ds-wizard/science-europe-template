@@ -1,12 +1,12 @@
 {
   "organizationId": "dsw",
   "templateId": "science-europe",
-  "version": "1.5.0",
+  "version": "1.6.0",
   "name": "Science Europe DMP Template",
   "description": "Default DCC DMP Template recommended by Science Europe",
   "license": "Apache-2.0",
   "recommendedPackageId": "dsw:root:2.3.0",
-  "metamodelVersion": 4,
+  "metamodelVersion": 5,
   "allowedPackages": [
     {
         "orgId": "dsw",
@@ -18,6 +18,12 @@
         "orgId": "dsw",
         "kmId": "lifesciences",
         "minVersion": "2.3.0",
+        "maxVersion": null
+    },
+    {
+        "orgId": "elixir.no",
+        "kmId": "lifesciences-elixir-norway",
+        "minVersion": null,
         "maxVersion": null
     }
   ],
