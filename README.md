@@ -8,6 +8,10 @@ This template is available through [DSW Registry](https://registry.ds-wizard.org
 
 ## Changelog
 
+### 1.7.0
+
+- Adjusted to template metamodel version 6 (released in DSW 3.6.0)
+
 ### 1.6.0
 
 - Adjusted to template metamodel version 5 (released in DSW 3.5.0)
