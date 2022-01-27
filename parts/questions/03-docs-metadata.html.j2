@@ -5,8 +5,8 @@
     <p>List of data to be published is given in Section E, Question 9. This also includes information about catalogs where the data can be found. Information about data types used is given in Section A, Question 1.</p>
 
     {# Metadata #}
-    {%- set metadataPath = [uuids.preservingCUuid, uuids.metadataQUuid]|reply_path -%}
-    {%- set metadataAUuid = repliesMap[metadataQUuid]|reply_str_value -%}
+    {%- set metadataPath = [uuids.creatingCUuid, uuids.metadataQUuid]|reply_path -%}
+    {%- set metadataAUuid = repliesMap[metadataPath]|reply_str_value -%}
     {%- if metadataAUuid == uuids.metadataExploreAUuid -%}
       {# Good provenance (lab notebooks) #}
       {%- set provenancePath = [metadataPath, uuids.metadataExploreAUuid, uuids.provenanceQUuid]|reply_path -%}
@@ -32,6 +32,8 @@
         {%- set metadataStandardsDataCityAUuid = repliesMap[metadataStandardsDataCityPath]|reply_str_value -%}
         {%- set metadataStandardsDDIPath = [metadataStandardsPath, uuids.metadataStandardsExploreAUuid, uuids.metadataStandardsDDIQUuid]|reply_path -%}
         {%- set metadataStandardsDDIAUuid = repliesMap[metadataStandardsDDIPath]|reply_str_value -%}
+        {%- set metadataStandardsKeywordsPath = [metadataStandardsPath, uuids.metadataStandardsExploreAUuid, uuids.metadataStandardsKeywordsQUuid]|reply_path -%}
+        {%- set metadataStandardsKeywordsAUuid = repliesMap[metadataStandardsKeywordsPath]|reply_str_value -%}
 
         {%- set documentDataW3CPath = [metadataStandardsPath, uuids.metadataStandardsExploreAUuid, uuids.documentDataW3CQUuid]|reply_path -%}
         {%- set documentDataW3CAUuid = repliesMap[documentDataW3CPath]|reply_str_value -%}
@@ -40,18 +42,21 @@
         {%- if metadataStandardsDCAUuid == uuids.metadataStandardsDCYesAUuid -%}
           {%- do metadataStandards.append("Dublin Core") -%}
         {%- endif -%}
-        {%- if metadataStandardsDCAUuid == uuids.metadataStandardsDataCiteYesAUuid -%}
+        {%- if metadataStandardsDataCityAUuid == uuids.metadataStandardsDataCiteYesAUuid -%}
           {%- do metadataStandards.append("DataCite") -%}
         {%- endif -%}
-        {%- if metadataStandardsDCAUuid == uuids.metadataStandardsDCYesAUuid -%}
+        {%- if metadataStandardsDDIAUuid == uuids.metadataStandardsDDIYesAUuid -%}
           {%- do metadataStandards.append("DDI (Data Documentation Initiative)") -%}
         {%- endif -%}
         {%- if metadataStandards|length == 1 -%}
           {%- do metadataSentences.append("We will be documenting the data with " ~ metadataStandards[0] ~ " metadata standard.") -%}
         {%- elif metadataStandards|length == 2 -%}
-          {%- do metadataSentences.append("We will be documenting the data with " ~ metadataStandards[0] ~ " and " ~ metadataStandards[1] ~ " metadata standard.") -%}
+          {%- do metadataSentences.append("We will be documenting the data with " ~ metadataStandards[0] ~ " and " ~ metadataStandards[1] ~ " metadata standards.") -%}
         {%- elif metadataStandards|length == 3 -%}
-          {%- do metadataSentences.append("We will be documenting the data with " ~ metadataStandards[0] ~ ", " ~ metadataStandards[1] ~ ", and " ~ metadataStandards[2] ~ " metadata standard.") -%}
+          {%- do metadataSentences.append("We will be documenting the data with " ~ metadataStandards[0] ~ ", " ~ metadataStandards[1] ~ ", and " ~ metadataStandards[2] ~ " metadata standards.") -%}
+        {%- endif -%}
+        {%- if metadataStandardsKeywordsAUuid == uuids.metadataStandardsKeywordsYesAUuid -%}
+          {%- do metadataSentences.append("We will include keywords and relevant ontology references to optimise the possibility for discovery and potential reuse.") -%}
         {%- endif -%}
       {%- endif -%}
 
@@ -64,6 +69,37 @@
       {%- if metadataSentences|length > 0 -%}
         <p>{{ metadataSentences|join(" ") }}</p>
       {%- endif -%}
+    {%- endif -%}
+
+    {# Publishing metadata #}
+    {%- set metadataOpenPath = [uuids.accessCUuid, uuids.metadataOpenQUuid]|reply_path -%}
+    {%- set metadataOpenAUuid = repliesMap[metadataOpenPath]|reply_str_value -%}
+    {%- if metadataOpenAUuid == uuids.metadataOpenNoAUuid %}
+      {%- set explanation = repliesMap[[metadataOpenPath, metadataOpenAUuid, uuids.metadataOpenNoExplainQUuid]|reply_path]|reply_str_value -%}
+      {%- if explanation -%}
+        <p>Metadata will not be available openly &ndash; {{ explanation|e|dot }}</p>
+      {%- else -%}
+        <p>Metadata will not be available openly.</p>
+      {%- endif -%}
+    {%- elif metadataOpenAUuid == uuids.metadataOpenYesAUuid -%}
+      {%- set metadataOpenInstrAUuid = repliesMap[[metadataOpenPath, metadataOpenAUuid, uuids.metadataOpenInstrQUuid]|reply_path]|reply_str_value -%}
+      {%- set metadataOpenFormAUuid = repliesMap[[metadataOpenPath, metadataOpenAUuid, uuids.metadataOpenFormQUuid]|reply_path]|reply_str_value -%}
+      <p>
+      {%- if metadataOpenInstrAUuid == uuids.metadataOpenInstrNoAUuid %}
+        Metadata will be openly available including instructions how to get access to the data.
+      {%- elif metadataOpenInstrAUuid == uuids.metadataOpenInstrNoAUuid %}
+        Metadata will be openly available without instructions how to get access to the data.
+      {%- else %}
+        Metadata will be openly available.
+      {%- endif %}
+      {%- if metadataOpenFormAUuid == uuids.metadataOpenFormNoAUuid %}
+        Metadata will not be available in a form that can be harvested and indexed.
+      {%- elif metadataOpenFormAUuid == uuids.metadataOpenFormYesRepoAUuid %}
+        Metadata will available in a form that can be harvested and indexed (managed by the used repository / repositories).
+      {%- elif metadataOpenFormAUuid == uuids.metadataOpenFormYesCareAUuid %}
+        Metadata will not be available in a form that can be harvested and indexed.
+      {%- endif %}
+      </p>
     {%- endif -%}
   </div>
 </div>

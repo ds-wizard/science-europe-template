@@ -10,15 +10,15 @@
       <p>No data sharing agreement will be required.</p>
     {%- elif openImmediatelyAUuid == uuids.openImmediatelyNoAUuid -%}
       {%- set pathPrefix = [openImmediatelyPath, uuids.openImmediatelyNoAUuid]|reply_path -%}
-      {%- set notOpenLimitedEmbargoPath = [pathPrefix, uuids.notOpenLimitedEmbargoQUuid]|reply_path -%}
-      {%- set notOpenLimitedEmbargoAUuid = repliesMap[notOpenLimitedEmbargoPath]|reply_str_value -%}
-      {%- if notOpenLimitedEmbargoAUuid == uuids.notOpenLimitedEmbargoYesAUuid -%}
-        {%- set notOpenLimitedEmbargoPeriodPath = [notOpenLimitedEmbargoPath, uuids.notOpenLimitedEmbargoYesAUuid, uuids.notOpenLimitedEmbargoPeriodQUuid]|reply_path -%}
-        {%- set notOpenLimitedEmbargoPeriod = repliesMap[notOpenLimitedEmbargoPeriodPath]|reply_str_value -%}
+      {%- set embargoPath = [uuids.accessCUuid, uuids.limitedEmbargoQUuid]|reply_path -%}
+      {%- set embargoAUuid = repliesMap[embargoPath]|reply_str_value -%}
+      {%- if embargoAUuid == uuids.limitedEmbargoYesAUuid -%}
+        {%- set embargoPeriodPath = [embargoPath, embargoAUuid, uuids.limitedEmbargoPeriodQUuid]|reply_path -%}
+        {%- set embargoPeriod = repliesMap[embargoPeriodPath]|reply_str_value -%}
         <p>
           Data cannot be completely open due to legal reasons. But data that is not legally restrained will be released after a fixed time period.
-          {%- if notOpenLimitedEmbargoPeriod %}
-            The embargo period will be {{ notOpenLimitedEmbargoPeriod|dot }}
+          {%- if embargoPeriod %}
+            The embargo period will be {{ embargoPeriod|dot }}
           {%- endif %}
         </p>
       {%- endif -%}
@@ -48,6 +48,20 @@
             For the authorization of potential users, we will make special arrangements{{ ": " ~ legalReasonsAuthorizeOther|dot if legalReasonsAuthorizeOther else "." }}
           {%- endif -%}
         </p>
+      {%- endif -%}
+    {%- endif -%}
+
+    {%- set collabPath = [uuids.creatingCUuid, uuids.collabQUuid]|reply_path -%}
+    {%- set collabAUuid = repliesMap[collabPath]|reply_str_value -%}
+    {%- if collabAUuid == uuids.collabNoAUuid -%}
+      <p>We are not running the project in a collaboration between different groups nor institutes. Therefore, no collaboration agreement related to data access is needed.</p>
+    {%- elif collabAUuid == uuids.collabYesAUuid -%}
+      {%- set collabAgreePath = [collabPath, collabAUuid, uuids.collabAgreeQUuid]|reply_path -%}
+      {%- set collabAgreeAUuid = repliesMap[collabAgreePath]|reply_str_value -%}
+      {%- if collabAgreeAUuid == uuids.collabAgreeNoAUuid -%}
+        <p>We are running the project in a collaboration between different groups and institutes. However, there is no collaboration agreement in the project that describes who can have access to what data.</p>
+      {%- elif collabAgreeAUuid == uuids.collabAgreeYesAUuid -%}
+        <p>We are running the project in a collaboration between different groups and institutes. A collaboration agreement that describes who can have access to what data in the project is set.</p>
       {%- endif -%}
     {%- endif -%}
   </div>

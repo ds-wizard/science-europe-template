@@ -142,6 +142,42 @@
             {%- if publishedDataCatalogueAUuid == uuids.publishedDataCatalogueYesAUuid -%}
               <br>We will be adding a reference to the published data to at least one data catalogue.
             {%- endif -%}
+            {# When published #}
+            {%- set publishedWhenPath = [isPublishedDataPath, uuids.isPublishedDataYesAUuid, uuids.publishedWhenQUuid]|reply_path -%}
+            {%- set publishedWhenAUuid = repliesMap[publishedWhenPath]|reply_str_value -%}
+            {%- if publishedWhenAUuid == uuids.publishedWhenSoonAUuid %}
+              <br>The dataset will published as soon as possible after collecting it.
+            {%- elif publishedWhenAUuid == uuids.publishedWhenCleanupAUuid %}
+              <br>The dataset will published after initial cleanup.
+            {%- elif publishedWhenAUuid == uuids.publishedWhenFinishedAUuid %}
+              <br>The dataset will published after all our processing has finished.
+            {%- elif publishedWhenAUuid == uuids.publishedWhenWrappedAUuid %}
+              <br>The dataset will published when the project is wrapped up.
+            {%- elif publishedWhenAUuid == uuids.publishedWhenEmbargoAUuid %}
+              <br>The dataset will published after an embargo.
+            {%- endif %}
+            {# Qualified references #}
+            {%- set publishedQReferencesPath = [isPublishedDataPath, uuids.isPublishedDataYesAUuid, uuids.publishedQReferencesQUuid]|reply_path -%}
+            {%- set publishedQReferences = repliesMap[publishedQReferencesPath]|reply_items -%}
+            {%- set qreferences = [] -%}
+            {%- for item in publishedQReferences -%}
+              {%- set refId = repliesMap[[publishedQReferencesPath, item, uuids.publishedQReferenceIdQUuid]|reply_path]|reply_str_value|e -%}
+              {%- set refRel = repliesMap[[publishedQReferencesPath, item, uuids.publishedQReferenceRelQUuid]|reply_path]|reply_str_value|e -%}
+              {%- if refId and refRel -%}
+                {%- do qreferences.append({
+                  'id': refId,
+                  'relation': refRel,
+                }) -%}
+              {%- endif -%}
+            {%- endfor -%}
+            {%- if qreferences|length > 0 -%}
+              <br>The following qualified references to other data sets will be included:
+              <ul>
+                {%- for qref in qreferences -%}
+                  <li><em>{{ qref.id|e }}</em> &ndash; {{ qref.relation|e }}</li>
+                {%- endfor -%}
+              </ul>
+            {%- endif -%}
           </li>
         {%- endif -%}
       {%- endfor -%}

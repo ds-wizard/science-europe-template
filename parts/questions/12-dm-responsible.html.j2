@@ -13,9 +13,9 @@
       {%- macro contributorsResponsibility(contributors, contributorRoleAUuid, responsibility) -%}
         {%- set names = [] -%}
         {%- for i in contributors -%}
-          {%- set role = repliesMap[[contributorsPath, i, uuids.contributorRoleQUuid]|reply_path]|reply_str_value -%}
+          {%- set roles = repliesMap[[contributorsPath, i, uuids.contributorRoleQUuid]|reply_path]|reply_items -%}
           {%- set name = repliesMap[[contributorsPath, i, uuids.contributorNameQUuid]|reply_path]|reply_str_value -%}
-          {%- if role == contributorRoleAUuid and name -%}
+          {%- if contributorRoleAUuid in roles and name -%}
             {%- do names.append(name) -%}
           {%- endif -%}
         {%- endfor -%}
@@ -41,7 +41,9 @@
       {# Data stewards #}
       {{ contributorsResponsibility(contributorsItems, uuids.contributorRoleDataStewardAUuid, "responsible for the management and proficiency of data including data processing, data policies, data guidelines, and data availability.") }}
       {# Distributors #}
-      {{ contributorsResponsibility(contributorsItems, uuids.contributorRoleDistributorAUuid, "responsible for generating/disseminating copies of the resouce in either electronic or print form.") }}
+      {{ contributorsResponsibility(contributorsItems, uuids.contributorRoleDistributorAUuid, "responsible for generating and disseminating copies of the resouce in either electronic or print form.") }}
+      {# Data protection officers #}
+      {{ contributorsResponsibility(contributorsItems, uuids.contributorRoleDataProtectorAUuid, "responsible for all issues relating to the protection of personal data and data protection policies in general.") }}
     {%- endif -%}
   </div>
 </div>

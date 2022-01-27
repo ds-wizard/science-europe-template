@@ -56,13 +56,15 @@
               {%- set validationAUuid = repliesMap[[mdqPrefix, uuids.mdQualityValidationQUuid]|reply_path]|reply_str_value -%}
               {%- set peerReviewAUuid = repliesMap[[mdqPrefix, uuids.mdQualityPeerReviewQUuid]|reply_path]|reply_str_value -%}
               {%- set vocabulariesAUuid = repliesMap[[mdqPrefix, uuids.mdQualityVocabulariesQUuid]|reply_path]|reply_str_value -%}
+              {%- set consistencyAUuid = repliesMap[[mdqPrefix, uuids.mdQualityConsistencyQUuid]|reply_path]|reply_str_value -%}
               {%- set calibrating = calibratingAUuid == uuids.mdQualityCalibatingYesAUuid -%}
               {%- set repetition = repetitionAUuid == uuids.mdQualityRepetitionYesAUuid -%}
               {%- set standardized = standardizedAUuid == uuids.mdQualityStandardizedYesAUuid -%}
               {%- set validation = validationAUuid == uuids.mdQualityValidationYesAUuid -%}
               {%- set peerReview = peerReviewAUuid == uuids.mdQualityPeerReviewYesAUuid -%}
               {%- set vocabularies = vocabulariesAUuid == uuids.mdQualityVocabulariesYesAUuid -%}
-              {%- set qualityProcesses = [calibrating, repetition, standardized, validation, peerReview, vocabularies] -%}
+              {%- set consistency = consistencyAUuid == uuids.mdQualityConsistencyYesAUuid -%}
+              {%- set qualityProcesses = [consistency, calibrating, repetition, standardized, validation, peerReview, vocabularies] -%}
               {%- set qualityCount = qualityProcesses|select("true")|list|length -%}
               {%- if qualityCount == 1 -%}
                 <p>
@@ -85,7 +87,10 @@
                   {%- if vocabularies -%}
                     controlled vocabularies
                   {%- endif %}
-                  quality process.
+                  {%- if consistency -%}
+                    measuring samples for which the outcome is known in order to monitor consistency
+                  {%- endif %}
+                  as part of the quality process.
                 </p>
               {%- elif qualityCount > 1 -%}
                 <p>
@@ -109,6 +114,9 @@
                   {%- if vocabularies -%}
                     <li>controlled vocabularies</li>
                   {%- endif -%}
+                  {%- if consistency -%}
+                    <li>measuring samples with known outcome (to monitor consistency)</li>
+                  {%- endif %}
                 </ul>
                 </p>
               {%- else -%}
@@ -138,6 +146,8 @@
   {%- set storageConvAUuid = repliesMap[storageConvPath]|reply_str_value -%}
   {%- if storageConvAUuid == uuids.storageConvExploreAUuid -%}
     {%- set stConvPrefix = [storageConvPath, uuids.storageConvExploreAUuid]|reply_path -%}
+    {%- set storageSpacePath = [stConvPrefix, uuids.storageSpaceQUuid]|reply_path -%}
+    {%- set storageSpaceAUuid = repliesMap[storageSpacePath]|reply_str_value -%}
     {%- set storageConvFSysPath = [stConvPrefix, uuids.storageConvFSysQUuid]|reply_path -%}
     {%- set storageConvFSysAUuid = repliesMap[storageConvFSysPath]|reply_str_value -%}
     {%- set storageConvObjStorePath = [stConvPrefix, uuids.storageConvObjStoreQUuid]|reply_path -%}
@@ -149,7 +159,16 @@
     {%- set storageConvTripleStorePath = [stConvPrefix, uuids.storageConvTripleStoreQUuid]|reply_path -%}
     {%- set storageConvTripleStoreAUuid = repliesMap[storageConvTripleStorePath]|reply_str_value -%}
     {%- if storageConvFSysAUuid or storageConvObjStoreAUuid or storageConvRelDbAUuid or storageConvGraphDbAUuid or storageConvTripleStoreAUuid -%}
-      <h4>Storage and file conventions</h4>
+      <h4>Data storage and file conventions</h4>
+      {# Storage space #}
+      {%- if storageSpaceAUuid == uuids.storageSpaceLittleAUuid -%}
+        <p>The project will require so little storage space for all data and software (including temporary storage) that it is not a problem.</p>
+      {%- elif storageSpaceAUuid == uuids.storageSpaceSpecifyAUuid -%}
+        {%- set size = repliesMap[[storageSpacePath, storageSpaceAUuid, uuids.storageSpaceSpecifyQUuid]|reply_path]|reply_str_value -%}
+        {%- if size -%}
+        <p>We estimate the storage space that the project will require for all data and software (including temporary storage) to {{ size }} gigabytes.</p>
+        {%- endif -%}
+      {%- endif -%}
       {# File System #}
       <p>
       {%- if storageConvFSysAUuid == uuids.storageConvFSysNoAUuid -%}
@@ -200,6 +219,12 @@
           </ul>
         {%- else -%}
           We will use a filesystem with files and folders.
+        {%- endif -%}
+        {# Versioning #}
+        {%- set scDocumentVersioningPath = [scFSysPrefix, uuids.scDocumentVersioningQUuid]|reply_path -%}
+        {%- set scDocumentVersioningAUuid = repliesMap[scDocumentVersioningPath]|reply_str_value -%}
+        {%- if scDocumentVersioningAUuid == uuids.scDocumentVersioningYesAUuid %}
+          We document how we manage file versioning for files and folders.
         {%- endif -%}
         {# Other appointments #}
         {%- set scFSysAppointmentsPath = [scFSysPrefix, uuids.scFSysAppointmentsQUuid]|reply_path -%}
