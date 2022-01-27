@@ -1,3 +1,4 @@
 env/
 .env
 template.zip
+template*.zip
