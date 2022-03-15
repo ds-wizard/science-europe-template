@@ -11,8 +11,8 @@
         {%- set contacts = [] -%}
         {%- for i in contributorsItems -%}
           {%- set pathPrefix = [contributorsPath, i]|join(".") ~ "." -%}
-          {%- set contributorRole = repliesMap[pathPrefix ~ uuids.contributorRoleQUuid]|reply_str_value -%}
-          {%- if contributorRole == uuids.contributorRoleContactPersonAUuid -%}
+          {%- set contributorRoles = repliesMap[pathPrefix ~ uuids.contributorRoleQUuid]|reply_items -%}
+          {%- if uuids.contributorRoleContactPersonAUuid in contributorRoles -%}
             {% do contacts.append(pathPrefix)  %}
           {%- endif -%}
         {%- endfor -%}
@@ -47,7 +47,7 @@
               {%- endfor -%}
             </ul>
           {%- else -%}
-            <span class="empty-value">There are no contact people specified yet</span>
+            <span class="empty-value">There is no contact person specified yet</span>
           {%- endif -%}
         </dd>
       {%- endif -%}
