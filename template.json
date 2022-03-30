@@ -1,12 +1,12 @@
 {
   "organizationId": "dsw",
   "templateId": "science-europe",
-  "version": "1.10.1",
+  "version": "1.11.0",
   "name": "Science Europe DMP Template",
   "description": "Default DCC DMP Template recommended by Science Europe",
   "license": "Apache-2.0",
   "recommendedPackageId": "dsw:root:2.4.0",
-  "metamodelVersion": 8,
+  "metamodelVersion": 9,
   "allowedPackages": [
     {
         "orgId": "dsw",
