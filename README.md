@@ -2,14 +2,22 @@
 
 This is the DMP template recommended by [Science Europe](https://www.scienceeurope.org) in their [Science Europe Guidance Document](https://www.scienceeurope.org/media/nsxdyvqn/se_guidance_document_rdmps.pdf) designed for use in [Data Stewardship Wizard](https://ds-wizard.org) with *Common Data Stewardship knowledge model*. It applies various rules and synthesizes the text answers from questionnaire replies to relevant questions.
 
+
 ## Usage
 
 This template is available through [DSW Registry](https://registry.ds-wizard.org/templates).
 
+
+## Issues and Contributing
+
+This document template for DSW is available as open-source via GitHub Repository [ds-wizard/science-europe-template](https://github.com/ds-wizard/science-europe-template), you can [report issues](https://github.com/ds-wizard/science-europe-template/issues) there and fork it for customisations or contributions.
+
+
 ## Changelog
 
-### Unreleased
+### 1.13.0
 
+- Adjusted to template metamodel version 11 (released in DSW 3.20.0)
 - Add versions overview / change tracker table
 
 ### 1.12.0
