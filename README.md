@@ -15,6 +15,11 @@ This document template for DSW is available as open-source via GitHub Repository
 
 ## Changelog
 
+### Unreleased
+
+- Switch from `wkhtmltopdf` to `weasyprint` for PDF
+- Improve styling for PDF and HTML
+
 ### 1.13.0
 
 - Adjusted to template metamodel version 11 (released in DSW 3.20.0)

@@ -1,7 +1,7 @@
 {
   "organizationId": "dsw",
   "templateId": "science-europe",
-  "version": "1.13.0",
+  "version": "1.14.0",
   "name": "Science Europe DMP Template",
   "description": "Default DCC DMP Template recommended by Science Europe",
   "license": "Apache-2.0",
@@ -50,10 +50,8 @@
           }
         },
         {
-          "name": "wkhtmltopdf",
-          "options": {
-              "args": "--disable-smart-shrinking --footer-center [page] --footer-font-name \"Noto Serif\" --footer-spacing 10 --footer-font-size 10 -B 25mm -L 25mm -R 25mm -T 25mm"
-          }
+          "name": "weasyprint",
+          "options": {}
         }
       ]
     },

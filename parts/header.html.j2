@@ -3,7 +3,7 @@
   <h1>
     {{ ctx.questionnaireName }}
   </h1>
-  <div>
+  <div class="dmp-info">
     <dl>
       {%- set contributorsPath = [uuids.adminDetailsCUuid, uuids.contributorsQUuid]|join(".") -%}
       {%- set contributorsItems = repliesMap[contributorsPath]|reply_items -%}
@@ -34,11 +34,11 @@
                     <span class="contact-name missing">(name not given)</span>
                   {%- endif -%}
                   {%- if contributorEmail and contributorOrcid %}
-                    ({{ macros.formatEmail(contributorEmail) }}, {{ macros.formatOrcid(contributorOrcid) }})
+                    <br>{{ macros.formatEmail(contributorEmail) }}, {{ macros.formatOrcid(contributorOrcid) }}
                   {%- elif contributorEmail %}
-                    ({{ macros.formatEmail(contributorEmail) }})
+                    <br>{{ macros.formatEmail(contributorEmail) }}
                   {%- elif contributorOrcid %}
-                    ({{ macros.formatOrcid(contributorOrcid) }})
+                    <br>{{ macros.formatOrcid(contributorOrcid) }}
                   {%- endif -%}
                   {%- if contributorAffiliationReply %}
                     <br>{{ macros.integrationValue(contributorAffiliationReply, uuids.contributorAffiliationQUuid) }}
