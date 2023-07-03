@@ -13,7 +13,7 @@
     {%- set openImmediatelyPath = [uuids.accessCUuid, uuids.openImmediatelyQUuid]|reply_path -%}
     {%- set openImmediatelyAUuid = repliesMap[openImmediatelyPath]|reply_str_value -%}
     {%- if openImmediatelyAUuid == uuids.openImmediatelyYesAUuid -%}
-      <p>All of our data can become completely open immediately.</p>
+      <p>All of our data can become completely open over time.</p>
     {%- elif openImmediatelyAUuid == uuids.openImmediatelyNoAUuid -%}
       {%- set pathPrefix = [openImmediatelyPath, uuids.openImmediatelyNoAUuid]|reply_path -%}
       {%- set notOpenLegalReasonsPath = [pathPrefix, uuids.notOpenLegalReasonsQUuid]|reply_path -%}
@@ -37,7 +37,7 @@
 
       {%- if nReasons > 0 -%}
         <p>
-        The data cannot become completely open immediately because 
+        The data cannot become completely open because 
         {%- if nReasons == 1 -%}
           {%- if legalReasons %}
             of legal reasons.
@@ -69,7 +69,7 @@
           </ul>
         {%- endif -%}
       {%- else -%}
-        <p>The data cannot become completely open immediately.</p>
+        <p>The data cannot become completely open.</p>
       {%- endif -%}
 
       {%- set notOpenLimitedEmbargoPath = [openImmediatelyPath, uuids.openImmediatelyNoAUuid, uuids.notOpenLimitedEmbargoQUuid]|reply_path -%}
@@ -87,7 +87,7 @@
     {%- set embargoPath = [uuids.accessCUuid, uuids.limitedEmbargoQUuid]|reply_path -%}
     {%- set embargoAUuid = repliesMap[embargoPath]|reply_str_value -%}
     {%- if embargoAUuid == uuids.limitedEmbargoOpenAUuid -%}
-      <p>Limited embargo will not be used as all data will be opened immediately.</p>
+      <p>Limited embargo will not be used as all data will be opened.</p>
     {%- elif embargoAUuid == uuids.limitedEmbargoIndefinitelyAUuid -%}
       <p>Limited embargo cannot be used because some restricted data will be embargoed indefinitely.</p>
     {%- elif embargoAUuid == uuids.limitedEmbargoReleasedSoonAUuid -%}

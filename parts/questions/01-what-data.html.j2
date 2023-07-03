@@ -119,12 +119,9 @@
   {%- set preexistingPath = [uuids.reusingCUuid, uuids.preexistingQUuid]|reply_path -%}
   {%- set preexistingAUuid = repliesMap[preexistingPath]|reply_str_value -%}
   {%- if preexistingAUuid == uuids.preexistingYesAUuid -%}
-    {%- set usingPreexistingPath = [preexistingPath, uuids.preexistingYesAUuid, uuids.usingPreexistingQUuid]|reply_path -%}
-    {%- set usingPreexistingAUuid = repliesMap[usingPreexistingPath]|reply_str_value -%}
-    {%- if usingPreexistingAUuid == uuids.usingPreexistingYesAUuid -%}
-      {%- set refDataPath = [usingPreexistingPath, uuids.usingPreexistingYesAUuid, uuids.refDataQUuid]|reply_path -%}
+      {%- set refDataPath = [preexistingPath, uuids.preexistingYesAUuid, uuids.refDataQUuid]|reply_path -%}
       {%- set refDataItems = repliesMap[refDataPath]|reply_items -%}
-      {%- set nrefDataPath = [usingPreexistingPath, uuids.usingPreexistingYesAUuid, uuids.nrefDataQUuid]|reply_path -%}
+      {%- set nrefDataPath = [preexistingPath, uuids.preexistingYesAUuid, uuids.nrefDataQUuid]|reply_path -%}
       {%- set nrefDataItems = repliesMap[nrefDataPath]|reply_items -%}
       {%- if (refDataItems|length + nrefDataItems|length) > 0 -%}
         <div>
@@ -134,6 +131,7 @@
             <ul>
               {%- for refDataItem in refDataItems -%}
                 {%- set refDataPrefix = [refDataPath, refDataItem]|reply_path -%}
+                {%- set refDataUsedPrefix = [refDataPrefix, uuids.refDataUseQUuid, uuids.refDataUseYesAUuid]|reply_path -%}
                 {%- set refDataNameReply = repliesMap[[refDataPrefix, uuids.refDataNameQUuid]|reply_path] -%}
                 {%- set refDataWhere = repliesMap[[refDataPrefix, uuids.refDataWhereQUuid]|reply_path]|reply_str_value -%}
                 <li>
@@ -147,7 +145,7 @@
                     {%- endif -%}
                   {%- endif -%}
                   {# version #}
-                  {%- set refDataVersionedPath = [refDataPrefix, uuids.refDataVersionedQUuid]|reply_path -%}
+                  {%- set refDataVersionedPath = [refDataUsedPrefix, uuids.refDataVersionedQUuid]|reply_path -%}
                   {%- set refDataVersionedAUuid = repliesMap[refDataVersionedPath]|reply_str_value -%}
                   {%- if refDataVersionedAUuid == uuids.refDataVersionedYesAUuid -%}
                     {%- set refDataVersionedWhichPath = [refDataVersionedPath, uuids.refDataVersionedYesAUuid, uuids.refDataVersionedWhichQUuid]|reply_path -%}
