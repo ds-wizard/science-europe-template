@@ -13,7 +13,25 @@ This template is available through [DSW Registry](https://registry.ds-wizard.org
 This document template for DSW is available as open-source via GitHub Repository [ds-wizard/science-europe-template](https://github.com/ds-wizard/science-europe-template), you can [report issues](https://github.com/ds-wizard/science-europe-template/issues) there and fork it for customisations or contributions.
 
 
+### Contributors
+
+* **Marek Suchánek** <[marek.suchanek@ds-wizard.org](mailto:marek.suchanek@ds-wizard.org)>
+  * ORCID: [0000-0001-7525-9218](https://orcid.org/0000-0001-7525-9218)
+  * GitHub: [@MarekSuchanek](https://github.com/MarekSuchanek)
+* **Kryštof Komanec** <[krystof.komanec@ds-wizard.org](mailto:krystof.komanec@ds-wizard.org)>
+  * ORCID: [0000-0003-3856-1682](https://orcid.org/0000-0003-3856-1682)
+  * GitHub: [@krystofkomanec](https://github.com/krystofkomanec)
+* **Rob Hooft** <[rob.hooft@health-ri.nl](mailto:rob.hooft@health-ri.nl)>
+  * ORCID: [0000-0001-6825-9439](https://orcid.org/0000-0001-6825-9439)
+  * GitHub: [@rwwh](https://github.com/rwwh)
+
+
 ## Changelog
+
+### 1.15.2
+
+- Removed unused code
+- Improved wording of storage conventions
 
 ### 1.15.1
 
