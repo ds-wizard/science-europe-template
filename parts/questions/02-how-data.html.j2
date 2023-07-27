@@ -154,11 +154,7 @@
     {%- set storageConvObjStoreAUuid = repliesMap[storageConvObjStorePath]|reply_str_value -%}
     {%- set storageConvRelDbPath = [stConvPrefix, uuids.storageConvRelDbQUuid]|reply_path -%}
     {%- set storageConvRelDbAUuid = repliesMap[storageConvRelDbPath]|reply_str_value -%}
-    {%- set storageConvGraphDbPath = [stConvPrefix, uuids.storageConvGraphDbQUuid]|reply_path -%}
-    {%- set storageConvGraphDbAUuid = repliesMap[storageConvGraphDbPath]|reply_str_value -%}
-    {%- set storageConvTripleStorePath = [stConvPrefix, uuids.storageConvTripleStoreQUuid]|reply_path -%}
-    {%- set storageConvTripleStoreAUuid = repliesMap[storageConvTripleStorePath]|reply_str_value -%}
-    {%- if storageConvFSysAUuid or storageConvObjStoreAUuid or storageConvRelDbAUuid or storageConvGraphDbAUuid or storageConvTripleStoreAUuid -%}
+    {%- if storageConvFSysAUuid or storageConvObjStoreAUuid or storageConvRelDbAUuid -%}
       <h4>Data storage and file conventions</h4>
       {# Storage space #}
       {%- if storageSpaceAUuid == uuids.storageSpaceLittleAUuid -%}
@@ -234,26 +230,26 @@
         {%- endif -%}
       {%- endif -%}
       </p>
-      {# Object Store #}
+      {# Object and Document Store #}
       <p>
       {%- if storageConvObjStoreAUuid == uuids.storageConvObjStoreNoAUuid -%}
-        We will not be storing data in an "object store" system.
+        We will not be storing data in an "object/document store" system.
       {%- elif storageConvObjStoreAUuid == uuids.storageConvObjStoreYesAUuid -%}
         {%- set scObjStoreNamingQUuid = [storageConvObjStorePath, uuids.storageConvObjStoreYesAUuid, uuids.scObjStoreNamingQUuid]|reply_path -%}
         {%- set scObjStoreNaming = repliesMap[scObjStoreNamingQUuid]|reply_str_value -%}
         {%- if scObjStoreNaming -%} 
-          We will be storing data in an "object store" system using following naming conventions for objects in the store: {{ scObjStoreNaming|dot }}
+          We will be storing data in an "object/document store" system using following naming conventions for objects in the store: {{ scObjStoreNaming|dot }}
         {%- else -%}
-          We will be storing data in an "object store" system.
+          We will be storing data in an "object/document store" system.
         {%- endif -%}
       {%- endif -%}
       </p>
-      {# Relational Database #}
+      {# Databases #}
       <p>
       {%- if storageConvRelDbAUuid == uuids.storageConvRelDbNoAUuid -%}
-        We will not use a relational database system to store project data.
+        We will not use a database system to store project data.
       {%- elif storageConvRelDbAUuid == uuids.storageConvRelDbYesAUuid -%}
-        We will use a relational database system to store project data.
+        We will use a database system to store project data.
         {%- set scRelDbHandleChangesPath = [storageConvRelDbPath, uuids.storageConvRelDbYesAUuid, uuids.scRelDbHandleChangesQUuid]|reply_path -%}
         {%- set scRelDbHandleChangesAUuid = repliesMap[scRelDbHandleChangesPath]|reply_str_value -%}
         {%- if scRelDbHandleChangesAUuid == uuids.scRelDbReadOnlyAnswerUuid %}
@@ -263,22 +259,6 @@
         {%- elif scRelDbHandleChangesAUuid == uuids.scRelDbExpireAnswerUuid %}
           Modifications will be made by <em>Expiring</em> the existing data and <em>Adding</em> updated data.
         {%- endif -%}
-      {%- endif -%}
-      </p>
-      {# Graph Database #}
-      <p>
-      {%- if storageConvGraphDbAUuid == uuids.storageConvGraphDbNoAUuid -%}
-        We will not use a graph database for data in the project.
-      {%- elif storageConvGraphDbAUuid == uuids.storageConvGraphDbYesAUuid -%}
-        We will use a graph database for data in the project.
-      {%- endif -%}
-      </p>
-      {# Triple Store #}
-      <p>
-      {%- if storageConvTripleStoreAUuid == uuids.storageConvTripleStoreNoAUuid -%}
-        We will not be storing data in a triple store.
-      {%- elif storageConvTripleStoreAUuid == uuids.storageConvTripleStoreYesAUuid -%}
-        We will be storing data in a triple store.
       {%- endif -%}
       </p>
     {%- endif -%}
