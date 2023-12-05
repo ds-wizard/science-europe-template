@@ -41,7 +41,7 @@
                     <br>{{ macros.formatOrcid(contributorOrcid) }}
                   {%- endif -%}
                   {%- if contributorAffiliationReply %}
-                    <br>{{ macros.integrationValue(contributorAffiliationReply, uuids.contributorAffiliationQUuid) }}
+                    <br>{{ macros.integrationValue(contributorAffiliationReply) }}
                   {%- endif -%}
                 </li>
               {%- endfor -%}
@@ -73,8 +73,8 @@
       <dt>Generated on</dt>
       <dd>{{ ctx.createdAt|datetime_format("%d %b %Y") }}</dd>
     </dl>
-    <p class="dsw">
-      Data Management Plan created in Data Stewardship Wizard &laquo;<a href="https://ds-wizard.org" target="_blank">ds-wizard.org</a>&raquo;
+    <p class="note">
+      Data Management Plan created in {{ globals.fullName }} &laquo;<a href="{{ globals.linkUrl }}" target="_blank">{{ globals.link }}</a>&raquo;
     </p>
   </div>
 </header>

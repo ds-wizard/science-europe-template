@@ -136,13 +136,15 @@
               {%- set refDataWhere = repliesMap[[refDataPrefix, uuids.refDataWhereQUuid]|reply_path]|reply_str_value -%}
               <li>
                 {# identification #}
-                <strong>{{ macros.integrationValue(refDataNameReply, uuids.refDataNameQUuid) }}</strong>
+                <div>{{ macros.integrationValue(refDataNameReply) }}</div>
                 {%- if refDataWhere -%}
+                  <p>
                   {%- if refDataWhere.startswith("http://") or refDataWhere.startswith("https://") or refDataWhere.startswith("ftp://") %}
-                    (<a href="{{ refDataWhere }}" target="_blank">{{ refDataWhere }}</a>)
+                    It is available via: <a href="{{ refDataWhere }}" target="_blank">{{ refDataWhere }}</a>.
                   {%- else %}
-                    ({{ refDataWhere }})
+                    It is available via: {{ refDataWhere }}.
                   {%- endif -%}
+                  </p>
                 {%- endif -%}
                 {# version #}
                 {%- set refDataVersionedPath = [refDataUsedPrefix, uuids.refDataVersionedQUuid]|reply_path -%}
@@ -181,13 +183,15 @@
               {%- set nrefDataWhere = repliesMap[[nrefDataPrefix, uuids.nrefDataWhereQUuid]|reply_path]|reply_str_value -%}
               <li>
                 {# identification #}
-                <strong>{{ macros.integrationValue(nrefDataNameReply, uuids.nrefDataNameQUuid) }}</strong>
+                <div>{{ macros.integrationValue(nrefDataNameReply) }}</div>
                 {%- if nrefDataWhere -%}
+                  <p>
                   {%- if nrefDataWhere.startswith("http://") or nrefDataWhere.startswith("https://") or nrefDataWhere.startswith("ftp://") %}
-                    (<a href="{{ nrefDataWhere }}" target="_blank">{{ nrefDataWhere }}</a>)
+                    It is available via: <a href="{{ nrefDataWhere }}" target="_blank">{{ nrefDataWhere }}</a>.
                   {%- else %}
-                    ({{ nrefDataWhere }})
+                    It is available via: {{ nrefDataWhere }}.
                   {%- endif -%}
+                  </p>
                 {%- endif -%}
                 {# version #}
                 {%- set refDataVersionedPath = [refDataUsedPrefix, uuids.refDataVersionedQUuid]|reply_path -%}
@@ -233,13 +237,15 @@
               {%- set nrefDataWhere = repliesMap[[nrefDataPrefix, uuids.nrefDataWhereQUuid]|reply_path]|reply_str_value -%}
               <li>
                 {# identification #}
-                <strong>{{ macros.integrationValue(nrefDataNameReply, uuids.nrefDataNameQUuid) }}</strong>
+                <div>{{ macros.integrationValue(nrefDataNameReply) }}</div>
                 {%- if nrefDataWhere -%}
+                  <p>
                   {%- if nrefDataWhere.startswith("http://") or nrefDataWhere.startswith("https://") or nrefDataWhere.startswith("ftp://") %}
-                    (<a href="{{ nrefDataWhere }}" target="_blank">{{ nrefDataWhere }}</a>)
+                    It is available via: <a href="{{ nrefDataWhere }}" target="_blank">{{ nrefDataWhere }}</a>.
                   {%- else %}
-                    ({{ nrefDataWhere }})
+                    It is available via: {{ nrefDataWhere }}.
                   {%- endif -%}
+                  </p>
                 {%- endif -%}
                 {# data access #}
                 {%- set nrefDataAccessPath = [nrefDataUsedPrefix, uuids.nrefDataAccessQUuid]|reply_path -%}
@@ -286,7 +292,7 @@
         {%- set formatsVolumeAUuid = repliesMap[formatsVolumePath]|reply_str_value -%}
         <li>
           {# identification #}
-          <strong>{{ macros.integrationValue(formatNameReply, uuids.formatsNameQUuid) }}</strong>
+          <div>{{ macros.integrationValue(formatNameReply) }}</div>
           {%- if formatsIsStandardAUuid or formatsIsLTSuitableAUuid or formatsVolumeAUuid -%}
             <p>
             {# standard? #}

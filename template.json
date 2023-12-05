@@ -1,11 +1,11 @@
 {
   "organizationId": "dsw",
   "templateId": "science-europe",
-  "version": "1.15.2",
+  "version": "1.16.0",
   "name": "Science Europe DMP Template",
   "description": "Default DCC DMP Template recommended by Science Europe",
   "license": "Apache-2.0",
-  "metamodelVersion": 11,
+  "metamodelVersion": 12,
   "allowedPackages": [
     {
         "orgId": "dsw",
@@ -29,7 +29,7 @@
         {
           "name": "jinja",
           "options": {
-            "template": "parts/index.html.j2",
+            "template": "src/index.html.j2",
             "content-type": "text/html",
             "extension": "html"
           }
@@ -44,7 +44,7 @@
         {
           "name": "jinja",
           "options": {
-            "template": "parts/index.html.j2",
+            "template": "src/index.html.j2",
             "content-type": "text/html",
             "extension": "html"
           }
@@ -63,7 +63,7 @@
         {
           "name": "jinja",
           "options": {
-            "template": "parts/index.html.j2",
+            "template": "src/index.html.j2",
             "content-type": "text/html",
             "extension": "html"
           }
@@ -85,7 +85,7 @@
         {
           "name": "jinja",
           "options": {
-            "template": "parts/index.html.j2",
+            "template": "src/index.html.j2",
             "content-type": "text/html",
             "extension": "html"
           }
@@ -107,7 +107,7 @@
         {
           "name": "jinja",
           "options": {
-            "template": "parts/index.html.j2",
+            "template": "src/index.html.j2",
             "content-type": "text/html",
             "extension": "html"
           }
@@ -129,7 +129,7 @@
         {
           "name": "jinja",
           "options": {
-            "template": "parts/index.html.j2",
+            "template": "src/index.html.j2",
             "content-type": "text/html",
             "extension": "html"
           }
@@ -145,10 +145,11 @@
     }
   ],
   "_tdk": {
-    "version": "3.20.0",
+    "version": "4.1.0",
     "readmeFile": "README.md",
     "files": [
-        "parts/**/*"
+      "src/*",
+      "src/**/*"
     ]
   }
 }

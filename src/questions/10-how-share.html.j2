@@ -31,11 +31,11 @@
               {%- if identifierTypeAUuid == uuids.dataIdentifierTypeHandleAUuid -%}
                 <li>Handle: <strong>{{ identifierValue }}</strong></li>
               {%- elif identifierTypeAUuid == uuids.dataIdentifierTypeDoiAUuid -%}
-                <li>DOI: <strong><a href="https://doi.org/{{ identifierValue }}">{{ identifierValue }}</a></strong></li>
+                <li>DOI: <strong><a href="https://doi.org/{{ identifierValue }}" target="_blank">{{ identifierValue }}</a></strong></li>
               {%- elif identifierTypeAUuid == uuids.dataIdentifierTypeArkAUuid -%}
                 <li>ARK: <strong>{{ identifierValue }}</strong></li>
               {%- elif identifierTypeAUuid == uuids.dataIdentifierTypeUrlAUuid -%}
-                <li>URL: <strong><a href="{{ identifierValue }}">{{ identifierValue }}</a></strong></li>
+                <li>URL: <strong><a href="{{ identifierValue }}" target="_blank">{{ identifierValue }}</a></strong></li>
               {%- elif identifierTypeAUuid == uuids.dataIdentifierTypeOtherAUuid -%}
                 {%- set identifierType = repliesMap[[identifierTypePath, uuids.dataIdentifierTypeOtherAUuid, uuids.dataIdentifierTypeOtherTypeQUuid]|reply_path]|reply_str_value -%}
                 <li>{{ identifierType }}: <strong>{{ identifierValue }}</strong></li>
@@ -69,7 +69,7 @@
                     {%- set domainSpecificRepoNamePath = [distroRepositoryKindPath, uuids.publishedDataRepositoryDomainSpecificAUuid, uuids.domainSpecificRepoNameQUuid]|reply_path -%}
                     {%- set domainSpecificRepoNameReply = repliesMap[domainSpecificRepoNamePath] -%}
                     {%- if domainSpecificRepoNameReply -%}
-                      : {{ macros.integrationValue(domainSpecificRepoNameReply, uuids.domainSpecificRepoNameQUuid) }}.
+                      : {{ macros.integrationValue(domainSpecificRepoNameReply) }}.
                     {%- else -%}.
                     {% endif -%}
                   {%- elif distroRepositoryKindAUuid == uuids.publishedDataRepositoryNationalAUuid %}
@@ -124,7 +124,7 @@
                           The conditions will be published as part of open metadata.
                         {%- endif -%}
                         {% if licenseRestrictLink %}
-                          More infomation about the restrictions can be found here: <a href="{{ licenseRestrictLink }}">{{ licenseRestrictLink }}</a>.
+                          More infomation about the restrictions can be found here: <a href="{{ licenseRestrictLink }}" target="_blank">{{ licenseRestrictLink }}</a>.
                         {% endif %}
                       {%- endif -%}
                       </li>
