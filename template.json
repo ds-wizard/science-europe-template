@@ -1,6 +1,6 @@
 {
   "organizationId": "dsw",
-  "templateId": "science-europe",
+  "templateId": "science-europe-dmp-template",
   "version": "1.17.0",
   "name": "Science Europe DMP Template",
   "description": "Default DCC DMP Template recommended by Science Europe",
