@@ -1,5 +1,5 @@
 <div id="q-what-data" class="question">
-  <h3>1. What data will you collect or create?</h3>
+  <h3>2. What data (kind, format, volume) will be collected or produced?</h3>
   <div class="answer">
 
   {%- set measuredPath = [uuids.creatingCUuid, uuids.measuredQUuid]|reply_path -%}
@@ -274,7 +274,7 @@
       </div>
     {%- endif -%}
   {%- endif -%}
-  
+
   {# Format/Type with volume #}
   {%- set formatsPath = [uuids.creatingCUuid, uuids.formatsQUuid]|reply_path -%}
   {%- set formatsItems = repliesMap[formatsPath]|reply_items -%}
