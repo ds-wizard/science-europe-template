@@ -4,13 +4,11 @@
     <div class="answer">
         {%- set personalDataQUuid = [uuids.creatingCUuid,uuids.collectPersonalQUuid ]|reply_path -%}
         {%- set personalDataReply = repliesMap[personalDataQUuid]|reply_str_value -%}
-        OK
         {%- if personalDataReply == uuids.collectPersonalYesAUuid -%}
             {%- set personalDataGDPRPath = [personalDataQUuid, uuids.collectPersonalYesAUuid, uuids.cpersGdprQUuid ]|reply_path -%}
             {%- set personalDataGDPRPathReply = repliesMap[personalDataGDPRPath]|reply_str_value -%}
             
             {%- if personalDataGDPRPathReply == uuids.cpersGdprExploreAUuid -%}
-                OK
                 {# Legal basis be4651c9-9a8c-4e10-a158-61b94ca0e139 #}
                 {%- set personalDataLegalBasisQUuid = [personalDataGDPRPath, uuids.cpersGdprExploreAUuid, uuids.cpersGdprLegalBasisQUuid]|reply_path  -%}
                 {%- set personalDataLegalBasisReply = repliesMap[personalDataLegalBasisQUuid]|reply_str_value -%}
@@ -58,7 +56,7 @@
                     {%- set personalDataSafeguardElaborateQUuid = [personalDataSafeguardsQUuid, uuids.cpersGdprSafeguardsAUuid, uuids.cpersGdprSafeguardElaborateQUuid ]|reply_path  -%}
                     {%- set personalDataSafeguardElaborateReply = repliesMap[personalDataSafeguardElaborateQUuid]|reply_str_value -%}
                     {%- if personalDataSafeguardElaborateReply -%}
-                        <p>We will use the following technical and procesural safeguards : {{personalDataSafeguardElaborateReply}}</p>
+                        <p>We will use the following technical and procesural safeguards : {{personalDataSafeguardElaborateReply|dot}}</p>
                    {%- endif -%}
 
                     {%- set personalDataSafeguardTransferQUuid = [personalDataSafeguardsQUuid, uuids.cpersGdprSafeguardsAUuid, uuids.cpersGdprSafeguardsTransferQUuid]|reply_path -%}
@@ -68,7 +66,7 @@
 
                     {%- if (personalDataSafeguardTransferReply == uuids.cpersGdprSafeguardsTransferYesAUuid) and (personalDataSafeguardTransferMeasuresReply) -%}
                         <p>We plan to transfer data outside the EU/EEA and these are measures we will place to protect data:
-                        {{personalDataSafeguardTransferMeasuresReply}}</p>
+                        {{personalDataSafeguardTransferMeasuresReply|dot}}</p>
                     {%- endif -%}
                 {%- endif -%}
             {%- endif -%}
