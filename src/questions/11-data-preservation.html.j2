@@ -1,0 +1,50 @@
+<div id="q-data-preservation" class="question">
+  <h3>11. How will data for preservation be selected, and where data will be preserved long-term (for example a data repository or archive)?</h3>
+
+  <div class="answer">
+    {# Produced datasets #}
+    {%- set producedDataPath = [uuids.preservingCUuid, uuids.producedDataQUuid]|reply_path -%}
+    {%- set producedDataItems = repliesMap[producedDataPath]|reply_items -%}
+    {%- if producedDataItems|length > 0 -%}
+      <p>
+      We plan to produce the following datasets:
+      <ul>
+      {%- for i in producedDataItems -%}
+        {%- set pathPrefix = [producedDataPath, i]|reply_path -%}
+        {%- set producedDataName = repliesMap[[pathPrefix, uuids.producedDataNameQUuid]|reply_path]|reply_str_value -%}
+        <li>
+          <strong>{{ producedDataName if producedDataName else "(no name given)" }}</strong>
+          {# If will be published #}
+          {%- set isPublishedDataPath = [pathPrefix, uuids.isPublishedDataQUuid]|reply_path -%}
+          {%- set isPublishedDataAUuid = repliesMap[isPublishedDataPath]|reply_str_value -%}
+          {% if isPublishedDataAUuid == uuids.isPublishedDataNoAUuid %}
+            (not published)
+          {% elif isPublishedDataAUuid == uuids.isPublishedDataYesAUuid %}
+            (published)
+          {% endif -%}
+          {# How long will be stored + Metadata FAIRness #}
+          {%- set publishedDataHowLongPath = [pathPrefix, uuids.publishedDataHowLongQUuid]|reply_path -%}
+          {%- set publishedDataHowLongAUuid = repliesMap[publishedDataHowLongPath]|reply_str_value -%}
+          {%- set publishedDataMetadataPersistentPath = [pathPrefix, uuids.publishedDataMetadataPersistentQUuid]|reply_path -%}
+          {%- set publishedDataMetadataPersistentAUuid = repliesMap[publishedDataMetadataPersistentPath]|reply_str_value -%}
+          {%- if publishedDataHowLongAUuid or (publishedDataMetadataPersistentAUuid == uuids.publishedDataMetadataPersistentYesAUuid) %}
+            {% if publishedDataHowLongAUuid == uuids.publishedDataHowLongTechnicalAUuid -%}
+              <span class="separator">&ndash;</span> This data set will be kept available as long as technically possible.
+            {%- elif publishedDataHowLongAUuid == uuids.publishedDataHowLongDeletedAUuid -%}
+              <span class="separator">&ndash;</span> This data set will be kept available until it needs to be deleted for legal, contractual or regulatory reasons.
+            {%- elif publishedDataHowLongAUuid == uuids.publishedDataHowLongFixedAUuid -%}
+              {%- set publishedDataHowLongFixedPath = [publishedDataHowLongPath, uuids.publishedDataHowLongFixedAUuid, uuids.publishedDataHowLongFixedQUuid]|reply_path -%}
+              {%- set publishedDataHowLongFixed = repliesMap[publishedDataHowLongFixedPath]|reply_str_value -%}
+              <span class="separator">&ndash;</span> This data set will be kept available for a fixed period (prepaid){{ " of: " ~ publishedDataHowLongFixed|dot if publishedDataHowLongFixed else "." }}
+            {%- endif -%}
+            {%- if publishedDataMetadataPersistentAUuid == uuids.publishedDataMetadataPersistentYesAUuid %}
+              <span class="separator">&ndash;</span> The metadata will be available even when the data no longer exists.
+            {%- endif -%}
+          {%- endif -%}
+        </li>
+      {%- endfor -%}
+      </ul>
+      </p>
+    {%- endif -%}
+  </div>
+</div>
