@@ -153,9 +153,10 @@
     {%- if (refDataItems|length > 0) or (nrefDataItems|length > 0) -%}
       <div>
       <h4>Re-used datasets</h4>
-
+      <ul>
       {# Reference Data #}
         {%- for refDataItem in refDataItems -%}
+          <li>
           {%- set refDataPrefix = [refDataPath, refDataItem]|reply_path -%}
           {%- set refDataUse = [refDataPrefix, uuids.refDataUseQUuid]|reply_path -%}
           {%- set refDataUseReply = repliesMap[refDataUse]|reply_str_value -%}
@@ -168,9 +169,10 @@
           {%- if refDataUseReply == uuids.refDataUseYesAUuid  %}
 
             {# identification #}
-            We will re-use standard reference data {{macros.integrationValue(refDataNameReply)}}
+            <strong>{{macros.integrationValue(refDataNameReply)}}</strong>
+            <p>We will re-use this standard reference data
             {%- if refDataWhere -%}
-              available via:
+              {{" "}}available via:{{" "}}
               {%- if refDataWhere.startswith("http://") or refDataWhere.startswith("https://") or refDataWhere.startswith("ftp://") -%}
                 <a href="{{ refDataWhere }}" target="_blank">{{ refDataWhere }} </a>.
               {%- else -%}
@@ -182,7 +184,7 @@
             {%- if refDataUsageReply -%}
                 {{+" "}}in order to "{{ refDataUsageReply}}"
             {%- endif -%}
-            .
+            .</p>
     
             {# version #}
             {%- set refDataVersionedPath = [refDataUsedPrefix, uuids.refDataVersionedQUuid]|reply_path -%}
@@ -193,6 +195,7 @@
               {%- set refDataVersionedChangePath = [refDataVersionedPath, uuids.refDataVersionedYesAUuid, uuids.refDataVersionedChangeQUuid]|reply_path -%}
               {%- set refDataVersionedChangeAUuid = repliesMap[refDataVersionedChangePath]|reply_str_value -%}
               {%- if refDataVersionedWhich or refDataVersionedChangeAUuid  %}
+                <p>
                 {% if refDataVersionedWhich -%}
                   We will use version "{{ refDataVersionedWhich }}" of this dataset.
                 {%- endif -%}
@@ -203,12 +206,14 @@
                 {%- elif refDataVersionedChangeAUuid == uuids.refDataVersionedChangeAllAUuid %}
                   If a new version becomes available during the project, all analyses will be redone with the new version.
                 {%- endif -%}
+                </p>
               {%- endif -%}
             {%- endif -%}
 
             {# availability of the standard referece data for future results reproduction #}
             {%- set refDataReproduce = [refDataUsedPrefix, uuids.refDataReproduceQUuid]|reply_path -%}
             {%- set refDataReproduceReply = repliesMap[refDataReproduce]|reply_str_value -%}
+            <p>
             {%- if refDataReproduceReply == uuids.refDataReproduceProviderAUuid -%}
               This standard referece data will be available for long term by the provider.
             {%- elif refDataReproduceReply == uuids.refDataReproduceCopyAUuid  -%}
@@ -216,6 +221,7 @@
             {%- elif refDataReproduceReply == uuids.refDataReproduceBothAUuid -%}
               This standard referece data will be available for long term by the provider as well as we will keep the copy of this dataset and make it available with our results.
             {%- endif -%}
+            </p>
 
             {# licence #}
             {%- set refDataConditions = [refDataUsedPrefix, uuids.refDataConditionsQUuid]|reply_path -%}
@@ -223,24 +229,32 @@
             {%- set refDataConditionsOther = [refDataConditions, uuids.refDataConditionsOtherQUuid]|reply_path -%}
             {%- set refDataConditionsOtherReply = repliesMap[refDataConditionsOther]|reply_str_value -%}
             {%- if refDataConditionsReply %}
-              This standard referece data are{{+" "}}
+             <p>This standard referece data are{{+" "}}
               {%- if refDataConditionsReply == uuids.refDataConditionsCC0AUuid -%}
                 freely available for any use.
               {%- elif refDataConditionsReply == uuids.refDataConditionsCCBYAUuid -%}
                 freely available with obligation to quote the source.
               {%- elif refDataConditionsReply == uuids.refDataConditionsOtherAUuid -%}
-                available with this restrictions/conditions: "{{refDataConditionsOtherRepl}}".
+                available with {{" "}}
+                  {%- if refDataConditionsOtherRepl -%}
+                    following restrictions: "{{refDataConditionsOtherRepl}}".
+                  {%- else -%}
+                    {{" "}}restrictions, that will be specified.
+                  {%- endif -%}
               {%- endif -%}
+             </p>
             {%- endif -%}
 
             {# format #}
             {%- set refDataFormat = [refDataUsedPrefix, uuids.refDataFormatQUuid]|reply_path -%}
             {%- set refDataFormatReply = repliesMap[refDataFormat]|reply_str_value -%}
+            <p>
             {%- if refDataFormatReply == uuids.refDataFormatConvertAUuid -%}
               The standard referece data are in the fromat that has to be transformed before using.
             {%- elif refDataFormatReply == uuids.refDataFormatUseAUuid -%}
               The standard referece data are in the fromat that does not have to be transformed and we can use it directly.
             {% endif %}
+            </p>
 
           {# Reference data set that will NOT be used #}
           {%- elif refDataUseReply == uuids.refDataUseNoAUuid -%}
@@ -250,9 +264,10 @@
             {%- set refDataUseNoOtherReasonReply = repliesMap[refDataUseNoOtherReason]|reply_str_value %}
           
             {# identification #}
-            We considered reusing standard reference data {{macros.integrationValue(refDataNameReply)}}
+            <strong>{{macros.integrationValue(refDataNameReply)}}</strong>
+            <p> We considered reusing this standard reference data
             {%- if refDataWhere -%}
-            {{+" "}}available via:
+            {{" "}}available via:{{" "}}
               {%- if refDataWhere.startswith("http://") or refDataWhere.startswith("https://") or refDataWhere.startswith("ftp://") -%}
                 <a href="{{ refDataWhere }}" target="_blank">{{ refDataWhere }} </a>.
               {%- else -%}
@@ -262,28 +277,32 @@
 
             {# no usage reason #}
             {%- if refDataUseNoReply -%}
-              , but decided not to reuse it because{{+" "}}
+              , but decided not to reuse it
               {%- if refDataUseNoReply == uuids.refDataUseNoDataAUuid -%}
-                it misses data we need.
+                {{" "}}because it misses data we need
               {%- elif refDataUseNoReply == uuids.refDataUseNoAspectAUuid -%}
-                it misses required aspects.
+                {{" "}}because it misses required aspects
               {%- elif refDataUseNoReply == uuids.refDataUseNoQualityAUuid -%}
-                it is not sufficient quality.
+                {{" "}}because it is not sufficient quality
               {%- elif refDataUseNoReply == uuids.refDataUseNoCondAUuid -%}
-                its conditions of use do not allow us to use it.
-              {%- elif refDataUseNoReply == uuids.refDataUseNoReasonAUuid -%}
-                "{{refDataUseNoOtherReasonReply}}".
+                {{" "}}because its conditions of use do not allow us to use it
+              {%- elif refDataUseNoReply == uuids.refDataUseNoReasonAUuid and refDataUseNoOtherReasonReply -%}
+                {{" "}}because: "{{refDataUseNoOtherReasonReply}}"
               {%- endif -%}
+              .
             {%- else -%}
-            .
+            . </p>
             {%- endif -%}
 
           {%- endif -%}
-        {#</p>#}
+        </li>
       {%- endfor -%}
+      </ul>
 
       {# Non-reference Data #}
+      <ul>
       {%- for nrefDataItem in nrefDataItems -%}
+      <li>
         {%- set nrefDataPrefix = [nrefDataPath, nrefDataItem]|reply_path  -%}
         {%- set nrefDataUse = [nrefDataPrefix, uuids.nrefDataUseQUuid]|reply_path -%}
         {%- set nrefDataUseReply = repliesMap[nrefDataUse]|reply_str_value -%}
@@ -296,9 +315,10 @@
         {%- if nrefDataUseReply == uuids.nrefDataUseYesAUuid %}
 
           {# identification #}
-          We will re-use non-referece data {{-macros.integrationValue(nrefDataNameReply)}}
+          <strong>{{-macros.integrationValue(nrefDataNameReply)}}</strong>
+          <p>We will re-use this non-referece data 
           {%- if nrefDataWhere -%}
-          available via:
+         {{" "}} available via:{{" "}}
             {%- if nrefDataWhere.startswith("http://") or nrefDataWhere.startswith("https://") or nrefDataWhere.startswith("ftp://") -%}
               <a href="{{ rnefDataWhere }}" target="_blank">{{ nrefDataWhere }} </a>.
             {%- else -%}
@@ -310,13 +330,13 @@
           {%- if nrefDataUsageReply -%}
             {{+" "}}in order to "{{ nrefDataUsageReply}}"
           {%- endif -%}
-          .
+          .</p>
 
           {# Which part of the non-reference data we will use #}
           {%- set nrefDataComplete = [nrefDataUsedPrefix, uuids.nrefDataCompleteQUuid]|reply_path  -%}
           {%- set nrefDataCompleteReply = repliesMap[nrefDataComplete]|reply_str_value -%}
           {%- if nrefDataCompleteReply -%}
-            We will use{{+" "}}
+            <p>We will use{{+" "}}
             {%- if nrefDataCompleteReply == uuids.nrefDataCompleteUseAUuid -%}
               the complete data set. 
             {%- elif nrefDataCompleteReply == uuids.nrefDataCompleteDocumentAUuid -%}
@@ -324,32 +344,34 @@
             {%- elif nrefDataCompleteReply == uuids.nrefDataCompleteSubsetAUuid -%}
               only selected subset of data, which will be available together with our results.
             {%- endif -%}
+            </p>
           {%- endif -%}
 
           {# Format #}
           {%- set nrefDataFormat = [nrefDataUsedPrefix, uuids.nrefDataFormatQUuid]|reply_path -%}
           {%- set nrefDataFormatReply = repliesMap[nrefDataFormat]|reply_str_value -%}
           {%- if nrefDataFormatReply == uuids.nrefDataFormatConvertAUuid %}
-            The format of this data needs to be transformed before our using.
+            <p>The format of this data needs to be transformed before our using.</p>
           {%- endif -%}
 
           {# Versioning - will change in the future? #}
           {%- set nrefDataFixed = [nrefDataUsedPrefix, uuids.nrefDataFixedQUuid]|reply_path -%}
           {%- set nrefDataFixedReply = repliesMap[nrefDataFixed]|reply_str_value -%}
           {%- if nrefDataFixedReply %}
-            This data{{+" "}}
+            <p>This data{{+" "}}
             {%- if nrefDataFixedReply == uuids.nrefDataFixedFixedAUuid -%}
               are fixed, therefore will not influence reproducibility of our results.
             {%- elif nrefDataFixedReply == uuids.nrefDataFixedChangeAUuid -%}
               may change in the future, which might influence reproducibility of our results.
             {%- endif -%}
+            </p>
           {%- endif -%}
 
           {# Licence #}
           {%- set nrefDataConditions = [nrefDataUsedPrefix, uuids.nrefDataConditionsQUuid]|reply_path -%}
           {%- set nrefDataConditionsReply = repliesMap[nrefDataConditions]|reply_str_value -%}
           {%- if nrefDataConditionsReply %}
-            This data are{{+" "}}
+            <p>This data are{{+" "}}
             {%- if nrefDataConditionsReply == uuids.nrefDataConditionsCC0AUuid -%}
               freely available for any use.
             {%- elif nrefDataConditionsReply == uuids.nrefDataConditionsCCBYAUuid -%}
@@ -358,15 +380,22 @@
               {%- set nrefDataConditionsOther = [nrefDataConditions, uuids.nrefDataConditionsOtherAUuid, uuids.nrefDataConditionsOtherQUuid]|reply_path -%}
               {%- set nrefDataConditionsOtherReply = repliesMap[nrefDataConditionsOther]|reply_str_value -%}
               {%- if nrefDataConditionsOtherReply -%}
-                available with restrictions/conditions: "{{nrefDataConditionsOtherReply}}".
+                available with{{" "}}
+                  {%- if nrefDataConditionsOtherReply -%}
+                   following restrictions: "{{nrefDataConditionsOtherReply}}".
+                  {%- else -%}
+                    {{" "}}restrictions, that will be specified.
+                  {%- endif -%}
               {%- endif -%}
             {%- endif -%}
+            </p>
           {%- endif -%}
 
           {# Personal Data #}
           {%- set nrefDataPersonal = [nrefDataUsedPrefix, uuids.nrefDataPersonalQUuid]|reply_path -%}
           {%- set nrefDataPersonalReply = repliesMap[nrefDataPersonal]|reply_str_value -%}
           {%- if nrefDataPersonalReply == uuids.nrefDataPersonalYesAUuid %}
+          <p>
             This data include personal data
             {%- set nrefDataPersonalLegalBasis = [nrefDataPersonal, uuids.nrefDataPersonalYesAUuid, uuids.nrefDataPersonalLegalBasisQUuid]|reply_path -%}
             {%- set nrefDataPersonalLegalBasisReply = repliesMap[nrefDataPersonalLegalBasis]|reply_str_value -%}
@@ -402,17 +431,18 @@
                 {%- endif -%}
               {%- endif -%} 
             {%- endif -%}
+          </p>
           {%- endif -%}
 
           {# Ethical Approval for Reuse #}
           {%- set nrefDataEthicalApproval = [nrefDataUsedPrefix, uuids.nrefDataEthicalApprovalQUuid]|reply_path -%}
           {%- set nrefDataEthicalApprovalReply = repliesMap[nrefDataEthicalApproval]|reply_str_value -%}
           {%- if nrefDataEthicalApprovalReply == uuids.nrefDataEthicalApprovalCoversAUuid -%}
-            The existing ethical approval under research ethics laws of this non-reference data covers our reuse.
+            <p>The existing ethical approval under research ethics laws of this non-reference data covers our reuse.</p>
           {%- elif nrefDataEthicalApprovalReply == uuids.nrefDataEthicalApprovalExtensionAUuid -%}
-            An extension of existing ethical approval under research ethics laws of this non-reference data will be needed.
+            <p>An extension of existing ethical approval under research ethics laws of this non-reference data will be needed.</p>
           {%- elif nrefDataEthicalApprovalReply == uuids.nrefDataEthicalApprovalNewAUuid -%}
-            New ethical approval under research ethics laws of this non-reference data will be needed to cover our usage of the data.
+            <p>New ethical approval under research ethics laws of this non-reference data will be needed to cover our usage of the data.</p>
           {%- endif -%}
 
         {# Non-reference data set that will NOT be used #}
@@ -423,9 +453,10 @@
           {# {%- set nrefDataUseNoOtherReasonReply = repliesMap[nrefDataUseNoOtherReason]|reply_str_value %} #}
           
           {# identification #}
-          We considered reusing non-reference data {{-macros.integrationValue(nrefDataNameReply)}}
+          <strong>{{-macros.integrationValue(nrefDataNameReply)}}</strong>
+          <p>We considered reusing this non-reference data 
           {%- if nrefDataWhere -%}
-          {{+" "}}available via:
+          {{+" "}}available via:{{" "}}
             {%- if nrefDataWhere.startswith("http://") or nrefDataWhere.startswith("https://") or nrefDataWhere.startswith("ftp://") -%}
               <a href="{{ rnefDataWhere }}" target="_blank">{{ nrefDataWhere }} </a>.
             {%- else -%}
@@ -435,26 +466,29 @@
 
           {# no usage reason #}
           {%- if nrefDataUseNoReply -%}
-            , but decided not to reuse it because{{+" "}}
+            , but decided not to reuse it
             {%- if nrefDataUseNoReply == uuids.nrefDataUseNoDataAUuid -%}
-              it misses data we need.
+              {{" "}}because it misses data we need
             {%- elif nrefDataUseNoReply == uuids.nrefDataUseNoAspectAUuid -%}
-              it misses required aspects.
+              {{" "}}becauseit misses required aspects
             {%- elif nrefDataUseNoReply == uuids.nrefDataUseNoQualityAUuid -%}
-              it is not sufficient quality.
+              {{" "}}becauseit is not sufficient quality
             {%- elif nrefDataUseNoReply == uuids.nrefDataUseNoCondAUuid -%}
-              its conditions of use do not allow us to use it.
-            {%- elif nrefDataUseNoReply == uuids.nrefDataUseNoReasonAUuid -%}
-              "{{nrefDataUseNoOtherReasonReply}}".
+              {{" "}}because its conditions of use do not allow us to use it
+            {%- elif nrefDataUseNoReply == uuids.nrefDataUseNoReasonAUuid and nrefDataUseNoOtherReasonReply -%}
+              {{" "}}because: "{{nrefDataUseNoOtherReasonReply}}"
             {%- endif -%}
+            .
           {%- else -%}
-          .
+          .</p>
           {%- endif -%}
 
         {%- endif -%}
 
       </p>
+      </li>
       {%- endfor -%}
+      </ul>
       </div>
     {%- endif -%}
 
@@ -462,7 +496,7 @@
     {%- set dataHarmo = [preexistingPath, uuids.preexistingYesAUuid, uuids.dataHarmoQUuid]|reply_path -%}
     {%- set dataHarmoReply = repliesMap [dataHarmo]|reply_str_value -%}
     {%- if dataHarmoReply == uuids.dataHarmoYesAUuid -%}
-      We need to harmonize different sources of existing data before reusing them{{+" "}}
+      <p>We need to harmonize different sources of existing data before reusing them{{+" "}}
       {%- set dataHarmonAvailable = [dataHarmo, uuids.dataHarmoYesAUuid, uuids.dataHarmoOthersQUuid]|reply_path  -%}
       {%- set dataHarmonAvailableReply = repliesMap[dataHarmonAvailable]|reply_str_value -%}
       {%- if dataHarmonAvailableReply == uuids.dataHarmoOthersYesAUuid -%}
@@ -470,13 +504,14 @@
       {%- elif dataHarmonAvailableReply == uuids.dataHarmoOthersNoAUuid -%}
         but we won't make this harmonization results available to others.
       {%- endif -%}
+      </p>
     {%- endif -%}
 
     {# Constrains - (Re)made data computer readable #}
     {%- set dataCompRead = [preexistingPath, uuids.preexistingYesAUuid, uuids.dataCompReadQUuid]|reply_path -%}
     {%- set dataCompReadReply = repliesMap[dataCompRead]|reply_str_value -%}
     {%- if dataCompReadReply == uuids.dataCompReadYesAUuid -%}
-      We will need to (re-)made the data into computer readable form before their using{{+" "}}
+      <p>We will need to (re-)made the data into computer readable form before their using{{+" "}}
 
       {%- set dataCompReadItself = [dataCompRead, uuids.dataCompReadYesAUuid, uuids.dataCompReadItselfQUuid]|reply_path -%}
       {%- set dataCompReadItselfReply = repliesMap[dataCompReadItself]|reply_str_value -%}
@@ -505,7 +540,7 @@
                   {%- set  dataCompReadMetadataStandardPrefix = [dataCompReadWhichMetadataStandardPath,dataCompReadMetadataStandardItem ]|reply_path -%}
                   {%- set dataCompReadMetadataStandard = [dataCompReadMetadataStandardPrefix, uuids.dataCompReadOthersYesStandardQUuid]|reply_path -%}
                   {%- set dataCompReadMetadataStandardReply = repliesMap[dataCompReadMetadataStandard] -%}
-                  {{-macros.integrationValue(dataCompReadMetadataStandardReply)}}
+                  {{macros.integrationValue(dataCompReadMetadataStandardReply)}}
                 {%- endfor -%}
               </ul>
             {%- else -%}
@@ -515,7 +550,7 @@
         {%- endif -%}
           
       {%- endif -%}
-
+      </p>
     {%- endif -%}
     
 
