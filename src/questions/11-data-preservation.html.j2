@@ -29,16 +29,16 @@
           {%- set publishedDataMetadataPersistentAUuid = repliesMap[publishedDataMetadataPersistentPath]|reply_str_value -%}
           {%- if publishedDataHowLongAUuid or (publishedDataMetadataPersistentAUuid == uuids.publishedDataMetadataPersistentYesAUuid) %}
             {% if publishedDataHowLongAUuid == uuids.publishedDataHowLongTechnicalAUuid -%}
-              <span class="separator">&ndash;</span> This data set will be kept available as long as technically possible.
+              <p>This data set will be kept available as long as technically possible.</p>
             {%- elif publishedDataHowLongAUuid == uuids.publishedDataHowLongDeletedAUuid -%}
-              <span class="separator">&ndash;</span> This data set will be kept available until it needs to be deleted for legal, contractual or regulatory reasons.
+              <p> This data set will be kept available until it needs to be deleted for legal, contractual or regulatory reasons.</p>
             {%- elif publishedDataHowLongAUuid == uuids.publishedDataHowLongFixedAUuid -%}
               {%- set publishedDataHowLongFixedPath = [publishedDataHowLongPath, uuids.publishedDataHowLongFixedAUuid, uuids.publishedDataHowLongFixedQUuid]|reply_path -%}
               {%- set publishedDataHowLongFixed = repliesMap[publishedDataHowLongFixedPath]|reply_str_value -%}
-              <span class="separator">&ndash;</span> This data set will be kept available for a fixed period (prepaid){{ " of: " ~ publishedDataHowLongFixed|dot if publishedDataHowLongFixed else "." }}
+              <p>This data set will be kept available for a fixed period (prepaid){{ " of: " ~ publishedDataHowLongFixed|dot if publishedDataHowLongFixed else "." }}</p>
             {%- endif -%}
             {%- if publishedDataMetadataPersistentAUuid == uuids.publishedDataMetadataPersistentYesAUuid %}
-              <span class="separator">&ndash;</span> The metadata will be available even when the data no longer exists.
+              <p>The metadata will be available even when the data no longer exists.</p>
             {%- endif -%}
           {%- endif -%}
         </li>
