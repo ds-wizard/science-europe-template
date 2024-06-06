@@ -2,6 +2,7 @@
     <h3>7. If personal data are processed, how will compliance with legislation on personal data and on security be ensured?</h3>
 
     <div class="answer">
+        <p>Data security protection is described in Section 3, Question 6.</p>
         {%- set personalDataQUuid = [uuids.creatingCUuid,uuids.collectPersonalQUuid ]|reply_path -%}
         {%- set personalDataReply = repliesMap[personalDataQUuid]|reply_str_value -%}
         {%- if personalDataReply == uuids.collectPersonalYesAUuid -%}
