@@ -9,7 +9,6 @@
             {%- set measuredDataPath = [measuredPath, uuids.measuredYesAUuid, uuids.measuredDataQUuid]|reply_path -%}
             {%- set measuredDataItems = repliesMap[measuredDataPath]|reply_items -%}
             {%- if measuredDataItems|length > 0 -%}
-            <h4>Quality processes</h4>
             <ul>
                 {%- for datasetItem in measuredDataItems -%}
                 {%- set pathPrefix = [measuredDataPath, datasetItem]|reply_path -%}
@@ -69,7 +68,7 @@
                         </p>
                     {%- elif qualityCount > 1 -%}
                         <p>
-                        We will be using the following quality processes:
+                        We will be using the following quality processes for this dataset:
                         <ul>
                         {%- if calibrating -%}
                             <li>calibrating measurements</li>
