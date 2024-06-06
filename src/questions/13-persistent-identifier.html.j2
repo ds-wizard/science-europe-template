@@ -21,7 +21,7 @@
                 {%- set publishedDistrosPath = [isPublishedDataPath, uuids.isPublishedDataYesAUuid, uuids.publishedDistrosQUuid]|reply_path -%}
                 {%- set publishedDistrosItems = repliesMap[publishedDistrosPath]|reply_items -%}
                     {%- if publishedDistrosItems|length > 0  -%}
-                    <p>This data will be distributed in following repositories, ensuring the application of unique and persistent identifiers in the following manner:</p>
+                    <p>This data will be distributed in following {{ "repositories" if publishedDistrosItems|length > 1 else "repository" }}:</p>
                     <ul>
                         {%- for j in publishedDistrosItems -%}
                             {%- set publishedDistrosItem = [publishedDistrosPath, j]|reply_path -%}
@@ -30,6 +30,7 @@
 
                             {%- set repositoryKindQUuid = [publishedDistrosItem, uuids.publishedDataRepositoryKindQUuid]|reply_path -%}
                             {%- set repositoryKindAUuid = repliesMap[repositoryKindQUuid]|reply_str_value -%}
+                            <li>
                             {%- if repositoryKindAUuid == uuids.publishedDataRepositoryDomainSpecificAUuid -%}
                                 <strong>Domain-specific repository</strong>
                             {%- elif repositoryKindAUuid == uuids.publishedDataRepositoryNationalAUuid -%}
@@ -42,6 +43,8 @@
 
                             {# Will this data be assigned persistent identifier? #}
                             {%- if publishedDataIdentifierAUuid == uuids.publishedDataIdentifierYesAUuid -%}
+                            <p>Within this repository, unique and persistent identifiers will be applied as follows:</p>
+                            <ul>
                                 {# Who assigns #}
                                 {%- set publishedDataIdentifierAssignsQUuid = [publishedDataIdentifierQUuid, uuids.publishedDataIdentifierYesAUuid, uuids.publishedDataIdentifierAssignsQUuid]|reply_path -%}
                                 {%- set publishedDataIdentifierAssignsAUuid = repliesMap[publishedDataIdentifierAssignsQUuid]|reply_str_value -%}
@@ -72,10 +75,11 @@
                                 {%- set publishedDataIdentifierSpecifyReply = repliesMap[publishedDataIdentifierSpecifyQUuid]|reply_str_value -%}
 
                                 {%- if publishedDataIdentifierSpecifyReply -%}
-                                    <p>Specification of the assigned persistent identifier: {{publishedDataIdentifierSpecifyReply|dot}}</p>
+                                    <p>The assigned persistent identifier is specified as follows: {{publishedDataIdentifierSpecifyReply|dot}}</p>
                                 {%- endif -%}
-
+                            </ul>
                             {%- endif -%}
+                            </li>
                         {%- endfor -%}
                     </ul>
                     {%- endif -%}
