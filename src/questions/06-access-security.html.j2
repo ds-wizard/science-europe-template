@@ -108,25 +108,26 @@
     {# Shared Workspace #}
     {%- set sharedWorkspaceQUuid = [uuids.processingCUuid, uuids.sharedWorkspaceQUuid]|reply_path -%}
     {%- set sharedWorkspaceReply = repliesMap[sharedWorkspaceQUuid]|reply_str_value  -%}
-    {%- if sharedWorkspaceReply == uuids.sharedWorkspaceYesAUuid -%}
-     <p>During the project we will use shared working space to work with our data
-      {%- set sharedWorkspacePrefix = [uuids.processingCUuid, uuids.sharedWorkspaceQUuid, uuids.sharedWorkspaceYesAUuid]|reply_path -%}
-      {%- set sharedWorkspaceReliableAUuid = [sharedWorkspacePrefix, uuids.sharedReliableQUuid, uuids.sharedReliableExploreAUuid ]|reply_path  -%}
-      {%- set sharedWorkspaceReliablePreventLossQUuid = [sharedWorkspaceReliableAUuid, uuids.sharedReliablePreventLossQUuid]|reply_path  -%}
-      {%- set sharedWorkspaceReliablePreventLossReply = repliesMap[sharedWorkspaceReliablePreventLossQUuid]|reply_str_value -%}
+    {%- set sharedWorkspacePrefix = [uuids.processingCUuid, uuids.sharedWorkspaceQUuid, uuids.sharedWorkspaceYesAUuid]|reply_path -%}
+    {%- set sharedWorkspaceReliableAUuid = [sharedWorkspacePrefix, uuids.sharedReliableQUuid, uuids.sharedReliableExploreAUuid ]|reply_path  -%}
+    {%- set sharedWorkspaceReliablePreventLossQUuid = [sharedWorkspaceReliableAUuid, uuids.sharedReliablePreventLossQUuid]|reply_path  -%}
+    {%- set sharedWorkspaceReliablePreventLossReply = repliesMap[sharedWorkspaceReliablePreventLossQUuid]|reply_str_value -%}
+    {%- if sharedWorkspaceReply == uuids.sharedWorkspaceYesAUuid and sharedWorkspaceReliablePreventLossReply -%}
+     <p>During the project we will use shared working space to work with our data{{+" "}}
       {%- if sharedWorkspaceReliablePreventLossReply == uuids.sharedReliablePreventLossSufficientAUuid  -%}
-        that ensures the prevention of complete data loss.</p>
+        that ensures the prevention of complete data loss.
       {%- elif sharedWorkspaceReliablePreventLossReply == uuids.sharedReliablePreventLossStoredAUuid -%}
-        but we will store all essential data elsewhere.</p>
+        but we will store all essential data elsewhere.
       {%- endif -%}
 
       {%- set sharedWorkspaceReliableBackupQUuid = [sharedWorkspaceReliableAUuid, uuids.sharedReliableBackupQUuid]|reply_path -%}
       {%- set sharedWorkspaceReliableBackupReply = repliesMap[sharedWorkspaceReliableBackupQUuid]|reply_str_value  -%}
       {%- if sharedWorkspaceReliableBackupReply == uuids.sharedReliableBackupCopyAllSomewhereAUuid -%}
-        <p>And all the data that are stores elsewhere is adequately backed up.</p>
+        {{+" "}}And all the data that are stores elsewhere is adequately backed up.
       {%- elif sharedWorkspaceReliableBackupReply == uuids.sharedReliableBackupCopyBackupsAUuid -%}
-        <p>We make (automated) backups of all data stored outside of the working area.</p>
+        {{+" "}}We make (automated) backups of all data stored outside of the working area.
       {%- endif -%}
+     </p>
 
     {%- endif -%}
 
