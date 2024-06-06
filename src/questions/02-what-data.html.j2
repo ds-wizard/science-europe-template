@@ -126,7 +126,8 @@
     {%- if (refDataItems|length + nrefDataItems|length) > 0 -%}
       <div>
         <h4>Re-used datasets</h4>
-        {%- if refDataItems|length > 0 -%}
+        <p>Datasets considered for reuse and actually reused are described in Question 1.</p>
+       {# {%- if refDataItems|length > 0 -%}
           <div>We have found the following reference datasets that we have considered for re-use:
           <ul>
             {%- for refDataItem in refDataItems -%}
@@ -135,7 +136,7 @@
               {%- set refDataNameReply = repliesMap[[refDataPrefix, uuids.refDataNameQUuid]|reply_path] -%}
               {%- set refDataWhere = repliesMap[[refDataPrefix, uuids.refDataWhereQUuid]|reply_path]|reply_str_value -%}
               <li>
-                {# identification #}
+
                 <div>{{ macros.integrationValue(refDataNameReply) }}</div>
                 {%- if refDataWhere -%}
                   <p>
@@ -146,7 +147,7 @@
                   {%- endif -%}
                   </p>
                 {%- endif -%}
-                {# version #}
+
                 {%- set refDataVersionedPath = [refDataUsedPrefix, uuids.refDataVersionedQUuid]|reply_path -%}
                 {%- set refDataVersionedAUuid = repliesMap[refDataVersionedPath]|reply_str_value -%}
                 {%- if refDataVersionedAUuid == uuids.refDataVersionedYesAUuid -%}
@@ -182,7 +183,7 @@
               {%- set nrefDataNameReply = repliesMap[nrefDataNamePath] -%}
               {%- set nrefDataWhere = repliesMap[[nrefDataPrefix, uuids.nrefDataWhereQUuid]|reply_path]|reply_str_value -%}
               <li>
-                {# identification #}
+
                 <div>{{ macros.integrationValue(nrefDataNameReply) }}</div>
                 {%- if nrefDataWhere -%}
                   <p>
@@ -193,7 +194,7 @@
                   {%- endif -%}
                   </p>
                 {%- endif -%}
-                {# version #}
+
                 {%- set refDataVersionedPath = [refDataUsedPrefix, uuids.refDataVersionedQUuid]|reply_path -%}
                 {%- set refDataVersionedAUuid = repliesMap[refDataVersionedPath]|reply_str_value -%}
                 {%- if refDataVersionedAUuid == uuids.refDataVersionedYesAUuid -%}
@@ -216,7 +217,7 @@
                     </p>
                   {%- endif -%}
                 {%- endif -%}
-                {# data use #}
+
                 {%- set dataUse = repliesMap[[refDataUsedPrefix, uuids.refDataUsageQUuid]|reply_path]|reply_str_value -%}
                 {%- if dataUse -%}
                 <p>We will use the dataset as follows: {{ dataUse|dot }}</p>
@@ -236,7 +237,7 @@
               {%- set nrefDataNameReply = repliesMap[nrefDataNamePath] -%}
               {%- set nrefDataWhere = repliesMap[[nrefDataPrefix, uuids.nrefDataWhereQUuid]|reply_path]|reply_str_value -%}
               <li>
-                {# identification #}
+
                 <div>{{ macros.integrationValue(nrefDataNameReply) }}</div>
                 {%- if nrefDataWhere -%}
                   <p>
@@ -247,7 +248,7 @@
                   {%- endif -%}
                   </p>
                 {%- endif -%}
-                {# data access #}
+
                 {%- set nrefDataAccessPath = [nrefDataUsedPrefix, uuids.nrefDataAccessQUuid]|reply_path -%}
                 {%- set nrefDataAccessAUuid = repliesMap[nrefDataAccessPath]|reply_str_value -%}
                 {%- if nrefDataAccessAUuid %}
@@ -261,7 +262,7 @@
                   {%- endif -%}
                   </p>
                 {%- endif -%}
-                {# data use #}
+
                 {%- set dataUse = repliesMap[[nrefDataUsedPrefix, uuids.nrefDataUsageQUuid]|reply_path]|reply_str_value -%}
                 {%- if dataUse -%}
                 <p>We will use the dataset as follows: {{ dataUse|dot }}</p>
@@ -270,7 +271,8 @@
             {%- endfor -%}
           </ul>
           </div>
-        {%- endif -%}
+        {%- endif -%} #}
+
       </div>
     {%- endif -%}
   {%- endif -%}
