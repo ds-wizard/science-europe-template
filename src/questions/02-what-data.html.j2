@@ -127,152 +127,6 @@
       <div>
         <h4>Re-used datasets</h4>
         <p>Datasets considered for reuse and actually reused are described in Question 1.</p>
-       {# {%- if refDataItems|length > 0 -%}
-          <div>We have found the following reference datasets that we have considered for re-use:
-          <ul>
-            {%- for refDataItem in refDataItems -%}
-              {%- set refDataPrefix = [refDataPath, refDataItem]|reply_path -%}
-              {%- set refDataUsedPrefix = [refDataPrefix, uuids.refDataUseQUuid, uuids.refDataUseYesAUuid]|reply_path -%}
-              {%- set refDataNameReply = repliesMap[[refDataPrefix, uuids.refDataNameQUuid]|reply_path] -%}
-              {%- set refDataWhere = repliesMap[[refDataPrefix, uuids.refDataWhereQUuid]|reply_path]|reply_str_value -%}
-              <li>
-
-                <div>{{ macros.integrationValue(refDataNameReply) }}</div>
-                {%- if refDataWhere -%}
-                  <p>
-                  {%- if refDataWhere.startswith("http://") or refDataWhere.startswith("https://") or refDataWhere.startswith("ftp://") %}
-                    It is available via: <a href="{{ refDataWhere }}" target="_blank">{{ refDataWhere }}</a>.
-                  {%- else %}
-                    It is available via: {{ refDataWhere }}.
-                  {%- endif -%}
-                  </p>
-                {%- endif -%}
-
-                {%- set refDataVersionedPath = [refDataUsedPrefix, uuids.refDataVersionedQUuid]|reply_path -%}
-                {%- set refDataVersionedAUuid = repliesMap[refDataVersionedPath]|reply_str_value -%}
-                {%- if refDataVersionedAUuid == uuids.refDataVersionedYesAUuid -%}
-                  {%- set refDataVersionedWhichPath = [refDataVersionedPath, uuids.refDataVersionedYesAUuid, uuids.refDataVersionedWhichQUuid]|reply_path -%}
-                  {%- set refDataVersionedWhich = repliesMap[refDataVersionedWhichPath]|reply_str_value -%}
-                  {%- set refDataVersionedChangePath = [refDataVersionedPath, uuids.refDataVersionedYesAUuid, uuids.refDataVersionedChangeQUuid]|reply_path -%}
-                  {%- set refDataVersionedChangeAUuid = repliesMap[refDataVersionedChangePath]|reply_str_value -%}
-                  {%- if refDataVersionedWhich or refDataVersionedChangeAUuid  %}
-                    <p>
-                    {% if refDataVersionedWhich -%}
-                      We will use version "{{ refDataVersionedWhich }}" of this dataset.
-                    {%- endif -%}
-                    {%- if refDataVersionedChangeAUuid == uuids.refDataVersionedChangeStayAUuid %}
-                      If a new version becomes available during the project, we will stay with the old version.
-                    {%- elif refDataVersionedChangeAUuid == uuids.refDataVersionedChangeNewAUuid %}
-                      If a new version becomes available during the project, new analyses will be done with the new version.
-                    {%- elif refDataVersionedChangeAUuid == uuids.refDataVersionedChangeAllAUuid %}
-                      If a new version becomes available during the project, all analyses will be redone with the new version.
-                    {%- endif -%}
-                    </p>
-                  {%- endif -%}
-                {%- endif -%}
-              </li>
-            {%- endfor -%}
-          </ul>
-          </div>
-        {%- endif -%}
-        {%- if nrefDataItems|length > 0 -%}
-          <div>We have found the following non-reference datasets that we have considered for re-use:
-          <ul>
-            {%- for nrefDataItem in nrefDataItems -%}
-              {%- set nrefDataNamePath = [nrefDataPath, nrefDataItem, uuids.nrefDataNameQUuid]|reply_path -%}
-              {%- set nrefDataNameReply = repliesMap[nrefDataNamePath] -%}
-              {%- set nrefDataWhere = repliesMap[[nrefDataPrefix, uuids.nrefDataWhereQUuid]|reply_path]|reply_str_value -%}
-              <li>
-
-                <div>{{ macros.integrationValue(nrefDataNameReply) }}</div>
-                {%- if nrefDataWhere -%}
-                  <p>
-                  {%- if nrefDataWhere.startswith("http://") or nrefDataWhere.startswith("https://") or nrefDataWhere.startswith("ftp://") %}
-                    It is available via: <a href="{{ nrefDataWhere }}" target="_blank">{{ nrefDataWhere }}</a>.
-                  {%- else %}
-                    It is available via: {{ nrefDataWhere }}.
-                  {%- endif -%}
-                  </p>
-                {%- endif -%}
-
-                {%- set refDataVersionedPath = [refDataUsedPrefix, uuids.refDataVersionedQUuid]|reply_path -%}
-                {%- set refDataVersionedAUuid = repliesMap[refDataVersionedPath]|reply_str_value -%}
-                {%- if refDataVersionedAUuid == uuids.refDataVersionedYesAUuid -%}
-                  {%- set refDataVersionedWhichPath = [refDataVersionedPath, uuids.refDataVersionedYesAUuid, uuids.refDataVersionedWhichQUuid]|reply_path -%}
-                  {%- set refDataVersionedWhich = repliesMap[refDataVersionedWhichPath]|reply_str_value -%}
-                  {%- set refDataVersionedChangePath = [refDataVersionedPath, uuids.refDataVersionedYesAUuid, uuids.refDataVersionedChangeQUuid]|reply_path -%}
-                  {%- set refDataVersionedChangeAUuid = repliesMap[refDataVersionedChangePath]|reply_str_value -%}
-                  {%- if refDataVersionedWhich or refDataVersionedChangeAUuid  %}
-                    <p>
-                    {% if refDataVersionedWhich -%}
-                      We will use version "{{ refDataVersionedWhich }}" of this dataset.
-                    {%- endif -%}
-                    {%- if refDataVersionedChangeAUuid == uuids.refDataVersionedChangeStayAUuid %}
-                      If a new version becomes available during the project, we will stay with the old version.
-                    {%- elif refDataVersionedChangeAUuid == uuids.refDataVersionedChangeNewAUuid %}
-                      If a new version becomes available during the project, new analyses will be done with the new version.
-                    {%- elif refDataVersionedChangeAUuid == uuids.refDataVersionedChangeAllAUuid %}
-                      If a new version becomes available during the project, all analyses will be redone with the new version.
-                    {%- endif -%}
-                    </p>
-                  {%- endif -%}
-                {%- endif -%}
-
-                {%- set dataUse = repliesMap[[refDataUsedPrefix, uuids.refDataUsageQUuid]|reply_path]|reply_str_value -%}
-                {%- if dataUse -%}
-                <p>We will use the dataset as follows: {{ dataUse|dot }}</p>
-                {%- endif -%}
-              </li>
-            {%- endfor -%}
-          </ul>
-          </div>
-        {%- endif -%}
-        {%- if usedNRefDataItems|length > 0 -%}
-          <div>We will use the following already existing non-reference datasets:
-          <ul>
-            {%- for nrefDataItem in usedNRefDataItems -%}
-              {%- set nrefDataPrefix = [nrefDataPath, nrefDataItem]|reply_path -%}
-              {%- set nrefDataUsedPrefix = [nrefDataPrefix, uuids.nrefDataUseQUuid, uuids.nrefDataUseYesAUuid]|reply_path -%}
-              {%- set nrefDataNamePath = [nrefDataPrefix, uuids.nrefDataNameQUuid]|reply_path -%}
-              {%- set nrefDataNameReply = repliesMap[nrefDataNamePath] -%}
-              {%- set nrefDataWhere = repliesMap[[nrefDataPrefix, uuids.nrefDataWhereQUuid]|reply_path]|reply_str_value -%}
-              <li>
-
-                <div>{{ macros.integrationValue(nrefDataNameReply) }}</div>
-                {%- if nrefDataWhere -%}
-                  <p>
-                  {%- if nrefDataWhere.startswith("http://") or nrefDataWhere.startswith("https://") or nrefDataWhere.startswith("ftp://") %}
-                    It is available via: <a href="{{ nrefDataWhere }}" target="_blank">{{ nrefDataWhere }}</a>.
-                  {%- else %}
-                    It is available via: {{ nrefDataWhere }}.
-                  {%- endif -%}
-                  </p>
-                {%- endif -%}
-
-                {%- set nrefDataAccessPath = [nrefDataUsedPrefix, uuids.nrefDataAccessQUuid]|reply_path -%}
-                {%- set nrefDataAccessAUuid = repliesMap[nrefDataAccessPath]|reply_str_value -%}
-                {%- if nrefDataAccessAUuid %}
-                  <p>
-                  {% if nrefDataAccessAUuid == uuids.nrefDataAccessHaveCopyAUuid -%}
-                    We already have a copy of this dataset.
-                  {%- elif nrefDataAccessAUuid == uuids.nrefDataAccessWillDownloadAUuid -%}
-                    We will download or get a copy.
-                  {%- elif nrefDataAccessAUuid == uuids.nrefDataAccessWillOnlineAUuid -%}
-                    We will use its online version without downloading it.
-                  {%- endif -%}
-                  </p>
-                {%- endif -%}
-
-                {%- set dataUse = repliesMap[[nrefDataUsedPrefix, uuids.nrefDataUsageQUuid]|reply_path]|reply_str_value -%}
-                {%- if dataUse -%}
-                <p>We will use the dataset as follows: {{ dataUse|dot }}</p>
-                {%- endif -%}
-              </li>
-            {%- endfor -%}
-          </ul>
-          </div>
-        {%- endif -%} #}
-
       </div>
     {%- endif -%}
   {%- endif -%}
@@ -305,16 +159,17 @@
               {%- set formatsWhyNonStandardPath = [formatsIsStandardPath, uuids.formatsIsStandardNoAUuid, uuids.formatsWhyNonStandardQUuid]|reply_path -%}
               {%- set formatsWhyNonStandardAUuid = repliesMap[formatsWhyNonStandardPath]|reply_str_value -%}
               {%- if formatsWhyNonStandardAUuid == uuids.formatsWhyNSThereIsNoStandardAUuid %}
-                It is not a standardized format because there is no standardized format for this data type.
+                We are not using a standardized format because there is no standardized format for this data type.
               {%- elif formatsWhyNonStandardAUuid == uuids.formatsWhyNSItIsOptimizedAUuid %}
-                It is not a standardized format but it is optimized for processing speed and/or volume.
+                We are not using a standardized format but it is optimized for processing speed and/or volume.
               {%- elif formatsWhyNonStandardAUuid == uuids.formatsWhyNSAnotherReasonAUuid -%}
                 {%- set formatsWhyNSAnotherReasonPath = [formatsWhyNonStandardPath, uuids.formatsWhyNSAnotherReasonAUuid, uuids.formatsWhyNSAnotherReasonQUuid]|reply_path -%}
                 {%- set formatsWhyNSAnotherReason = repliesMap[formatsWhyNSAnotherReasonPath]|reply_str_value -%}
-                It is not a standardized format.
-                {%- if formatsWhyNSAnotherReason %}
-                  {{ formatsWhyNSAnotherReason|capitalize|dot }}
+                We are not using a standardized format
+                {%- if formatsWhyNSAnotherReason -%}
+                  , because: {{ formatsWhyNSAnotherReason|capitalize }}
                 {%- endif -%}
+                .
               {%- endif -%}
             {%- endif -%}
             {# long-term suitable? #}
