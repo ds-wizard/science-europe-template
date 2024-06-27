@@ -126,7 +126,7 @@
               {%- set mdQualityOtherPath = [mdqPrefix, uuids.mdQualityOtherQUuid]|reply_path -%}
               {%- set mdQualityOtherAUuid = repliesMap[mdQualityOtherPath]|reply_str_value -%}
               {%- if mdQualityOtherAUuid == uuids.mdQualityOtherYesAUuid -%}
-                {%- set mdQualityOtherYesPath = [mdQualityOtherPath, mdQualityOtherYesAUuid, mdQualityOtherYesQUuid]|reply_path -%}
+                {%- set mdQualityOtherYesPath = [mdQualityOtherPath, uuids.mdQualityOtherYesAUuid, uuids.mdQualityOtherWhatQUuid]|reply_path -%}
                 {%- set mdQualityOther = repliesMap[mdQualityOtherYesPath]|reply_str_value -%}
                 {%- if mdQualityOther -%}
                   <p>{{ "Additional" if qualityCount > 0 else "Our" }} quality processes are: {{ mdQualityOther|dot }}</p>
@@ -181,6 +181,8 @@
             {%- endif -%}
     
             {# usage #}
+            {%- set refDataUsageQ = [ refDataUsedPrefix, uuids.refDataUsageQUuid]|reply_path -%}
+            {%- set refDataUsageReply = repliesMap[refDataUsageQ]|reply_str_value  -%}
             {%- if refDataUsageReply -%}
                 {{+" "}}in order to "{{ refDataUsageReply}}"
             {%- endif -%}
@@ -277,7 +279,7 @@
 
             {# no usage reason #}
             {%- if refDataUseNoReply -%}
-              , but decided not to reuse it
+              , but decided not to re-use it
               {%- if refDataUseNoReply == uuids.refDataUseNoDataAUuid -%}
                 {{" "}}because it misses data we need
               {%- elif refDataUseNoReply == uuids.refDataUseNoAspectAUuid -%}
@@ -327,6 +329,8 @@
           {%- endif -%}
     
           {# usage #}
+          {%- set nrefDataUsageQ = [nrefDataUsedPrefix, uuids.nrefDataUsageQUuid]|reply_path  -%}
+          {%- set nrefDataUsageReply = repliesMap[nrefDataUsageQ]|reply_str_value -%}
           {%- if nrefDataUsageReply -%}
             {{+" "}}in order to "{{ nrefDataUsageReply}}"
           {%- endif -%}
@@ -490,28 +494,30 @@
       {%- endfor -%}
       </ul>
       </div>
+    {%- else -%}
+      <p>There are no re-used datasets.</p>
     {%- endif -%}
 
     {# Constrains - Data Harmonization #}
     {%- set dataHarmo = [preexistingPath, uuids.preexistingYesAUuid, uuids.dataHarmoQUuid]|reply_path -%}
     {%- set dataHarmoReply = repliesMap [dataHarmo]|reply_str_value -%}
     {%- if dataHarmoReply == uuids.dataHarmoYesAUuid -%}
-      <p>We need to harmonize different sources of existing data before reusing them{{+" "}}
+      <p>We need to harmonize different sources of existing data before reusing them
       {%- set dataHarmonAvailable = [dataHarmo, uuids.dataHarmoYesAUuid, uuids.dataHarmoOthersQUuid]|reply_path  -%}
       {%- set dataHarmonAvailableReply = repliesMap[dataHarmonAvailable]|reply_str_value -%}
       {%- if dataHarmonAvailableReply == uuids.dataHarmoOthersYesAUuid -%}
-        and we will make this harmonization results available to others.
+        {{+" "}}and we will make this harmonization results available to others
       {%- elif dataHarmonAvailableReply == uuids.dataHarmoOthersNoAUuid -%}
-        but we won't make this harmonization results available to others.
+        {{+" "}}but we won't make this harmonization results available to others
       {%- endif -%}
-      </p>
+      .</p>
     {%- endif -%}
 
     {# Constrains - (Re)made data computer readable #}
     {%- set dataCompRead = [preexistingPath, uuids.preexistingYesAUuid, uuids.dataCompReadQUuid]|reply_path -%}
     {%- set dataCompReadReply = repliesMap[dataCompRead]|reply_str_value -%}
     {%- if dataCompReadReply == uuids.dataCompReadYesAUuid -%}
-      <p>We will need to (re-)made the data into computer readable form before their using{{+" "}}
+      <p>We will need to (re-)made the data into computer readable form before their using
 
       {%- set dataCompReadItself = [dataCompRead, uuids.dataCompReadYesAUuid, uuids.dataCompReadItselfQUuid]|reply_path -%}
       {%- set dataCompReadItselfReply = repliesMap[dataCompReadItself]|reply_str_value -%}
@@ -520,13 +526,14 @@
 
       {%- if dataCompReadItselfReply -%}
         {%- if dataCompReadItselfReply == uuids.dataCompReadItselfYesAUuid -%}
-          and we will make this computer readable form available to others throught a standard repository.
+          {{+" "}}and we will make this computer readable form available to others throught a standard repository
         {%- elif dataCompReadItselfReply == uuids.dataCompReadItselfYesOtherAUuid -%} 
-          and we will make this computer readable form available to others.
+          {{+" "}}and we will make this computer readable form available to others
         {%- elif dataCompReadItselfReply == uuids.dataCompReadItselfNoAUuid -%}
-          but we won't make this computer readable form available to others.
+          {{+" "}}but we won't make this computer readable form available to others
         {%- endif -%}
       {%- endif -%}
+      .
 
       {%- if dataCompReadOthersReply -%}
         {%- if dataCompReadOthersReply == uuids.dataCompReadOthersYesAUuid %}
