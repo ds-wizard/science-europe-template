@@ -6,12 +6,14 @@
     {%- set sharedWorkspacePath = [uuids.processingCUuid, uuids.sharedWorkspaceQUuid]|reply_path -%}
     {%- set sharedWorkspaceAUuid = repliesMap[sharedWorkspacePath]|reply_str_value -%}
     {%- if sharedWorkspaceAUuid == uuids.sharedWorkspaceNoAUuid -%}
+      <p>There is no shared workspace used during the project for working with data.</p>
       {%- set notSharedBackupPath = [sharedWorkspacePath, uuids.sharedWorkspaceNoAUuid, uuids.notSharedBackupQUuid]|reply_path -%}
       {%- set notSharedBackupAUuid = repliesMap[notSharedBackupPath]|reply_str_value -%}
       {%- if notSharedBackupAUuid == uuids.notSharedBackupYesAUuid -%}
-        <p>Data that project members themselves store adequately backed up and traceable. Therefore data are protected against both equipment failure and human error.</p>
+        <p>Data that project members themselves store are adequately backed up and traceable. Therefore data are protected against both equipment failure and human error.</p>
       {%- endif -%}
     {%- elif sharedWorkspaceAUuid == uuids.sharedWorkspaceYesAUuid -%}
+      <p>There is a shared workspace used during the project for working with data.</p>
       {%- set sharedHowPath = [sharedWorkspacePath, uuids.sharedWorkspaceYesAUuid, uuids.sharedHowQUuid]|reply_path -%}
       {%- set sharedHowAUuid = repliesMap[sharedHowPath]|reply_str_value -%}
       {%- if sharedHowAUuid == uuids.sharedHowExploreAUuid -%}
