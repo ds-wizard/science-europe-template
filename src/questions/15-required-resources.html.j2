@@ -11,21 +11,23 @@
       <p>To execute the DMP, additional specialist expertise is required and we have such trained support staff available.</p>
     {%- elif expertiseAUuid == uuids.additionalExpertiseYesTrainAUuid -%}
       <p>
-        To execute the DMP, additional specialist expertise is required. We will be training existing staff.
+        To execute the DMP, additional specialist expertise is required. We will be training existing staff
         {%- set expertiseTrainPath = [expertisePath, uuids.additionalExpertiseYesTrainAUuid, uuids.additionalExpertiseYesTrainTrainingQUuid]|reply_path -%}
         {%- set expertiseTrainText = repliesMap[expertiseTrainPath]|reply_str_value -%}
-        {%- if additionalExpertiseTrainText %}
-          The training will be: {{ expertiseTrainText|dot }}
+        {%- if expertiseTrainText %}
+          {{" "}}on: {{ expertiseTrainText}}
         {%- endif -%}
+        .
       </p>
     {%- elif expertiseAUuid == uuids.additionalExpertiseYesHireAUuid -%}
       <p>
-        To execute the DMP, additional specialist expertise is required. We will be hiring new people with additional expertise.
+        To execute the DMP, additional specialist expertise is required. We will be hiring new people with additional expertise
         {%- set expertiseHirePath = [expertisePath, uuids.additionalExpertiseYesHireAUuid, uuids.additionalExpertiseYesHireExpertiseQUuid]|reply_path -%}
         {%- set expertiseHireText = repliesMap[expertiseHirePath]|reply_str_value -%}
         {%- if expertiseHireText %}
-          The required expertise from new people is: {{ expertiseHireText|dot }}
+          {{" "}}in: {{ expertiseHireText}}
         {%- endif -%}
+        .
       </p>
     {%- endif -%}
     {# additional hw/sw #}
