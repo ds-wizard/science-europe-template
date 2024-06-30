@@ -26,7 +26,7 @@
     {%- if storeLab or (risksCarryHomeAUuid == uuids.risksCarryHomeNoAUuid) or (risksCarryHomeAUuid == uuids.risksCarryHomeYesAUuid and (homeEncrypted or homePassword)) or (risksCertificationsAUuid == uuids.risksCertificationsYesAUuid) or (risksHttpsAUuid == uuids.risksHttpsYesAUuid) or (risksInstructedAUuid == uuids.risksInstructedYesAUuid) %}
       <p>
         {%- if storeLab %}
-          Project members will not store data or software on computers in the lab or external hard drives connected to those computers.
+          Project members will not store data or software on computers in the lab or external hard drives connected to those computers.{{" "}}
         {%- endif -%}
         {%- if risksCarryHomeAUuid == uuids.risksCarryHomeNoAUuid %}
           {%- if storeLab -%}They{%- else -%}Project members{%- endif %} will not carry data with them (e.g. on laptops, USB sticks, or other external media).
@@ -165,7 +165,7 @@
       {%- endif -%}
     {%- endif -%}
 
-    {# Policies and Procedures for DMP TODO + pridat co je v excelu #}
+    {# Policies and Procedures for DMP #}
     {%- set policiesProceduresQUuid = [uuids.adminDetailsCUuid, uuids.policiesProceduresQUuid]|reply_path -%}
     {%- set policiesProceduresItems = repliesMap [policiesProceduresQUuid]|reply_items -%}
     {%- if policiesProceduresItems|length > 0 -%}
