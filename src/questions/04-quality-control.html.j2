@@ -100,7 +100,7 @@
                     {%- set mdQualityOtherPath = [mdqPrefix, uuids.mdQualityOtherQUuid]|reply_path -%}
                     {%- set mdQualityOtherAUuid = repliesMap[mdQualityOtherPath]|reply_str_value -%}
                     {%- if mdQualityOtherAUuid == uuids.mdQualityOtherYesAUuid -%}
-                        {%- set mdQualityOtherYesPath = [mdQualityOtherPath, mdQualityOtherYesAUuid, mdQualityOtherYesQUuid]|reply_path -%}
+                        {%- set mdQualityOtherYesPath = [mdQualityOtherPath, uuids.mdQualityOtherYesAUuid,uuids.mdQualityOtherWhatQUuid]|reply_path -%}
                         {%- set mdQualityOther = repliesMap[mdQualityOtherYesPath]|reply_str_value -%}
                         {%- if mdQualityOther -%}
                         <p>{{ "Additional" if qualityCount > 0 else "Our" }} quality processes are: {{ mdQualityOther|dot }}</p>
