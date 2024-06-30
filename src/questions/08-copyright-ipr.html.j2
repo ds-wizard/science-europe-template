@@ -80,7 +80,7 @@
         {%- set legalReasonsAuthenticatedAUuid = repliesMap[legalReasonsAuthenticatedQUuid]|reply_str_value -%}
         
         {%- if legalReasonsAuthenticatedAUuid -%}
-
+          <h4>Authentication and Authorization of Users</h4>
           {%- if legalReasonsAuthenticatedAUuid == uuids.legalReasonsAuthorizeMemberAUuid -%}
             <p>One of the project memebers will authorize potential users of the data.</p>
           {%- elif legalReasonsAuthenticatedAUuid == uuids.legalReasonsAuthorizeNewCommitteeAUuid -%}
