@@ -11,11 +11,11 @@
         {%- for i in producedDataItems -%}
             {%- set pathPrefix = [producedDataPath, i]|reply_path -%}
             {%- set producedDataName = repliesMap[[pathPrefix, uuids.producedDataNameQUuid]|reply_path]|reply_str_value -%}
-            <li>
             {# If will be published #}
             {%- set isPublishedDataPath = [pathPrefix, uuids.isPublishedDataQUuid]|reply_path -%}
             {%- set isPublishedDataAUuid = repliesMap[isPublishedDataPath]|reply_str_value -%}
             {% if isPublishedDataAUuid == uuids.isPublishedDataYesAUuid %}
+            <li>
                 <strong>{{ producedDataName if producedDataName else "(no name given)" }}</strong>
                 {# Where the data will be distributed #}
                 {%- set publishedDistrosPath = [isPublishedDataPath, uuids.isPublishedDataYesAUuid, uuids.publishedDistrosQUuid]|reply_path -%}
