@@ -132,20 +132,26 @@
     {%- endif -%}
 
     {# Long term preservation and recovery #}
-    {%- set preservingArchivedDuringQUuid = [uuids.processingCUuid, uuids.archivedDuringQUuid]|reply_path -%}
-    {%- set preservingArchivedDuringReply = repliesMap[preservinArchivedDuringQUuid]|reply_str_value -%}
+    {%- set preservingArchivedDuringQUuid = [uuids.preservingCUuid, uuids.archivedDuringQUuid]|reply_path -%}
+    {%- set preservingArchivedDuringReply = repliesMap[preservingArchivedDuringQUuid]|reply_str_value -%}
     {%- if preservingArchivedDuringReply == uuids.archivedDuringYesAUuid -%}
+      <p> We will be archiving data for long term preservation already during our project.
+      {%- set preservingArchivedDuringReQUuid = [preservingArchivedDuringQUuid, uuids.archivedDuringYesAUuid, uuids.archivedDuringReQUuid]|reply_path  -%}
+      {%- set preservingArchivedDuringReReply = repliesMap[preservingArchivedDuringReQUuid]|reply_str_value -%}
 
-      {%- set preservingArchivedDuringReFrequentBackupsQUuid = [preservingArchivedDuringQUuid, uuids.archivedDruingReYesAUuid, uuids.archivedDuringReFrequentBackupsQUuid  ] -%}
-      {%- set preservingArchivedDuringReFrequentBackupsReply = repliesMap[preservingArchivedDuringReQUuid]|reply_str_value -%}
+      {%- if preservingArchivedDuringReReply == uuids.archivedDruingReYesAUuid -%}
+        {{" "}}The archived data will be changing over time and needs re-archival.
+        {%- set preservingArchivedDuringRelyQUuid = [preservingArchivedDuringReQUuid, uuids.archivedDruingReYesAUuid, uuids.archivedDuringRelyQUuid]|reply_path -%}
+        {%- set preservingArchivedDuringRelyReply = repliesMap[preservingArchivedDuringRelyQUuid]|reply_str_value -%}
+        {%- set archivedDuringReFrequentBackupsQUuid = [preservingArchivedDuringReQUuid, uuids.archivedDruingReYesAUuid, uuids.archivedDuringReFrequentBackupsQUuid]|reply_path-%}
+        {%- set preservingArchivedDuringReFrequentBackupsReply = repliesMap[archivedDuringReFrequentBackupsQUuid]|reply_str_value -%}
+          
+        {%- if (preservingArchivedDuringReFrequentBackupsReply == uuids.archivedDuringReFrequentBackupsYesAUuid ) and (preservingArchivedDuringRelyReply == uuids.archivedDuringRelyYesAUuid) -%}
+          {{" "}}This data needs frequent backups and we will rely on these backups in case of recovery from human errors.</p>
+        {%- elif (preservingArchivedDuringReFrequentBackupsReply == uuids.archivedDuringReFrequentBackupsNoAUuid ) and (preservingArchivedDuringRelyReply == uuids.archivedDuringRelyYesAUuid )-%}
+          {{" "}}This data will be infrequently backed up and we will rely on these backups in case of recovery from human errors.</p>
+        {%- endif -%}
 
-      {%- set preservingArchivedDuringRelyQUuid = [preservingArchivedDuringQUuid, uuids.archivedDruingReYesAUuid, uuids.archivedDuringRelyQUuid] -%}
-      {%- set preservingArchivedDuringRelyReply = repliesMap[preservingArchivedDuringRelyQUuid]|reply_str_value -%}
-        <p> We will be archiving data for long term preservation already during our project.
-      {%- if (preservingArchivedDuringReFrequentBackupsReply == uuids.archivedDuringReFrequentBackupsYesAUuid ) and (preservingArchivedDuringRelyReply == uuids.archivedDuringRelyYesAUuid) -%}
-        This data needs frequent backups and we will rely on these backups in case of recovery from human errors.</p>
-      {%- elif (preservingArchivedDuringReFrequentBackupsReply == uuids.archivedDuringReFrequentBackupsYesAUuid ) and (preservingArchivedDuringRelyReply == uuids.archivedDuringRelyNoAUuid )-%}
-        This data will be infrequently backed up and we will rely on these backups in case of recovery from human errors.</p>
       {%- endif -%}
     {%- endif -%}
 
