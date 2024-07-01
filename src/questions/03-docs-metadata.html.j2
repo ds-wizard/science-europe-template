@@ -8,18 +8,6 @@
     {%- set metadataPath = [uuids.creatingCUuid, uuids.metadataQUuid]|reply_path -%}
     {%- set metadataAUuid = repliesMap[metadataPath]|reply_str_value -%}
     {%- if metadataAUuid == uuids.metadataExploreAUuid -%}
-      {# Good provenance (lab notebooks) - MOVED TO THE 01#}
-      {#{%- set provenancePath = [metadataPath, uuids.metadataExploreAUuid, uuids.provenanceQUuid]|reply_path -%}
-      {%- set provenanceAUuid = repliesMap[provenancePath]|reply_str_value -%}
-      {%- if provenanceAUuid == uuids.provenanceLabNotebooksAUuid -%}
-        <p>We will use lab notebooks to make sure that there is good provenance of the data analysis.</p>
-      {%- elif provenanceAUuid == uuids.provenanceELabNotebookAUuid -%}
-        <p>We will use an electronic lab notebook to make sure that there is good provenance of the data analysis.</p>
-      {%- elif provenanceAUuid == uuids.provenanceOtherAUuid -%}
-        {%- set provenanceOtherPath = [provenancePath, uuids.provenanceOtherAUuid, uuids.provenanceOtherQUuid]|reply_path -%}
-        {%- set provenanceOther = repliesMap[provenanceOtherPath]|reply_str_value -%}
-        <p>We will use other solution than (electronic) lab notebooks to make sure that there is good provenance of the data analysis{{ ": " ~ provenanceOther|dot if provenanceOther else "." }}
-      {%- endif -%}#}
 
       {# Metadata standards #}
       {%- set metadataSentences = [] -%}
