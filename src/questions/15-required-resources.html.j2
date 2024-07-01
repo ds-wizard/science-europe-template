@@ -72,12 +72,12 @@
                         {%- set projectCostItemTitleQUuid = [projectCostItem, uuids.costTitleQUuid]|reply_path -%}
                         {%- set projectCostItemTitleReply = repliesMap[projectCostItemTitleQUuid]|reply_str_value -%}
                         <li>
-                        <strong>{{ projectCostItemTitleReply if projectCostItemTitleReplyy else "(no name given)" }}</strong>
+                        <strong>{{ projectCostItemTitleReply if projectCostItemTitleReply else "(no name given)" }}</strong>
                         
                         {%- set projectCostItemDescriptionQUuid = [projectCostItem, uuids.costDescriptionQUuid]|reply_path -%}
                         {%- set projectCostItemDescriptionReply = repliesMap[projectCostItemDescriptionQUuid]|reply_str_value  -%}
                         
-                        {{" "+projectCostItemDescriptionReply|dot}}
+                        {{" - "+projectCostItemDescriptionReply|dot}}
 
                         {%- set projectCostItemCurrencyQUuid = [projectCostItem, uuids.costCurrencyQUuid]|reply_path  -%}
                         {%- set projectCostItemCurrencyReply = repliesMap[projectCostItemCurrencyQUuid] -%}
@@ -126,7 +126,27 @@
                        
  
                         {%- set projectCostItemCoverQUuid = [projectCostItem, uuids.costCoverQUuid]|reply_path  -%}
-                        {%- set projectCostItemCoverAUuid = repliesMap[projectCostItemCoverQUuid]|reply_str_value -%}
+                        {%- set projectCostItemCoverReply = repliesMap[projectCostItemCoverQUuid]|reply_str_value -%}
+
+                        {%- if projectCostItemCoverReply == uuids.costCoverGrantAUuid -%}
+                          {%- set costCoverGrantIdQUuid = [projectCostItemCoverQUuid, uuids.costCoverGrantAUuid, uuids.costCoverGrantIdQUuid]|reply_path -%}
+                          {%- set costCoverGrantIdReply = repliesMap[costCoverGrantIdQUuid]|reply_str_value -%}
+                          <p>This cost will be covered by funding grant
+                          {%- if costCoverGrantIdReply -%}
+                            {{" "}}(grant number: {{costCoverGrantIdReply}})
+                          {%- else -%}
+                            . </p>
+                          {%- endif -%}
+                        {%- elif projectCostItemCoverReply == uuids.costCoverOtherAUuid -%}
+                          {%- set costCoverOtherHowQUuid = [projectCostItemCoverQUuid,uuids.costCoverOtherAUuid, uuids.costCoverOtherHowQUuid]|reply_path  -%}
+                          {%- set costCoverOtherHowReply = repliesMap[costCoverOtherHowQUuid]|reply_str_value -%}
+                          {%- if costCoverOtherHowReply -%}
+                            <p>This cost will be covered as follows: {{costCoverOtherHowReply}}.</p>
+                          {%- endif -%}
+
+                        {%- endif -%}
+
+
                         </li>
                     {%- endfor -%}
                     </ul>
