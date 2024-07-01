@@ -92,7 +92,7 @@
 
     {# Explain how the data might be re-used in other contexts. #}
     <h4>Possible re-use of created data in other contexts</h4>
-    Explanation on how the collected or created data might be re-used in other contexts:
+    Explanation of how the collected or created data might be re-used in other contexts:
 
     {%- set dataMeasuredQUuid = [uuids.creatingCUuid, uuids.measuredQUuid]|reply_path  -%}
     {%- set dataMeasuredAUuid = repliesMap[dataMeasuredQUuid]|reply_str_value -%}
@@ -112,15 +112,22 @@
             {%- set measuredDataReuseAUuid = repliesMap[measuredDataReuseQUuid]|reply_str_value -%}
 
             {%- if measuredDataReuseAUuid == uuids.measuredDataReuseUsAUuid -%}
-                <p>Only us will be interested in reusing this data.</p>
+                <p>Only we will be interested in re-using this data.</p>
 
             {%- elif measuredDataReuseAUuid == uuids.measuredDataReuseSameFieldAUuid  -%}
-                <p>Other researchers in this field will be interested in using this data.</p>
+                <p>Other researchers in this field will be interested in re-using this data.</p>
             {%- elif measuredDataReuseAUuid == uuids.measuredDataReuseOtherFieldAUuid -%}
                 {%- set measuredDataReuseOtherFieldHowQUuid = [measuredDataReuseQUuid, uuids.measuredDataReuseOtherFieldAUuid, uuids.measuredDataReuseOtherFieldHowQUuid]|reply_path -%}
                 {%- set measuredDataReuseOtherFieldHowReply = repliesMap[measuredDataReuseOtherFieldHowQUuid]|reply_str_value -%}
 
-                <p>Researchers working in other fields will be interested in using this data because: {{measuredDataReuseOtherFieldHowReply|dot}}</p>
+                <p>Researchers working in other fields will be interested in re-using this data
+                
+                {%- if measuredDataReuseOtherFieldHowReply -%}
+                
+                 {{" "}}because: {{measuredDataReuseOtherFieldHowReply|dot}}</p>
+                {%- else -%}
+                .
+                {%- endif -%}
 
             {%- endif -%}
             </li>
