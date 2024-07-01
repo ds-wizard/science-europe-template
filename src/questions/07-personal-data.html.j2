@@ -76,12 +76,22 @@
         {%- endif -%}
 
         {# Managed access procedure to personal data #}
-        {%- set personalDataManagedAccessQUuid = [uuids.accessCUuid, uuids.openImmediatelyQUuid, uuids.openImmediatelyNoAUuid, uuids.notOpenLegalReasonsQUuid, uuids.notOpenLegalReasonsYesAUuid, uuids.notOpenLegalReasonsPrivacyQUuid, uuids.notOpenLegalReasonsPrivacyYesAUuid, uuids.notOpenLegalReasonsPrivacyAccessQUuid ]|reply_path -%}
-        {%- set personalDataManagedAccessReply = repliesMap[personalDataManagedAccessQUuid]|reply_str_value -%}
-        
-        {%- if personalDataManagedAccessReply -%}
-            <h4>Access procedure to personal data</h4>
-            <p>There is a procedure for users to access private data as follows: {{personalDataManagedAccessReply}}</p>
+        {%- set notOpenLeagalReasonsQUuid = [uuids.accessCUuid, uuids.openImmediatelyQUuid, uuids.openImmediatelyNoAUuid, uuids.notOpenLegalReasonsQUuid]|reply_path -%}
+        {%- set notOpenLegalReasonsReply = repliesMap[notOpenLeagalReasonsQUuid]|reply_str_value -%}
+        {%- if notOpenLegalReasonsReply == uuids.notOpenLegalReasonsYesAUuid -%}
+            {%- set notOpenLegalReasonsPrivacyQUuid = [notOpenLeagalReasonsQUuid, uuids.notOpenLegalReasonsYesAUuid, uuids.notOpenLegalReasonsPrivacyQUuid]|reply_path -%}
+            {%- set notOpenLegalReasonsPrivacyReply = repliesMap[notOpenLegalReasonsPrivacyQUuid]|reply_str_value -%}
+
+            {%- if notOpenLegalReasonsPrivacyReply == uuids.notOpenLegalReasonsPrivacyYesAUuid -%}
+
+                {%- set personalDataManagedAccessQUuid = [notOpenLegalReasonsPrivacyQUuid, uuids.notOpenLegalReasonsPrivacyYesAUuid, uuids.notOpenLegalReasonsPrivacyAccessQUuid ]|reply_path -%}
+                {%- set personalDataManagedAccessReply = repliesMap[personalDataManagedAccessQUuid]|reply_str_value -%}
+                
+                {%- if personalDataManagedAccessReply -%}
+                    <h4>Access procedure to personal data</h4>
+                    <p>There is a procedure for users to access private data as follows: {{personalDataManagedAccessReply}}</p>
+                {%- endif -%}
+            {%- endif -%}
         {%- endif -%}
 
     </div>
