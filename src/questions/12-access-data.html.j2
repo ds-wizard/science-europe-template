@@ -30,7 +30,12 @@
                                 {%- set swNameReply = repliesMap[swNameUuid]|reply_str_value -%}
                                 {%- set swPIDUuid = [isPublishedSWPath, swItem, uuids.publishedSpecSwUseWhatPIDQUuid]|reply_path -%}
                                 {%- set swPIDReply = repliesMap[swPIDUuid]|reply_str_value -%}
-                                <p><strong>{{ swNameReply if swNameReply else "(no name given)" }}</strong>, available at {{swPIDReply|dot}}</p>
+                                <p><strong>{{ swNameReply if swNameReply else "(no name given)" }}</strong>
+                                {%- if swPIDReply -%}
+                                , available at {{swPIDReply|dot}}</p>
+                                {%- else -%}
+                                .
+                                {%- endif -%}
                             {%- endfor -%}
                             </ul>
                     {%- else -%}
