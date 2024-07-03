@@ -1,7 +1,7 @@
 {
   "organizationId": "dsw",
   "templateId": "science-europe",
-  "version": "1.17.0",
+  "version": "1.18.0",
   "name": "Science Europe DMP Template",
   "description": "Default DCC DMP Template recommended by Science Europe",
   "license": "Apache-2.0",
@@ -10,13 +10,13 @@
     {
         "orgId": "dsw",
         "kmId": "root",
-        "minVersion": "2.5.0",
+        "minVersion": "2.6.7",
         "maxVersion": null
     },
     {
         "orgId": "dsw",
         "kmId": "lifesciences",
-        "minVersion": "2.5.0",
+        "minVersion": "2.6.7",
         "maxVersion": null
     }
   ],
@@ -82,22 +82,23 @@
       "name": "MS Word Document",
       "icon": "far fa-file-word",
       "steps": [
-        {
-          "name": "jinja",
-          "options": {
-            "template": "src/index.html.j2",
-            "content-type": "text/html",
-            "extension": "html"
-          }
-        },
-        {
-          "name": "pandoc",
-          "options": {
-            "from": "html",
-            "to": "docx"
-          }
-        }
-      ]
+                {
+                    "name": "jinja",
+                    "options": {
+                        "template": "src/word/index.html.j2",
+                        "content-type": "text/html",
+                        "extension": "html"
+                    }
+                },
+                {
+                    "name": "pandoc",
+                    "options": {
+                        "from": "html",
+                        "to": "docx",
+                        "args": "--filter=pandoc-docx-pagebreakpy --reference-doc=src/word/reference.docx"
+                    }
+                }
+            ]
     },
     {
       "uuid": "15e53172-bbae-4a0c-a4d9-8f3ddf60e7b6",

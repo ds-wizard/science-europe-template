@@ -24,9 +24,18 @@ This document template for DSW is available as open-source via GitHub Repository
 * **Rob Hooft** <[rob.hooft@health-ri.nl](mailto:rob.hooft@health-ri.nl)>
   * ORCID: [0000-0001-6825-9439](https://orcid.org/0000-0001-6825-9439)
   * GitHub: [@rwwh](https://github.com/rwwh)
+* **Jana Martínková** <[jana.martinkova@ds-wizard.org]>(mailto:jana.martinkova@ds-wizard.org)>
+  * ORCID: [0000-0001-8575-6533](https://orcid.org/0000-0001-8575-6533/)
+  * GitHub: [@jmartinkova](https://github.com/jmartinkova)
 
 
 ## Changelog
+
+### 1.18.0
+
+- Update according to the Science Europe DMP template, including the project number, access to private data, and project costs
+- Fix the question regarding data versions to allow for multiple choices
+- Correct the version table and front page
 
 ### 1.17.0
 

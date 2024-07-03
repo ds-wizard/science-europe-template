@@ -1,5 +1,5 @@
 <div id="q-ethical-issues" class="question">
-  <h3>4. How will you manage any ethical issues?</h3>
+  <h3>9. What ethical issues and codes of conduct are there, and how will they be taken into account?</h3>
 
   <div class="answer">
 
@@ -125,7 +125,7 @@
         {%- if cpersGdprAUuid == uuids.cpersGdprExploreAUuid -%}
           {%- do sentences.append('We explored General Data Protection Regulation (GDPR) considerations and relevant materials.') -%}
 
-          {# legal base #}
+          {# Legal Base #}
           {%- set legalBasePath = [cpersGdprPath, cpersGdprAUuid, uuids.cpersGdprLegalBasisQUuid]|reply_path -%}
           {%- set legalBaseAUuid = repliesMap[legalBasePath]|reply_str_value -%}
           {%- if legalBaseAUuid == uuids.cpersGdprLegalBasisPublicAUuid -%}

@@ -1,11 +1,13 @@
-<div id="q-longterm-plan" class="question">
-  <h3>9. What is the longterm preservation plan for the dataset?</h3>
+<div id="q-data-preservation" class="question">
+  <h3>11. How will data for preservation be selected, and where data will be preserved long-term (for example a data repository or archive)?</h3>
 
   <div class="answer">
     {# Produced datasets #}
     {%- set producedDataPath = [uuids.preservingCUuid, uuids.producedDataQUuid]|reply_path -%}
     {%- set producedDataItems = repliesMap[producedDataPath]|reply_items -%}
     {%- if producedDataItems|length > 0 -%}
+      <p>
+      We plan to produce the following datasets:
       <ul>
       {%- for i in producedDataItems -%}
         {%- set pathPrefix = [producedDataPath, i]|reply_path -%}
@@ -19,11 +21,32 @@
             (not published)
           {% elif isPublishedDataAUuid == uuids.isPublishedDataYesAUuid %}
             (published)
-          {# Distributions #}
+          {% endif -%}
+          {# How long will be stored + Metadata FAIRness #}
+          {%- set publishedDataHowLongPath = [pathPrefix, uuids.publishedDataHowLongQUuid]|reply_path -%}
+          {%- set publishedDataHowLongAUuid = repliesMap[publishedDataHowLongPath]|reply_str_value -%}
+          {%- set publishedDataMetadataPersistentPath = [pathPrefix, uuids.publishedDataMetadataPersistentQUuid]|reply_path -%}
+          {%- set publishedDataMetadataPersistentAUuid = repliesMap[publishedDataMetadataPersistentPath]|reply_str_value -%}
+          {%- if publishedDataHowLongAUuid or (publishedDataMetadataPersistentAUuid == uuids.publishedDataMetadataPersistentYesAUuid) %}
+            {% if publishedDataHowLongAUuid == uuids.publishedDataHowLongTechnicalAUuid -%}
+              <p>This data set will be kept available as long as technically possible.</p>
+            {%- elif publishedDataHowLongAUuid == uuids.publishedDataHowLongDeletedAUuid -%}
+              <p> This data set will be kept available until it needs to be deleted for legal, contractual or regulatory reasons.</p>
+            {%- elif publishedDataHowLongAUuid == uuids.publishedDataHowLongFixedAUuid -%}
+              {%- set publishedDataHowLongFixedPath = [publishedDataHowLongPath, uuids.publishedDataHowLongFixedAUuid, uuids.publishedDataHowLongFixedQUuid]|reply_path -%}
+              {%- set publishedDataHowLongFixed = repliesMap[publishedDataHowLongFixedPath]|reply_str_value -%}
+              <p>This data set will be kept available for a fixed period (prepaid){{ " of: " ~ publishedDataHowLongFixed|dot if publishedDataHowLongFixed else "." }}</p>
+            {%- endif -%}
+            {%- if publishedDataMetadataPersistentAUuid == uuids.publishedDataMetadataPersistentYesAUuid %}
+              <p>The metadata will be available even when the data no longer exists.</p>
+            {%- endif -%}
+          {%- endif -%}
+
+           {# Distributions #}
           {% set distrosPath = [isPublishedDataPath, uuids.isPublishedDataYesAUuid, uuids.publishedDistrosQUuid]|reply_path -%}
           {%- set distrosItems = repliesMap[distrosPath]|reply_items -%}
           {%- if distrosItems|length > 0 -%}
-            <br>The distributions will be stored in:
+            <p>The distributions will be stored in:</p>
             <ul>
             {%- for j in distrosItems -%}
               {%- set distroPrefix = [distrosPath, j]|reply_path -%}
@@ -51,7 +74,7 @@
                     {%- elif domainSpecificRepoContactBeforeAUuid == uuids.domainSpecificRepoContactBeforeOtherAUuid %}
                       {%- set domainSpecificRepoContactBeforeOtherPath = [domainSpecificRepoContactBeforePath, uuids.domainSpecificRepoContactBeforeOtherAUuid, uuids.domainSpecificRepoContactBeforeOtherQUuid]|reply_path -%}
                       {%- set domainSpecificRepoContactBeforeOther = repliesMap[domainSpecificRepoContactBeforeOtherPath]|reply_str_value %}
-                      We have made other arrangements{{ ": " ~ domainSpecificRepoContactBeforeOther|dot if domainSpecificRepoContactBeforeOther else "." }}
+                      We have made other arrangements instead of contacting the repository directly{{ ": " ~ domainSpecificRepoContactBeforeOther|dot if domainSpecificRepoContactBeforeOther else "." }}
                     {%- endif -%}
                   {%- elif distroRepositoryKindAUuid == uuids.publishedDataRepositoryNationalAUuid %}
                     Our national repository.
@@ -87,11 +110,10 @@
           {%- if publishedDataCatalogueAUuid == uuids.publishedDataCatalogueYesAUuid -%}
             <br>We will be adding a reference to the published data to at least one data catalogue.
           {%- endif -%}
-          {%- endif -%}
         </li>
+        <br>
       {%- endfor -%}
       </ul>
-    {%- endif -%}
     {# Repository charges #}
     {%- set repoChargesPath = [uuids.preservingCUuid, uuids.repoChargesQUuid]|reply_path -%}
     {%- set repoChargesAUuid = repliesMap[repoChargesPath]|reply_str_value -%}
@@ -120,5 +142,6 @@
     {%- if budgetTimeEffortAUuid == uuids.budgetTimeEffortYesAUuid -%}
       <p>We have a reserved budget for the time and effort it will take to prepare the data for publication.</p>
     {%- endif -%}
+  {%- endif -%}
   </div>
 </div>
