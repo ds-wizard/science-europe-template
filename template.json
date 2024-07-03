@@ -82,22 +82,23 @@
       "name": "MS Word Document",
       "icon": "far fa-file-word",
       "steps": [
-        {
-          "name": "jinja",
-          "options": {
-            "template": "src/index.html.j2",
-            "content-type": "text/html",
-            "extension": "html"
-          }
-        },
-        {
-          "name": "pandoc",
-          "options": {
-            "from": "html",
-            "to": "docx"
-          }
-        }
-      ]
+                {
+                    "name": "jinja",
+                    "options": {
+                        "template": "src/word/index.html.j2",
+                        "content-type": "text/html",
+                        "extension": "html"
+                    }
+                },
+                {
+                    "name": "pandoc",
+                    "options": {
+                        "from": "html",
+                        "to": "docx",
+                        "args": "--filter=pandoc-docx-pagebreakpy --reference-doc=src/word/reference.docx"
+                    }
+                }
+            ]
     },
     {
       "uuid": "15e53172-bbae-4a0c-a4d9-8f3ddf60e7b6",
