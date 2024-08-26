@@ -10,7 +10,7 @@ This template is available through [DSW Registry](https://registry.ds-wizard.org
 
 ## Issues and Contributing
 
-This document template for DSW is available as open-source via GitHub Repository [ds-wizard/science-europe-template](https://github.com/ds-wizard/science-europe-template), you can [report issues](https://github.com/ds-wizard/science-europe-template/issues) there and fork it for customisations or contributions.
+This document template for DSW is available as open-source via GitHub Repository [ds-wizard/science-europe-template](https://github.com/ds-wizard/science-europe-template), you can [report issues](https://github.com/ds-wizard/science-europe-template/issues) there and fork it for customizations or contributions.
 
 
 ### Contributors
@@ -31,11 +31,15 @@ This document template for DSW is available as open-source via GitHub Repository
 
 ## Changelog
 
+### 1.18.1
+
+- Fixed nested bullet points would display unwanted characters
+
 ### 1.18.0
 
-- Update according to the Science Europe DMP template, including the project number, access to private data, and project costs
-- Fix the question regarding data versions to allow for multiple choices
-- Correct the version table and front page
+- Updated according to the Science Europe DMP template, including the project number, access to private data, and project costs
+- Fixed the question regarding data versions to allow for multiple choices
+- Corrected the version table and front page
 
 ### 1.17.0
 
@@ -43,7 +47,7 @@ This document template for DSW is available as open-source via GitHub Repository
 
 ### 1.16.1
 
-- Fix broken images in Word
+- Fixed broken images in Word
 
 ### 1.16.0
 
@@ -56,23 +60,23 @@ This document template for DSW is available as open-source via GitHub Repository
 
 ### 1.15.1
 
-- Fix extra `endif`
+- Fixed extra `endif`
 
 ### 1.15.0
 
-- Update for `dsw:root:2.5.0`
+- Updated for `dsw:root:2.5.0`
 
 ### 1.14.0
 
-- Switch from `wkhtmltopdf` to `weasyprint` for PDF
-- Improve styling for PDF and HTML
-- Fix (non-)reference data in data summary
-- Align data openness with the KM
+- Switched from `wkhtmltopdf` to `weasyprint` for PDF
+- Improved styling for PDF and HTML
+- Fixed (non-)reference data in data summary
+- Aligned data openness with the KM
 
 ### 1.13.0
 
 - Adjusted to template metamodel version 11 (released in DSW 3.20.0)
-- Add versions overview / change tracker table
+- Added versions overview / change tracker table
 
 ### 1.12.0
 
@@ -84,7 +88,7 @@ This document template for DSW is available as open-source via GitHub Repository
 
 ### 1.10.1
 
-- Fix Jinja template nesting error
+- Fixed Jinja template nesting error
 
 ### 1.10.0
 
@@ -112,7 +116,7 @@ This document template for DSW is available as open-source via GitHub Repository
 
 ### 1.4.1
 
-- Fix displaying answers related to measured datasets
+- Fixed displaying answers related to measured datasets
 
 ### 1.4.0
 
