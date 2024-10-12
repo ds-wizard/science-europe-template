@@ -62,7 +62,11 @@
 
       {%- if ctx.questionnaire.createdBy -%}
       <dt>Created by</dt>
-      <dd><span class="contact-name">{{ ctx.questionnaire.createdBy.firstName }} {{ ctx.questionnaire.createdBy.lastName }}</span> ({{ macros.formatEmail(ctx.createdBy.email) }}){% if ctx.createdBy.affiliation %}<br>{{ ctx.createdBy.affiliation }}{% endif %}</dd>
+      <dd>
+        <span class="contact-name">{{ ctx.questionnaire.createdBy.firstName }} {{ ctx.questionnaire.createdBy.lastName }}</span> 
+        ({{ macros.formatEmail(ctx.questionnaire.createdBy.email) }})
+        {% if ctx.questionnaire.createdBy.affiliation %}<br>{{ ctx.questionnaire.createdBy.affiliation }}{% endif %}
+      </dd>
       {%- endif -%}
 
       {% for version in ctx.questionnaire.versions if version.uuid == ctx.questionnaire.versionUuid %}

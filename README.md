@@ -31,6 +31,10 @@ This document template for DSW is available as open-source via GitHub Repository
 
 ## Changelog
 
+### 1.19.1
+
+- Fix issue with `createdBy`
+
 ### 1.19.0
 
 - Adjusted to template metamodel version 14 (released in DSW 4.10.0)
