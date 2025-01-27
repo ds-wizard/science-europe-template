@@ -9,11 +9,15 @@
       {%- set contributorsItems = repliesMap[contributorsPath]|reply_items -%}
       {%- if contributorsItems|length > 0 -%}
         {%- set contacts = [] -%}
+        {%- set creators = [] -%}
         {%- for i in contributorsItems -%}
           {%- set pathPrefix = [contributorsPath, i]|join(".") ~ "." -%}
           {%- set contributorRoles = repliesMap[pathPrefix ~ uuids.contributorRoleQUuid]|reply_items -%}
           {%- if uuids.contributorRoleContactPersonAUuid in contributorRoles -%}
             {% do contacts.append(pathPrefix)  %}
+          {%- endif -%}
+          {%- if uuids.contributorRoleCreatorOfDMP in contributorRoles -%}
+            {% do creators.append(pathPrefix)  %}
           {%- endif -%}
         {%- endfor -%}
         {%- set nContacts = contacts|length -%}
@@ -60,14 +64,41 @@
       <dd>{{ km.entities.phases[ctx.phaseUuid].title }}</dd>
       {%- endif -%}
 
-      {%- if ctx.questionnaire.createdBy -%}
+      {%- set nCreators = creators|length -%}
       <dt>Created by</dt>
-      <dd>
-        <span class="contact-name">{{ ctx.questionnaire.createdBy.firstName }} {{ ctx.questionnaire.createdBy.lastName }}</span> 
-        ({{ macros.formatEmail(ctx.questionnaire.createdBy.email) }})
-        {% if ctx.questionnaire.createdBy.affiliation %}<br>{{ ctx.questionnaire.createdBy.affiliation }}{% endif %}
-      </dd>
-      {%- endif -%}
+        <dd>
+          {%- if nCreators > 0 -%}
+            <ul>
+                {%- for pathPrefix in creators -%}
+                  <li>
+                    {%- set creatorName = repliesMap[pathPrefix ~ uuids.contributorNameQUuid]|reply_str_value -%}
+                    {%- set creatorEmail = repliesMap[pathPrefix ~ uuids.contributorEmailQUuid]|reply_str_value -%}
+                    {%- set creatorOrcid = repliesMap[pathPrefix ~ uuids.contributorOrcidQUuid]|reply_str_value -%}
+                    {%- set creatorAffiliationReply = repliesMap[pathPrefix ~ uuids.contributorAffiliationQUuid] -%}
+
+                    {%- if creatorName -%}
+                      <span class="contact-name">{{ creatorName }}</span>
+                    {%- else -%}
+                      <span class="contact-name missing">(name not given)</span>
+                    {%- endif -%}
+                    {%- if creatorEmail and creatorOrcid -%}
+                      <br>{{ macros.formatEmail(creatorEmail) }}, {{ macros.formatOrcid(creatorOrcid) }}
+                    {%- elif creatorEmail -%}
+                      <br>{{ macros.formatEmail(creatorEmail) }}
+                    {%- elif creatorOrcid -%}
+                      <br>{{ macros.formatOrcid(creatorOrcid) }}
+                    {%- endif -%}
+                    {%- if creatorAffiliationReply -%}
+                      <br>{{ macros.integrationValue(creatorAffiliationReply) }}
+                    {%- endif -%}
+                  </li>
+                {%- endfor -%}
+              </ul>
+            {%- else -%}
+              <span class="empty-value">There is no creator specified yet</span>
+          {%- endif -%}
+        </dd>
+      
 
       {% for version in ctx.questionnaire.versions if version.uuid == ctx.questionnaire.versionUuid %}
       <dt>Version</dt>
