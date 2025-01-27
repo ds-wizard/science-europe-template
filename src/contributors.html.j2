@@ -34,7 +34,7 @@
   <ul>
   {% for contributor in contributors %}
     <li class="contributor">
-      <span class="name">{{ contributor.name }}</span>
+      <span class="name"><strong>{{ contributor.name }}</strong></span>
       {%- if contributor.email and contributor.orcid %}
         <br>{{ macros.formatEmail(contributor.email) }}, {{ macros.formatOrcid(contributor.orcid) }}
       {%- elif contributor.email %}

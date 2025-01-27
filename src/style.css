@@ -165,6 +165,18 @@ dl .contact-name {
   font-weight: bold;
 }
 
+/* Contributors */
+
+.contributor .name {
+  font-weight: bold;
+}
+
+.contributor .role,
+.contributor .affiliation {
+  font-style: italic;
+  display: inline-block;
+}
+
 /* Abstract */
 
 .abstract {
