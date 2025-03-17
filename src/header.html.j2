@@ -16,7 +16,7 @@
           {%- if uuids.contributorRoleContactPersonAUuid in contributorRoles -%}
             {% do contacts.append(pathPrefix)  %}
           {%- endif -%}
-          {%- if uuids.contributorRoleCreatorOfDMP in contributorRoles -%}
+          {%- if uuids.contributorRoleCreatorOfDMPAUuid in contributorRoles -%}
             {% do creators.append(pathPrefix)  %}
           {%- endif -%}
         {%- endfor -%}
@@ -29,7 +29,7 @@
                 <li>
                   {%- set contributorName = repliesMap[pathPrefix ~ uuids.contributorNameQUuid]|reply_str_value -%}
                   {%- set contributorEmail = repliesMap[pathPrefix ~ uuids.contributorEmailQUuid]|reply_str_value -%}
-                  {%- set contributorOrcid = repliesMap[pathPrefix ~ uuids.contributorOrcidQUuid]|reply_str_value -%}
+                  {%- set contributorOrcid = repliesMap[pathPrefix ~ uuids.contributorOrcidQUuid] -%}
                   {%- set contributorAffiliationReply = repliesMap[pathPrefix ~ uuids.contributorAffiliationQUuid] -%}
 
                   {%- if contributorName -%}
@@ -73,7 +73,7 @@
                   <li>
                     {%- set creatorName = repliesMap[pathPrefix ~ uuids.contributorNameQUuid]|reply_str_value -%}
                     {%- set creatorEmail = repliesMap[pathPrefix ~ uuids.contributorEmailQUuid]|reply_str_value -%}
-                    {%- set creatorOrcid = repliesMap[pathPrefix ~ uuids.contributorOrcidQUuid]|reply_str_value -%}
+                    {%- set creatorOrcid = repliesMap[pathPrefix ~ uuids.contributorOrcidQUuid] -%}
                     {%- set creatorAffiliationReply = repliesMap[pathPrefix ~ uuids.contributorAffiliationQUuid] -%}
 
                     {%- if creatorName -%}
