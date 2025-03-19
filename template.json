@@ -121,28 +121,6 @@
           }
         }
       ]
-    },
-    {
-      "uuid": "f0533e48-f4c5-4af2-b2c1-5a47d4a247c0",
-      "name": "Markdown Document",
-      "icon": "far fa-file-alt",
-      "steps": [
-        {
-          "name": "jinja",
-          "options": {
-            "template": "src/index.html.j2",
-            "content-type": "text/html",
-            "extension": "html"
-          }
-        },
-        {
-          "name": "pandoc",
-          "options": {
-            "from": "html",
-            "to": "markdown"
-          }
-        }
-      ]
     }
   ],
   "_tdk": {
