@@ -2,10 +2,6 @@
   <h3>14. Who (for example role, position, and institution) will be responsible for data management (i.e. the data steward)?</h3>
 
   <div class="answer">
-    {# NOTE: Public questionnaires does not have "ctx.questionnaire.createdBy" filled #}
-    {%- if ctx.questionnaire.createdBy %}
-      <p>{{ctx.questionnaire.createdBy.firstName}} {{ctx.questionnaire.createdBy.lastName}} is responsible for implementing the DMP, and ensuring it is reviewed and revised.</p>
-    {%- endif -%}
 
     {%- set contributorsPath = [uuids.adminDetailsCUuid, uuids.contributorsQUuid]|reply_path -%}
     {%- set contributorsItems = repliesMap[contributorsPath]|reply_items -%}
@@ -44,6 +40,8 @@
       {{ contributorsResponsibility(contributorsItems, uuids.contributorRoleDistributorAUuid, "responsible for generating and disseminating copies of the resouce in either electronic or print form.") }}
       {# Data protection officers #}
       {{ contributorsResponsibility(contributorsItems, uuids.contributorRoleDataProtectorAUuid, "responsible for all issues relating to the protection of personal data and data protection policies in general.") }}
+      {# Data protection officers #}
+      {{ contributorsResponsibility(contributorsItems, uuids.contributorRoleCreatorOfDMPAUuid, "responsible for implementing the DMP, and ensuring it is reviewed and revised.") }}
     {%- endif -%}
   </div>
 </div>

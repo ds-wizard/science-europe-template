@@ -1,7 +1,7 @@
 {
   "organizationId": "dsw",
   "templateId": "science-europe",
-  "version": "1.22.0",
+  "version": "1.23.0",
   "name": "Science Europe DMP Template",
   "description": "Default DCC DMP Template recommended by Science Europe",
   "license": "Apache-2.0",
@@ -118,28 +118,6 @@
           "options": {
             "from": "html",
             "to": "odt"
-          }
-        }
-      ]
-    },
-    {
-      "uuid": "f0533e48-f4c5-4af2-b2c1-5a47d4a247c0",
-      "name": "Markdown Document",
-      "icon": "far fa-file-alt",
-      "steps": [
-        {
-          "name": "jinja",
-          "options": {
-            "template": "src/index.html.j2",
-            "content-type": "text/html",
-            "extension": "html"
-          }
-        },
-        {
-          "name": "pandoc",
-          "options": {
-            "from": "html",
-            "to": "markdown"
           }
         }
       ]
