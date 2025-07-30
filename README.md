@@ -34,7 +34,6 @@ This document template for DSW is available as open-source via GitHub Repository
 ### 1.24.0
 
 - Added "General-purpose repository" option to repository type descriptions
-- Updated minimum required version of DSW Common Knowledge Model to 2.6.11
 
 ### 1.23.0
 
