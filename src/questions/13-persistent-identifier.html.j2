@@ -33,6 +33,8 @@
                             <li>
                             {%- if repositoryKindAUuid == uuids.publishedDataRepositoryDomainSpecificAUuid -%}
                                 <strong>Domain-specific repository</strong>
+                            {%- elif repositoryKindAUuid == uuids.publishedDataRepositoryGeneralPurposeAUuid -%}
+                                <strong>General-purpose repository</strong>
                             {%- elif repositoryKindAUuid == uuids.publishedDataRepositoryNationalAUuid -%}
                                <strong>National repository</strong>
                             {%- elif repositoryKindAUuid == uuids.publishedDataRepositoryInstitutionalAUuid -%}
