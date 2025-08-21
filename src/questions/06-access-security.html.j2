@@ -139,11 +139,11 @@
       {%- set preservingArchivedDuringReQUuid = [preservingArchivedDuringQUuid, uuids.archivedDuringYesAUuid, uuids.archivedDuringReQUuid]|reply_path  -%}
       {%- set preservingArchivedDuringReReply = repliesMap[preservingArchivedDuringReQUuid]|reply_str_value -%}
 
-      {%- if preservingArchivedDuringReReply == uuids.archivedDruingReYesAUuid -%}
+      {%- if preservingArchivedDuringReReply == uuids.archivedDuringReYesAUuid -%}
         {{" "}}The archived data will be changing over time and needs re-archival.
-        {%- set preservingArchivedDuringRelyQUuid = [preservingArchivedDuringReQUuid, uuids.archivedDruingReYesAUuid, uuids.archivedDuringRelyQUuid]|reply_path -%}
+        {%- set preservingArchivedDuringRelyQUuid = [preservingArchivedDuringReQUuid, uuids.archivedDuringReYesAUuid, uuids.archivedDuringRelyQUuid]|reply_path -%}
         {%- set preservingArchivedDuringRelyReply = repliesMap[preservingArchivedDuringRelyQUuid]|reply_str_value -%}
-        {%- set archivedDuringReFrequentBackupsQUuid = [preservingArchivedDuringReQUuid, uuids.archivedDruingReYesAUuid, uuids.archivedDuringReFrequentBackupsQUuid]|reply_path-%}
+        {%- set archivedDuringReFrequentBackupsQUuid = [preservingArchivedDuringReQUuid, uuids.archivedDuringReYesAUuid, uuids.archivedDuringReFrequentBackupsQUuid]|reply_path-%}
         {%- set preservingArchivedDuringReFrequentBackupsReply = repliesMap[archivedDuringReFrequentBackupsQUuid]|reply_str_value -%}
           
         {%- if (preservingArchivedDuringReFrequentBackupsReply == uuids.archivedDuringReFrequentBackupsYesAUuid ) and (preservingArchivedDuringRelyReply == uuids.archivedDuringRelyYesAUuid) -%}
@@ -186,14 +186,14 @@
             {%- set policiesProceduresItemLinkQUuid = [policiesProceduresPathPrefix, uuids.policiesProceduresLinkQUuid]|reply_path  -%}
             {%- set policiesProceduresItemLinkReply = repliesMap[policiesProceduresItemLinkQUuid]|reply_str_value -%}
             {%- set policiesProceduresItemDescriptionQUuid = [policiesProceduresPathPrefix, uuids.policiesProceduresDescriptionQUuid]|reply_path -%}
-            {%- set policiesProcesuresItemDescriptionReply = repliesMap[policiesProceduresItemDescriptionQUuid]|reply_str_value  -%}
+            {%- set policiesProceduresItemDescriptionReply = repliesMap[policiesProceduresItemDescriptionQUuid]|reply_str_value  -%}
               {%- if policiesProceduresItemNameReply -%}
                 <strong>{{ policiesProceduresItemNameReply }}</strong>
-                {% if policiesProcesuresItemLinkReply -%}<span class="separator">&ndash;</span>{%- endif %}
+                {% if policiesProceduresItemLinkReply -%}<span class="separator">&ndash;</span>{%- endif %}
                 {{policiesProceduresItemLinkReply}}
 
-                {%- if policiesProcesuresItemDescriptionReply -%}
-                  <p> {{policiesProcesuresItemDescriptionReply}} </p>
+                {%- if policiesProceduresItemDescriptionReply -%}
+                  <p> {{policiesProceduresItemDescriptionReply}} </p>
                 {%- endif -%}
 
               {%- endif -%}

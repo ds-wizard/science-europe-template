@@ -50,14 +50,14 @@
             {%- elif measuredDataQualityAUuid == uuids.measuredDataQualityYesAUuid -%}
               {# Named quality processes #}
               {%- set mdqPrefix = [measuredDataQualityPath, uuids.measuredDataQualityYesAUuid]|reply_path -%}
-              {%- set calibratingAUuid = repliesMap[[mdqPrefix, uuids.mdQualityCalibatingQUuid]|reply_path]|reply_str_value -%}
+              {%- set calibratingAUuid = repliesMap[[mdqPrefix, uuids.mdQualityCalibratingQUuid]|reply_path]|reply_str_value -%}
               {%- set repetitionAUuid = repliesMap[[mdqPrefix, uuids.mdQualityRepetitionQUuid]|reply_path]|reply_str_value -%}
               {%- set standardizedAUuid = repliesMap[[mdqPrefix, uuids.mdQualityStandardizedQUuid]|reply_path]|reply_str_value -%}
               {%- set validationAUuid = repliesMap[[mdqPrefix, uuids.mdQualityValidationQUuid]|reply_path]|reply_str_value -%}
               {%- set peerReviewAUuid = repliesMap[[mdqPrefix, uuids.mdQualityPeerReviewQUuid]|reply_path]|reply_str_value -%}
               {%- set vocabulariesAUuid = repliesMap[[mdqPrefix, uuids.mdQualityVocabulariesQUuid]|reply_path]|reply_str_value -%}
               {%- set consistencyAUuid = repliesMap[[mdqPrefix, uuids.mdQualityConsistencyQUuid]|reply_path]|reply_str_value -%}
-              {%- set calibrating = calibratingAUuid == uuids.mdQualityCalibatingYesAUuid -%}
+              {%- set calibrating = calibratingAUuid == uuids.mdQualityCalibratingYesAUuid -%}
               {%- set repetition = repetitionAUuid == uuids.mdQualityRepetitionYesAUuid -%}
               {%- set standardized = standardizedAUuid == uuids.mdQualityStandardizedYesAUuid -%}
               {%- set validation = validationAUuid == uuids.mdQualityValidationYesAUuid -%}
@@ -212,16 +212,16 @@
               {%- endif -%}
             {%- endif -%}
 
-            {# availability of the standard referece data for future results reproduction #}
+            {# availability of the standard reference data for future results reproduction #}
             {%- set refDataReproduce = [refDataUsedPrefix, uuids.refDataReproduceQUuid]|reply_path -%}
             {%- set refDataReproduceReply = repliesMap[refDataReproduce]|reply_str_value -%}
             <p>
             {%- if refDataReproduceReply == uuids.refDataReproduceProviderAUuid -%}
-              This standard referece data will be available for long term by the provider.
+              This standard reference data will be available for long term by the provider.
             {%- elif refDataReproduceReply == uuids.refDataReproduceCopyAUuid  -%}
-              We will keep the copy of this standard referece data and make it available with our results. 
+              We will keep the copy of this standard reference data and make it available with our results. 
             {%- elif refDataReproduceReply == uuids.refDataReproduceBothAUuid -%}
-              This standard referece data will be available for long term by the provider as well as we will keep the copy of this dataset and make it available with our results.
+              This standard reference data will be available for long term by the provider as well as we will keep the copy of this dataset and make it available with our results.
             {%- endif -%}
             </p>
 
@@ -231,7 +231,7 @@
             {%- set refDataConditionsOther = [refDataConditions, uuids.refDataConditionsOtherQUuid]|reply_path -%}
             {%- set refDataConditionsOtherReply = repliesMap[refDataConditionsOther]|reply_str_value -%}
             {%- if refDataConditionsReply %}
-             <p>This standard referece data are{{+" "}}
+             <p>This standard reference data are{{+" "}}
               {%- if refDataConditionsReply == uuids.refDataConditionsCC0AUuid -%}
                 freely available for any use.
               {%- elif refDataConditionsReply == uuids.refDataConditionsCCBYAUuid -%}
@@ -252,9 +252,9 @@
             {%- set refDataFormatReply = repliesMap[refDataFormat]|reply_str_value -%}
             <p>
             {%- if refDataFormatReply == uuids.refDataFormatConvertAUuid -%}
-              The standard referece data are in the fromat that has to be transformed before using.
+              The standard reference data are in the format that has to be transformed before using.
             {%- elif refDataFormatReply == uuids.refDataFormatUseAUuid -%}
-              The standard referece data are in the fromat that does not have to be transformed and we can use it directly.
+              The standard reference data are in the format that does not have to be transformed and we can use it directly.
             {% endif %}
             </p>
 
@@ -526,7 +526,7 @@
 
       {%- if dataCompReadItselfReply -%}
         {%- if dataCompReadItselfReply == uuids.dataCompReadItselfYesAUuid -%}
-          {{+" "}}and we will make this computer readable form available to others throught a standard repository
+          {{+" "}}and we will make this computer readable form available to others through a standard repository
         {%- elif dataCompReadItselfReply == uuids.dataCompReadItselfYesOtherAUuid -%} 
           {{+" "}}and we will make this computer readable form available to others
         {%- elif dataCompReadItselfReply == uuids.dataCompReadItselfNoAUuid -%}
@@ -537,7 +537,7 @@
 
       {%- if dataCompReadOthersReply -%}
         {%- if dataCompReadOthersReply == uuids.dataCompReadOthersYesAUuid %}
-            We will provide machine readable, standardised metadata to others
+            We will provide machine readable, standardized metadata to others
             {%- set dataCompReadWhichMetadataStandardPath = [dataCompReadOthers, uuids.dataCompReadOthersYesAUuid, uuids.dataCompReadOthersYesStandardsQUuid]|reply_path -%}
             {%- set dataCompReadMetadataStandardItems =  repliesMap[dataCompReadWhichMetadataStandardPath]|reply_items -%}
             {%- if dataCompReadMetadataStandardItems|length  > 0 -%}

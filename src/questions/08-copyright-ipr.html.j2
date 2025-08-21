@@ -82,7 +82,7 @@
         {%- if legalReasonsAuthenticatedAUuid -%}
           <h4>Authentication and Authorization of Users</h4>
           {%- if legalReasonsAuthenticatedAUuid == uuids.legalReasonsAuthorizeMemberAUuid -%}
-            <p>One of the project memebers will authorize potential users of the data.</p>
+            <p>One of the project members will authorize potential users of the data.</p>
           {%- elif legalReasonsAuthenticatedAUuid == uuids.legalReasonsAuthorizeNewCommitteeAUuid -%}
             <p>We will set up a data access committee for authorization of potential users of the data.</p>
           {%- elif legalReasonsAuthenticatedAUuid == uuids.legalReasonsAuthorizeOldCommitteeAUuid -%}
@@ -90,9 +90,9 @@
             {%- set legalReasonsAuthenticatedCommitteeReply = repliesMap[legalReasonsAuthenticatedCommitteeQUuid]|reply_str_value -%}
             
             {%- if legalReasonsAuthenticatedCommitteeReply -%}
-              <p>We will make use of an existing data comittee - {{legalReasonsAuthenticatedCommitteeReply|dot}}</p>
+              <p>We will make use of an existing data committee - {{legalReasonsAuthenticatedCommitteeReply|dot}}</p>
             {%- else -%}
-              <p>We will make use of an existing data comittee.</p>
+              <p>We will make use of an existing data committee.</p>
             {%- endif -%}
 
           {%- elif legalReasonsAuthenticatedAUuid == uuids.legalReasonsAuthorizeOtherAUuid -%}

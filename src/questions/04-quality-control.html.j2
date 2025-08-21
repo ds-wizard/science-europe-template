@@ -24,14 +24,14 @@
                     {%- elif measuredDataQualityAUuid == uuids.measuredDataQualityYesAUuid -%}
                     {# Named quality processes #}
                     {%- set mdqPrefix = [measuredDataQualityPath, uuids.measuredDataQualityYesAUuid]|reply_path -%}
-                    {%- set calibratingAUuid = repliesMap[[mdqPrefix, uuids.mdQualityCalibatingQUuid]|reply_path]|reply_str_value -%}
+                    {%- set calibratingAUuid = repliesMap[[mdqPrefix, uuids.mdQualityCalibratingQUuid]|reply_path]|reply_str_value -%}
                     {%- set repetitionAUuid = repliesMap[[mdqPrefix, uuids.mdQualityRepetitionQUuid]|reply_path]|reply_str_value -%}
                     {%- set standardizedAUuid = repliesMap[[mdqPrefix, uuids.mdQualityStandardizedQUuid]|reply_path]|reply_str_value -%}
                     {%- set validationAUuid = repliesMap[[mdqPrefix, uuids.mdQualityValidationQUuid]|reply_path]|reply_str_value -%}
                     {%- set peerReviewAUuid = repliesMap[[mdqPrefix, uuids.mdQualityPeerReviewQUuid]|reply_path]|reply_str_value -%}
                     {%- set vocabulariesAUuid = repliesMap[[mdqPrefix, uuids.mdQualityVocabulariesQUuid]|reply_path]|reply_str_value -%}
                     {%- set consistencyAUuid = repliesMap[[mdqPrefix, uuids.mdQualityConsistencyQUuid]|reply_path]|reply_str_value -%}
-                    {%- set calibrating = calibratingAUuid == uuids.mdQualityCalibatingYesAUuid -%}
+                    {%- set calibrating = calibratingAUuid == uuids.mdQualityCalibratingYesAUuid -%}
                     {%- set repetition = repetitionAUuid == uuids.mdQualityRepetitionYesAUuid -%}
                     {%- set standardized = standardizedAUuid == uuids.mdQualityStandardizedYesAUuid -%}
                     {%- set validation = validationAUuid == uuids.mdQualityValidationYesAUuid -%}

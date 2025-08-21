@@ -52,13 +52,13 @@
                                 {%- set publishedDataIdentifierAssignsAUuid = repliesMap[publishedDataIdentifierAssignsQUuid]|reply_str_value -%}
 
                                 {%- if publishedDataIdentifierAssignsAUuid == uuids.publishedDataIdentifierAssignsProjectDataStewardAUuid -%}
-                                    <p>A project data steward or principle investigator will assign the presistent identifier.</p>
+                                    <p>A project data steward or principle investigator will assign the persistent identifier.</p>
 
                                 {%- elif publishedDataIdentifierAssignsAUuid == uuids.publishedDataIdentifierAssignsInstitDataStewardAUui -%}
-                                    <p>An institutional data steward will assign the presistent identifier.</p>
+                                    <p>An institutional data steward will assign the persistent identifier.</p>
 
                                 {%- elif publishedDataIdentifierAssignsAUuid == uuids.publishedDataIdentifierAssignsRepositoryAUuid -%}
-                                    <p>The repository will assign the presistent identifier.</p>
+                                    <p>The repository will assign the persistent identifier.</p>
                                 {%- endif -%}
 
                                 {# Resolvable #}

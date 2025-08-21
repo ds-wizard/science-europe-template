@@ -47,17 +47,17 @@
                     {%- set personalDataSafeguardLvlIdentifReply = repliesMap[personalDataSafeguardLvlIdentifQUuid]|reply_str_value -%}
 
                     {%- if personalDataSafeguardLvlIdentifReply == uuids.cpersGdprSafeguardsIdentifAnonymAUuid -%}
-                        <p>The stored data are irrevocably anonymised.</p>
+                        <p>The stored data are irrevocably anonymized.</p>
                     {%- elif personalDataSafeguardLvlIdentifReply == uuids.cpersGdprSafeguardsIdentifPseudoAUuid -%}
-                        <p>The stored data are psuedoanonymised.</p>
-                    {%- elif personalDataSafeguardLvlIdentifReply == uuids.cpersGdprSafeguardsIdentifIdentifableAUuid -%}
+                        <p>The stored data are psuedoanonymized.</p>
+                    {%- elif personalDataSafeguardLvlIdentifReply == uuids.cpersGdprSafeguardsIdentifIdentifiableAUuid -%}
                         <p>The stored data are identifiable.</p>
                     {%- endif -%}
 
                     {%- set personalDataSafeguardElaborateQUuid = [personalDataSafeguardsQUuid, uuids.cpersGdprSafeguardsAUuid, uuids.cpersGdprSafeguardElaborateQUuid ]|reply_path  -%}
                     {%- set personalDataSafeguardElaborateReply = repliesMap[personalDataSafeguardElaborateQUuid]|reply_str_value -%}
                     {%- if personalDataSafeguardElaborateReply -%}
-                        <p>We will use the following technical and procesural safeguards : {{personalDataSafeguardElaborateReply|dot}}</p>
+                        <p>We will use the following technical and procedural safeguards : {{personalDataSafeguardElaborateReply|dot}}</p>
                    {%- endif -%}
 
                     {%- set personalDataSafeguardTransferQUuid = [personalDataSafeguardsQUuid, uuids.cpersGdprSafeguardsAUuid, uuids.cpersGdprSafeguardsTransferQUuid]|reply_path -%}
@@ -76,10 +76,10 @@
         {%- endif -%}
 
         {# Managed access procedure to personal data #}
-        {%- set notOpenLeagalReasonsQUuid = [uuids.accessCUuid, uuids.openImmediatelyQUuid, uuids.openImmediatelyNoAUuid, uuids.notOpenLegalReasonsQUuid]|reply_path -%}
-        {%- set notOpenLegalReasonsReply = repliesMap[notOpenLeagalReasonsQUuid]|reply_str_value -%}
+        {%- set notOpenLegalReasonsQUuid = [uuids.accessCUuid, uuids.openImmediatelyQUuid, uuids.openImmediatelyNoAUuid, uuids.notOpenLegalReasonsQUuid]|reply_path -%}
+        {%- set notOpenLegalReasonsReply = repliesMap[notOpenLegalReasonsQUuid]|reply_str_value -%}
         {%- if notOpenLegalReasonsReply == uuids.notOpenLegalReasonsYesAUuid -%}
-            {%- set notOpenLegalReasonsPrivacyQUuid = [notOpenLeagalReasonsQUuid, uuids.notOpenLegalReasonsYesAUuid, uuids.notOpenLegalReasonsPrivacyQUuid]|reply_path -%}
+            {%- set notOpenLegalReasonsPrivacyQUuid = [notOpenLegalReasonsQUuid, uuids.notOpenLegalReasonsYesAUuid, uuids.notOpenLegalReasonsPrivacyQUuid]|reply_path -%}
             {%- set notOpenLegalReasonsPrivacyReply = repliesMap[notOpenLegalReasonsPrivacyQUuid]|reply_str_value -%}
 
             {%- if notOpenLegalReasonsPrivacyReply == uuids.notOpenLegalReasonsPrivacyYesAUuid -%}
