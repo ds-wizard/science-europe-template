@@ -169,7 +169,7 @@
           {%- if refDataUseReply == uuids.refDataUseYesAUuid  %}
 
             {# identification #}
-            <strong>{{macros.integrationValue(refDataNameReply)}}</strong>
+            <strong>{{macros.integrationFairSharing(refDataNameReply)}}</strong>
             <p>We will re-use this standard reference data
             {%- if refDataWhere -%}
               {{" "}}available via:{{" "}}
@@ -266,7 +266,7 @@
             {%- set refDataUseNoOtherReasonReply = repliesMap[refDataUseNoOtherReason]|reply_str_value %}
           
             {# identification #}
-            <strong>{{macros.integrationValue(refDataNameReply)}}</strong>
+            <strong>{{macros.integrationFairSharing(refDataNameReply)}}</strong>
             <p> We considered reusing this standard reference data
             {%- if refDataWhere -%}
             {{" "}}available via:{{" "}}
@@ -317,12 +317,12 @@
         {%- if nrefDataUseReply == uuids.nrefDataUseYesAUuid %}
 
           {# identification #}
-          <strong>{{-macros.integrationValue(nrefDataNameReply)}}</strong>
+          <strong>{{macros.integrationFairSharing(nrefDataNameReply)}}</strong>
           <p>We will re-use this non-referece data 
           {%- if nrefDataWhere -%}
          {{" "}} available via:{{" "}}
             {%- if nrefDataWhere.startswith("http://") or nrefDataWhere.startswith("https://") or nrefDataWhere.startswith("ftp://") -%}
-              <a href="{{ rnefDataWhere }}" target="_blank">{{ nrefDataWhere }} </a>.
+              <a href="{{ nrefDataWhere }}" target="_blank">{{ nrefDataWhere }} </a>.
             {%- else -%}
               {{ nrefDataWhere }}
             {%- endif -%}
@@ -457,7 +457,7 @@
           {# {%- set nrefDataUseNoOtherReasonReply = repliesMap[nrefDataUseNoOtherReason]|reply_str_value %} #}
           
           {# identification #}
-          <strong>{{-macros.integrationValue(nrefDataNameReply)}}</strong>
+          <strong>{{-macros.integrationFairSharing(nrefDataNameReply)}}</strong>
           <p>We considered reusing this non-reference data 
           {%- if nrefDataWhere -%}
           {{+" "}}available via:{{" "}}
@@ -541,15 +541,13 @@
             {%- set dataCompReadWhichMetadataStandardPath = [dataCompReadOthers, uuids.dataCompReadOthersYesAUuid, uuids.dataCompReadOthersYesStandardsQUuid]|reply_path -%}
             {%- set dataCompReadMetadataStandardItems =  repliesMap[dataCompReadWhichMetadataStandardPath]|reply_items -%}
             {%- if dataCompReadMetadataStandardItems|length  > 0 -%}
-              {{+" "}}and we will use following Metadata Standards:
-              <ul>
+              {{+" "}}and we will use following Metadata Standards:{{+" "}}
                 {%- for dataCompReadMetadataStandardItem in dataCompReadMetadataStandardItems -%}
-                  {%- set  dataCompReadMetadataStandardPrefix = [dataCompReadWhichMetadataStandardPath,dataCompReadMetadataStandardItem ]|reply_path -%}
+                  {%- set dataCompReadMetadataStandardPrefix = [dataCompReadWhichMetadataStandardPath, dataCompReadMetadataStandardItem]|reply_path -%}
                   {%- set dataCompReadMetadataStandard = [dataCompReadMetadataStandardPrefix, uuids.dataCompReadOthersYesStandardQUuid]|reply_path -%}
                   {%- set dataCompReadMetadataStandardReply = repliesMap[dataCompReadMetadataStandard] -%}
-                  {{macros.integrationValue(dataCompReadMetadataStandardReply)}}
+                  {{ macros.integrationFairSharing(dataCompReadMetadataStandardReply) }}{{ ", " if not loop.last else "." }}
                 {%- endfor -%}
-              </ul>
             {%- else -%}
             .
             {%- endif -%}
