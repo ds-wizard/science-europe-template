@@ -34,6 +34,7 @@ This document template for DSW is available as open-source via GitHub Repository
 ### 1.28.0
 
 - Improve affiliation
+- Improve text
 
 ### 1.27.0
 
