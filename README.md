@@ -31,6 +31,10 @@ This document template for DSW is available as open-source via GitHub Repository
 
 ## Changelog
 
+### 1.28.0
+
+- Improve affiliation
+
 ### 1.27.0
 
 - Update dependency on KM to 2.6.13
