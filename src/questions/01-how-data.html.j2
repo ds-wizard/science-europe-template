@@ -217,7 +217,7 @@
             {%- set refDataReproduceReply = repliesMap[refDataReproduce]|reply_str_value -%}
             <p>
             {%- if refDataReproduceReply == uuids.refDataReproduceProviderAUuid -%}
-              This standard reference data will be available for long-;term by the provider.
+              This standard reference data will be available for long-term by the provider.
             {%- elif refDataReproduceReply == uuids.refDataReproduceCopyAUuid  -%}
               We will keep the copy of this standard reference data and make it available with our results. 
             {%- elif refDataReproduceReply == uuids.refDataReproduceBothAUuid -%}
