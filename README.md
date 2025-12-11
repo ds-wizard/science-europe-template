@@ -31,10 +31,12 @@ This document template for DSW is available as open-source via GitHub Repository
 
 ## Changelog
 
-### 1.28.1
+### 1.29.0
 
 - Fixed rendering risks
 - Improved qualified references part
+- Updated reused dataset name to use reply string value instead FAIRsharing integration
+- Updated dependency on KM to 2.7.0
 
 ### 1.28.0
 
