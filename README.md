@@ -37,6 +37,7 @@ This document template for DSW is available as open-source via GitHub Repository
 - Improved qualified references part
 - Updated reused dataset name to use reply string value instead FAIRsharing integration
 - Updated dependency on KM to 2.7.0
+- Fixed the published dataset to reflect future-oriented statement
 
 ### 1.28.0
 
