@@ -161,15 +161,20 @@
           {%- set refDataUse = [refDataPrefix, uuids.refDataUseQUuid]|reply_path -%}
           {%- set refDataUseReply = repliesMap[refDataUse]|reply_str_value -%}
           {%- set refDataUsedPrefix = [refDataUse, uuids.refDataUseYesAUuid]|reply_path -%}
-          {%- set refDataNameReply = repliesMap[[refDataPrefix, uuids.refDataNameQUuid]|reply_path]-%}
+          {%- set refDataNameReply = repliesMap[[refDataPrefix, uuids.refDataNameQUuid]|reply_path]|reply_str_value -%}
+
           {%- set refDataWhere = repliesMap[[refDataPrefix, uuids.refDataWhereQUuid]|reply_path]|reply_str_value -%}
-         {# <p>#}
+
+          {%- if refDataNameReply -%}
+            <strong>{{ refDataNameReply }}</strong>
+          {%- else -%}
+            <strong>(no name given)</strong>
+          {%- endif -%}
           
           {# Reference data set will be used #}
           {%- if refDataUseReply == uuids.refDataUseYesAUuid  %}
 
             {# identification #}
-            <strong>{{macros.integrationFairSharing(refDataNameReply)}}</strong>
             <p>We will re-use this standard reference data
             {%- if refDataWhere -%}
               {{" "}}available via:{{" "}}
@@ -266,7 +271,6 @@
             {%- set refDataUseNoOtherReasonReply = repliesMap[refDataUseNoOtherReason]|reply_str_value %}
           
             {# identification #}
-            <strong>{{macros.integrationFairSharing(refDataNameReply)}}</strong>
             <p> We considered reusing this standard reference data
             {%- if refDataWhere -%}
             {{" "}}available via:{{" "}}
@@ -309,15 +313,19 @@
         {%- set nrefDataUse = [nrefDataPrefix, uuids.nrefDataUseQUuid]|reply_path -%}
         {%- set nrefDataUseReply = repliesMap[nrefDataUse]|reply_str_value -%}
         {%- set nrefDataUsedPrefix = [nrefDataUse, uuids.nrefDataUseYesAUuid]|reply_path -%}
-        {%- set nrefDataNameReply = repliesMap[[nrefDataPrefix, uuids.nrefDataNameQUuid]|reply_path]-%}
+        {%- set nrefDataNameReply = repliesMap[[nrefDataPrefix, uuids.nrefDataNameQUuid]|reply_path]|reply_str_value-%}
         {%- set nrefDataWhere = repliesMap[[nrefDataPrefix, uuids.nrefDataWhereQUuid]|reply_path]|reply_str_value -%}
-        <p>
 
+        {%- if nrefDataNameReply -%}
+          <strong>{{ nrefDataNameReply }}</strong>
+        {%- else -%}
+          <strong>(no name given)</strong>
+        {%- endif -%}
+        
         {# Non-reference data set will be used #}
         {%- if nrefDataUseReply == uuids.nrefDataUseYesAUuid %}
 
           {# identification #}
-          <strong>{{macros.integrationFairSharing(nrefDataNameReply)}}</strong>
           <p>We will re-use this non-referece data 
           {%- if nrefDataWhere -%}
          {{" "}} available via:{{" "}}
@@ -457,7 +465,6 @@
           {# {%- set nrefDataUseNoOtherReasonReply = repliesMap[nrefDataUseNoOtherReason]|reply_str_value %} #}
           
           {# identification #}
-          <strong>{{-macros.integrationFairSharing(nrefDataNameReply)}}</strong>
           <p>We considered reusing this non-reference data 
           {%- if nrefDataWhere -%}
           {{+" "}}available via:{{" "}}

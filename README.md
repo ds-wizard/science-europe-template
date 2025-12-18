@@ -31,19 +31,27 @@ This document template for DSW is available as open-source via GitHub Repository
 
 ## Changelog
 
+### 1.29.0
+
+- Fixed rendering risks
+- Improved qualified references part
+- Updated reused dataset name to use reply string value instead FAIRsharing integration
+- Updated dependency on KM to 2.7.0
+- Fixed the published dataset to reflect future-oriented statement
+
 ### 1.28.0
 
-- Improve affiliation
-- Improve text
+- Improved affiliation
+- Improved text
 
 ### 1.27.0
 
-- Update dependency on KM to 2.6.13
-- Fix legacy integration type
+- Updated dependency on KM to 2.6.13
+- Fixed legacy integration type
 
 ### 1.26.0
 
-- Update integrations to metamodel version 17.0 (released in DSW 4.22.0)
+- Updated integrations to metamodel version 17.0 (released in DSW 4.22.0)
 - Improved minor text flow
 
 ### 1.25.0
