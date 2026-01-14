@@ -45,7 +45,7 @@
                     <br>{{ macros.formatOrcid(contributorOrcid) }}
                   {%- endif -%}
                   {%- if contributorAffiliationReply %}
-                    <br>{{ macros.integrationValue(contributorAffiliationReply) }}
+                    <br>{{ macros.integrationROR(contributorAffiliationReply) }}
                   {%- endif -%}
                 </li>
               {%- endfor -%}
@@ -89,7 +89,7 @@
                       <br>{{ macros.formatOrcid(creatorOrcid) }}
                     {%- endif -%}
                     {%- if creatorAffiliationReply -%}
-                      <br>{{ macros.integrationValue(creatorAffiliationReply) }}
+                      <br>{{ macros.integrationROR(creatorAffiliationReply) }}
                     {%- endif -%}
                   </li>
                 {%- endfor -%}
@@ -109,7 +109,7 @@
       <dd>{{ ctx.document.createdAt|datetime_format("%d %b %Y") }}</dd>
     </dl>
     <p class="note">
-      Data Management Plan created in {{ globals.fullName }} &laquo;<a href="{{ globals.linkUrl }}" target="_blank">{{ globals.link }}</a>&raquo;
+      Data Management Plan created in {{ dc.config.service_name }} &laquo;<a href="{{ dc.config.service_url }}" target="_blank">{{ dc.config.service_domain_name }}</a>&raquo;
     </p>
   </div>
 </header>
