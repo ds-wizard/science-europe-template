@@ -31,6 +31,11 @@ This document template for DSW is available as open-source via GitHub Repository
 
 ## Changelog
 
+### 1.29.1
+
+- Adjust to template metamodel version 17.1 (released in DSW 4.26.0)
+- Fix affiliation on front page
+
 ### 1.29.0
 
 - Fixed rendering risks
