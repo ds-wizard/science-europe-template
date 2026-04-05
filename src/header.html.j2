@@ -1,7 +1,7 @@
 <header>
   <p class="dmp"></p>
   <h1>
-    {{ ctx.questionnaire.name }}
+    {{ dc.project.name }}
   </h1>
   <div class="dmp-info">
     <dl>
@@ -57,7 +57,7 @@
       {%- endif -%}
 
       <dt>Based on</dt>
-      <dd>{{ ctx.package.name }}, {{ ctx.package.version }} (<span class="package-id"><span class="organization-id">{{ ctx.package.organizationId }}</span>:<span class="km-id">{{ ctx.package.kmId }}</span>:<span class="version">{{ ctx.package.version }}</span></span>)</dd>
+      <dd>{{ dc.pkg.name }}, {{ dc.pkg.version }} (<span class="package-id"><span class="organization-id">{{ dc.pkg.organization_id }}</span>:<span class="km-id">{{ dc.pkg.km_id }}</span>:<span class="version">{{ dc.pkg.version }}</span></span>)</dd>
 
       {%- if ctx.phaseUuid -%}
       <dt>Project phase</dt>
@@ -100,13 +100,13 @@
         </dd>
       
 
-      {% for version in ctx.questionnaire.versions if version.uuid == ctx.questionnaire.versionUuid %}
+      {% for version in dc.project.versions if version.uuid == ctx.project.versionUuid %}
       <dt>Version</dt>
-      <dd>{{version.name}} ({{ version.createdAt|datetime_format("%d %b %Y") }})</dd>
+      <dd>{{version.name}} ({{ version.created_at|datetime_format("%d %b %Y") }})</dd>
       {% endfor %}
 
       <dt>Generated on</dt>
-      <dd>{{ ctx.document.createdAt|datetime_format("%d %b %Y") }}</dd>
+      <dd>{{ dc.document.created_at|datetime_format("%d %b %Y") }}</dd>
     </dl>
     <p class="note">
       Data Management Plan created in {{ dc.config.service_name }} &laquo;<a href="{{ dc.config.service_url }}" target="_blank">{{ dc.config.service_domain_name }}</a>&raquo;
