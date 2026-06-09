@@ -15,9 +15,10 @@
         {%- set expertiseTrainPath = [expertisePath, uuids.additionalExpertiseYesTrainAUuid, uuids.additionalExpertiseYesTrainTrainingQUuid]|reply_path -%}
         {%- set expertiseTrainText = repliesMap[expertiseTrainPath]|reply_str_value -%}
         {%- if expertiseTrainText %}
-          {{" "}}on: {{ expertiseTrainText}}
+          {{" "}}on: {{ expertiseTrainText|markdown }}
+        {%- else -%}
+          .
         {%- endif -%}
-        .
       </p>
     {%- elif expertiseAUuid == uuids.additionalExpertiseYesHireAUuid -%}
       <p>
@@ -39,7 +40,7 @@
       {%- set additionalHWSWWhatPath = [additionalHWSWPath, uuids.additionalHWSWYesAUuid, uuids.additionalHWSWYesWhatQUuid]|reply_path -%}
       {%- set additionalHWSWWhat = repliesMap[additionalHWSWWhatPath]|reply_str_value -%}
       {%- if additionalHWSWWhat -%}
-        <p>We require the following hardware or software in addition to what is usually available in the institute: {{ additionalHWSWWhat|dot }}</p>
+        <p>We require the following hardware or software in addition to what is usually available in the institute: {{ additionalHWSWWhat|markdown }}</p>
       {%- else -%}
         <p>We require hardware or software in addition to what is usually available in the institute.</p>
       {%- endif -%}

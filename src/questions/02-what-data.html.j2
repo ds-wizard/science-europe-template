@@ -41,7 +41,7 @@
                   {%- set mdExternalOwnershipOtherPath = [mdExternalOwnershipPath, uuids.mdExternalOwnershipOtherAUuid, uuids.mdExternalOwnershipOtherQUuid]|reply_path -%}
                   {%- set mdExternalOwnershipOther = repliesMap[mdExternalOwnershipOtherPath]|reply_str_value -%}
                   {%- if mdExternalOwnershipOther -%}
-                    For the ownership of the data we have made the following arrangements: {{ mdExternalOwnershipOther|dot }}
+                    For the ownership of the data we have made the following arrangements: {{ mdExternalOwnershipOther|markdown }}
                   {%- endif -%}
                 {%- endif -%}
               </p>
@@ -106,7 +106,7 @@
             {%- set neqDataSetsDesc = repliesMap[[pathPrefix, uuids.neqDataSetsDescQUuid]|reply_path]|reply_str_value -%}
             <li>
               <strong>{{ neqDataSetsName if neqDataSetsName else "(no name given)" }}</strong>
-              {% if neqDataSetsDesc -%}<span class="separator">&ndash;</span> {{ neqDataSetsDesc }}{%- endif -%}
+              {% if neqDataSetsDesc -%}<span class="separator">&ndash;</span> {{ neqDataSetsDesc|markdown }}{%- endif -%}
             </li>
           {%- endfor -%}
           </ul>
