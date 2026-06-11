@@ -65,7 +65,7 @@
     {%- if metadataOpenAUuid == uuids.metadataOpenNoAUuid %}
       {%- set explanation = repliesMap[[metadataOpenPath, metadataOpenAUuid, uuids.metadataOpenNoExplainQUuid]|reply_path]|reply_str_value -%}
       {%- if explanation -%}
-        <p>Metadata will not be available openly &ndash; {{ explanation|e|dot }}</p>
+        <p>Metadata will not be available openly &ndash; {{ explanation|e|markdown }}</p>
       {%- else -%}
         <p>Metadata will not be available openly.</p>
       {%- endif -%}
@@ -139,7 +139,7 @@
               <li>
                 There will be a <strong>folder for each sample/subject</strong>.
                 {% if scFSysSubjFoldersConvs %}
-                  Each of those will use the following conventions: {{ scFSysSubjFoldersConvs|dot }}
+                  Each of those will use the following conventions: {{ scFSysSubjFoldersConvs|markdown }}
                 {%- endif -%}
               </li>
             {%- endif -%}
@@ -148,7 +148,7 @@
               <li>
                 There will be  a <strong>(sub)folder for each (repeated) analysis</strong>. 
                 {% if scFSysAnalysisFoldersConvs %}
-                  Each of those will use the following conventions: {{ scFSysAnalysisFoldersConvs|dot }}
+                  Each of those will use the following conventions: {{ scFSysAnalysisFoldersConvs|markdown }}
                 {%- endif -%}
               </li>
             {%- endif -%}
@@ -157,7 +157,7 @@
               <li>
                 There will be a <strong>(sub)folder for each step in the analysis workflow</strong>.
                 {% if scFSysWorkflowStepFoldersConvs %}
-                  Each of those will use the following conventions: {{ scFSysWorkflowStepFoldersConvs|dot }}
+                  Each of those will use the following conventions: {{ scFSysWorkflowStepFoldersConvs|markdown }}
                 {%- endif -%}
               </li>
             {%- endif -%}
@@ -175,7 +175,7 @@
         {%- set scFSysAppointmentsPath = [scFSysPrefix, uuids.scFSysAppointmentsQUuid]|reply_path -%}
         {%- set scFSysAppointments = repliesMap[scFSysAppointmentsPath]|reply_str_value -%}
         {%- if scFSysAppointments %}
-          {{ "Moreover, we" if folders|any else "We" }} have made appointments about naming the files. {{ appointmentsText|capitalize|dot }}
+          {{ "Moreover, we" if folders|any else "We" }} have made appointments about naming the files. {{ scFSysAppointments|capitalize|markdown }}
         {%- endif -%}
       {%- endif -%}
       </p>
@@ -187,7 +187,7 @@
         {%- set scObjStoreNamingQUuid = [storageConvObjStorePath, uuids.storageConvObjStoreYesAUuid, uuids.scObjStoreNamingQUuid]|reply_path -%}
         {%- set scObjStoreNaming = repliesMap[scObjStoreNamingQUuid]|reply_str_value -%}
         {%- if scObjStoreNaming -%} 
-          We will be storing data in an "object/document store" system using following naming conventions for objects in the store: {{ scObjStoreNaming|dot }}
+          We will be storing data in an "object/document store" system using following naming conventions for objects in the store: {{ scObjStoreNaming|markdown }}
         {%- else -%}
           We will be storing data in an "object/document store" system.
         {%- endif -%}

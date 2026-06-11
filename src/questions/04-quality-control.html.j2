@@ -103,7 +103,7 @@
                         {%- set mdQualityOtherYesPath = [mdQualityOtherPath, uuids.mdQualityOtherYesAUuid,uuids.mdQualityOtherWhatQUuid]|reply_path -%}
                         {%- set mdQualityOther = repliesMap[mdQualityOtherYesPath]|reply_str_value -%}
                         {%- if mdQualityOther -%}
-                        <p>{{ "Additional" if qualityCount > 0 else "Our" }} quality processes are: {{ mdQualityOther|dot }}</p>
+                        <p>{{ "Additional" if qualityCount > 0 else "Our" }} quality processes are: {{ mdQualityOther|markdown }}</p>
                         {%- endif -%}
                     {%- endif -%}
                     {%- endif -%}

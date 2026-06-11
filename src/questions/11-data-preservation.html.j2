@@ -74,7 +74,7 @@
                     {%- elif domainSpecificRepoContactBeforeAUuid == uuids.domainSpecificRepoContactBeforeOtherAUuid %}
                       {%- set domainSpecificRepoContactBeforeOtherPath = [domainSpecificRepoContactBeforePath, uuids.domainSpecificRepoContactBeforeOtherAUuid, uuids.domainSpecificRepoContactBeforeOtherQUuid]|reply_path -%}
                       {%- set domainSpecificRepoContactBeforeOther = repliesMap[domainSpecificRepoContactBeforeOtherPath]|reply_str_value %}
-                      We have made other arrangements instead of contacting the repository directly{{ ": " ~ domainSpecificRepoContactBeforeOther|dot if domainSpecificRepoContactBeforeOther else "." }}
+                      We have made other arrangements instead of contacting the repository directly{{ ": " ~ domainSpecificRepoContactBeforeOther|markdown if domainSpecificRepoContactBeforeOther else "." }}
                     {%- endif -%}
                   {%- elif distroRepositoryKindAUuid == uuids.publishedDataRepositoryGeneralPurposeAUuid %}
                     <em>General-purpose repository</em>
@@ -140,7 +140,7 @@
         {%- set repoChargesHowPayOtherPath = [repoChargesHowPayPath, uuids.repoChargesHowPayOtherAUuid, uuids.repoChargesHowPayOtherQUuid]|reply_path -%}
         {%- set repoChargesHowPayOther = repliesMap[repoChargesHowPayOtherPath]|reply_str_value -%}
         {%- if repoChargesHowPayOther -%}
-          <p>We will carry the costs related to the used repositories by: {{ repoChargesHowPayOther|dot }}</p>
+          <p>We will carry the costs related to the used repositories by: {{ repoChargesHowPayOther|markdown }}</p>
         {%- endif -%}
       {%- endif -%}
     {%- endif -%}

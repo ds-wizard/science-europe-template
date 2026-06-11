@@ -31,6 +31,10 @@ This document template for DSW is available as open-source via GitHub Repository
 
 ## Changelog
 
+### 1.30.1
+
+- Fixed text value type questions rendering with markdown
+
 ### 1.30.0
 
 - Adjust to template metamodel version 18.0 (released in DSW 4.29.0)

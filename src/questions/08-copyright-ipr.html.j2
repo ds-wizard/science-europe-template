@@ -45,11 +45,11 @@
           {%- elif businessReasonsPatents %}
             of patent-related business reasons.
           {%- elif businessReasonsOther %}
-            of non-patent business reasons{{  ": " ~ notOpenBusinessReasonsOther|dot if notOpenBusinessReasonsOther else "." }}
+            of non-patent business reasons{{  ": " ~ notOpenBusinessReasonsOther|markdown if notOpenBusinessReasonsOther else "." }}
           {%- elif otherReasonsPapers %}
             we want to publish a paper first.
           {%- elif otherReasonsOther %}
-            we have other than paper-publishing reasons{{ ": " ~ notOpenOtherReasonsOther|dot if notOpenOtherReasonsOther else "." }}
+            we have other than paper-publishing reasons{{ ": " ~ notOpenOtherReasonsOther|markdown if notOpenOtherReasonsOther else "." }}
           {%- endif -%}
         {%- else %}
           of:
@@ -60,12 +60,12 @@
             {%- if businessReasonsPatents %}
               <li>patent-related business reasons</li>
             {%- elif businessReasonsOther %}
-              <li>non-patent business reasons{{ ": " ~ notOpenBusinessReasonsOther if notOpenBusinessReasonsOther else "" }}</li>
+              <li>non-patent business reasons{{ ": " ~ notOpenBusinessReasonsOther|markdown if notOpenBusinessReasonsOther else "" }}</li>
             {%- endif -%}
             {%- if otherReasonsPapers %}
               <li>we want to publish a paper first</li>
             {%- elif otherReasonsOther -%}
-              <li>we have other than paper-publishing reasons{{ ": " ~ notOpenOtherReasonsOther if notOpenOtherReasonsOther else "" }}</li>
+              <li>we have other than paper-publishing reasons{{ ": " ~ notOpenOtherReasonsOther|markdown if notOpenOtherReasonsOther else "" }}</li>
             {%- endif -%}
           </ul>
         {%- endif -%}
@@ -90,7 +90,7 @@
             {%- set legalReasonsAuthenticatedCommitteeReply = repliesMap[legalReasonsAuthenticatedCommitteeQUuid]|reply_str_value -%}
             
             {%- if legalReasonsAuthenticatedCommitteeReply -%}
-              <p>We will make use of an existing data committee - {{legalReasonsAuthenticatedCommitteeReply|dot}}</p>
+              <p>We will make use of an existing data committee: {{legalReasonsAuthenticatedCommitteeReply|markdown}}</p>
             {%- else -%}
               <p>We will make use of an existing data committee.</p>
             {%- endif -%}
@@ -100,7 +100,7 @@
             {%- set legalReasonsAuthenticatedOtherReply = repliesMap[legalReasonsAuthenticatedOtherQUuid]|reply_str_value -%}
 
             {%- if legalReasonsAuthenticatedOtherReply  -%}
-              <p>We will have following arrangements: {{legalReasonsAuthenticatedOtherReply|dot}}</p>
+              <p>We will have following arrangements: {{legalReasonsAuthenticatedOtherReply|markdown}}</p>
             {%- else -%}
               <p>We will have not decided yet.</p>
             {%- endif -%}
@@ -155,7 +155,7 @@
       {%- set ownershipOtherPath = [ownershipPath, uuids.ownershipOtherAUuid, uuids.ownershipOtherQUuid]|reply_path -%}
       {%- set ownershipOther = repliesMap[ownershipOtherPath]|reply_str_value -%}
       {%- if ownershipOther -%}
-        <p>We have made the following arrangements regarding the data ownership: {{ ownershipOther|dot }}</p>
+        <p>We have made the following arrangements regarding the data ownership: {{ ownershipOther|markdown }}</p>
       {%- endif -%}
     {%- endif -%}
 
@@ -208,7 +208,7 @@
                 {%- elif refDataConditionsAUuid == uuids.refDataConditionsOtherAUuid -%}
                   {%- set refDataConditionsOtherPath = [refDataConditionsPath, uuids.refDataConditionsOtherAUuid, uuids.refDataConditionsOtherQUuid]|reply_path -%}
                   {%- set refDataConditionsOther = repliesMap[refDataConditionsOtherPath]|reply_str_value -%}
-                  It is available under specific restrictions, which we will follow in our project{{ ": " ~ refDataConditionsOther|dot if refDataConditionsOther else "." }}
+                  It is available under specific restrictions, which we will follow in our project{{ ": " ~ refDataConditionsOther|markdown if refDataConditionsOther else "." }}
                 {%- endif -%}
               </li>
             {%- endif -%}
@@ -232,9 +232,9 @@
                 {%- elif nrefDataConditionsAUuid == uuids.nrefDataConditionsCCBYAUuid -%}
                   It is freely available with obligation to quote the source (e.g. CC-BY).
                 {%- elif nrefDataConditionsAUuid == uuids.nrefDataConditionsOtherAUuid -%}
-                  {%- set nrefDataConditionsOtherPath = [nrefDataConditionsPath, uuids.nrefDataConditionsOtherAUuid, uuids.refDataConditionsOtherQUuid]|reply_path -%}
+                  {%- set nrefDataConditionsOtherPath = [nrefDataConditionsPath, uuids.nrefDataConditionsOtherAUuid, uuids.nrefDataConditionsOtherQUuid]|reply_path -%}
                   {%- set nrefDataConditionsOther = repliesMap[nrefDataConditionsOtherPath]|reply_str_value -%}
-                  It is available under specific restrictions, which we will follow in our project{{ ": " ~ nrefDataConditionsOther|dot if nrefDataConditionsOther else "." }}
+                  It is available under specific restrictions, which we will follow in our project{{ ": " ~ nrefDataConditionsOther|markdown if nrefDataConditionsOther else "." }}
                 {%- endif -%}
               </li>
             {%- endif -%}

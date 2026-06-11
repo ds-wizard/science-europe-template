@@ -129,7 +129,7 @@
                 {%- set mdQualityOtherYesPath = [mdQualityOtherPath, uuids.mdQualityOtherYesAUuid, uuids.mdQualityOtherWhatQUuid]|reply_path -%}
                 {%- set mdQualityOther = repliesMap[mdQualityOtherYesPath]|reply_str_value -%}
                 {%- if mdQualityOther -%}
-                  <p>{{ "Additional" if qualityCount > 0 else "Our" }} quality processes are: {{ mdQualityOther|dot }}</p>
+                  <p>{{ "Additional" if qualityCount > 0 else "Our" }} quality processes are: {{ mdQualityOther|markdown }}</p>
                 {%- endif -%}
               {%- endif -%}
             {%- endif -%}
@@ -189,9 +189,10 @@
             {%- set refDataUsageQ = [ refDataUsedPrefix, uuids.refDataUsageQUuid]|reply_path -%}
             {%- set refDataUsageReply = repliesMap[refDataUsageQ]|reply_str_value  -%}
             {%- if refDataUsageReply -%}
-                {{+" "}}in order to "{{ refDataUsageReply}}"
+                {{+" "}}in order to {{ refDataUsageReply|markdown }}
+            {%- else -%}.
             {%- endif -%}
-            .</p>
+            </p>
     
             {# version #}
             {%- set refDataVersionedPath = [refDataUsedPrefix, uuids.refDataVersionedQUuid]|reply_path -%}
@@ -204,7 +205,7 @@
               {%- if refDataVersionedWhich or refDataVersionedChangeAUuid  %}
                 <p>
                 {% if refDataVersionedWhich -%}
-                  We will use version "{{ refDataVersionedWhich }}" of this dataset.
+                  We will use the following version of this dataset: {{ refDataVersionedWhich|markdown }}
                 {%- endif -%}
                 {%- if refDataVersionedChangeAUuid == uuids.refDataVersionedChangeStayAUuid %}
                   If a new version becomes available during the project, we will stay with the old version.
@@ -233,7 +234,7 @@
             {# licence #}
             {%- set refDataConditions = [refDataUsedPrefix, uuids.refDataConditionsQUuid]|reply_path -%}
             {%- set refDataConditionsReply = repliesMap[refDataConditions]|reply_str_value -%}
-            {%- set refDataConditionsOther = [refDataConditions, uuids.refDataConditionsOtherQUuid]|reply_path -%}
+            {%- set refDataConditionsOther = [refDataConditions, uuids.refDataConditionsOtherAUuid, uuids.refDataConditionsOtherQUuid]|reply_path -%}
             {%- set refDataConditionsOtherReply = repliesMap[refDataConditionsOther]|reply_str_value -%}
             {%- if refDataConditionsReply %}
              <p>This standard reference data are{{+" "}}
@@ -243,8 +244,8 @@
                 freely available with obligation to quote the source.
               {%- elif refDataConditionsReply == uuids.refDataConditionsOtherAUuid -%}
                 available with {{" "}}
-                  {%- if refDataConditionsOtherRepl -%}
-                    following restrictions: "{{refDataConditionsOtherRepl}}".
+                  {%- if refDataConditionsOtherReply -%}
+                    following restrictions: {{refDataConditionsOtherReply|markdown}}
                   {%- else -%}
                     {{" "}}restrictions, that will be specified.
                   {%- endif -%}
@@ -285,17 +286,17 @@
             {%- if refDataUseNoReply -%}
               , but decided not to re-use it
               {%- if refDataUseNoReply == uuids.refDataUseNoDataAUuid -%}
-                {{" "}}because it misses data we need
+                {{" "}}because it misses data we need.
               {%- elif refDataUseNoReply == uuids.refDataUseNoAspectAUuid -%}
-                {{" "}}because it misses required aspects
+                {{" "}}because it misses required aspects.
               {%- elif refDataUseNoReply == uuids.refDataUseNoQualityAUuid -%}
-                {{" "}}because it is not sufficient quality
+                {{" "}}because it is not sufficient quality.
               {%- elif refDataUseNoReply == uuids.refDataUseNoCondAUuid -%}
-                {{" "}}because its conditions of use do not allow us to use it
+                {{" "}}because its conditions of use do not allow us to use it.
               {%- elif refDataUseNoReply == uuids.refDataUseNoReasonAUuid and refDataUseNoOtherReasonReply -%}
-                {{" "}}because: "{{refDataUseNoOtherReasonReply}}"
+                {{" "}}because: {{refDataUseNoOtherReasonReply|markdown}}
+              {%- else -%}.
               {%- endif -%}
-              .
             {%- else -%}
             . </p>
             {%- endif -%}
@@ -340,7 +341,7 @@
           {%- set nrefDataUsageQ = [nrefDataUsedPrefix, uuids.nrefDataUsageQUuid]|reply_path  -%}
           {%- set nrefDataUsageReply = repliesMap[nrefDataUsageQ]|reply_str_value -%}
           {%- if nrefDataUsageReply -%}
-            {{+" "}}in order to "{{ nrefDataUsageReply}}"
+            {{+" "}}in order to {{ nrefDataUsageReply|markdown }}
           {%- endif -%}
           .</p>
 
@@ -394,7 +395,7 @@
               {%- if nrefDataConditionsOtherReply -%}
                 available with{{" "}}
                   {%- if nrefDataConditionsOtherReply -%}
-                   following restrictions: "{{nrefDataConditionsOtherReply}}".
+                   following restrictions: {{nrefDataConditionsOtherReply|markdown}}
                   {%- else -%}
                     {{" "}}restrictions, that will be specified.
                   {%- endif -%}
@@ -462,7 +463,7 @@
           {%- set nrefDataUsedNoPrefix = [nrefDataUse, uuids.nrefDataUseNoAUuid, uuids.nrefDataUseNoWhyQUuid]|reply_path -%}
           {%- set nrefDataUseNoReply = repliesMap[nrefDataUsedNoPrefix]|reply_str_value -%}
           {%- set nrefDataUseNoOtherReason = [nrefDataUsedNoPrefix, uuids.nrefDataUseNoReasonAUuid ,uuids.nrefDataUseNoReasonQUuid]|reply_path -%}
-          {# {%- set nrefDataUseNoOtherReasonReply = repliesMap[nrefDataUseNoOtherReason]|reply_str_value %} #}
+          {%- set nrefDataUseNoOtherReasonReply = repliesMap[nrefDataUseNoOtherReason]|reply_str_value %}
           
           {# identification #}
           <p>We considered reusing this non-reference data 
@@ -487,9 +488,11 @@
             {%- elif nrefDataUseNoReply == uuids.nrefDataUseNoCondAUuid -%}
               {{" "}}because its conditions of use do not allow us to use it
             {%- elif nrefDataUseNoReply == uuids.nrefDataUseNoReasonAUuid and nrefDataUseNoOtherReasonReply -%}
-              {{" "}}because: "{{nrefDataUseNoOtherReasonReply}}"
+              {{" "}}because: {{nrefDataUseNoOtherReasonReply|markdown}}
+            {%- else -%}
+             .
             {%- endif -%}
-            .
+
           {%- else -%}
           .</p>
           {%- endif -%}
@@ -585,7 +588,7 @@
       {%- elif provenanceAUuid == uuids.provenanceOtherAUuid -%}
         {%- set provenanceOtherPath = [provenancePath, uuids.provenanceOtherAUuid, uuids.provenanceOtherQUuid]|reply_path -%}
         {%- set provenanceOther = repliesMap[provenanceOtherPath]|reply_str_value -%}
-        <p>We will use other solution than (electronic) lab notebooks to make sure that there is good provenance of the data analysis{{ ": " ~ provenanceOther|dot if provenanceOther else "." }}
+        <p>We will use other solution than (electronic) lab notebooks to make sure that there is good provenance of the data analysis{{ ": " ~ provenanceOther|markdown if provenanceOther else "." }}
       {%- endif -%}
       {%- endif -%}
     {%- endif -%}
