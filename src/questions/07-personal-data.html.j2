@@ -57,7 +57,7 @@
                     {%- set personalDataSafeguardElaborateQUuid = [personalDataSafeguardsQUuid, uuids.cpersGdprSafeguardsAUuid, uuids.cpersGdprSafeguardElaborateQUuid ]|reply_path  -%}
                     {%- set personalDataSafeguardElaborateReply = repliesMap[personalDataSafeguardElaborateQUuid]|reply_str_value -%}
                     {%- if personalDataSafeguardElaborateReply -%}
-                        <p>{% trans value=(personalDataSafeguardElaborateReply|markdown) %}We will use the following technical and procedural safeguards: {{ value }}{% endtrans %}</p>
+                        <p>{% trans value=(macros.md(personalDataSafeguardElaborateReply)) %}We will use the following technical and procedural safeguards: {{ value }}{% endtrans %}</p>
                    {%- endif -%}
 
                     {%- set personalDataSafeguardTransferQUuid = [personalDataSafeguardsQUuid, uuids.cpersGdprSafeguardsAUuid, uuids.cpersGdprSafeguardsTransferQUuid]|reply_path -%}
@@ -66,7 +66,7 @@
                     {%- set personalDataSafeguardTransferMeasuresReply = repliesMap[personalDataSafeguardTransferMeasuresQUuid]|reply_str_value -%}
 
                     {%- if (personalDataSafeguardTransferReply == uuids.cpersGdprSafeguardsTransferYesAUuid) and (personalDataSafeguardTransferMeasuresReply) -%}
-                        <p>{% trans value=(personalDataSafeguardTransferMeasuresReply|markdown) %}We plan to transfer data outside the EU/EEA and these are the measures we will put in place to protect the data:
+                        <p>{% trans value=(macros.md(personalDataSafeguardTransferMeasuresReply)) %}We plan to transfer data outside the EU/EEA and these are the measures we will put in place to protect the data:
                         {{ value }}{% endtrans %}</p>
                     {%- endif -%}
                 {%- endif -%}

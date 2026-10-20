@@ -15,6 +15,7 @@
 <br/>
 <br/>
 <br/>
+{% if dc.config.logo_url %}
 <img
   src="{{dc.config.logo_url}}"
   alt="{{ _('Logo') }}"
@@ -22,5 +23,6 @@
 />
 <br/>
 <br/>
+{% endif %}
 {% trans %}Created in{% endtrans %} <a href="{{ dc.config.service_url }}" target="_blank">{{ dc.config.service_name }}</a>
 </h1>

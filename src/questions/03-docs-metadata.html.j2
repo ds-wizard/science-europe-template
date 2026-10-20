@@ -23,8 +23,6 @@
         {%- set metadataStandardsKeywordsPath = [metadataStandardsPath, uuids.metadataStandardsExploreAUuid, uuids.metadataStandardsKeywordsQUuid]|reply_path -%}
         {%- set metadataStandardsKeywordsAUuid = repliesMap[metadataStandardsKeywordsPath]|reply_str_value -%}
 
-        {%- set documentDataW3CPath = [metadataStandardsPath, uuids.metadataStandardsExploreAUuid, uuids.documentDataW3CQUuid]|reply_path -%}
-        {%- set documentDataW3CAUuid = repliesMap[documentDataW3CPath]|reply_str_value -%}
 
         {%- set metadataStandards = [] -%}
         {%- if metadataStandardsDCAUuid == uuids.metadataStandardsDCYesAUuid -%}
@@ -65,7 +63,7 @@
     {%- if metadataOpenAUuid == uuids.metadataOpenNoAUuid %}
       {%- set explanation = repliesMap[[metadataOpenPath, metadataOpenAUuid, uuids.metadataOpenNoExplainQUuid]|reply_path]|reply_str_value -%}
       {%- if explanation -%}
-        <p>{% trans value=(explanation|e|markdown) %}Metadata will not be available openly &ndash; {{ value }}{% endtrans %}</p>
+        <p>{% trans value=(macros.md(explanation)) %}Metadata will not be available openly &ndash; {{ value }}{% endtrans %}</p>
       {%- else -%}
         <p>{% trans %}Metadata will not be available openly.{% endtrans %}</p>
       {%- endif -%}
@@ -139,7 +137,7 @@
               <li>
                 {% trans %}There will be a <strong>folder for each sample/subject</strong>.{% endtrans %}
                 {% if scFSysSubjFoldersConvs %}
-                  {% trans value=(scFSysSubjFoldersConvs|markdown) %}Each of those will use the following conventions: {{ value }}{% endtrans %}
+                  {% trans value=(macros.md(scFSysSubjFoldersConvs)) %}Each of those will use the following conventions: {{ value }}{% endtrans %}
                 {%- endif -%}
               </li>
             {%- endif -%}
@@ -148,7 +146,7 @@
               <li>
                 {% trans %}There will be a <strong>(sub)folder for each (repeated) analysis</strong>.{% endtrans %} 
                 {% if scFSysAnalysisFoldersConvs %}
-                  {% trans value=(scFSysAnalysisFoldersConvs|markdown) %}Each of those will use the following conventions: {{ value }}{% endtrans %}
+                  {% trans value=(macros.md(scFSysAnalysisFoldersConvs)) %}Each of those will use the following conventions: {{ value }}{% endtrans %}
                 {%- endif -%}
               </li>
             {%- endif -%}
@@ -157,7 +155,7 @@
               <li>
                 {% trans %}There will be a <strong>(sub)folder for each step in the analysis workflow</strong>.{% endtrans %}
                 {% if scFSysWorkflowStepFoldersConvs %}
-                  {% trans value=(scFSysWorkflowStepFoldersConvs|markdown) %}Each of those will use the following conventions: {{ value }}{% endtrans %}
+                  {% trans value=(macros.md(scFSysWorkflowStepFoldersConvs)) %}Each of those will use the following conventions: {{ value }}{% endtrans %}
                 {%- endif -%}
               </li>
             {%- endif -%}
@@ -175,7 +173,7 @@
         {%- set scFSysAppointmentsPath = [scFSysPrefix, uuids.scFSysAppointmentsQUuid]|reply_path -%}
         {%- set scFSysAppointments = repliesMap[scFSysAppointmentsPath]|reply_str_value -%}
         {%- if scFSysAppointments %}
-          {% if folders|any %}{% trans value=(scFSysAppointments|capitalize|markdown) %}Moreover, we have made agreements on naming the files. {{ value }}{% endtrans %}{% else %}{% trans value=(scFSysAppointments|capitalize|markdown) %}We have made agreements on naming the files. {{ value }}{% endtrans %}{% endif %}
+          {% if folders|any %}{% trans value=(macros.md(scFSysAppointments[:1]|upper ~ scFSysAppointments[1:])) %}Moreover, we have made agreements on naming the files. {{ value }}{% endtrans %}{% else %}{% trans value=(macros.md(scFSysAppointments[:1]|upper ~ scFSysAppointments[1:])) %}We have made agreements on naming the files. {{ value }}{% endtrans %}{% endif %}
         {%- endif -%}
       {%- endif -%}
       </p>
@@ -187,7 +185,7 @@
         {%- set scObjStoreNamingQUuid = [storageConvObjStorePath, uuids.storageConvObjStoreYesAUuid, uuids.scObjStoreNamingQUuid]|reply_path -%}
         {%- set scObjStoreNaming = repliesMap[scObjStoreNamingQUuid]|reply_str_value -%}
         {%- if scObjStoreNaming -%} 
-          {% trans value=(scObjStoreNaming|markdown) %}We will be storing data in an "object/document store" system using the following naming conventions for objects in the store: {{ value }}{% endtrans %}
+          {% trans value=(macros.md(scObjStoreNaming)) %}We will be storing data in an "object/document store" system using the following naming conventions for objects in the store: {{ value }}{% endtrans %}
         {%- else -%}
           {% trans %}We will be storing data in an "object/document store" system.{% endtrans %}
         {%- endif -%}

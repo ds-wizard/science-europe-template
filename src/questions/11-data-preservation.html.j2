@@ -8,7 +8,7 @@
     {%- if producedDataItems|length > 0 -%}
       <p>
       {% trans %}We plan to produce the following datasets:{% endtrans %}
-      <ul>
+      <ul class="entries">
       {%- for i in producedDataItems -%}
         {%- set pathPrefix = [producedDataPath, i]|reply_path -%}
         {%- set producedDataName = repliesMap[[pathPrefix, uuids.producedDataNameQUuid]|reply_path]|reply_str_value -%}
@@ -18,9 +18,9 @@
           {%- set isPublishedDataPath = [pathPrefix, uuids.isPublishedDataQUuid]|reply_path -%}
           {%- set isPublishedDataAUuid = repliesMap[isPublishedDataPath]|reply_str_value -%}
           {% if isPublishedDataAUuid == uuids.isPublishedDataNoAUuid %}
-            {% trans %}(not published){% endtrans %}
+            <span class="status">{% trans %}(not published){% endtrans %}</span>
           {% elif isPublishedDataAUuid == uuids.isPublishedDataYesAUuid %}
-            {% trans %}(will be published){% endtrans %}
+            <span class="status">{% trans %}(will be published){% endtrans %}</span>
           {% endif -%}
           {# How long will be stored + Metadata FAIRness #}
           {%- set publishedDataHowLongPath = [pathPrefix, uuids.publishedDataHowLongQUuid]|reply_path -%}
@@ -35,8 +35,8 @@
             {%- elif publishedDataHowLongAUuid == uuids.publishedDataHowLongFixedAUuid -%}
               {%- set publishedDataHowLongFixedPath = [publishedDataHowLongPath, uuids.publishedDataHowLongFixedAUuid, uuids.publishedDataHowLongFixedQUuid]|reply_path -%}
               {%- set publishedDataHowLongFixed = repliesMap[publishedDataHowLongFixedPath]|reply_str_value -%}
-              {#- TRANSLATORS: %(details)s is " of: " followed by the user's text, or just "." -#}
-              <p>{% trans details=(" of: " ~ publishedDataHowLongFixed|dot if publishedDataHowLongFixed else ".") %}This data set will be kept available for a fixed period (prepaid){{ details }}{% endtrans %}</p>
+              {#- TRANSLATORS: %(details)s is ": " followed by the user's text, or just "." -#}
+              <p>{% trans details=(": " ~ publishedDataHowLongFixed|trim|dot if publishedDataHowLongFixed else ".") %}This data set will be kept available for a fixed period (prepaid){{ details }}{% endtrans %}</p>
             {%- endif -%}
             {%- if publishedDataMetadataPersistentAUuid == uuids.publishedDataMetadataPersistentYesAUuid %}
               <p>{% trans %}The metadata will be available even when the data no longer exists.{% endtrans %}</p>
@@ -76,7 +76,7 @@
                       {%- set domainSpecificRepoContactBeforeOtherPath = [domainSpecificRepoContactBeforePath, uuids.domainSpecificRepoContactBeforeOtherAUuid, uuids.domainSpecificRepoContactBeforeOtherQUuid]|reply_path -%}
                       {%- set domainSpecificRepoContactBeforeOther = repliesMap[domainSpecificRepoContactBeforeOtherPath]|reply_str_value %}
                       {#- TRANSLATORS: %(details)s is ": " followed by the user's text, or just "." #}
-                      {% trans details=(": " ~ domainSpecificRepoContactBeforeOther|markdown if domainSpecificRepoContactBeforeOther else ".") %}We have made other arrangements instead of contacting the repository directly{{ details }}{% endtrans %}
+                      {% trans details=(": " ~ macros.md(domainSpecificRepoContactBeforeOther) if domainSpecificRepoContactBeforeOther else ".") %}We have made other arrangements instead of contacting the repository directly{{ details }}{% endtrans %}
                     {%- endif -%}
                   {%- elif distroRepositoryKindAUuid == uuids.publishedDataRepositoryGeneralPurposeAUuid %}
                     <em>{% trans %}General-purpose repository{% endtrans %}</em>
@@ -118,10 +118,9 @@
           {%- set publishedDataCataloguePath = [isPublishedDataPath, uuids.isPublishedDataYesAUuid, uuids.publishedDataCatalogueQUuid]|reply_path -%}
           {%- set publishedDataCatalogueAUuid = repliesMap[publishedDataCataloguePath]|reply_str_value -%}
           {%- if publishedDataCatalogueAUuid == uuids.publishedDataCatalogueYesAUuid -%}
-            <br>{% trans %}We will be adding a reference to the published data to at least one data catalogue.{% endtrans %}
+            <p>{% trans %}We will be adding a reference to the published data to at least one data catalogue.{% endtrans %}</p>
           {%- endif -%}
         </li>
-        <br>
       {%- endfor -%}
       </ul>
     {# Repository charges #}
@@ -142,7 +141,7 @@
         {%- set repoChargesHowPayOtherPath = [repoChargesHowPayPath, uuids.repoChargesHowPayOtherAUuid, uuids.repoChargesHowPayOtherQUuid]|reply_path -%}
         {%- set repoChargesHowPayOther = repliesMap[repoChargesHowPayOtherPath]|reply_str_value -%}
         {%- if repoChargesHowPayOther -%}
-          <p>{% trans value=(repoChargesHowPayOther|markdown) %}We will carry the costs related to the used repositories by: {{ value }}{% endtrans %}</p>
+          <p>{% trans value=(macros.md(repoChargesHowPayOther)) %}We will carry the costs related to the used repositories by: {{ value }}{% endtrans %}</p>
         {%- endif -%}
       {%- endif -%}
     {%- endif -%}

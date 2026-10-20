@@ -15,7 +15,7 @@
         {%- set expertiseTrainPath = [expertisePath, uuids.additionalExpertiseYesTrainAUuid, uuids.additionalExpertiseYesTrainTrainingQUuid]|reply_path -%}
         {%- set expertiseTrainText = repliesMap[expertiseTrainPath]|reply_str_value -%}
         {%- if expertiseTrainText %}
-          {{ " " }}{% trans value=(expertiseTrainText|markdown) %}on: {{ value }}{% endtrans %}
+          {{ " " }}{% trans value=(macros.md(expertiseTrainText)) %}on: {{ value }}{% endtrans %}
         {%- else -%}
           .
         {%- endif -%}
@@ -40,7 +40,7 @@
       {%- set additionalHWSWWhatPath = [additionalHWSWPath, uuids.additionalHWSWYesAUuid, uuids.additionalHWSWYesWhatQUuid]|reply_path -%}
       {%- set additionalHWSWWhat = repliesMap[additionalHWSWWhatPath]|reply_str_value -%}
       {%- if additionalHWSWWhat -%}
-        <p>{% trans value=(additionalHWSWWhat|markdown) %}We require the following hardware or software in addition to what is usually available in the institute: {{ value }}{% endtrans %}</p>
+        <p>{% trans value=(macros.md(additionalHWSWWhat)) %}We require the following hardware or software in addition to what is usually available in the institute: {{ value }}{% endtrans %}</p>
       {%- else -%}
         <p>{% trans %}We require hardware or software in addition to what is usually available in the institute.{% endtrans %}</p>
       {%- endif -%}
@@ -52,7 +52,7 @@
     {%- set projectItems = repliesMap[projectPath]|reply_items -%}
     {%- if projectItems|length > 0 -%}
     <p>{% trans %}The following resources will be dedicated to data management and ensuring that data will be FAIR:{% endtrans %}</p>
-    <ul>
+    <ul class="entries">
         {%- for i in projectItems -%}
             {%- set projectItem = [projectPath, i]|reply_path -%}
             {%- set projectItemNameQUuid = [projectItem, uuids.projectNameQUuid]|reply_path -%}

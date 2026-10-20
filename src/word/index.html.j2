@@ -6,7 +6,7 @@
 {% import "src/macros.html.j2" as macros with context %}
 {% import "src/uuids.j2" as uuids with context %}
 {% import "src/globals.j2" as globals with context %}
-<html lang="en">
+<html lang="{{ dc.doc.language or 'en' }}">
   <head>
     <title>{{ ctx.project.name }}</title>
     <meta charset="utf-8">

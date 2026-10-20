@@ -16,6 +16,7 @@
       {%- if projectName and projEthicalApprovalAUuid == uuids.projEthicalApprovalYesAUuid -%}
         {%- set projEthicalApprovalAuthPath = [projEthicalApprovalPath, projEthicalApprovalAUuid, uuids.projEthicalApprovalAuthQUuid]|reply_path -%}
         {%- set projEthicalApprovalAuthItems = repliesMap[projEthicalApprovalAuthPath]|reply_items -%}
+        {#- TRANSLATORS: status of an application for ethical approval -#}
         {%- set projAuth = [] -%}
         {%- for projAuthItem in projEthicalApprovalAuthItems -%}
           {%- set projAuthStatusPath = [projEthicalApprovalAuthPath, projAuthItem, uuids.projEthicalApprovalAuthStatusQUuid]|reply_path -%}
@@ -25,38 +26,37 @@
 
           {%- if projAuthCase and projAuthStatusAUuid == uuids.projEthicalApprovalAuthStatusPlannedAUuid -%}
             {%- do projAuth.append({
-              'status': 'planned',
+              'status': _('planned'),
               'case': projAuthCase,
             }) -%}
           {%- elif projAuthCase and projAuthStatusAUuid == uuids.projEthicalApprovalAuthStatusAppliedAUuid -%}
             {%- do projAuth.append({
-              'status': 'applied',
+              'status': _('applied'),
               'case': projAuthCase,
             }) -%}
           {%- elif projAuthCase and projAuthStatusAUuid == uuids.projEthicalApprovalAuthStatusGrantedAUuid -%}
             {%- do projAuth.append({
-              'status': 'granted',
+              'status': _('granted'),
               'case': projAuthCase,
             }) -%}
           {%- elif projAuthCase and projAuthStatusAUuid == uuids.projEthicalApprovalAuthStatusRejectAUuid -%}
             {%- do projAuth.append({
-              'status': 'rejected',
+              'status': _('rejected'),
               'case': projAuthCase,
             }) -%}
           {%- endif -%}
-
-          {%- do projects.append({
-            'name': projectName,
-            'acronym': projectAcronym,
-            'authorities': projAuth,
-          }) -%}
         {%- endfor -%}
+        {%- do projects.append({
+          'name': projectName,
+          'acronym': projectAcronym,
+          'authorities': projAuth,
+        }) -%}
       {%- endif -%}
     {%- endfor -%}
     {%- if projects|length > 0 -%}
       <h4>{% trans %}Ethical approvals{% endtrans %}</h4>
       <p>{% trans count=[projects|length, 1]|max %}The following project requires ethical approval:{% pluralize %}The following projects require ethical approval:{% endtrans %}</p>
-      <ul>
+      <ul class="entries">
       {%- for project in projects -%}
         <li>
           <strong>{{ project.name }}</strong> {% if project.acronym %}({{ project.acronym }}) {% endif %}
@@ -78,7 +78,7 @@
     {%- if producedDataItems|length > 0 -%}
       <h4>{% trans %}Data we produce{% endtrans %}</h4>
       <p>{% trans %}For the data we produce, the ethical aspects are as follows:{% endtrans %}
-      <ul>
+      <ul class="entries">
       {%- for i in producedDataItems -%}
         {%- set pathPrefix = [producedDataPath, i]|reply_path -%}
         {%- set producedDataName = repliesMap[[pathPrefix, uuids.producedDataNameQUuid]|reply_path]|reply_str_value -%}

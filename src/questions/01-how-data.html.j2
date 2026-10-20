@@ -12,7 +12,7 @@
     {%- set measuredDataItems = repliesMap[measuredDataPath]|reply_items -%}
     {%- if measuredDataItems|length > 0 -%}
       <h4>{% trans %}Instrument datasets{% endtrans %}</h4>
-      <ul>
+      <ul class="entries">
         {%- for datasetItem in measuredDataItems -%}
           {%- set pathPrefix = [measuredDataPath, datasetItem]|reply_path -%}
           <li>
@@ -129,7 +129,7 @@
                 {%- set mdQualityOtherYesPath = [mdQualityOtherPath, uuids.mdQualityOtherYesAUuid, uuids.mdQualityOtherWhatQUuid]|reply_path -%}
                 {%- set mdQualityOther = repliesMap[mdQualityOtherYesPath]|reply_str_value -%}
                 {%- if mdQualityOther -%}
-                  <p>{% if qualityCount > 0 %}{% trans value=(mdQualityOther|markdown) %}Additional quality processes are: {{ value }}{% endtrans %}{% else %}{% trans value=(mdQualityOther|markdown) %}Our quality processes are: {{ value }}{% endtrans %}{% endif %}</p>
+                  <p>{% if qualityCount > 0 %}{% trans value=(macros.md(mdQualityOther)) %}Additional quality processes are: {{ value }}{% endtrans %}{% else %}{% trans value=(macros.md(mdQualityOther)) %}Our quality processes are: {{ value }}{% endtrans %}{% endif %}</p>
                 {%- endif -%}
               {%- endif -%}
             {%- endif -%}
@@ -153,7 +153,7 @@
     {%- if (refDataItems|length > 0) or (nrefDataItems|length > 0) -%}
       <div>
       <h4>{% trans %}Re-used datasets{% endtrans %}</h4>
-      <ul>
+      <ul class="entries">
       {# Reference Data #}
         {%- for refDataItem in refDataItems -%}
           <li>
@@ -179,7 +179,7 @@
             {%- if refDataWhere -%}
               {{ " " }}{% trans %}available via:{% endtrans %}{{ " " }}
               {%- if refDataWhere.startswith("http://") or refDataWhere.startswith("https://") or refDataWhere.startswith("ftp://") -%}
-                <a href="{{ refDataWhere }}" target="_blank">{{ refDataWhere }} </a>.
+                <a href="{{ refDataWhere }}" target="_blank">{{ refDataWhere }}</a>
               {%- else -%}
                 {{ refDataWhere }}
              {%- endif -%}
@@ -189,7 +189,7 @@
             {%- set refDataUsageQ = [ refDataUsedPrefix, uuids.refDataUsageQUuid]|reply_path -%}
             {%- set refDataUsageReply = repliesMap[refDataUsageQ]|reply_str_value  -%}
             {%- if refDataUsageReply -%}
-                {{+" "}}{% trans value=(refDataUsageReply|markdown) %}in order to {{ value }}{% endtrans %}
+                {{+" "}}{% trans value=(macros.md(refDataUsageReply|trim|dot)) %}in order to {{ value }}{% endtrans %}
             {%- else -%}.
             {%- endif -%}
             </p>
@@ -205,7 +205,7 @@
               {%- if refDataVersionedWhich or refDataVersionedChangeAUuid  %}
                 <p>
                 {% if refDataVersionedWhich -%}
-                  {% trans value=(refDataVersionedWhich|markdown) %}We will use the following version of this dataset: {{ value }}{% endtrans %}
+                  {% trans value=(macros.md(refDataVersionedWhich|trim|dot)) %}We will use the following version of this dataset: {{ value }}{% endtrans %}
                 {%- endif -%}
                 {%- if refDataVersionedChangeAUuid == uuids.refDataVersionedChangeStayAUuid %}
                   {% trans %}If a new version becomes available during the project, we will stay with the old version.{% endtrans %}
@@ -245,7 +245,7 @@
               {%- elif refDataConditionsReply == uuids.refDataConditionsOtherAUuid -%}
                 {% trans %}available with{% endtrans %}{{ " " }}
                   {%- if refDataConditionsOtherReply -%}
-                    {% trans value=(refDataConditionsOtherReply|markdown) %}following restrictions: {{ value }}{% endtrans %}
+                    {% trans value=(macros.md(refDataConditionsOtherReply)) %}following restrictions: {{ value }}{% endtrans %}
                   {%- else -%}
                     {{ " " }}{% trans %}restrictions, that will be specified.{% endtrans %}
                   {%- endif -%}
@@ -276,7 +276,7 @@
             {%- if refDataWhere -%}
             {{ " " }}{% trans %}available via:{% endtrans %}{{ " " }}
               {%- if refDataWhere.startswith("http://") or refDataWhere.startswith("https://") or refDataWhere.startswith("ftp://") -%}
-                <a href="{{ refDataWhere }}" target="_blank">{{ refDataWhere }} </a>.
+                <a href="{{ refDataWhere }}" target="_blank">{{ refDataWhere }}</a>
               {%- else -%}
                 {{ refDataWhere}}
               {%- endif -%}
@@ -294,7 +294,7 @@
               {%- elif refDataUseNoReply == uuids.refDataUseNoCondAUuid -%}
                 {{ " " }}{% trans %}because its conditions of use do not allow us to use it.{% endtrans %}
               {%- elif refDataUseNoReply == uuids.refDataUseNoReasonAUuid and refDataUseNoOtherReasonReply -%}
-                {{ " " }}{% trans value=(refDataUseNoOtherReasonReply|markdown) %}because: {{ value }}{% endtrans %}
+                {{ " " }}{% trans value=(macros.md(refDataUseNoOtherReasonReply)) %}because: {{ value }}{% endtrans %}
               {%- else -%}.
               {%- endif -%}
             {%- else -%}
@@ -307,7 +307,7 @@
       </ul>
 
       {# Non-reference Data #}
-      <ul>
+      <ul class="entries">
       {%- for nrefDataItem in nrefDataItems -%}
       <li>
         {%- set nrefDataPrefix = [nrefDataPath, nrefDataItem]|reply_path  -%}
@@ -331,7 +331,7 @@
           {%- if nrefDataWhere -%}
          {{ " " }}{% trans %}available via:{% endtrans %}{{ " " }}
             {%- if nrefDataWhere.startswith("http://") or nrefDataWhere.startswith("https://") or nrefDataWhere.startswith("ftp://") -%}
-              <a href="{{ nrefDataWhere }}" target="_blank">{{ nrefDataWhere }} </a>.
+              <a href="{{ nrefDataWhere }}" target="_blank">{{ nrefDataWhere }}</a>
             {%- else -%}
               {{ nrefDataWhere }}
             {%- endif -%}
@@ -341,9 +341,10 @@
           {%- set nrefDataUsageQ = [nrefDataUsedPrefix, uuids.nrefDataUsageQUuid]|reply_path  -%}
           {%- set nrefDataUsageReply = repliesMap[nrefDataUsageQ]|reply_str_value -%}
           {%- if nrefDataUsageReply -%}
-            {{+" "}}{% trans value=(nrefDataUsageReply|markdown) %}in order to {{ value }}{% endtrans %}
+            {{+" "}}{% trans value=(macros.md(nrefDataUsageReply|trim|dot)) %}in order to {{ value }}{% endtrans %}
+          {%- else -%}.
           {%- endif -%}
-          .</p>
+          </p>
 
           {# Which part of the non-reference data we will use #}
           {%- set nrefDataComplete = [nrefDataUsedPrefix, uuids.nrefDataCompleteQUuid]|reply_path  -%}
@@ -395,7 +396,7 @@
               {%- if nrefDataConditionsOtherReply -%}
                 {% trans %}available with{% endtrans %}{{ " " }}
                   {%- if nrefDataConditionsOtherReply -%}
-                   {% trans value=(nrefDataConditionsOtherReply|markdown) %}following restrictions: {{ value }}{% endtrans %}
+                   {% trans value=(macros.md(nrefDataConditionsOtherReply)) %}following restrictions: {{ value }}{% endtrans %}
                   {%- else -%}
                     {{ " " }}{% trans %}restrictions, that will be specified.{% endtrans %}
                   {%- endif -%}
@@ -470,7 +471,7 @@
           {%- if nrefDataWhere -%}
           {{+" "}}{% trans %}available via:{% endtrans %}{{ " " }}
             {%- if nrefDataWhere.startswith("http://") or nrefDataWhere.startswith("https://") or nrefDataWhere.startswith("ftp://") -%}
-              <a href="{{ rnefDataWhere }}" target="_blank">{{ nrefDataWhere }} </a>.
+              <a href="{{ nrefDataWhere }}" target="_blank">{{ nrefDataWhere }}</a>
             {%- else -%}
               {{ nrefDataWhere }}
             {%- endif -%}
@@ -488,7 +489,7 @@
             {%- elif nrefDataUseNoReply == uuids.nrefDataUseNoCondAUuid -%}
               {{ " " }}{% trans %}because its conditions of use do not allow us to use it{% endtrans %}
             {%- elif nrefDataUseNoReply == uuids.nrefDataUseNoReasonAUuid and nrefDataUseNoOtherReasonReply -%}
-              {{ " " }}{% trans value=(nrefDataUseNoOtherReasonReply|markdown) %}because: {{ value }}{% endtrans %}
+              {{ " " }}{% trans value=(macros.md(nrefDataUseNoOtherReasonReply)) %}because: {{ value }}{% endtrans %}
             {%- else -%}
              .
             {%- endif -%}
@@ -589,7 +590,7 @@
         {%- set provenanceOtherPath = [provenancePath, uuids.provenanceOtherAUuid, uuids.provenanceOtherQUuid]|reply_path -%}
         {%- set provenanceOther = repliesMap[provenanceOtherPath]|reply_str_value -%}
         {#- TRANSLATORS: %(details)s is ": " followed by the user's text, or just "." -#}
-        <p>{% trans details=(": " ~ provenanceOther|markdown if provenanceOther else ".") %}We will use a solution other than (electronic) lab notebooks to make sure that there is good provenance of the data analysis{{ details }}{% endtrans %}
+        <p>{% trans details=(": " ~ macros.md(provenanceOther) if provenanceOther else ".") %}We will use a solution other than (electronic) lab notebooks to make sure that there is good provenance of the data analysis{{ details }}{% endtrans %}
       {%- endif -%}
       {%- endif -%}
     {%- endif -%}

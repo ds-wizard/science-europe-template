@@ -12,7 +12,7 @@
       <div>
       <h4>{% trans %}Instrument datasets{% endtrans %}</h4>
       {% trans %}The following instrument datasets will be acquired in the project:{% endtrans %}
-      <ul>
+      <ul class="entries">
         {%- for datasetItem in measuredDataItems -%}
           {%- set pathPrefix = [measuredDataPath, datasetItem]|reply_path -%}
           <li>
@@ -41,7 +41,7 @@
                   {%- set mdExternalOwnershipOtherPath = [mdExternalOwnershipPath, uuids.mdExternalOwnershipOtherAUuid, uuids.mdExternalOwnershipOtherQUuid]|reply_path -%}
                   {%- set mdExternalOwnershipOther = repliesMap[mdExternalOwnershipOtherPath]|reply_str_value -%}
                   {%- if mdExternalOwnershipOther -%}
-                    {% trans value=(mdExternalOwnershipOther|markdown) %}For the ownership of the data we have made the following arrangements: {{ value }}{% endtrans %}
+                    {% trans value=(macros.md(mdExternalOwnershipOther)) %}For the ownership of the data we have made the following arrangements: {{ value }}{% endtrans %}
                   {%- endif -%}
                 {%- endif -%}
               </p>
@@ -100,7 +100,7 @@
         {# Datasets #}
         {%- if neqDataSetsItems|length > 0 -%}
           {% trans %}The non-equipment datasets are:{% endtrans %}
-          <ul>
+          <ul class="entries">
           {%- for neqDataSetItem in neqDataSetsItems -%}
             {%- set pathPrefix = [neqDataSetsPath, neqDataSetItem]|reply_path -%}
             {%- set neqDataSetsName = repliesMap[[pathPrefix, uuids.neqDataSetsNameQUuid]|reply_path]|reply_str_value -%}
@@ -138,7 +138,7 @@
   {%- if formatsItems|length > 0 -%}
     <h4>{% trans %}Data formats and types{% endtrans %}</h4>
     <div>{% trans %}We will be using the following data formats and types:{% endtrans %}
-    <ul>
+    <ul class="entries">
       {%- for formatItem in formatsItems -%}
         {%- set formatPrefix = [formatsPath, formatItem]|reply_path -%}
         {%- set formatNameReply = repliesMap[[formatPrefix, uuids.formatsNameQUuid]|reply_path] -%}
@@ -150,7 +150,7 @@
         {%- set formatsVolumeAUuid = repliesMap[formatsVolumePath]|reply_str_value -%}
         <li>
           {# identification #}
-          <div>{{ macros.integrationFairSharing(formatNameReply) }}</div>
+          <strong>{{ macros.integrationFairSharing(formatNameReply) }}</strong>
           {%- if formatsIsStandardAUuid or formatsIsLTSuitableAUuid or formatsVolumeAUuid -%}
             <p>
             {# standard? #}
@@ -168,7 +168,7 @@
                 {%- set formatsWhyNSAnotherReason = repliesMap[formatsWhyNSAnotherReasonPath]|reply_str_value -%}
                 {% trans %}We are not using a standardized format{% endtrans %}
                 {%- if formatsWhyNSAnotherReason -%}
-                  {% trans value=(formatsWhyNSAnotherReason|capitalize) %}, because: {{ value }}{% endtrans %}
+                  {% trans value=(formatsWhyNSAnotherReason[:1]|upper ~ formatsWhyNSAnotherReason[1:]) %}, because: {{ value }}{% endtrans %}
                 {%- endif -%}
                 .
               {%- endif -%}

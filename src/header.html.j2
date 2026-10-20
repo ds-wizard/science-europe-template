@@ -1,8 +1,7 @@
 <header>
-  <p class="dmp"></p>
-  <h1>
-    {{ dc.project.name }}
-  </h1>
+  <p class="doc-type">{% trans %}Data Management Plan{% endtrans %}</p>
+  <h1>{{ dc.project.name }}</h1>
+  <p class="guidance">{% trans %}Structured according to the Science Europe core requirements for data management plans{% endtrans %}</p>
   <div class="dmp-info">
     <dl>
       {%- set contributorsPath = [uuids.adminDetailsCUuid, uuids.contributorsQUuid]|join(".") -%}

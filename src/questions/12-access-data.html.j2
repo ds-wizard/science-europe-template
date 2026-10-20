@@ -6,7 +6,7 @@
     {%- set producedDataPath = [uuids.preservingCUuid, uuids.producedDataQUuid]|reply_path -%}
     {%- set producedDataItems = repliesMap[producedDataPath]|reply_items -%}
     {%- if producedDataItems|length > 0 -%}
-        <ul>
+        <ul class="entries">
         {%- for i in producedDataItems -%}
             {%- set pathPrefix = [producedDataPath, i]|reply_path -%}
             {%- set producedDataName = repliesMap[[pathPrefix, uuids.producedDataNameQUuid]|reply_path]|reply_str_value -%}
@@ -24,18 +24,18 @@
                     {%- set isPublishedSwItems = repliesMap[isPublishedSWPath]|reply_items -%}
                     {%- if isPublishedSwItems|length > 0 -%}
                             <br>{% trans %}In order to use this dataset, the following software will be needed:{% endtrans %}
-                            <ul>
+                            <ul class="software">
                             {%- for swItem in isPublishedSwItems -%}
                                 {%- set swNameUuid = [isPublishedSWPath, swItem, uuids.publishedSpecSwUseWhatNameQUuid]|reply_path -%}
                                 {%- set swNameReply = repliesMap[swNameUuid]|reply_str_value -%}
                                 {%- set swPIDUuid = [isPublishedSWPath, swItem, uuids.publishedSpecSwUseWhatPIDQUuid]|reply_path -%}
                                 {%- set swPIDReply = repliesMap[swPIDUuid]|reply_str_value -%}
-                                <p><strong>{{ swNameReply if swNameReply else _("(no name given)") }}</strong>
+                                <li><strong>{{ swNameReply if swNameReply else _("(no name given)") }}</strong>
                                 {%- if swPIDReply -%}
-                                {% trans value=(swPIDReply|dot) %}, available at {{ value }}{% endtrans %}</p>
+                                {% trans value=(macros.md(swPIDReply|trim|dot)) %}, available at {{ value }}{% endtrans %}
                                 {%- else -%}
                                 .
-                                {%- endif -%}
+                                {%- endif -%}</li>
                             {%- endfor -%}
                             </ul>
                     {%- else -%}
@@ -45,8 +45,9 @@
                     <p>{% trans %}There are no tools needed to access or use this data.{% endtrans %}</p>
                 {%- endif -%}
             {%- else -%}
-                <p>{% trans %}There are no published data to access or use.{% endtrans %}</p>
+                <strong>{{ producedDataName if producedDataName else _("(no name given)") }}</strong> <span class="status">{% trans %}(not published){% endtrans %}</span>
             {%- endif -%}
+            </li>
         {%- endfor -%}
     {%- else -%}
         <p>{% trans %}There are no published data to access or use.{% endtrans %}</p>

@@ -1,100 +1,133 @@
-@import url('https://fonts.googleapis.com/css?family=Noto+Serif:400,400i,700,700i&display=swap&subset=cyrillic,cyrillic-ext,greek,greek-ext,latin-ext,vietnamese');
+/* Science Europe DMP: plain document styling, one accent colour */
 
-/* Layout and global styles */
+/* Page setup */
 
 @page {
   size: A4;
+  margin: 2.2cm 2cm 2.4cm 2cm;
 
   @bottom-left {
-    border-top: 1px solid black;
-    content: '';
-    display: block;
-    width: 100%;
-    padding-top: 1rem;
+    content: string(project-name);
     vertical-align: top;
-    font-family: "Open Sans", sans-serif;
-    font-size: 10pt;
+    padding-top: 0.4cm;
+    font-family: "Open Sans", "Noto Sans", sans-serif;
+    font-size: 8.5pt;
+    color: #5f6b78;
   }
-  @bottom-center {
-    border-top: 1px solid black;
-    content: '';
-    display: block;
-    width: 100%;
-    padding-top: 1rem;
-    vertical-align: top;
-    font-family: "Open Sans", sans-serif;
-    font-size: 10pt;
-  }
-  @bottom-center {
-    border-top: 1px solid black;
+  @bottom-right {
     content: counter(page) " / " counter(pages);
-    display: block;
-    width: 100%;
-    padding-top: 1rem;
     vertical-align: top;
-    font-family: "Open Sans", sans-serif;
-    font-size: 10pt;
+    padding-top: 0.4cm;
+    font-family: "Open Sans", "Noto Sans", sans-serif;
+    font-size: 8.5pt;
+    color: #5f6b78;
   }
-}
-@page :blank {
-  @top-center { content: none }
-  @bottom-left { content: none }
-  @bottom-center { content: none }
-  @bottom-right { content: none }
 }
 
-h1, h2, h3, h4, h5, h6 {
-  page-break-inside: avoid !important;
-  page-break-after: avoid !important;
+@page :first {
+  @bottom-left { content: none; border: none; }
+  @bottom-right { content: none; border: none; }
 }
+
+@page :blank {
+  @bottom-left { content: none; border: none; }
+  @bottom-right { content: none; border: none; }
+}
+
+/* Base */
 
 body {
-  font-family: "Open Sans", sans-serif;
-  font-size: 11pt;
-  counter-reset: section;
-  counter-reset: question;
+  font-family: "Open Sans", "Noto Sans", sans-serif;
+  font-size: 10.5pt;
+  line-height: 1.45;
+  color: #1f262e;
   max-width: 21cm;
   margin: 0 auto;
 }
 
 p {
   margin-top: 0;
-  margin-bottom: 8px;
+  margin-bottom: 6pt;
 }
 
-/* Sections */
-
-section {
-  margin-bottom: 4rem;
+a {
+  color: #1d4f7c;
+  text-decoration: none;
 }
 
-.dmp-section .question + .question {
-  margin-top: 1cm;
+code {
+  font-size: 0.92em;
 }
 
-/* First page */
+ul, ol {
+  margin-top: 2pt;
+  margin-bottom: 6pt;
+  padding-left: 1.4em;
+}
+
+li {
+  margin-bottom: 2pt;
+}
+
+li > ul, li > ol {
+  margin-top: 3pt;
+}
+
+li::marker {
+  color: #6f8aa6;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  break-inside: avoid;
+  break-after: avoid;
+}
+
+.empty-value, .missing {
+  font-style: italic;
+  color: #5f6b78;
+}
+
+/* Cover page */
 
 header {
-  padding-top: 5cm;
-  height: 24cm;
   box-sizing: border-box;
-  page-break-after: always;
+  height: 24.5cm;
+  padding-top: 3.5cm;
   position: relative;
+  break-after: page;
 }
 
-header .dmp::after {
-  font-size: 18pt;
-  {#- translated with the msgid of the title in index.html.j2 (style.css is not extracted to the POT) #}
-  content: '{{ _("Data Management Plan") }}';
+header .doc-type {
+  margin: 0 0 8pt 0;
+  font-size: 11pt;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #1d4f7c;
 }
 
-h1 {
-  font-size: 24pt;
+header h1 {
+  margin: 0;
+  padding-bottom: 14pt;
+  border-bottom: 2pt solid #1d4f7c;
+  font-size: 26pt;
+  line-height: 1.2;
+  font-weight: 700;
+  color: #14212e;
+  string-set: project-name content();
 }
 
-header div {
+header .guidance {
+  margin-top: 10pt;
+  font-size: 10pt;
+  color: #5f6b78;
+}
+
+header .dmp-info {
   position: absolute;
   bottom: 0;
+  left: 0;
+  right: 0;
 }
 
 header .contact-orcid {
@@ -102,47 +135,51 @@ header .contact-orcid {
 }
 
 header .note {
-  margin-top: 2cm;
-  text-align: center;
-  font-size: 10pt;
-  font-style: italic;
+  margin-top: 1.2cm;
+  margin-bottom: 0;
+  font-size: 9pt;
+  color: #5f6b78;
 }
 
-div.dmp-info {
-  width: 100%;
-}
+/* Label/value tables (cover page, projects) */
 
 dl {
-  border: 1px solid #bdc8ca;
-  background-color: #f7fafa;
-  overflow: hidden;
   width: 100%;
+  margin: 0 0 10pt 0;
+  overflow: hidden;
+  border-top: 1pt solid #1d4f7c;
+  border-bottom: 0.5pt solid #c5ced8;
 }
 
-dt,
-dd {
-    box-sizing: border-box;
-    padding: 10px;
+dt, dd {
+  box-sizing: border-box;
+  padding: 6pt 8pt;
 }
+
 dd ~ dt,
 dd ~ dd {
-    border-top: 1px solid #bdc8ca;
+  border-top: 0.5pt solid #dbe2e9;
 }
+
 dt {
-    float: left;
-    width: 25%;
-    padding-bottom: 0;
+  float: left;
+  clear: left;
+  width: 28%;
+  font-size: 9pt;
+  font-weight: 600;
+  color: #5f6b78;
+  padding-top: 7.5pt;
 }
+
 dd {
-    margin-left: 25%;
-    width: 75%;
-    border-left: 1px dotted #bdc8ca;
-    background-color: #fff;
+  margin-left: 28%;
+  width: 72%;
 }
+
 dd:after {
-    content: "";
-    display: block;
-    clear: both;
+  content: "";
+  display: block;
+  clear: both;
 }
 
 dl dd ul {
@@ -155,86 +192,68 @@ dl dd ul li {
 }
 
 dl dd ul li:not(:last-child) {
-  margin-bottom: 0.5rem;
+  margin-bottom: 5pt;
 }
 
 dl .contact-name {
-  font-weight: bold;
+  font-weight: 600;
 }
 
-/* Contributors */
+/* Front matter pages */
 
-.contributor .name {
-  font-weight: bold;
-}
-
-.contributor .role,
-.contributor .affiliation {
-  font-style: italic;
-  display: inline-block;
-}
-
-/* Abstract */
-
-.abstract {
-  page-break-after: always;
-}
-
-.abstract p {
-  text-align: justify;
-}
-
-/* custom */
-
-.orcid-svg {
-  width: 0.5cm;
-  height: 0.5cm;
-  display: inline-block;
-  margin: 0px -4px -2px 2px;
-}
-
-div#dmp-content {
-  page-break-before: always;
+div#dmp-versions {
+  break-before: page;
+  margin-bottom: 1.2cm;
 }
 
 div#dmp-projects,
-div#dmp-contributors,
 div#dmp-content {
-  page-break-before: always;
+  break-before: page;
 }
 
-/* Versions */
+div#dmp-contributors h2,
+div#dmp-projects h2 {
+  margin-top: 0;
+}
+
+/* Version history */
 
 div#dmp-versions table {
   width: 100%;
   border-collapse: collapse;
+  font-size: 9.5pt;
 }
 
-div#dmp-versions table,
-div#dmp-versions td,
-div#dmp-versions th {
-  border: 1px solid #bdc8ca;
+div#dmp-versions th,
+div#dmp-versions td {
+  padding: 5pt 6pt;
+  text-align: left;
+  vertical-align: top;
+  border-bottom: 0.5pt solid #dbe2e9;
 }
 
-div#dmp-versions td,
 div#dmp-versions th {
-  padding: 0.2em;
+  font-size: 9pt;
+  font-weight: 600;
+  color: #5f6b78;
+  border-bottom: 0.5pt solid #c5ced8;
 }
 
 div#dmp-versions th.title {
-  text-transform: uppercase;
-  padding: 0.4em;
-  text-align: center;
+  padding: 0 0 6pt 0;
+  font-size: 13pt;
+  font-weight: 700;
+  color: #1d4f7c;
+  border-bottom: 1pt solid #1d4f7c;
 }
 
 div#dmp-versions td.version-name {
-  text-align: center;
   word-wrap: break-word;
 }
 
 div#dmp-versions td.version-date {
-  text-align: center;
   width: 18ex;
+  white-space: nowrap;
 }
 
 div#dmp-versions td.version-changes {
@@ -243,6 +262,143 @@ div#dmp-versions td.version-changes {
 
 div#dmp-versions td.no-versions {
   font-style: italic;
-  padding: 1em;
-  text-align: center;
+  color: #5f6b78;
+  padding: 8pt 6pt;
+}
+
+/* Contributors */
+
+div#dmp-contributors > ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+div#dmp-contributors > ul > li {
+  padding: 5pt 0 5pt 10pt;
+  margin-bottom: 4pt;
+  border-left: 2pt solid #dbe2e9;
+  break-inside: avoid;
+}
+
+.contributor .name {
+  font-weight: 600;
+}
+
+.contributor .role,
+.contributor .affiliation {
+  font-style: italic;
+  display: inline-block;
+}
+
+/* Projects */
+
+.project {
+  margin-top: 14pt;
+}
+
+.project dl {
+  break-inside: avoid;
+}
+
+.project h3 {
+  margin: 0 0 6pt 0;
+  font-size: 12.5pt;
+  color: #14212e;
+}
+
+.abstract p {
+  text-align: justify;
+}
+
+/* Sections and questions */
+
+h2 {
+  margin: 0 0 10pt 0;
+  padding-bottom: 4pt;
+  font-size: 15pt;
+  line-height: 1.25;
+  font-weight: 700;
+  color: #1d4f7c;
+  border-bottom: 1pt solid #1d4f7c;
+}
+
+section.dmp-section {
+  margin-bottom: 1cm;
+}
+
+section.dmp-section + section.dmp-section {
+  margin-top: 0.4cm;
+}
+
+.question {
+  margin-top: 0.6cm;
+}
+
+.question h3 {
+  margin: 0 0 8pt 0;
+  padding: 6pt 9pt;
+  font-size: 11pt;
+  line-height: 1.35;
+  font-weight: 600;
+  color: #14212e;
+  background-color: #eef3f8;
+  border-left: 3pt solid #1d4f7c;
+}
+
+.answer {
+  padding-left: 2pt;
+}
+
+.answer h4 {
+  margin: 12pt 0 5pt 0;
+  font-size: 9pt;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #4a5d72;
+}
+
+/* Entries: one block per dataset, format, policy, project ... (name, then its description) */
+
+ul.entries {
+  list-style: none;
+  padding-left: 0;
+  margin: 4pt 0 12pt 0;
+}
+
+ul.entries > li {
+  margin: 0 0 9pt 0;
+  padding: 1pt 0 1pt 10pt;
+  border-left: 2pt solid #dbe2e9;
+}
+
+ul.entries > li > strong:first-child {
+  color: #14212e;
+}
+
+ul.entries > li > p:last-child,
+ul.entries > li > ul:last-child {
+  margin-bottom: 0;
+}
+
+ul.entries ul > li {
+  margin-bottom: 3pt;
+}
+
+p.lead {
+  margin: 3pt 0 2pt 0;
+}
+
+.status {
+  font-size: 9pt;
+  color: #5f6b78;
+}
+
+/* Icons */
+
+.orcid-svg {
+  width: 0.5cm;
+  height: 0.5cm;
+  display: inline-block;
+  margin: 0px -4px -2px 2px;
 }

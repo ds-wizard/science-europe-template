@@ -1,4 +1,13 @@
 {# Formatting macros #}
+{#- An answer in Markdown: a single paragraph stays inline (it continues a sentence), more become blocks -#}
+{%- macro md(text) -%}
+  {%- set html = (text|markdown)|trim -%}
+  {%- if html.startswith('<p>') and html.endswith('</p>') and html.count('<p>') == 1 -%}
+    {{ html[3:-4]|safe }}
+  {%- else -%}
+    {{ html }}
+  {%- endif -%}
+{%- endmacro -%}
 {%- macro formatEmail(email) -%}
   <span class="contact-email"><a href="mailto:{{ email }}">{{ email }}</a></span>
 {%- endmacro -%}

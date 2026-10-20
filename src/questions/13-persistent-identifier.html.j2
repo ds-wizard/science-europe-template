@@ -7,7 +7,7 @@
     {%- set producedDataPath = [uuids.preservingCUuid, uuids.producedDataQUuid]|reply_path -%}
     {%- set producedDataItems = repliesMap[producedDataPath]|reply_items -%}
     {%- if producedDataItems|length > 0 -%}
-        <ul>
+        <ul class="entries">
         {%- for i in producedDataItems -%}
             {%- set pathPrefix = [producedDataPath, i]|reply_path -%}
             {%- set producedDataName = repliesMap[[pathPrefix, uuids.producedDataNameQUuid]|reply_path]|reply_str_value -%}
@@ -52,13 +52,13 @@
                                 {%- set publishedDataIdentifierAssignsAUuid = repliesMap[publishedDataIdentifierAssignsQUuid]|reply_str_value -%}
 
                                 {%- if publishedDataIdentifierAssignsAUuid == uuids.publishedDataIdentifierAssignsProjectDataStewardAUuid -%}
-                                    <p>{% trans %}A project data steward or principal investigator will assign the persistent identifier.{% endtrans %}</p>
+                                    <li>{% trans %}A project data steward or principal investigator will assign the persistent identifier.{% endtrans %}</li>
 
-                                {%- elif publishedDataIdentifierAssignsAUuid == uuids.publishedDataIdentifierAssignsInstitDataStewardAUui -%}
-                                    <p>{% trans %}An institutional data steward will assign the persistent identifier.{% endtrans %}</p>
+                                {%- elif publishedDataIdentifierAssignsAUuid == uuids.publishedDataIdentifierAssignsInstitDataStewardAUuid -%}
+                                    <li>{% trans %}An institutional data steward will assign the persistent identifier.{% endtrans %}</li>
 
                                 {%- elif publishedDataIdentifierAssignsAUuid == uuids.publishedDataIdentifierAssignsRepositoryAUuid -%}
-                                    <p>{% trans %}The repository will assign the persistent identifier.{% endtrans %}</p>
+                                    <li>{% trans %}The repository will assign the persistent identifier.{% endtrans %}</li>
                                 {%- endif -%}
 
                                 {# Resolvable #}
@@ -66,21 +66,22 @@
                                 {%- set publishedDataIdentifierResolvableAUuid = repliesMap[publishedDataIdentifierResolvableQUuid]|reply_str_value -%}
 
                                 {%- if publishedDataIdentifierResolvableAUuid == uuids.publishedDataIdentifierResolvableYesAUuid -%}
-                                    <p>{% trans %}The repository will make sure the persistent identifier can be resolved to a digital object.{% endtrans %}</p>
+                                    <li>{% trans %}The repository will make sure the persistent identifier can be resolved to a digital object.{% endtrans %}</li>
 
                                 {%- elif publishedDataIdentifierResolvableAUuid == uuids.publishedDataIdentifierResolvableNoAUuid -%}
-                                    <p>{% trans %}The repository will not make sure the persistent identifier can be resolved to a digital object.{% endtrans %}</p>
+                                    <li>{% trans %}The repository will not make sure the persistent identifier can be resolved to a digital object.{% endtrans %}</li>
                                 {%- endif -%}
 
                             </ul>
+                            {%- elif publishedDataIdentifierAUuid == uuids.publishedDataIdentifierNoAUuid -%}
+                            <p>{% trans %}Within this repository, unique and persistent identifiers will not be applied.{% endtrans %}</p>
                             {%- endif -%}
                             </li>
                         {%- endfor -%}
-                        <p>{% trans %}Within this repository, unique and persistent identifiers will not be applied.{% endtrans %}</p>
                     </ul>
                     {%- endif -%}
-            {%- endif -%}
             </li>
+            {%- endif -%}
         {%- endfor -%}
         </ul>
     {%- endif -%}
@@ -96,7 +97,7 @@
 
         {%- set dataMeasuredPath = [dataMeasuredQUuid, uuids.measuredYesAUuid, uuids.measuredDataQUuid]|reply_path -%}
         {%- set dataMeasuredItems = repliesMap[dataMeasuredPath]|reply_items -%}
-        <ul>
+        <ul class="entries">
         {%- for k in dataMeasuredItems -%}
             {%- set measuredDataItem = [dataMeasuredPath, k]|reply_path -%}
             {%- set measuredDataNameQUuid = [measuredDataItem, uuids.measuredDataNameQUuid]|reply_path -%}
@@ -119,7 +120,7 @@
                 
                 {%- if measuredDataReuseOtherFieldHowReply -%}
                 
-                 {{ " " }}{% trans value=(measuredDataReuseOtherFieldHowReply|markdown) %}because: {{ value }}{% endtrans %}</p>
+                 {{ " " }}{% trans value=(macros.md(measuredDataReuseOtherFieldHowReply)) %}because: {{ value }}{% endtrans %}</p>
                 {%- else -%}
                 .
                 {%- endif -%}

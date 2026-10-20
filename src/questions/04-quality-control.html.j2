@@ -9,7 +9,7 @@
             {%- set measuredDataPath = [measuredPath, uuids.measuredYesAUuid, uuids.measuredDataQUuid]|reply_path -%}
             {%- set measuredDataItems = repliesMap[measuredDataPath]|reply_items -%}
             {%- if measuredDataItems|length > 0 -%}
-            <ul>
+            <ul class="entries">
                 {%- for datasetItem in measuredDataItems -%}
                 {%- set pathPrefix = [measuredDataPath, datasetItem]|reply_path -%}
                 <li>
@@ -103,7 +103,7 @@
                         {%- set mdQualityOtherYesPath = [mdQualityOtherPath, uuids.mdQualityOtherYesAUuid,uuids.mdQualityOtherWhatQUuid]|reply_path -%}
                         {%- set mdQualityOther = repliesMap[mdQualityOtherYesPath]|reply_str_value -%}
                         {%- if mdQualityOther -%}
-                        <p>{% if qualityCount > 0 %}{% trans value=(mdQualityOther|markdown) %}Additional quality processes are: {{ value }}{% endtrans %}{% else %}{% trans value=(mdQualityOther|markdown) %}Our quality processes are: {{ value }}{% endtrans %}{% endif %}</p>
+                        <p>{% if qualityCount > 0 %}{% trans value=(macros.md(mdQualityOther)) %}Additional quality processes are: {{ value }}{% endtrans %}{% else %}{% trans value=(macros.md(mdQualityOther)) %}Our quality processes are: {{ value }}{% endtrans %}{% endif %}</p>
                         {%- endif -%}
                     {%- endif -%}
                     {%- endif -%}

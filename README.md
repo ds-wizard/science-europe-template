@@ -31,6 +31,22 @@ This document template for DSW is available as open-source via GitHub Repository
 
 ## Changelog
 
+### 1.32.0
+
+- Refreshed document layout: title page, running footer with the project name, clearer section and question headings, lighter tables
+- Version history and contributors share a page; the document language is set from the selected locale
+- Datasets, formats, policies and other entries are shown as separate blocks instead of long bullet points; shorter lists keep bullets
+- MS Word: restyled reference document (sans-serif text, headings, question bands, tables and lists matching the PDF); no "Logo" text when no logo is configured
+- Fixed ethical approvals listing each project once per authority, and showing project acronyms
+- Fixed links and sentences around answers (stray spaces and periods, answers breaking sentences into separate paragraphs, capitalization of answers)
+- Fixed missing parts: institutional data steward as identifier assigner, distributions without a sharing level, names of unpublished datasets in Question 12, persistent identifier notes per repository
+- Fixed singular "Role" for contributors with one role and translated values that were left in English
+
+### 1.31.0
+
+- Support for template localization (Wizard 4.35+, metamodel 18.3)
+- Fixed English text of the template and several conditions that were never met
+
 ### 1.30.1
 
 - Fixed text value type questions rendering with markdown

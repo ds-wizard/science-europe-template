@@ -24,12 +24,13 @@
     {%- set fundersPath = [projectsPath, projectsItem, uuids.fundersQUuid]|reply_path -%}
     {%- set fundersItems = repliesMap[fundersPath]|reply_items -%}
       <dl>
-        <dt>{% trans %}Project Number{% endtrans %}</dt>
-        <dd>{{ projectNumber if projectNumber else "N/A" }}</dd>
+        <dt>{% trans %}Project number{% endtrans %}</dt>
+        {#- TRANSLATORS: shown instead of a missing project number or date -#}
+        <dd>{{ projectNumber if projectNumber else _("not given") }}</dd>
         <dt>{% trans %}Start date{% endtrans %}</dt>
-        <dd>{{ projectStart if projectStart else "N/A" }}</dd>
+        <dd>{{ projectStart if projectStart else _("not given") }}</dd>
         <dt>{% trans %}End date{% endtrans %}</dt>
-        <dd>{{ projectEnd if projectEnd else "N/A" }}</dd>
+        <dd>{{ projectEnd if projectEnd else _("not given") }}</dd>
         <dt>{% trans %}Funding{% endtrans %}</dt>
         <dd>
           {%- if fundersItems|length > 0 %}
