@@ -1,5 +1,5 @@
 <div id="q-how-data" class="question">
-    <h3>4. What data quality control measures will be used?</h3>
+    <h3>{% trans %}4. What data quality control measures will be used?{% endtrans %}</h3>
 
     <div class="answer">
         {%- set measuredPath = [uuids.creatingCUuid, uuids.measuredQUuid]|reply_path -%}
@@ -15,12 +15,12 @@
                 <li>
                     {%- set measuredDataNamePath = [pathPrefix, uuids.measuredDataNameQUuid]|reply_path -%}
                     {%- set measuredDataName = repliesMap[measuredDataNamePath]|reply_str_value -%}
-                    <strong>{{ measuredDataName if measuredDataName else "(no name given)" }}</strong>
+                    <strong>{{ measuredDataName if measuredDataName else _("(no name given)") }}</strong>
                     {# Quality #}
                     {%- set measuredDataQualityPath = [pathPrefix, uuids.measuredDataQualityQUuid]|reply_path -%}
                     {%- set measuredDataQualityAUuid = repliesMap[measuredDataQualityPath]|reply_str_value -%}
                     {%- if measuredDataQualityAUuid == uuids.measuredDataQualityNoAUuid -%}
-                    <p>For this dataset we will not be using quality process for this dataset.</p>
+                    <p>{% trans %}We will not be using a quality process for this dataset.{% endtrans %}</p>
                     {%- elif measuredDataQualityAUuid == uuids.measuredDataQualityYesAUuid -%}
                     {# Named quality processes #}
                     {%- set mdqPrefix = [measuredDataQualityPath, uuids.measuredDataQualityYesAUuid]|reply_path -%}
@@ -42,59 +42,59 @@
                     {%- set qualityCount = qualityProcesses|select("true")|list|length -%}
                     {%- if qualityCount == 1 -%}
                         <p>
-                        We will be using
+                        {% trans %}We will be using{% endtrans %}
                         {% if calibrating -%}
-                            calibrating measurements
+                            {% trans %}calibrating measurements{% endtrans %}
                         {%- endif -%}
                         {%- if repetition -%}
-                            repeat samples/measurements
+                            {% trans %}repeat samples/measurements{% endtrans %}
                         {%- endif -%}
                         {%- if standardized -%}
-                            standardized data capture/recording
+                            {% trans %}standardized data capture/recording{% endtrans %}
                         {%- endif -%}
                         {%- if validation -%}
-                            <em>Data Entry</em> validation
+                            {% trans %}<em>Data Entry</em> validation{% endtrans %}
                         {%- endif -%}
                         {%- if peerReview -%}
-                            data peer review
+                            {% trans %}data peer review{% endtrans %}
                         {%- endif -%}
                         {%- if vocabularies -%}
-                            controlled vocabularies
+                            {% trans %}controlled vocabularies{% endtrans %}
                         {%- endif %}
                         {%- if consistency -%}
-                            measuring samples for which the outcome is known in order to monitor consistency
+                            {% trans %}measuring samples for which the outcome is known in order to monitor consistency{% endtrans %}
                         {%- endif %}
-                        as part of the quality process.
+                        {% trans %}as part of the quality process.{% endtrans %}
                         </p>
                     {%- elif qualityCount > 1 -%}
                         <p>
-                        We will be using the following quality processes for this dataset:
+                        {% trans %}We will be using the following quality processes for this dataset:{% endtrans %}
                         <ul>
                         {%- if calibrating -%}
-                            <li>calibrating measurements</li>
+                            <li>{% trans %}calibrating measurements{% endtrans %}</li>
                         {%- endif -%}
                         {%- if repetition -%}
-                            <li>repeat samples/measurements</li>
+                            <li>{% trans %}repeat samples/measurements{% endtrans %}</li>
                         {%- endif -%}
                         {%- if standardized -%}
-                            <li>standardized data capture/recording</li>
+                            <li>{% trans %}standardized data capture/recording{% endtrans %}</li>
                         {%- endif -%}
                         {%- if validation -%}
-                            <li><em>Data Entry</em> validation</li>
+                            <li>{% trans %}<em>Data Entry</em> validation{% endtrans %}</li>
                         {%- endif -%}
                         {%- if peerReview -%}
-                            <li>data peer review</li>
+                            <li>{% trans %}data peer review{% endtrans %}</li>
                         {%- endif -%}
                         {%- if vocabularies -%}
-                            <li>controlled vocabularies</li>
+                            <li>{% trans %}controlled vocabularies{% endtrans %}</li>
                         {%- endif -%}
                         {%- if consistency -%}
-                            <li>measuring samples with known outcome (to monitor consistency)</li>
+                            <li>{% trans %}measuring samples with known outcome (to monitor consistency){% endtrans %}</li>
                         {%- endif %}
                         </ul>
                         </p>
                     {%- else -%}
-                        <p>We will be using quality processes.<p>
+                        <p>{% trans %}We will be using quality processes.{% endtrans %}<p>
                     {%- endif -%}
                     {# Other quality processes #}
                     {%- set mdQualityOtherPath = [mdqPrefix, uuids.mdQualityOtherQUuid]|reply_path -%}
@@ -103,7 +103,7 @@
                         {%- set mdQualityOtherYesPath = [mdQualityOtherPath, uuids.mdQualityOtherYesAUuid,uuids.mdQualityOtherWhatQUuid]|reply_path -%}
                         {%- set mdQualityOther = repliesMap[mdQualityOtherYesPath]|reply_str_value -%}
                         {%- if mdQualityOther -%}
-                        <p>{{ "Additional" if qualityCount > 0 else "Our" }} quality processes are: {{ mdQualityOther|markdown }}</p>
+                        <p>{% if qualityCount > 0 %}{% trans value=(mdQualityOther|markdown) %}Additional quality processes are: {{ value }}{% endtrans %}{% else %}{% trans value=(mdQualityOther|markdown) %}Our quality processes are: {{ value }}{% endtrans %}{% endif %}</p>
                         {%- endif -%}
                     {%- endif -%}
                     {%- endif -%}
@@ -112,7 +112,7 @@
             </ul>
             {%- endif -%}
         {%- else -%}
-            <p>There will be no instrument dataset in this project.</p>
+            <p>{% trans %}There will be no instrument dataset in this project.{% endtrans %}</p>
         {%- endif -%}
 
 

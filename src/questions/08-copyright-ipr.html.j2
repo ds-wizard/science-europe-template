@@ -1,5 +1,5 @@
 <div id="q-ethical-issues" class="question">
-  <h3>8. How will other legal issues, such as intellectual property rights and ownership, be managed? What legislation is applicable?
+  <h3>{% trans %}8. How will other legal issues, such as intellectual property rights and ownership, be managed? What legislation is applicable?{% endtrans %}
 </h3>
 
   <div class="answer">
@@ -7,14 +7,14 @@
     {%- set asOpenAsPossiblePath = [uuids.accessCUuid, uuids.asOpenAsPossibleQUuid]|reply_path -%}
     {%- set asOpenAsPossibleAUuid = repliesMap[asOpenAsPossiblePath]|reply_str_value -%}
     {%- if asOpenAsPossibleAUuid == uuids.asOpenAsPossibleYesAUuid -%}
-      <p>We will be working with the philosophy <em>as open as possible</em> for our data.</p>
+      <p>{% trans %}We will be working with the philosophy <em>as open as possible</em> for our data.{% endtrans %}</p>
     {%- endif -%}
 
     {# Can open data #}
     {%- set openImmediatelyPath = [uuids.accessCUuid, uuids.openImmediatelyQUuid]|reply_path -%}
     {%- set openImmediatelyAUuid = repliesMap[openImmediatelyPath]|reply_str_value -%}
     {%- if openImmediatelyAUuid == uuids.openImmediatelyYesAUuid -%}
-      <p>All of our data can become completely open over time.</p>
+      <p>{% trans %}All of our data can become completely open over time.{% endtrans %}</p>
     {%- elif openImmediatelyAUuid == uuids.openImmediatelyNoAUuid -%}
       {%- set pathPrefix = [openImmediatelyPath, uuids.openImmediatelyNoAUuid]|reply_path -%}
       {%- set notOpenLegalReasonsPath = [pathPrefix, uuids.notOpenLegalReasonsQUuid]|reply_path -%}
@@ -38,39 +38,43 @@
 
       {%- if nReasons > 0 -%}
         <p>
-        The data cannot become completely open because 
+        {% trans %}The data cannot become completely open because{% endtrans %} 
         {%- if nReasons == 1 -%}
           {%- if legalReasons %}
-            of legal reasons.
+            {% trans %}of legal reasons.{% endtrans %}
           {%- elif businessReasonsPatents %}
-            of patent-related business reasons.
+            {% trans %}of patent-related business reasons.{% endtrans %}
           {%- elif businessReasonsOther %}
-            of non-patent business reasons{{  ": " ~ notOpenBusinessReasonsOther|markdown if notOpenBusinessReasonsOther else "." }}
+            {#- TRANSLATORS: %(details)s is ": " followed by the user's text, or just "." -#}
+            {% trans details=(": " ~ notOpenBusinessReasonsOther|markdown if notOpenBusinessReasonsOther else ".") %}of non-patent business reasons{{ details }}{% endtrans %}
           {%- elif otherReasonsPapers %}
-            we want to publish a paper first.
+            {% trans %}we want to publish a paper first.{% endtrans %}
           {%- elif otherReasonsOther %}
-            we have other than paper-publishing reasons{{ ": " ~ notOpenOtherReasonsOther|markdown if notOpenOtherReasonsOther else "." }}
+            {#- TRANSLATORS: %(details)s is ": " followed by the user's text, or just "." -#}
+            {% trans details=(": " ~ notOpenOtherReasonsOther|markdown if notOpenOtherReasonsOther else ".") %}we have other than paper-publishing reasons{{ details }}{% endtrans %}
           {%- endif -%}
         {%- else %}
-          of:
+          {% trans %}of:{% endtrans %}
           <ul>
             {%- if legalReasons %}
-              <li>legal reasons</li>
+              <li>{% trans %}legal reasons{% endtrans %}</li>
             {%- endif -%}
             {%- if businessReasonsPatents %}
-              <li>patent-related business reasons</li>
+              <li>{% trans %}patent-related business reasons{% endtrans %}</li>
             {%- elif businessReasonsOther %}
-              <li>non-patent business reasons{{ ": " ~ notOpenBusinessReasonsOther|markdown if notOpenBusinessReasonsOther else "" }}</li>
+              {#- TRANSLATORS: %(details)s is ": " followed by the user's text, or just "." -#}
+              <li>{% trans details=(": " ~ notOpenBusinessReasonsOther|markdown if notOpenBusinessReasonsOther else "") %}non-patent business reasons{{ details }}{% endtrans %}</li>
             {%- endif -%}
             {%- if otherReasonsPapers %}
-              <li>we want to publish a paper first</li>
+              <li>{% trans %}we want to publish a paper first{% endtrans %}</li>
             {%- elif otherReasonsOther -%}
-              <li>we have other than paper-publishing reasons{{ ": " ~ notOpenOtherReasonsOther|markdown if notOpenOtherReasonsOther else "" }}</li>
+              {#- TRANSLATORS: %(details)s is ": " followed by the user's text, or just "." -#}
+              <li>{% trans details=(": " ~ notOpenOtherReasonsOther|markdown if notOpenOtherReasonsOther else "") %}we have other than paper-publishing reasons{{ details }}{% endtrans %}</li>
             {%- endif -%}
           </ul>
         {%- endif -%}
       {%- else -%}
-        <p>The data cannot become completely open.</p>
+        <p>{% trans %}The data cannot become completely open.{% endtrans %}</p>
       {%- endif -%}
 
       {# Authentication and authorization of users #}
@@ -80,19 +84,19 @@
         {%- set legalReasonsAuthenticatedAUuid = repliesMap[legalReasonsAuthenticatedQUuid]|reply_str_value -%}
         
         {%- if legalReasonsAuthenticatedAUuid -%}
-          <h4>Authentication and Authorization of Users</h4>
+          <h4>{% trans %}Authentication and Authorization of Users{% endtrans %}</h4>
           {%- if legalReasonsAuthenticatedAUuid == uuids.legalReasonsAuthorizeMemberAUuid -%}
-            <p>One of the project members will authorize potential users of the data.</p>
+            <p>{% trans %}One of the project members will authorize potential users of the data.{% endtrans %}</p>
           {%- elif legalReasonsAuthenticatedAUuid == uuids.legalReasonsAuthorizeNewCommitteeAUuid -%}
-            <p>We will set up a data access committee for authorization of potential users of the data.</p>
+            <p>{% trans %}We will set up a data access committee for authorization of potential users of the data.{% endtrans %}</p>
           {%- elif legalReasonsAuthenticatedAUuid == uuids.legalReasonsAuthorizeOldCommitteeAUuid -%}
             {%- set legalReasonsAuthenticatedCommitteeQUuid = [legalReasonsAuthenticatedQUuid, uuids.legalReasonsAuthorizeOldCommitteeAUuid, uuids.legalReasonsAuthorizeOldCommitteeQUuid]|reply_path -%}
             {%- set legalReasonsAuthenticatedCommitteeReply = repliesMap[legalReasonsAuthenticatedCommitteeQUuid]|reply_str_value -%}
             
             {%- if legalReasonsAuthenticatedCommitteeReply -%}
-              <p>We will make use of an existing data committee: {{legalReasonsAuthenticatedCommitteeReply|markdown}}</p>
+              <p>{% trans value=(legalReasonsAuthenticatedCommitteeReply|markdown) %}We will make use of an existing data committee: {{ value }}{% endtrans %}</p>
             {%- else -%}
-              <p>We will make use of an existing data committee.</p>
+              <p>{% trans %}We will make use of an existing data committee.{% endtrans %}</p>
             {%- endif -%}
 
           {%- elif legalReasonsAuthenticatedAUuid == uuids.legalReasonsAuthorizeOtherAUuid -%}
@@ -100,9 +104,9 @@
             {%- set legalReasonsAuthenticatedOtherReply = repliesMap[legalReasonsAuthenticatedOtherQUuid]|reply_str_value -%}
 
             {%- if legalReasonsAuthenticatedOtherReply  -%}
-              <p>We will have following arrangements: {{legalReasonsAuthenticatedOtherReply|markdown}}</p>
+              <p>{% trans value=(legalReasonsAuthenticatedOtherReply|markdown) %}We will have following arrangements: {{ value }}{% endtrans %}</p>
             {%- else -%}
-              <p>We will have not decided yet.</p>
+              <p>{% trans %}We have not decided yet.{% endtrans %}</p>
             {%- endif -%}
           {%- endif -%}
  
@@ -113,11 +117,11 @@
       {%- set notOpenLimitedEmbargoPath = [openImmediatelyPath, uuids.openImmediatelyNoAUuid, uuids.notOpenLimitedEmbargoQUuid]|reply_path -%}
       {%- set notOpenLimitedEmbargoAUuid = repliesMap[notOpenLimitedEmbargoPath]|reply_str_value -%}
       {%- if notOpenLimitedEmbargoAUuid == uuids.notOpenLimitedEmbargoIndefinitelyAUuid -%}
-        <p>Limited embargo cannot be used because some restricted data will be embargoed indefinitely.</p>
+        <p>{% trans %}Limited embargo cannot be used because some restricted data will be embargoed indefinitely.{% endtrans %}</p>
       {%- elif notOpenLimitedEmbargoAUuid == uuids.notOpenLimitedEmbargoReleasedSoonAUuid -%}
-        <p>Data will be released only as soon as restrictions are falling away.</p>
+        <p>{% trans %}Data will be released only as soon as restrictions are falling away.{% endtrans %}</p>
       {%- elif notOpenLimitedEmbargoAUuid == uuids.notOpenLimitedEmbargoYesAUuid -%}
-        <p>Data that is not legally restrained will be released after a fixed time period, unconditionally.</p>
+        <p>{% trans %}Data that is not legally restricted will be released after a fixed time period, unconditionally.{% endtrans %}</p>
       {%- endif -%}
     {%- endif -%}
 
@@ -125,18 +129,18 @@
     {%- set embargoPath = [uuids.accessCUuid, uuids.limitedEmbargoQUuid]|reply_path -%}
     {%- set embargoAUuid = repliesMap[embargoPath]|reply_str_value -%}
     {%- if embargoAUuid == uuids.limitedEmbargoOpenAUuid -%}
-      <p>Limited embargo will not be used as all data will be opened.</p>
+      <p>{% trans %}Limited embargo will not be used as all data will be opened.{% endtrans %}</p>
     {%- elif embargoAUuid == uuids.limitedEmbargoIndefinitelyAUuid -%}
-      <p>Limited embargo cannot be used because some restricted data will be embargoed indefinitely.</p>
+      <p>{% trans %}Limited embargo cannot be used because some restricted data will be embargoed indefinitely.{% endtrans %}</p>
     {%- elif embargoAUuid == uuids.limitedEmbargoReleasedSoonAUuid -%}
-      <p>Data will be released only as soon as restrictions are falling away.</p>
+      <p>{% trans %}Data will be released only as soon as restrictions are falling away.{% endtrans %}</p>
     {%- elif embargoAUuid == uuids.limitedEmbargoYesAUuid -%}
       {%- set embargoPeriodPath = [embargoPath, embargoAUuid, uuids.limitedEmbargoPeriodQUuid]|reply_path -%}
       {%- set embargoPeriod = repliesMap[embargoPeriodPath]|reply_str_value -%}
       {%- if embargoPeriod -%}
-        <p>Data that is not legally restrained will be released after a fixed time period ({{ embargoPeriod }}), unconditionally.</p>
+        <p>{% trans embargoperiod=embargoPeriod %}Data that is not legally restricted will be released after a fixed time period ({{ embargoperiod }}), unconditionally.{% endtrans %}</p>
       {%- else -%}
-        <p>Data that is not legally restrained will be released after a fixed time period, unconditionally.</p>
+        <p>{% trans %}Data that is not legally restricted will be released after a fixed time period, unconditionally.{% endtrans %}</p>
       {%- endif -%}
     {%- endif -%}
     
@@ -144,18 +148,18 @@
     {%- set ownershipPath = [uuids.creatingCUuid, uuids.ownershipQUuid]|reply_path -%}
     {%- set ownershipAUuid = repliesMap[ownershipPath]|reply_str_value -%}
     {%- if ownershipAUuid == uuids.ownershipNoOwnerAUuid -%}
-      <p>Our data is legally not copyrightable, there is no legal owner.</p>
+      <p>{% trans %}Our data is legally not copyrightable, there is no legal owner.{% endtrans %}</p>
     {%- elif ownershipAUuid == uuids.ownershipPIAUuid -%}
-      <p>All data will be owned by the Principal Investigator.</p>
+      <p>{% trans %}All data will be owned by the Principal Investigator.{% endtrans %}</p>
     {%- elif ownershipAUuid == uuids.ownershipInstituteAUuid -%}
-      <p>All data will be owned by the institute.</p>
+      <p>{% trans %}All data will be owned by the institute.{% endtrans %}</p>
     {%- elif ownershipAUuid == uuids.ownershipConsortiumAUuid -%}
-      <p>We have a consortium agreement that arranges Intellectual Property.</p>
+      <p>{% trans %}We have a consortium agreement that arranges Intellectual Property.{% endtrans %}</p>
     {%- elif ownershipAUuid == uuids.ownershipOtherAUuid -%}
       {%- set ownershipOtherPath = [ownershipPath, uuids.ownershipOtherAUuid, uuids.ownershipOtherQUuid]|reply_path -%}
       {%- set ownershipOther = repliesMap[ownershipOtherPath]|reply_str_value -%}
       {%- if ownershipOther -%}
-        <p>We have made the following arrangements regarding the data ownership: {{ ownershipOther|markdown }}</p>
+        <p>{% trans value=(ownershipOther|markdown) %}We have made the following arrangements regarding the data ownership: {{ value }}{% endtrans %}</p>
       {%- endif -%}
     {%- endif -%}
 
@@ -184,7 +188,7 @@
         {%- endif -%}
       {%- endfor -%}
       {%- if (answeredRefData|length + answeredNRefData|length) > 0 -%}
-        <p>For the reference and non-reference data sets that we reuse, conditions are as follows:
+        <p>{% trans %}For the reference and non-reference data sets that we reuse, conditions are as follows:{% endtrans %}
         <ul>
           {%- for i in answeredRefData -%}
             {%- set refDataPrefix = [refDataPath, i]|reply_path -%}
@@ -198,17 +202,18 @@
                 {%- if refDataNameReply -%}
                   <div>{{ refDataNameReply }}</div>
                 {%- else -%}
-                  <div>(no name given)</div>
+                  <div>{% trans %}(no name given){% endtrans %}</div>
                 {%- endif -%}
                 
                 {% if refDataConditionsAUuid == uuids.refDataConditionsCC0AUuid -%}
-                  It is freely available for any use (public domain or CC0).
+                  {% trans %}It is freely available for any use (public domain or CC0).{% endtrans %}
                 {%- elif refDataConditionsAUuid == uuids.refDataConditionsCCBYAUuid -%}
-                  It is freely available with obligation to quote the source (e.g. CC-BY).
+                  {% trans %}It is freely available with obligation to quote the source (e.g. CC-BY).{% endtrans %}
                 {%- elif refDataConditionsAUuid == uuids.refDataConditionsOtherAUuid -%}
                   {%- set refDataConditionsOtherPath = [refDataConditionsPath, uuids.refDataConditionsOtherAUuid, uuids.refDataConditionsOtherQUuid]|reply_path -%}
                   {%- set refDataConditionsOther = repliesMap[refDataConditionsOtherPath]|reply_str_value -%}
-                  It is available under specific restrictions, which we will follow in our project{{ ": " ~ refDataConditionsOther|markdown if refDataConditionsOther else "." }}
+                  {#- TRANSLATORS: %(details)s is ": " followed by the user's text, or just "." -#}
+                  {% trans details=(": " ~ refDataConditionsOther|markdown if refDataConditionsOther else ".") %}It is available under specific restrictions, which we will follow in our project{{ details }}{% endtrans %}
                 {%- endif -%}
               </li>
             {%- endif -%}
@@ -225,16 +230,17 @@
                 {%- if nrefDataNameReply -%}
                   <div>{{ nrefDataNameReply }}</div>
                 {%- else -%}
-                  <div>(no name given)</div>
+                  <div>{% trans %}(no name given){% endtrans %}</div>
                 {%- endif -%}
                 {% if nrefDataConditionsAUuid == uuids.nrefDataConditionsCC0AUuid -%}
-                  It is freely available for any use (public domain or CC0).
+                  {% trans %}It is freely available for any use (public domain or CC0).{% endtrans %}
                 {%- elif nrefDataConditionsAUuid == uuids.nrefDataConditionsCCBYAUuid -%}
-                  It is freely available with obligation to quote the source (e.g. CC-BY).
+                  {% trans %}It is freely available with obligation to quote the source (e.g. CC-BY).{% endtrans %}
                 {%- elif nrefDataConditionsAUuid == uuids.nrefDataConditionsOtherAUuid -%}
                   {%- set nrefDataConditionsOtherPath = [nrefDataConditionsPath, uuids.nrefDataConditionsOtherAUuid, uuids.nrefDataConditionsOtherQUuid]|reply_path -%}
                   {%- set nrefDataConditionsOther = repliesMap[nrefDataConditionsOtherPath]|reply_str_value -%}
-                  It is available under specific restrictions, which we will follow in our project{{ ": " ~ nrefDataConditionsOther|markdown if nrefDataConditionsOther else "." }}
+                  {#- TRANSLATORS: %(details)s is ": " followed by the user's text, or just "." -#}
+                  {% trans details=(": " ~ nrefDataConditionsOther|markdown if nrefDataConditionsOther else ".") %}It is available under specific restrictions, which we will follow in our project{{ details }}{% endtrans %}
                 {%- endif -%}
               </li>
             {%- endif -%}

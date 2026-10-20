@@ -1,32 +1,32 @@
 <div id="q-required-resources" class="question">
-  <h3>15. What resources (for example financial and time) will be dedicated to data management and ensuring that data will be FAIR (Findable, Accessible, Interoperable, Re-usable)?</h3>
+  <h3>{% trans %}15. What resources (for example financial and time) will be dedicated to data management and ensuring that data will be FAIR (Findable, Accessible, Interoperable, Re-usable)?{% endtrans %}</h3>
 
   <div class="answer">
     {# additional expertise #}
     {%- set expertisePath = [uuids.adminDetailsCUuid, uuids.additionalExpertiseQUuid]|reply_path -%}
     {%- set expertiseAUuid = repliesMap[expertisePath]|reply_str_value -%}
     {%- if expertiseAUuid == uuids.additionalExpertiseNoAUuid -%}
-      <p>To execute the DMP, no additional specialist expertise is required.</p>
+      <p>{% trans %}To execute the DMP, no additional specialist expertise is required.{% endtrans %}</p>
     {%- elif expertiseAUuid == uuids.additionalExpertiseYesAvailableAUuid -%}
-      <p>To execute the DMP, additional specialist expertise is required and we have such trained support staff available.</p>
+      <p>{% trans %}To execute the DMP, additional specialist expertise is required and we have such trained support staff available.{% endtrans %}</p>
     {%- elif expertiseAUuid == uuids.additionalExpertiseYesTrainAUuid -%}
       <p>
-        To execute the DMP, additional specialist expertise is required. We will be training existing staff
+        {% trans %}To execute the DMP, additional specialist expertise is required. We will be training existing staff{% endtrans %}
         {%- set expertiseTrainPath = [expertisePath, uuids.additionalExpertiseYesTrainAUuid, uuids.additionalExpertiseYesTrainTrainingQUuid]|reply_path -%}
         {%- set expertiseTrainText = repliesMap[expertiseTrainPath]|reply_str_value -%}
         {%- if expertiseTrainText %}
-          {{" "}}on: {{ expertiseTrainText|markdown }}
+          {{ " " }}{% trans value=(expertiseTrainText|markdown) %}on: {{ value }}{% endtrans %}
         {%- else -%}
           .
         {%- endif -%}
       </p>
     {%- elif expertiseAUuid == uuids.additionalExpertiseYesHireAUuid -%}
       <p>
-        To execute the DMP, additional specialist expertise is required. We will be hiring new people with additional expertise
+        {% trans %}To execute the DMP, additional specialist expertise is required. We will be hiring new people with additional expertise{% endtrans %}
         {%- set expertiseHirePath = [expertisePath, uuids.additionalExpertiseYesHireAUuid, uuids.additionalExpertiseYesHireExpertiseQUuid]|reply_path -%}
         {%- set expertiseHireText = repliesMap[expertiseHirePath]|reply_str_value -%}
         {%- if expertiseHireText %}
-          {{" "}}in: {{ expertiseHireText}}
+          {{ " " }}{% trans expertisehiretext=expertiseHireText %}in: {{ expertisehiretext }}{% endtrans %}
         {%- endif -%}
         .
       </p>
@@ -35,23 +35,23 @@
     {%- set additionalHWSWPath = [uuids.adminDetailsCUuid, uuids.additionalHWSWQUuid]|reply_path -%}
     {%- set additionalHWSWAUuid = repliesMap[additionalHWSWPath]|reply_str_value -%}
     {%- if additionalHWSWAUuid == uuids.additionalHWSWNoAUuid -%}
-      <p>We do not require any hardware or software in addition to what is usually available in the institute.</p>
+      <p>{% trans %}We do not require any hardware or software in addition to what is usually available in the institute.{% endtrans %}</p>
     {%- elif additionalHWSWAUuid == uuids.additionalHWSWYesAUuid -%}
       {%- set additionalHWSWWhatPath = [additionalHWSWPath, uuids.additionalHWSWYesAUuid, uuids.additionalHWSWYesWhatQUuid]|reply_path -%}
       {%- set additionalHWSWWhat = repliesMap[additionalHWSWWhatPath]|reply_str_value -%}
       {%- if additionalHWSWWhat -%}
-        <p>We require the following hardware or software in addition to what is usually available in the institute: {{ additionalHWSWWhat|markdown }}</p>
+        <p>{% trans value=(additionalHWSWWhat|markdown) %}We require the following hardware or software in addition to what is usually available in the institute: {{ value }}{% endtrans %}</p>
       {%- else -%}
-        <p>We require hardware or software in addition to what is usually available in the institute.</p>
+        <p>{% trans %}We require hardware or software in addition to what is usually available in the institute.{% endtrans %}</p>
       {%- endif -%}
     {%- endif -%}
     {# charges #}
-    <p>Charges applied by data repositories (if any) are mentioned already in Section 4, Question 11.</p>
+    <p>{% trans %}Charges applied by data repositories (if any) are mentioned already in Section 5, Question 11.{% endtrans %}</p>
     {# costs #}
     {%- set projectPath = [uuids.adminDetailsCUuid, uuids.projectsQUuid]|reply_path -%}
     {%- set projectItems = repliesMap[projectPath]|reply_items -%}
     {%- if projectItems|length > 0 -%}
-    <p>Following resources will be dedicated to data management and ensuring that data will be FAIR:</p>
+    <p>{% trans %}The following resources will be dedicated to data management and ensuring that data will be FAIR:{% endtrans %}</p>
     <ul>
         {%- for i in projectItems -%}
             {%- set projectItem = [projectPath, i]|reply_path -%}
@@ -61,7 +61,7 @@
             {%- set projectItemNumberQUuid = [projectItem, uuids.projectNumberQUuid]|reply_path -%}
             {%- set projectItemNumberReply = repliesMap[projectItemNumberQUuid]|reply_str_value -%}
             <li> 
-                <strong>{{ projectItemNameReply if projectItemNameReply else "(no name given)" }}{{ " - " + projectItemNumberReply if projectItemNumberReply}} </strong>
+                <strong>{{ projectItemNameReply if projectItemNameReply else _("(no name given)") }}{{ " - " + projectItemNumberReply if projectItemNumberReply}} </strong>
 
                 {%- set projectCostPath = [projectItem, uuids.costQUuid]|reply_path -%}
                 {%- set projectCostItems = repliesMap[projectCostPath]|reply_items -%}
@@ -70,15 +70,10 @@
                     <ul>
                     {%- for j in projectCostItems -%}
                         {%- set projectCostItem = [projectCostPath, j]|reply_path -%}
-                        {%- set projectCostItemTitleQUuid = [projectCostItem, uuids.costTitleQUuid]|reply_path -%}
-                        {%- set projectCostItemTitleReply = repliesMap[projectCostItemTitleQUuid]|reply_str_value -%}
-                        <li>
-                        <strong>{{ projectCostItemTitleReply if projectCostItemTitleReply else "(no name given)" }}</strong>
-                        
                         {%- set projectCostItemDescriptionQUuid = [projectCostItem, uuids.costDescriptionQUuid]|reply_path -%}
                         {%- set projectCostItemDescriptionReply = repliesMap[projectCostItemDescriptionQUuid]|reply_str_value  -%}
-                        
-                        {{" - "+projectCostItemDescriptionReply|dot}}
+                        <li>
+                        <strong>{{ projectCostItemDescriptionReply if projectCostItemDescriptionReply else _("(no description given)") }}</strong>
 
                         {%- set projectCostItemCurrencyQUuid = [projectCostItem, uuids.costCurrencyQUuid]|reply_path  -%}
                         {%- set projectCostItemCurrencyReply = repliesMap[projectCostItemCurrencyQUuid] -%}
@@ -88,7 +83,7 @@
                         {%- set projectCostItemAmountReply = repliesMap[projectCostItemAmountQUuid]|reply_str_value -%}
 
                         {%- if  projectCostItemAmountReply and projectCostItemCurrencyReply -%}
-                            <p>The amount is {{projectCostItemAmountReply}} {{macros.integrationCurrency(projectCostItemCurrencyReply) }}.</p>
+                            <p>{% trans amount=projectCostItemAmountReply, currency=(macros.integrationCurrency(projectCostItemCurrencyReply)) %}The amount is {{ amount }} {{ currency }}.{% endtrans %}</p>
                         {%- endif -%}
 
                         {%- set projectCostItemAllocationQUuid = [projectCostItem, uuids.costAllocationQUuid]|reply_path  -%}
@@ -97,30 +92,31 @@
                         
                           {%- set projectCostItemAllocations = [] -%}
                           {%- if uuids.costAllocationFindabilityAUuid in projectCostItemAllocationItems -%}
-                            {%- do projectCostItemAllocations.append("ensuring findability") -%}
+                            {%- do projectCostItemAllocations.append(_("ensuring findability")) -%}
                           {%- endif -%}
                           {%- if uuids.costAllocationAccessibilityAUuid in projectCostItemAllocationItems -%}
-                            {%- do projectCostItemAllocations.append("ensuring accessibility") -%}
+                            {%- do projectCostItemAllocations.append(_("ensuring accessibility")) -%}
                           {%- endif -%}
                           {%- if uuids.costAllocationInteroperabilityAUuid in projectCostItemAllocationItems -%}
-                            {%- do projectCostItemAllocations.append("ensuring interoperability") -%}
+                            {%- do projectCostItemAllocations.append(_("ensuring interoperability")) -%}
                           {%- endif -%}
                           {%- if uuids.costAllocationReusabilityAUuid in projectCostItemAllocationItems -%}
-                            {%- do projectCostItemAllocations.append("ensuring reusability") -%}
+                            {%- do projectCostItemAllocations.append(_("ensuring reusability")) -%}
                           {%- endif -%}
                           {%- if uuids.costManagementAUuid in projectCostItemAllocationItems -%}
-                            {%- do projectCostItemAllocations.append("supporting management") -%}
+                            {%- do projectCostItemAllocations.append(_("supporting management")) -%}
                           {%- endif -%}
                         
                         {%- if projectCostItemAllocations|length > 0 -%}
                           <p>
-                            This resource is allocated for{{+" "}}
+                            {% trans %}This resource is allocated for{% endtrans %}{{+" "}}
                             {%- if projectCostItemAllocations|length > 2 -%}
-                              {{ projectCostItemAllocations[0:-1]|join(", ") }}, and {{ projectCostItemAllocations[-1] }} of data.
+                              {#- TRANSLATORS: completes "This resource is allocated for"; the purposes are "ensuring findability" etc. -#}
+                              {% trans purposes=(projectCostItemAllocations[0:-1]|join(", ")), last_purpose=(projectCostItemAllocations[-1]) %}{{ purposes }}, and {{ last_purpose }} of data.{% endtrans %}
                             {%- elif projectCostItemAllocations|length == 2 -%}
-                              {{ projectCostItemAllocations[0] }} and {{ projectCostItemAllocations[1] }} of data.
+                              {% trans purpose=(projectCostItemAllocations[0]), purpose2=(projectCostItemAllocations[1]) %}{{ purpose }} and {{ purpose2 }} of data.{% endtrans %}
                             {%- else -%}
-                              {{ projectCostItemAllocations[0] }} of data.
+                              {% trans purpose=(projectCostItemAllocations[0]) %}{{ purpose }} of data.{% endtrans %}
                             {%- endif %}
                           </p>
                         {%- endif -%}
@@ -132,9 +128,9 @@
                         {%- if projectCostItemCoverReply == uuids.costCoverGrantAUuid -%}
                           {%- set costCoverGrantIdQUuid = [projectCostItemCoverQUuid, uuids.costCoverGrantAUuid, uuids.costCoverGrantIdQUuid]|reply_path -%}
                           {%- set costCoverGrantIdReply = repliesMap[costCoverGrantIdQUuid]|reply_str_value -%}
-                          <p>This cost will be covered by funding grant
+                          <p>{% trans %}This cost will be covered by funding grant{% endtrans %}
                           {%- if costCoverGrantIdReply -%}
-                            {{" "}}(grant number: {{costCoverGrantIdReply}})
+                            {{ " " }}{% trans costcovergrantidreply=costCoverGrantIdReply %}(grant number: {{ costcovergrantidreply }}){% endtrans %}
                           {%- else -%}
                             . </p>
                           {%- endif -%}
@@ -142,7 +138,7 @@
                           {%- set costCoverOtherHowQUuid = [projectCostItemCoverQUuid,uuids.costCoverOtherAUuid, uuids.costCoverOtherHowQUuid]|reply_path  -%}
                           {%- set costCoverOtherHowReply = repliesMap[costCoverOtherHowQUuid]|reply_str_value -%}
                           {%- if costCoverOtherHowReply -%}
-                            <p>This cost will be covered as follows: {{costCoverOtherHowReply}}.</p>
+                            <p>{% trans costcoverotherhowreply=costCoverOtherHowReply %}This cost will be covered as follows: {{ costcoverotherhowreply }}.{% endtrans %}</p>
                           {%- endif -%}
 
                         {%- endif -%}

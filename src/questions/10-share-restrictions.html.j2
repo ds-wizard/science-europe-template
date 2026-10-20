@@ -1,31 +1,31 @@
 <div id="q-share-restrictions" class="question">
-  <h3>10. How and when will data be shared? Are there possible restrictions to data sharing or embargo reasons?</h3>
+  <h3>{% trans %}10. How and when will data be shared? Are there possible restrictions to data sharing or embargo reasons?{% endtrans %}</h3>
 
   <div class="answer">
     {# How data will be shared #}
     {# Produced datasets #}
     {%- set producedDataPath = [uuids.preservingCUuid, uuids.producedDataQUuid]|reply_path -%}
     {%- set producedDataItems = repliesMap[producedDataPath]|reply_items -%}
-    <h4>How the data will be shared</h4>
+    <h4>{% trans %}How the data will be shared{% endtrans %}</h4>
     {%- if producedDataItems|length > 0 -%}
         <ul>
         {%- for i in producedDataItems -%}
             {%- set pathPrefix = [producedDataPath, i]|reply_path -%}
             {%- set producedDataName = repliesMap[[pathPrefix, uuids.producedDataNameQUuid]|reply_path]|reply_str_value -%}
             <li>
-            <strong>{{ producedDataName if producedDataName else "(no name given)" }}</strong>
+            <strong>{{ producedDataName if producedDataName else _("(no name given)") }}</strong>
             {# If will be published #}
             {%- set isPublishedDataPath = [pathPrefix, uuids.isPublishedDataQUuid]|reply_path -%}
             {%- set isPublishedDataAUuid = repliesMap[isPublishedDataPath]|reply_str_value -%}
             {% if isPublishedDataAUuid == uuids.isPublishedDataNoAUuid %}
-                (not published)
+                {% trans %}(not published){% endtrans %}
             {% elif isPublishedDataAUuid == uuids.isPublishedDataYesAUuid %}
-                (will be published)
+                {% trans %}(will be published){% endtrans %}
                 {# Identifiers #}
                 {% set identifiersPath = [pathPrefix, uuids.producedDataIdentifiersQUuid]|reply_path -%}
                 {%- set identifiersItems = repliesMap[identifiersPath]|reply_items -%}
                 {%- if identifiersItems|length > 0 -%}
-                    <br>The dataset has the following identifiers:
+                    <br>{% trans %}The dataset has the following identifiers:{% endtrans %}
                     <ul>
                     {%- for j in identifiersItems -%}
                         {%- set identifierPrefix = [identifiersPath, j]|reply_path -%}
@@ -34,13 +34,13 @@
                         {%- set identifierValuePath = [identifierPrefix, uuids.dataIdentifierIdentifierQUuid]|reply_path -%}
                         {%- set identifierValue = repliesMap[identifierValuePath]|reply_str_value -%}
                         {%- if identifierTypeAUuid == uuids.dataIdentifierTypeHandleAUuid -%}
-                            <li>Handle: <strong>{{ identifierValue }}</strong></li>
+                            <li>{% trans identifiervalue=identifierValue %}Handle: <strong>{{ identifiervalue }}</strong>{% endtrans %}</li>
                         {%- elif identifierTypeAUuid == uuids.dataIdentifierTypeDoiAUuid -%}
-                            <li>DOI: <strong><a href="https://doi.org/{{ identifierValue }}" target="_blank">{{ identifierValue }}</a></strong></li>
+                            <li>{% trans %}DOI:{% endtrans %} <strong><a href="https://doi.org/{{ identifierValue }}" target="_blank">{{ identifierValue }}</a></strong></li>
                         {%- elif identifierTypeAUuid == uuids.dataIdentifierTypeArkAUuid -%}
-                            <li>ARK: <strong>{{ identifierValue }}</strong></li>
+                            <li>{% trans identifiervalue=identifierValue %}ARK: <strong>{{ identifiervalue }}</strong>{% endtrans %}</li>
                         {%- elif identifierTypeAUuid == uuids.dataIdentifierTypeUrlAUuid -%}
-                            <li>URL: <strong><a href="{{ identifierValue }}" target="_blank">{{ identifierValue }}</a></strong></li>
+                            <li>{% trans %}URL:{% endtrans %} <strong><a href="{{ identifierValue }}" target="_blank">{{ identifierValue }}</a></strong></li>
                         {%- elif identifierTypeAUuid == uuids.dataIdentifierTypeOtherAUuid -%}
                             {%- set identifierType = repliesMap[[identifierTypePath, uuids.dataIdentifierTypeOtherAUuid, uuids.dataIdentifierTypeOtherTypeQUuid]|reply_path]|reply_str_value -%}
                             <li>{{ identifierType }}: <strong>{{ identifierValue }}</strong></li>
@@ -52,7 +52,7 @@
                 {% set distrosPath = [isPublishedDataPath, uuids.isPublishedDataYesAUuid, uuids.publishedDistrosQUuid]|reply_path -%}
                 {%- set distrosItems = repliesMap[distrosPath]|reply_items -%}
                 {%- if distrosItems|length > 0 -%}
-                    <br>The distributions will be available as follows:
+                    <br>{% trans %}The distributions will be available as follows:{% endtrans %}
                     <ul>
                     {%- for j in distrosItems -%}
                         {%- set distroPrefix = [distrosPath, j]|reply_path -%}
@@ -63,14 +63,14 @@
                         {%- if distroRepositoryKindAUuid and distroShareAUuid -%}
                         <li>
                             {%- if distroShareAUuid == uuids.publishedDistroShareOpenAUuid %}
-                                Open (shared with anyone)
+                                {% trans %}Open (shared with anyone){% endtrans %}
                             {%- elif distroShareAUuid == uuids.publishedDistroShareSharedAUuid %}
-                                Shared with a predefined list of people
+                                {% trans %}Shared with a predefined list of people{% endtrans %}
                             {%- elif distroShareAUuid == uuids.publishedDistroShareClosedAUuid %}
-                                Closed (not meant for sharing)
+                                {% trans %}Closed (not meant for sharing){% endtrans %}
                             {%- endif %}
                             {% if distroRepositoryKindAUuid == uuids.publishedDataRepositoryDomainSpecificAUuid %}
-                                using a domain-specific repository
+                                {% trans %}using a domain-specific repository{% endtrans %}
                                 {%- set domainSpecificRepoNamePath = [distroRepositoryKindPath, uuids.publishedDataRepositoryDomainSpecificAUuid, uuids.domainSpecificRepoNameQUuid]|reply_path -%}
                                 {%- set domainSpecificRepoNameReply = repliesMap[domainSpecificRepoNamePath] -%}
                                 {%- if domainSpecificRepoNameReply -%}
@@ -81,18 +81,19 @@
                                 {%- set domainSpecificRepoContactBeforePath = [distroRepositoryKindPath, uuids.publishedDataRepositoryDomainSpecificAUuid, uuids.domainSpecificRepoContactBeforeQUuid]|reply_path -%}
                                 {%- set domainSpecificRepoContactBeforeAUuid = repliesMap[domainSpecificRepoContactBeforePath]|reply_str_value -%}
                                 {%- if domainSpecificRepoContactBeforeAUuid == uuids.domainSpecificRepoContactBeforeNoAUuid %}
-                                We don't need to contact the repository because it is a routine for us.
+                                {% trans %}We don't need to contact the repository because it is a routine for us.{% endtrans %}
                                 {%- elif domainSpecificRepoContactBeforeAUuid == uuids.domainSpecificRepoContactBeforeYesAlreadyAUuid %}
-                                We have already contacted the repository.
+                                {% trans %}We have already contacted the repository.{% endtrans %}
                                 {%- elif domainSpecificRepoContactBeforeAUuid == uuids.domainSpecificRepoContactBeforeYesWillAUuid %}
-                                We are going to contact the repository.
+                                {% trans %}We are going to contact the repository.{% endtrans %}
                                 {%- elif domainSpecificRepoContactBeforeAUuid == uuids.domainSpecificRepoContactBeforeOtherAUuid %}
                                 {%- set domainSpecificRepoContactBeforeOtherPath = [domainSpecificRepoContactBeforePath, uuids.domainSpecificRepoContactBeforeOtherAUuid, uuids.domainSpecificRepoContactBeforeOtherQUuid]|reply_path -%}
                                 {%- set domainSpecificRepoContactBeforeOther = repliesMap[domainSpecificRepoContactBeforeOtherPath]|reply_str_value %}
-                                We have made other arrangements{{ ": " ~ domainSpecificRepoContactBeforeOther|markdown if domainSpecificRepoContactBeforeOther else "." }}
+                                {#- TRANSLATORS: %(details)s is ": " followed by the user's text, or just "." #}
+                                {% trans details=(": " ~ domainSpecificRepoContactBeforeOther|markdown if domainSpecificRepoContactBeforeOther else ".") %}We have made other arrangements{{ details }}{% endtrans %}
                                 {%- endif -%}
                             {%- elif distroRepositoryKindAUuid == uuids.publishedDataRepositoryGeneralPurposeAUuid %}
-                                using a general-purpose repository
+                                {% trans %}using a general-purpose repository{% endtrans %}
                                 {%- set generalPurposeRepoNamePath = [distroRepositoryKindPath, uuids.publishedDataRepositoryGeneralPurposeAUuid, uuids.generalPurposeRepoNameQUuid]|reply_path -%}
                                 {%- set generalPurposeRepoNameReply = repliesMap[generalPurposeRepoNamePath] -%}
                                 {%- if generalPurposeRepoNameReply -%}
@@ -100,18 +101,18 @@
                                 {%- else -%}.
                                 {%- endif -%}
                             {%- elif distroRepositoryKindAUuid == uuids.publishedDataRepositoryNationalAUuid %}
-                                using our national repository.
+                                {% trans %}using our national repository.{% endtrans %}
                             {%- elif distroRepositoryKindAUuid == uuids.publishedDataRepositoryInstitutionalAUuid %}
-                                using our institutional repository.
+                                {% trans %}using our institutional repository.{% endtrans %}
                             {%- elif distroRepositoryKindAUuid == uuids.publishedDataRepositorySpecialAUuid %}
-                                using a special-purpose repository for the project.
+                                {% trans %}using a special-purpose repository for the project.{% endtrans %}
                             {%- endif -%}
                         {%- endif -%}
                         {# Licenses #}
                         {%- set licensesPath = [distroPrefix, uuids.publishedDataLicensesQUuid]|reply_path -%}
                         {%- set licensesItems = repliesMap[licensesPath]|reply_items -%}
                         {%- if licensesItems|length > 0 %}
-                            The distribution will be available under the following {{ "licenses" if licensesItems|length > 1 else "license" }}:
+                            {% trans count=[licensesItems|length, 1]|max %}The distribution will be available under the following license:{% pluralize %}The distribution will be available under the following licenses:{% endtrans %}
                             <ul>
                             {%- for k in licensesItems -%}
                                 <li>
@@ -119,15 +120,15 @@
                                 {%- set licenseStartPath = [licensePrefix, uuids.publishedDataLicenseStartQUuid]|reply_path -%}
                                 {%- set licenseStart = repliesMap[licenseStartPath]|reply_str_value -%}
                                 {% if licenseStart %}
-                                    Starting {{ licenseStart }}: 
+                                    {% trans licensestart=licenseStart %}Starting {{ licensestart }}:{% endtrans %} 
                                 {% endif %}
                                 
                                 {%- set publishedDataLicensePath = [licensePrefix, uuids.publishedDataLicenseQUuid]|reply_path -%}
                                 {%- set publishedDataLicenseAUuid = repliesMap[publishedDataLicensePath]|reply_str_value -%}
                                 {%- if publishedDataLicenseAUuid == uuids.publishedDataLicenseCC0AUuid %}
-                                    Freely available for any use (public domain or CC0).
+                                    {% trans %}Freely available for any use (public domain or CC0).{% endtrans %}
                                 {%- elif publishedDataLicenseAUuid == uuids.publishedDataLicenseCCBYAUuid %}
-                                    Freely available with obligation to quote the source (e.g. CC-BY).
+                                    {% trans %}Freely available with obligation to quote the source (e.g. CC-BY).{% endtrans %}
                                 {%- elif publishedDataLicenseAUuid == uuids.publishedDataLicenseRestrictAUuid -%}
                                     {%- set licenseRestrictConditionsPath = [publishedDataLicensePath, uuids.publishedDataLicenseRestrictAUuid, uuids.licenseRestrictConditionsQUuid]|reply_path -%}
                                     {%- set licenseRestrictConditions = repliesMap[licenseRestrictConditionsPath]|reply_str_value -%}
@@ -138,21 +139,23 @@
                                     {%- set licenseRestrictMetadataPath = [publishedDataLicensePath, uuids.publishedDataLicenseRestrictAUuid, uuids.licenseRestrictMetadataQUuid]|reply_path -%}
                                     {%- set licenseRestrictMetadataAUuid = repliesMap[licenseRestrictMetadataPath]|reply_str_value %}
                                     
-                                    Available under some restrictions, which we will follow in our project{{ ": " ~ licenseRestrictConditions|markdown if licenseRestrictConditions else "." }}
+                                    {#- TRANSLATORS: %(details)s is ": " followed by the user's text, or just "." -#}
+                                    {% trans details=(": " ~ licenseRestrictConditions|markdown if licenseRestrictConditions else ".") %}Available under some restrictions, which we will follow in our project{{ details }}{% endtrans %}
                                     {%- if licenseRestrictAccessAUuid == uuids.licenseRestrictAccessRequestAUuid %}
-                                    Re-users will be able to get access by request to the contact person.
+                                    {% trans %}Re-users will be able to get access by request to the contact person.{% endtrans %}
                                     {%- elif licenseRestrictAccessAUuid == uuids.licenseRestrictAccessCommitteeAUuid %}
-                                    Re-users will be able to get access through a <em>Data Access Committee</em> for the project.
+                                    {% trans %}Re-users will be able to get access through a <em>Data Access Committee</em> for the project.{% endtrans %}
                                     {%- elif licenseRestrictAccessAUuid == uuids.licenseRestrictAccessAnotherAUuid -%}
                                     {%- set licenseRestrictAccessAnotherPath = [licenseRestrictAccessPath, uuids.licenseRestrictAccessAnotherAUuid, uuids.licenseRestrictAccessAnotherQUuid]|reply_path -%}
                                     {%- set licenseRestrictAccessAnother = repliesMap[licenseRestrictAccessAnotherPath]|reply_str_value %}
-                                    Re-users will be able to get access through a specialized process{{ ": " ~ licenseRestrictAccessAnother|markdown if licenseRestrictAccessAnother else "." }}
+                                    {#- TRANSLATORS: %(details)s is ": " followed by the user's text, or just "." -#}
+                                    {% trans details=(": " ~ licenseRestrictAccessAnother|markdown if licenseRestrictAccessAnother else ".") %}Re-users will be able to get access through a specialized process{{ details }}{% endtrans %}
                                     {%- endif -%}
                                     {%- if licenseRestrictMetadataAUuid == uuids.licenseRestrictMetadataYesAUuid %}
-                                    The conditions will be published as part of open metadata.
+                                    {% trans %}The conditions will be published as part of open metadata.{% endtrans %}
                                     {%- endif -%}
                                     {% if licenseRestrictLink %}
-                                    More information about the restrictions can be found here: <a href="{{ licenseRestrictLink }}" target="_blank">{{ licenseRestrictLink }}</a>.
+                                    {% trans %}More information about the restrictions can be found here:{% endtrans %} <a href="{{ licenseRestrictLink }}" target="_blank">{{ licenseRestrictLink }}</a>.
                                     {% endif %}
                                 {%- endif -%}
                                 </li>
@@ -168,21 +171,21 @@
             {%- set publishedDataCataloguePath = [isPublishedDataPath, uuids.isPublishedDataYesAUuid, uuids.publishedDataCatalogueQUuid]|reply_path -%}
             {%- set publishedDataCatalogueAUuid = repliesMap[publishedDataCataloguePath]|reply_str_value -%}
             {%- if publishedDataCatalogueAUuid == uuids.publishedDataCatalogueYesAUuid -%}
-                <br>We will be adding a reference to the published data to at least one data catalogue.
+                <br>{% trans %}We will be adding a reference to the published data to at least one data catalogue.{% endtrans %}
             {%- endif -%}
             {# When published #}
             {%- set publishedWhenPath = [isPublishedDataPath, uuids.isPublishedDataYesAUuid, uuids.publishedWhenQUuid]|reply_path -%}
             {%- set publishedWhenAUuid = repliesMap[publishedWhenPath]|reply_str_value -%}
             {%- if publishedWhenAUuid == uuids.publishedWhenSoonAUuid %}
-                <br>The dataset will published as soon as possible after collecting it.
+                <br>{% trans %}The dataset will be published as soon as possible after collecting it.{% endtrans %}
             {%- elif publishedWhenAUuid == uuids.publishedWhenCleanupAUuid %}
-                <br>The dataset will published after initial cleanup.
+                <br>{% trans %}The dataset will be published after initial cleanup.{% endtrans %}
             {%- elif publishedWhenAUuid == uuids.publishedWhenFinishedAUuid %}
-                <br>The dataset will published after all our processing has finished.
+                <br>{% trans %}The dataset will be published after all our processing has finished.{% endtrans %}
             {%- elif publishedWhenAUuid == uuids.publishedWhenWrappedAUuid %}
-                <br>The dataset will published when the project is wrapped up.
+                <br>{% trans %}The dataset will be published when the project is wrapped up.{% endtrans %}
             {%- elif publishedWhenAUuid == uuids.publishedWhenEmbargoAUuid %}
-                <br>The dataset will published after an embargo.
+                <br>{% trans %}The dataset will be published after an embargo.{% endtrans %}
             {%- endif %}
             {# Qualified references #}
             {%- set publishedQReferencesPath = [isPublishedDataPath, uuids.isPublishedDataYesAUuid, uuids.publishedQReferencesQUuid]|reply_path -%}
@@ -203,7 +206,7 @@
                 {%- endfor -%}
             {%- endif -%}
             {%- if qreferences|length > 0 -%}
-                <br>The following qualified references to other data sets will be included:
+                <br>{% trans %}The following qualified references to other data sets will be included:{% endtrans %}
                 <ul>
                     {%- for qref in qreferences -%}
                     <li><em>{{ qref.id|e }}</em> &ndash; {{ qref.relation|markdown }}</li>
@@ -217,13 +220,13 @@
 
     {# Restrictions #}
 
-    <h4>Restrictions on data sharing</h4>
-    <p>Ethical and legal restrictions are documented under Section 4. We have used the {{ dc.config.service_name }}, which made us aware of options to minimize the restrictions.</p>
+    <h4>{% trans %}Restrictions on data sharing{% endtrans %}</h4>
+    <p>{% trans service_name=dc.config.service_name %}Ethical and legal restrictions are documented under Section 4. We have used the {{ service_name }}, which made us aware of options to minimize the restrictions.{% endtrans %}</p>
 
     {%- set openImmediatelyPath = [uuids.accessCUuid, uuids.openImmediatelyQUuid]|reply_path -%}
     {%- set openImmediatelyAUuid = repliesMap[openImmediatelyPath]|reply_str_value -%}
     {%- if openImmediatelyAUuid == uuids.openImmediatelyYesAUuid -%}
-      <p>No data sharing agreement will be required.</p>
+      <p>{% trans %}No data sharing agreement will be required.{% endtrans %}</p>
     {%- elif openImmediatelyAUuid == uuids.openImmediatelyNoAUuid -%}
       {%- set pathPrefix = [openImmediatelyPath, uuids.openImmediatelyNoAUuid]|reply_path -%}
       {%- set embargoPath = [uuids.accessCUuid, uuids.limitedEmbargoQUuid]|reply_path -%}
@@ -232,9 +235,9 @@
         {%- set embargoPeriodPath = [embargoPath, embargoAUuid, uuids.limitedEmbargoPeriodQUuid]|reply_path -%}
         {%- set embargoPeriod = repliesMap[embargoPeriodPath]|reply_str_value -%}
         <p>
-          Data cannot be completely open due to legal reasons. But data that is not legally restrained will be released after a fixed time period.
+          {% trans %}Data cannot be completely open due to legal reasons. However, data that is not legally restricted will be released after a fixed time period.{% endtrans %}
           {%- if embargoPeriod %}
-            The embargo period will be {{ embargoPeriod|dot }}
+            {% trans value=(embargoPeriod|dot) %}The embargo period will be {{ value }}{% endtrans %}
           {%- endif %}
         </p>
       {%- endif -%}
@@ -243,25 +246,26 @@
       {%- set legalReasonsAuthenticatedAUuid = repliesMap[legalReasonsAuthenticatedPath]|reply_str_value -%}
       {%- if legalReasonsAuthenticatedAUuid == uuids.legalReasonsAuthenticatedYesAUuid -%}
         <p>
-          A data sharing agreement will be required.
+          {% trans %}A data sharing agreement will be required.{% endtrans %}
           {%- set legalReasonsAuthorizePath = [legalReasonsAuthenticatedPath, uuids.legalReasonsAuthenticatedYesAUuid, uuids.legalReasonsAuthorizeQUuid]|reply_path -%}
           {%- set legalReasonsAuthorizeAUuid = repliesMap[legalReasonsAuthorizePath]|reply_str_value -%}
           {%- if legalReasonsAuthorizeAUuid == uuids.legalReasonsAuthorizeMemberAUuid %}
-            People can apply to one of the project members.
+            {% trans %}People can apply to one of the project members.{% endtrans %}
           {%- elif legalReasonsAuthorizeAUuid == uuids.legalReasonsAuthorizeNewCommitteeAUuid %}
-            People can apply to the data access committee that we will set up.
+            {% trans %}People can apply to the data access committee that we will set up.{% endtrans %}
           {%- elif legalReasonsAuthorizeAUuid == uuids.legalReasonsAuthorizeOldCommitteeAUuid %}
             {%- set legalReasonsAuthorizeOldCommitteePath = [legalReasonsAuthorizePath, uuids.legalReasonsAuthorizeOldCommitteeAUuid, uuids.legalReasonsAuthorizeOldCommitteeQUuid]|reply_path -%}
             {%- set legalReasonsAuthorizeOldCommittee = repliesMap[legalReasonsAuthorizeOldCommitteePath]|reply_str_value -%}
             {%- if legalReasonsAuthorizeOldCommittee %}
-              People can apply to the following data access committee: <em>{{ legalReasonsAuthorizeOldCommittee|markdown }}</em>
+              {% trans value=(legalReasonsAuthorizeOldCommittee|markdown) %}People can apply to the following data access committee: <em>{{ value }}</em>{% endtrans %}
             {%- else -%}
-              People can apply to an existing data access committee.
+              {% trans %}People can apply to an existing data access committee.{% endtrans %}
             {%- endif -%}
           {%- elif legalReasonsAuthorizeAUuid == uuids.legalReasonsAuthorizeOtherAUuid %}
             {%- set legalReasonsAuthorizeOtherPath = [legalReasonsAuthorizePath, uuids.legalReasonsAuthorizeOtherAUuid, uuids.legalReasonsAuthorizeOtherQUuid]|reply_path -%}
             {%- set legalReasonsAuthorizeOther = repliesMap[legalReasonsAuthorizeOtherPath]|reply_str_value %}
-            For the authorization of potential users, we will make special arrangements{{ ": " ~ legalReasonsAuthorizeOther|markdown if legalReasonsAuthorizeOther else "." }}
+            {#- TRANSLATORS: %(details)s is ": " followed by the user's text, or just "." -#}
+            {% trans details=(": " ~ legalReasonsAuthorizeOther|markdown if legalReasonsAuthorizeOther else ".") %}For the authorization of potential users, we will make special arrangements{{ details }}{% endtrans %}
           {%- endif -%}
         </p>
       {%- endif -%}
@@ -270,14 +274,14 @@
     {%- set collabPath = [uuids.creatingCUuid, uuids.collabQUuid]|reply_path -%}
     {%- set collabAUuid = repliesMap[collabPath]|reply_str_value -%}
     {%- if collabAUuid == uuids.collabNoAUuid -%}
-      <p>We are not running the project in a collaboration between different groups nor institutes. Therefore, no collaboration agreement related to data access is needed.</p>
+      <p>{% trans %}We are not running the project in a collaboration between different groups or institutes. Therefore, no collaboration agreement related to data access is needed.{% endtrans %}</p>
     {%- elif collabAUuid == uuids.collabYesAUuid -%}
       {%- set collabAgreePath = [collabPath, collabAUuid, uuids.collabAgreeQUuid]|reply_path -%}
       {%- set collabAgreeAUuid = repliesMap[collabAgreePath]|reply_str_value -%}
       {%- if collabAgreeAUuid == uuids.collabAgreeNoAUuid -%}
-        <p>We are running the project in a collaboration between different groups and institutes. However, there is no collaboration agreement in the project that describes who can have access to what data.</p>
+        <p>{% trans %}We are running the project in a collaboration between different groups and institutes. However, there is no collaboration agreement in the project that describes who can have access to what data.{% endtrans %}</p>
       {%- elif collabAgreeAUuid == uuids.collabAgreeYesAUuid -%}
-        <p>We are running the project in a collaboration between different groups and institutes. A collaboration agreement that describes who can have access to what data in the project is set.</p>
+        <p>{% trans %}We are running the project in a collaboration between different groups and institutes. A collaboration agreement that describes who can have access to what data in the project is in place.{% endtrans %}</p>
       {%- endif -%}
     {%- endif -%}
   </div>

@@ -84,7 +84,8 @@ header {
 
 header .dmp::after {
   font-size: 18pt;
-  content: 'Data Management Plan';
+  {#- translated with the msgid of the title in index.html.j2 (style.css is not extracted to the POT) #}
+  content: '{{ _("Data Management Plan") }}';
 }
 
 h1 {

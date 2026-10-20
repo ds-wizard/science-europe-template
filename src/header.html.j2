@@ -21,7 +21,7 @@
           {%- endif -%}
         {%- endfor -%}
         {%- set nContacts = contacts|length -%}
-        <dt>Contact {{ "people" if (nContacts > 1) else "person" }}</dt>
+        <dt>{% trans count=[nContacts, 1]|max %}Contact person{% pluralize %}Contact people{% endtrans %}</dt>
         <dd>
           {%- if nContacts > 0 -%}
             <ul>
@@ -35,7 +35,7 @@
                   {%- if contributorName -%}
                     <span class="contact-name">{{ contributorName }}</span>
                   {%- else -%}
-                    <span class="contact-name missing">(name not given)</span>
+                    <span class="contact-name missing">{% trans %}(name not given){% endtrans %}</span>
                   {%- endif -%}
                   {%- if contributorEmail and contributorOrcid %}
                     <br>{{ macros.formatEmail(contributorEmail) }}, {{ macros.formatOrcid(contributorOrcid) }}
@@ -51,21 +51,21 @@
               {%- endfor -%}
             </ul>
           {%- else -%}
-            <span class="empty-value">There is no contact person specified yet</span>
+            <span class="empty-value">{% trans %}There is no contact person specified yet{% endtrans %}</span>
           {%- endif -%}
         </dd>
       {%- endif -%}
 
-      <dt>Based on</dt>
+      <dt>{% trans %}Based on{% endtrans %}</dt>
       <dd>{{ dc.pkg.name }}, {{ dc.pkg.version }} (<span class="package-id"><span class="organization-id">{{ dc.pkg.organization_id }}</span>:<span class="km-id">{{ dc.pkg.km_id }}</span>:<span class="version">{{ dc.pkg.version }}</span></span>)</dd>
 
       {%- if ctx.phaseUuid -%}
-      <dt>Project phase</dt>
+      <dt>{% trans %}Project phase{% endtrans %}</dt>
       <dd>{{ km.entities.phases[ctx.phaseUuid].title }}</dd>
       {%- endif -%}
 
       {%- set nCreators = creators|length -%}
-      <dt>Created by</dt>
+      <dt>{% trans %}Created by{% endtrans %}</dt>
         <dd>
           {%- if nCreators > 0 -%}
             <ul>
@@ -79,7 +79,7 @@
                     {%- if creatorName -%}
                       <span class="contact-name">{{ creatorName }}</span>
                     {%- else -%}
-                      <span class="contact-name missing">(name not given)</span>
+                      <span class="contact-name missing">{% trans %}(name not given){% endtrans %}</span>
                     {%- endif -%}
                     {%- if creatorEmail and creatorOrcid -%}
                       <br>{{ macros.formatEmail(creatorEmail) }}, {{ macros.formatOrcid(creatorOrcid) }}
@@ -95,21 +95,21 @@
                 {%- endfor -%}
               </ul>
             {%- else -%}
-              <span class="empty-value">There is no creator specified yet</span>
+              <span class="empty-value">{% trans %}There is no creator specified yet{% endtrans %}</span>
           {%- endif -%}
         </dd>
       
 
       {% for version in dc.project.versions if version.uuid == ctx.project.versionUuid %}
-      <dt>Version</dt>
+      <dt>{% trans %}Version{% endtrans %}</dt>
       <dd>{{version.name}} ({{ version.created_at|datetime_format("%d %b %Y") }})</dd>
       {% endfor %}
 
-      <dt>Generated on</dt>
+      <dt>{% trans %}Generated on{% endtrans %}</dt>
       <dd>{{ dc.document.created_at|datetime_format("%d %b %Y") }}</dd>
     </dl>
     <p class="note">
-      Data Management Plan created in {{ dc.config.service_name }} &laquo;<a href="{{ dc.config.service_url }}" target="_blank">{{ dc.config.service_domain_name }}</a>&raquo;
+      {% trans service_name=dc.config.service_name %}Data Management Plan created in {{ service_name }} &laquo;{% endtrans %}<a href="{{ dc.config.service_url }}" target="_blank">{{ dc.config.service_domain_name }}</a>&raquo;
     </p>
   </div>
 </header>

@@ -1,5 +1,5 @@
 <div id="q-what-data" class="question">
-  <h3>2. What data (kind, format, volume) will be collected or produced?</h3>
+  <h3>{% trans %}2. What data (kind, format, volume) will be collected or produced?{% endtrans %}</h3>
   <div class="answer">
 
   {%- set measuredPath = [uuids.creatingCUuid, uuids.measuredQUuid]|reply_path -%}
@@ -10,8 +10,8 @@
     {# Measured datasets #}
     {%- if measuredDataItems|length > 0 -%}
       <div>
-      <h4>Instrument datasets</h4>
-      The following instrument datasets will be acquired in the project:
+      <h4>{% trans %}Instrument datasets{% endtrans %}</h4>
+      {% trans %}The following instrument datasets will be acquired in the project:{% endtrans %}
       <ul>
         {%- for datasetItem in measuredDataItems -%}
           {%- set pathPrefix = [measuredDataPath, datasetItem]|reply_path -%}
@@ -22,35 +22,35 @@
             {%- set measuredDataWhoAUuid = repliesMap[measuredDataWhoPath]|reply_str_value -%}
             {%- set measuredDataEquipPath = [pathPrefix, uuids.measuredDataEquipQUuid]|reply_path -%}
             {%- set measuredDataEquipAUuid = repliesMap[measuredDataEquipPath]|reply_str_value -%}
-            <strong>{{ measuredDataName if measuredDataName else "(no name given)" }}</strong>
+            <strong>{{ measuredDataName if measuredDataName else _("(no name given)") }}</strong>
             {# Who will collect #}
             {%- if measuredDataWhoAUuid == uuids.measuredDataWhoExpertsOwnAUuid -%}
-              <p>This dataset will be collected by experts in the project, with our own equipment.</p>
+              <p>{% trans %}This dataset will be collected by experts in the project, with our own equipment.{% endtrans %}</p>
             {%- elif measuredDataWhoAUuid == uuids.measuredDataWhoExpertsOutAUuid -%}
-              <p>This dataset will be collected by experts in the project, at a specialized infrastructure.</p>
+              <p>{% trans %}This dataset will be collected by experts in the project, at a specialized infrastructure.{% endtrans %}</p>
             {%- elif measuredDataWhoAUuid == uuids.measuredDataWhoExternalAUuid -%}
               {%- set mdExternalOwnershipPath = [measuredDataWhoPath, uuids.measuredDataWhoExternalAUuid, uuids.mdExternalOwnershipQUuid]|reply_path -%}
               {%- set mdExternalOwnershipAUuid = repliesMap[mdExternalOwnershipPath]|reply_str_value -%}
               <p>
-                This dataset will be collected by an external party.
+                {% trans %}This dataset will be collected by an external party.{% endtrans %}
                 {% if mdExternalOwnershipAUuid == uuids.mdExternalOwnershipPartyAUuid -%}
-                  The ownership of the resulting data will remain with the external party.
+                  {% trans %}The ownership of the resulting data will remain with the external party.{% endtrans %}
                 {%- elif mdExternalOwnershipAUuid == uuids.mdExternalOwnershipPartnersAUuid -%}
-                  The project partners acquire full ownership of the data.
+                  {% trans %}The project partners acquire full ownership of the data.{% endtrans %}
                 {%- elif mdExternalOwnershipAUuid == uuids.mdExternalOwnershipOtherAUuid -%}
                   {%- set mdExternalOwnershipOtherPath = [mdExternalOwnershipPath, uuids.mdExternalOwnershipOtherAUuid, uuids.mdExternalOwnershipOtherQUuid]|reply_path -%}
                   {%- set mdExternalOwnershipOther = repliesMap[mdExternalOwnershipOtherPath]|reply_str_value -%}
                   {%- if mdExternalOwnershipOther -%}
-                    For the ownership of the data we have made the following arrangements: {{ mdExternalOwnershipOther|markdown }}
+                    {% trans value=(mdExternalOwnershipOther|markdown) %}For the ownership of the data we have made the following arrangements: {{ value }}{% endtrans %}
                   {%- endif -%}
                 {%- endif -%}
               </p>
             {%- endif -%}
             {# Equipment standard? #}
             {% if measuredDataEquipAUuid == uuids.measuredDataEquipDescribedAUuid -%}
-              <p>The equipment is very well described and known.</p>
+              <p>{% trans %}The equipment is very well described and known.{% endtrans %}</p>
             {%- elif measuredDataEquipAUuid == uuids.measuredDataEquipCareAUuid -%}
-              <p>The equipment is less well described or not completely standard, so we will need to take extra care documenting the process.</p>
+              <p>{% trans %}The equipment is less well described or not completely standard, so we will need to take extra care documenting the process.{% endtrans %}</p>
             {%- endif -%}
           </li>
         {%- endfor -%}
@@ -78,34 +78,35 @@
     {%- set eRecords = neqDataERecordsAUuid == uuids.neqDataERecordsYesAUuid -%}
     {%- if questionnaires or caseReport or eRecords or neqDataSetsItems|length > 0 -%}
       <div>
-      <h4>Non-equipment datasets</h4>
+      <h4>{% trans %}Non-equipment datasets{% endtrans %}</h4>
       {# Types #}
       {%- set typesNames = [] -%}
-      {%- if questionnaires -%}{%- do typesNames.append("questionnaires") -%}{%- endif -%}
-      {%- if caseReport -%}{%- do typesNames.append("case report forms") -%}{%- endif -%}
-      {%- if eRecords -%}{%- do typesNames.append("electronic patient records") -%}{%- endif -%}
+      {%- if questionnaires -%}{%- do typesNames.append(_("questionnaires")) -%}{%- endif -%}
+      {%- if caseReport -%}{%- do typesNames.append(_("case report forms")) -%}{%- endif -%}
+      {%- if eRecords -%}{%- do typesNames.append(_("electronic patient records")) -%}{%- endif -%}
       {%- set typesCount = typesNames|length -%}
       <p>
         {%- if typesCount > 0 -%}
-          We collect data from
+          {% trans %}We collect data from{% endtrans %}
           {% if typesCount == 1 -%}
               {{ typesNames[0] }}.
           {%- elif typesCount == 2 -%}
-              {{ typesNames[0] }} and {{ typesNames[1] }}.
+              {#- TRANSLATORS: completes "We collect data from"; the sources are "questionnaires" etc. -#}
+              {% trans source=(typesNames[0]), source2=(typesNames[1]) %}{{ source }} and {{ source2 }}.{% endtrans %}
           {%- else -%}
-              {{ typesNames[0] }}, {{ typesNames[1] }}, and {{ typesNames[2] }}.
+              {% trans source=(typesNames[0]), source2=(typesNames[1]), source3=(typesNames[2]) %}{{ source }}, {{ source2 }}, and {{ source3 }}.{% endtrans %}
           {%- endif -%}
         {% endif %}
         {# Datasets #}
         {%- if neqDataSetsItems|length > 0 -%}
-          The non-equipment datasets are:
+          {% trans %}The non-equipment datasets are:{% endtrans %}
           <ul>
           {%- for neqDataSetItem in neqDataSetsItems -%}
             {%- set pathPrefix = [neqDataSetsPath, neqDataSetItem]|reply_path -%}
             {%- set neqDataSetsName = repliesMap[[pathPrefix, uuids.neqDataSetsNameQUuid]|reply_path]|reply_str_value -%}
             {%- set neqDataSetsDesc = repliesMap[[pathPrefix, uuids.neqDataSetsDescQUuid]|reply_path]|reply_str_value -%}
             <li>
-              <strong>{{ neqDataSetsName if neqDataSetsName else "(no name given)" }}</strong>
+              <strong>{{ neqDataSetsName if neqDataSetsName else _("(no name given)") }}</strong>
               {% if neqDataSetsDesc -%}<span class="separator">&ndash;</span> {{ neqDataSetsDesc|markdown }}{%- endif -%}
             </li>
           {%- endfor -%}
@@ -125,8 +126,8 @@
     {%- set nrefDataItems = repliesMap[nrefDataPath]|reply_items -%}
     {%- if (refDataItems|length + nrefDataItems|length) > 0 -%}
       <div>
-        <h4>Re-used datasets</h4>
-        <p>Datasets considered for reuse and actually reused are described in Question 1.</p>
+        <h4>{% trans %}Re-used datasets{% endtrans %}</h4>
+        <p>{% trans %}Datasets considered for reuse and actually reused are described in Question 1.{% endtrans %}</p>
       </div>
     {%- endif -%}
   {%- endif -%}
@@ -135,8 +136,8 @@
   {%- set formatsPath = [uuids.creatingCUuid, uuids.formatsQUuid]|reply_path -%}
   {%- set formatsItems = repliesMap[formatsPath]|reply_items -%}
   {%- if formatsItems|length > 0 -%}
-    <h4>Data formats and types</h4>
-    <div>We will be using the following data formats and types:
+    <h4>{% trans %}Data formats and types{% endtrans %}</h4>
+    <div>{% trans %}We will be using the following data formats and types:{% endtrans %}
     <ul>
       {%- for formatItem in formatsItems -%}
         {%- set formatPrefix = [formatsPath, formatItem]|reply_path -%}
@@ -154,49 +155,49 @@
             <p>
             {# standard? #}
             {%- if formatsIsStandardAUuid == uuids.formatsIsStandardYesAUuid %}
-              It is a standardized format.
+              {% trans %}It is a standardized format.{% endtrans %}
             {%- elif formatsIsStandardAUuid == uuids.formatsIsStandardNoAUuid -%}
               {%- set formatsWhyNonStandardPath = [formatsIsStandardPath, uuids.formatsIsStandardNoAUuid, uuids.formatsWhyNonStandardQUuid]|reply_path -%}
               {%- set formatsWhyNonStandardAUuid = repliesMap[formatsWhyNonStandardPath]|reply_str_value -%}
               {%- if formatsWhyNonStandardAUuid == uuids.formatsWhyNSThereIsNoStandardAUuid %}
-                We are not using a standardized format because there is no standardized format for this data type.
+                {% trans %}We are not using a standardized format because there is no standardized format for this data type.{% endtrans %}
               {%- elif formatsWhyNonStandardAUuid == uuids.formatsWhyNSItIsOptimizedAUuid %}
-                We are not using a standardized format but it is optimized for processing speed and/or volume.
+                {% trans %}We are not using a standardized format but it is optimized for processing speed and/or volume.{% endtrans %}
               {%- elif formatsWhyNonStandardAUuid == uuids.formatsWhyNSAnotherReasonAUuid -%}
                 {%- set formatsWhyNSAnotherReasonPath = [formatsWhyNonStandardPath, uuids.formatsWhyNSAnotherReasonAUuid, uuids.formatsWhyNSAnotherReasonQUuid]|reply_path -%}
                 {%- set formatsWhyNSAnotherReason = repliesMap[formatsWhyNSAnotherReasonPath]|reply_str_value -%}
-                We are not using a standardized format
+                {% trans %}We are not using a standardized format{% endtrans %}
                 {%- if formatsWhyNSAnotherReason -%}
-                  , because: {{ formatsWhyNSAnotherReason|capitalize }}
+                  {% trans value=(formatsWhyNSAnotherReason|capitalize) %}, because: {{ value }}{% endtrans %}
                 {%- endif -%}
                 .
               {%- endif -%}
             {%- endif -%}
             {# long-term suitable? #}
             {%- if formatsIsLTSuitableAUuid == uuids.formatsIsLTSuitableYesAUuid %}
-              This is a suitable format for long-term archiving.
+              {% trans %}This is a suitable format for long-term archiving.{% endtrans %}
             {%- elif formatsIsLTSuitableAUuid == uuids.formatsIsLTSuitableNoAUuid -%}
               {%- set formatsConvertLTSuitablePath = [formatsIsLTSuitablePath, uuids.formatsIsLTSuitableNoAUuid, uuids.formatsConvertLTSuitableQUuid]|reply_path -%}
               {%- set formatsConvertLTSuitableAUuid = repliesMap[formatsConvertLTSuitablePath]|reply_str_value -%}
               {%- if formatsConvertLTSuitableAUuid == uuids.formatsConvertLTSuitableYesAUuid %}
-                This is not a suitable format for long-term archiving; however, we plan to convert it to a suitable format before the end of the project.
+                {% trans %}This is not a suitable format for long-term archiving; however, we plan to convert it to a suitable format before the end of the project.{% endtrans %}
               {%- elif formatsConvertLTSuitableAUuid == uuids.formatsConvertLTSuitableNoAUuid %}
-                We are aware that this is not a suitable format for long-term archiving.
+                {% trans %}We are aware that this is not a suitable format for long-term archiving.{% endtrans %}
               {%- endif -%}
             {%- endif -%}
             {# volume #}
             {%- if formatsVolumeAUuid == uuids.formatsVolumeSmallAUuid %}
-              We will have only a small amount of data stored in this format.
+              {% trans %}We will have only a small amount of data stored in this format.{% endtrans %}
             {%- elif formatsVolumeAUuid == uuids.formatsVolumeTotalAUuid -%}
               {%- set formatsVolumeTotalGB = repliesMap[[formatsVolumePath, uuids.formatsVolumeTotalAUuid, uuids.formatsVolumeTotalGBQUuid]|reply_path]|reply_str_value -%}
               {%- if formatsVolumeTotalGB %}
-                We expect to have {{ formatsVolumeTotalGB }} GB of data in this format.
+                {% trans formatsvolumetotalgb=formatsVolumeTotalGB %}We expect to have {{ formatsvolumetotalgb }} GB of data in this format.{% endtrans %}
               {%- endif -%}
             {%- elif formatsVolumeAUuid == uuids.formatsVolumeFileSizeAUuid -%}
               {%- set formatsVolumeFiles = repliesMap[[formatsVolumePath, uuids.formatsVolumeFileSizeAUuid, uuids.formatsVolumeFilesQUuid]|reply_path]|reply_str_value -%}
               {%- set formatsVolumeFileGB = repliesMap[[formatsVolumePath, uuids.formatsVolumeFileSizeAUuid, uuids.formatsVolumeFileGBQUuid]|reply_path]|reply_str_value -%}
               {%- if formatsVolumeFiles and formatsVolumeFileGB %}
-                We expect to have {{ formatsVolumeFiles }} files of average size {{ formatsVolumeFileGB }} GB (i.e. approximately {{ (formatsVolumeFiles|int * formatsVolumeFileGB|float)|round(2) }} GB in total).
+                {% trans formatsvolumefiles=formatsVolumeFiles, formatsvolumefilegb=formatsVolumeFileGB, total=((formatsVolumeFiles|int * formatsVolumeFileGB|float)|round(2)) %}We expect to have {{ formatsvolumefiles }} files of average size {{ formatsvolumefilegb }} GB (i.e. approximately {{ total }} GB in total).{% endtrans %}
               {%- endif -%}
             {%- endif -%}
             </p>

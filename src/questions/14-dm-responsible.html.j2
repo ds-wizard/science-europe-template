@@ -1,5 +1,5 @@
 <div id="q-dm-responsible" class="question">
-  <h3>14. Who (for example role, position, and institution) will be responsible for data management (i.e. the data steward)?</h3>
+  <h3>{% trans %}14. Who (for example role, position, and institution) will be responsible for data management (i.e. the data steward)?{% endtrans %}</h3>
 
   <div class="answer">
 
@@ -19,29 +19,30 @@
         {%- if nNames > 0 -%}
           <p>
             {%- if nNames > 2 -%}
-              {{ names[0:-1]|join(", ") }}, and {{ names[-1] }} are {{ responsibility }}
+              {#- TRANSLATORS: %(names)s is a comma-separated list of people, %(responsibility)s one of the "responsible for ..." texts -#}
+              {% trans names=(names[0:-1]|join(", ")), last_name=(names[-1]), responsibility=responsibility %}{{ names }}, and {{ last_name }} are {{ responsibility }}{% endtrans %}
             {%- elif nNames == 2 -%}
-              {{ names[0] }} and {{ names[1] }} are {{ responsibility }}
+              {% trans name=(names[0]), name2=(names[1]), responsibility=responsibility %}{{ name }} and {{ name2 }} are {{ responsibility }}{% endtrans %}
             {%- else -%}
-              {{ names[0] }} is {{ responsibility }}
+              {% trans name=(names[0]), responsibility=responsibility %}{{ name }} is {{ responsibility }}{% endtrans %}
             {%- endif %}
           </p>
         {%- endif -%}
       {%- endmacro -%}
       {# Data curators #}
-      {{ contributorsResponsibility(contributorsItems, uuids.contributorRoleDataCuratorAUuid, "responsible for reviewing, enhancing, cleaning, or standardizing metadata and the associated data submitted for storage, use and maintenance within a data centre or repository.") }}
+      {{ contributorsResponsibility(contributorsItems, uuids.contributorRoleDataCuratorAUuid, _("responsible for reviewing, enhancing, cleaning, or standardizing metadata and the associated data submitted for storage, use and maintenance within a data centre or repository.")) }}
       {# Data collectors #}
-      {{ contributorsResponsibility(contributorsItems, uuids.contributorRoleDataCollectorAUuid, "responsible for finding, gathering, and collecting data.") }}
+      {{ contributorsResponsibility(contributorsItems, uuids.contributorRoleDataCollectorAUuid, _("responsible for finding, gathering, and collecting data.")) }}
       {# Data managers #}
-      {{ contributorsResponsibility(contributorsItems, uuids.contributorRoleDataManagerAUuid, "responsible for maintaining the finished resource.") }}
+      {{ contributorsResponsibility(contributorsItems, uuids.contributorRoleDataManagerAUuid, _("responsible for maintaining the finished resource.")) }}
       {# Data stewards #}
-      {{ contributorsResponsibility(contributorsItems, uuids.contributorRoleDataStewardAUuid, "responsible for the management and proficiency of data including data processing, data policies, data guidelines, and data availability.") }}
+      {{ contributorsResponsibility(contributorsItems, uuids.contributorRoleDataStewardAUuid, _("responsible for the management and proficiency of data including data processing, data policies, data guidelines, and data availability.")) }}
       {# Distributors #}
-      {{ contributorsResponsibility(contributorsItems, uuids.contributorRoleDistributorAUuid, "responsible for generating and disseminating copies of the resource in either electronic or print form.") }}
+      {{ contributorsResponsibility(contributorsItems, uuids.contributorRoleDistributorAUuid, _("responsible for generating and disseminating copies of the resource in either electronic or print form.")) }}
       {# Data protection officers #}
-      {{ contributorsResponsibility(contributorsItems, uuids.contributorRoleDataProtectorAUuid, "responsible for all issues relating to the protection of personal data and data protection policies in general.") }}
+      {{ contributorsResponsibility(contributorsItems, uuids.contributorRoleDataProtectorAUuid, _("responsible for all issues relating to the protection of personal data and data protection policies in general.")) }}
       {# Data protection officers #}
-      {{ contributorsResponsibility(contributorsItems, uuids.contributorRoleCreatorOfDMPAUuid, "responsible for implementing the DMP, and ensuring it is reviewed and revised.") }}
+      {{ contributorsResponsibility(contributorsItems, uuids.contributorRoleCreatorOfDMPAUuid, _("responsible for implementing the DMP, and ensuring it is reviewed and revised.")) }}
     {%- endif -%}
   </div>
 </div>

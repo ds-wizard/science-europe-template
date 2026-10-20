@@ -1,5 +1,5 @@
 <div id="q-dm-responsible" class="question">
-  <h3>12. What methods or software tools are needed to access and use data?</h3>
+  <h3>{% trans %}12. What methods or software tools are needed to access and use data?{% endtrans %}</h3>
 
   <div class="answer">
     {# Produced datasets #}
@@ -18,38 +18,38 @@
                 {# If SW is required #}
                 {%- set isPublishedDataSwUuid = [isPublishedDataPath, uuids.isPublishedDataYesAUuid, uuids.publishedSpecSwUseQUuid]|reply_path  -%}
                 {%- set isPublishedDataSwAUuid = repliesMap[isPublishedDataSwUuid]|reply_str_value  -%}
-                <strong>{{ producedDataName if producedDataName else "(no name given)" }}</strong>
+                <strong>{{ producedDataName if producedDataName else _("(no name given)") }}</strong>
                 {%- if isPublishedDataSwAUuid == uuids.publishedSpecSwUseYesAUuid -%}
                     {%- set isPublishedSWPath = [isPublishedDataSwUuid, uuids.publishedSpecSwUseYesAUuid, uuids.publishedSpecSwUseWhatQUuid ]|reply_path  -%}
                     {%- set isPublishedSwItems = repliesMap[isPublishedSWPath]|reply_items -%}
                     {%- if isPublishedSwItems|length > 0 -%}
-                            <br>In order to use this dataset following software will be needed:
+                            <br>{% trans %}In order to use this dataset, the following software will be needed:{% endtrans %}
                             <ul>
                             {%- for swItem in isPublishedSwItems -%}
                                 {%- set swNameUuid = [isPublishedSWPath, swItem, uuids.publishedSpecSwUseWhatNameQUuid]|reply_path -%}
                                 {%- set swNameReply = repliesMap[swNameUuid]|reply_str_value -%}
                                 {%- set swPIDUuid = [isPublishedSWPath, swItem, uuids.publishedSpecSwUseWhatPIDQUuid]|reply_path -%}
                                 {%- set swPIDReply = repliesMap[swPIDUuid]|reply_str_value -%}
-                                <p><strong>{{ swNameReply if swNameReply else "(no name given)" }}</strong>
+                                <p><strong>{{ swNameReply if swNameReply else _("(no name given)") }}</strong>
                                 {%- if swPIDReply -%}
-                                , available at {{swPIDReply|dot}}</p>
+                                {% trans value=(swPIDReply|dot) %}, available at {{ value }}{% endtrans %}</p>
                                 {%- else -%}
                                 .
                                 {%- endif -%}
                             {%- endfor -%}
                             </ul>
                     {%- else -%}
-                        <p>There are no tools needed to access or use this data.</p>
+                        <p>{% trans %}There are no tools needed to access or use this data.{% endtrans %}</p>
                     {%- endif -%}
                 {%- else -%}
-                    <p>There are no tools needed to access or use this data.</p>
+                    <p>{% trans %}There are no tools needed to access or use this data.{% endtrans %}</p>
                 {%- endif -%}
             {%- else -%}
-                <p>There are no published data to access or use.</p>
+                <p>{% trans %}There are no published data to access or use.{% endtrans %}</p>
             {%- endif -%}
         {%- endfor -%}
     {%- else -%}
-        <p>There are no published data to access or use.</p>
+        <p>{% trans %}There are no published data to access or use.{% endtrans %}</p>
     {%- endif -%}
   </div>
 </div>
