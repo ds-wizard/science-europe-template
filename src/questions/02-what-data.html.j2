@@ -107,7 +107,7 @@
             {%- set neqDataSetsDesc = repliesMap[[pathPrefix, uuids.neqDataSetsDescQUuid]|reply_path]|reply_str_value -%}
             <li>
               <strong>{{ neqDataSetsName if neqDataSetsName else _("(no name given)") }}</strong>
-              {% if neqDataSetsDesc -%}<span class="separator">&ndash;</span> {{ neqDataSetsDesc|markdown }}{%- endif -%}
+              {% if neqDataSetsDesc -%}<span class="separator">&ndash;</span> {{ macros.md(neqDataSetsDesc) }}{%- endif -%}
             </li>
           {%- endfor -%}
           </ul>
@@ -115,6 +115,34 @@
       </p>
       </div>
     {%- endif -%}
+  {%- endif -%}
+  {# Produced datasets #}
+  {%- set producedDataPath = [uuids.preservingCUuid, uuids.producedDataQUuid]|reply_path -%}
+  {%- set producedDataItems = repliesMap[producedDataPath]|reply_items -%}
+  {%- if producedDataItems|length > 0 -%}
+    <div>
+    <h4>{% trans %}Produced datasets{% endtrans %}</h4>
+    <p>{% trans %}The project will produce the following datasets:{% endtrans %}</p>
+    <ul class="entries">
+    {%- for i in producedDataItems -%}
+      {%- set pathPrefix = [producedDataPath, i]|reply_path -%}
+      {%- set producedDataName = repliesMap[[pathPrefix, uuids.producedDataNameQUuid]|reply_path]|reply_str_value -%}
+      {%- set producedDataDesc = repliesMap[[pathPrefix, uuids.producedDataDescQUuid]|reply_path]|reply_str_value -%}
+      {%- set isPublishedDataAUuid = repliesMap[[pathPrefix, uuids.isPublishedDataQUuid]|reply_path]|reply_str_value -%}
+      <li>
+        <strong>{{ producedDataName if producedDataName else _("(no name given)") }}</strong>
+        {%- if isPublishedDataAUuid == uuids.isPublishedDataNoAUuid %}
+        <span class="status">{% trans %}(not published){% endtrans %}</span>
+        {%- elif isPublishedDataAUuid == uuids.isPublishedDataYesAUuid %}
+        <span class="status">{% trans %}(will be published){% endtrans %}</span>
+        {%- endif -%}
+        {%- if producedDataDesc %}
+        <div>{{ macros.md(producedDataDesc) }}</div>
+        {%- endif %}
+      </li>
+    {%- endfor -%}
+    </ul>
+    </div>
   {%- endif -%}
   {# Existing datasets #}
   {%- set preexistingPath = [uuids.reusingCUuid, uuids.preexistingQUuid]|reply_path -%}

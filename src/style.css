@@ -43,6 +43,7 @@ body {
   color: #1f262e;
   max-width: 21cm;
   margin: 0 auto;
+  overflow-wrap: anywhere;
 }
 
 p {
@@ -220,8 +221,17 @@ div#dmp-projects h2 {
 
 div#dmp-versions table {
   width: 100%;
+  table-layout: fixed;
   border-collapse: collapse;
   font-size: 9.5pt;
+}
+
+div#dmp-versions col.col-version {
+  width: 16%;
+}
+
+div#dmp-versions col.col-date {
+  width: 20%;
 }
 
 div#dmp-versions th,
@@ -252,7 +262,6 @@ div#dmp-versions td.version-name {
 }
 
 div#dmp-versions td.version-date {
-  width: 18ex;
   white-space: nowrap;
 }
 
@@ -376,6 +385,12 @@ ul.entries > li > strong:first-child {
   color: #14212e;
 }
 
+/* keep the name of an entry with the start of its description */
+ul.entries > li > div:first-of-type,
+ul.entries > li > p:first-of-type {
+  break-before: avoid;
+}
+
 ul.entries > li > p:last-child,
 ul.entries > li > ul:last-child {
   margin-bottom: 0;
@@ -392,6 +407,24 @@ p.lead {
 .status {
   font-size: 9pt;
   color: #5f6b78;
+}
+
+/* Markdown of answers */
+
+.answer-heading {
+  margin-top: 6pt;
+  break-after: avoid;
+}
+
+blockquote {
+  margin: 4pt 0 8pt 0;
+  padding: 0 0 0 10pt;
+  border-left: 2pt solid #dbe2e9;
+  color: #4a5d72;
+}
+
+blockquote p:last-child {
+  margin-bottom: 0;
 }
 
 /* Icons */

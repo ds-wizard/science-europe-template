@@ -6,9 +6,9 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: Science Europe DMP Template 1.32.0\n"
+"Project-Id-Version: Science Europe DMP Template 2.0.0\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-10-20 20:35+0200\n"
+"POT-Creation-Date: 2026-10-21 09:17+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Content AI Workspace (test translation)\n"
 "Language: cs\n"
@@ -77,7 +77,7 @@ msgstr "(číslo grantu: %(costcovergrantidreply)s)"
 msgid "(granted)"
 msgstr "(uděleno)"
 
-#: src/header.html.j2:37 src/header.html.j2:81
+#: src/header.html.j2:37 src/header.html.j2:83
 msgid "(name not given)"
 msgstr "(jméno neuvedeno)"
 
@@ -87,7 +87,8 @@ msgstr "(popis neuveden)"
 
 #: src/questions/01-how-data.html.j2:21 src/questions/01-how-data.html.j2:171
 #: src/questions/01-how-data.html.j2:323 src/questions/02-what-data.html.j2:25
-#: src/questions/02-what-data.html.j2:109 src/questions/04-quality-control.html.j2:18
+#: src/questions/02-what-data.html.j2:109 src/questions/02-what-data.html.j2:133
+#: src/questions/04-quality-control.html.j2:18 src/questions/06-access-security.html.j2:223
 #: src/questions/08-copyright-ipr.html.j2:196 src/questions/08-copyright-ipr.html.j2:224
 #: src/questions/09-ethical-issues.html.j2:88 src/questions/10-share-restrictions.html.j2:16
 #: src/questions/11-data-preservation.html.j2:16 src/questions/12-access-data.html.j2:21
@@ -97,8 +98,8 @@ msgstr "(popis neuveden)"
 msgid "(no name given)"
 msgstr "(název neuveden)"
 
-#: src/questions/10-share-restrictions.html.j2:21 src/questions/11-data-preservation.html.j2:21
-#: src/questions/12-access-data.html.j2:48
+#: src/questions/02-what-data.html.j2:135 src/questions/10-share-restrictions.html.j2:21
+#: src/questions/11-data-preservation.html.j2:21 src/questions/12-access-data.html.j2:48
 msgid "(not published)"
 msgstr "(nebude zveřejněna)"
 
@@ -114,7 +115,8 @@ msgstr "(název projektu neuveden)"
 msgid "(rejected)"
 msgstr "(zamítnuto)"
 
-#: src/questions/10-share-restrictions.html.j2:23 src/questions/11-data-preservation.html.j2:23
+#: src/questions/02-what-data.html.j2:137 src/questions/10-share-restrictions.html.j2:23
+#: src/questions/11-data-preservation.html.j2:23
 msgid "(will be published)"
 msgstr "(bude zveřejněna)"
 
@@ -128,7 +130,7 @@ msgstr " a "
 msgid ", available at %(value)s"
 msgstr ", dostupný na %(value)s"
 
-#: src/questions/02-what-data.html.j2:171
+#: src/questions/02-what-data.html.j2:199
 #, python-format
 msgid ", because: %(value)s"
 msgstr ", protože: %(value)s"
@@ -366,11 +368,11 @@ msgstr "Dostupná s určitými omezeními, která v našem projektu dodržíme%(
 msgid "Backup of project data that is not in the work space is left to the project participants."
 msgstr "Zálohování projektových dat mimo pracovní prostor je ponecháno na účastnících projektu."
 
-#: src/header.html.j2:58
+#: src/header.html.j2:59
 msgid "Based on"
 msgstr "Vychází z"
 
-#: src/versions.html.j2:10 src/word/versions.html.j2:9
+#: src/versions.html.j2:11 src/word/versions.html.j2:9
 msgid "Changes"
 msgstr "Změny"
 
@@ -395,11 +397,11 @@ msgstr[2] "Kontaktní osoby"
 msgid "Contributors"
 msgstr "Přispěvatelé"
 
-#: src/header.html.j2:67
+#: src/header.html.j2:69
 msgid "Created by"
 msgstr "Vytvořil(a)"
 
-#: src/word/frontpage.html.j2:25
+#: src/word/frontpage.html.j2:27
 msgid "Created in"
 msgstr "Vytvořeno v"
 
@@ -407,11 +409,11 @@ msgstr "Vytvořeno v"
 msgid "DOI:"
 msgstr "DOI:"
 
-#: src/header.html.j2:2 src/index.html.j2:11
+#: src/header.html.j2:2 src/index.html.j2:10
 msgid "Data Management Plan"
 msgstr "Plán správy dat"
 
-#: src/header.html.j2:111
+#: src/header.html.j2:113
 #, python-format
 msgid "Data Management Plan created in %(service_name)s &laquo;"
 msgstr "Plán správy dat vytvořený v %(service_name)s &laquo;"
@@ -424,7 +426,7 @@ msgstr ""
 "Data nemohou být zcela otevřená z právních důvodů. Data, která nejsou omezena zákonem, však budou"
 " po pevně stanovené době uvolněna."
 
-#: src/questions/02-what-data.html.j2:139
+#: src/questions/02-what-data.html.j2:167
 msgid "Data formats and types"
 msgstr "Datové formáty a typy"
 
@@ -481,7 +483,7 @@ msgstr "Data, která vytváříme"
 msgid "Data will be released only as soon as restrictions are falling away."
 msgstr "Data budou uvolněna teprve tehdy, až omezení pominou."
 
-#: src/questions/02-what-data.html.j2:130
+#: src/questions/02-what-data.html.j2:158
 msgid "Datasets considered for reuse and actually reused are described in Question 1."
 msgstr "Datové sady zvažované pro opětovné využití a skutečně opětovně využité jsou popsány v otázce 1."
 
@@ -572,7 +574,7 @@ msgstr "Financování"
 msgid "General-purpose repository"
 msgstr "Obecný repozitář"
 
-#: src/header.html.j2:107
+#: src/header.html.j2:109
 msgid "Generated on"
 msgstr "Vygenerováno"
 
@@ -581,7 +583,7 @@ msgstr "Vygenerováno"
 msgid "Handle: <strong>%(identifiervalue)s</strong>"
 msgstr "Handle: <strong>%(identifiervalue)s</strong>"
 
-#: src/versions.html.j2:5 src/word/versions.html.j2:1
+#: src/versions.html.j2:6 src/word/versions.html.j2:1
 msgid "History of changes"
 msgstr "Historie změn"
 
@@ -641,7 +643,7 @@ msgstr "Nezahrnuje lidské subjekty."
 msgid "It involves human subjects."
 msgstr "Zahrnuje lidské subjekty."
 
-#: src/questions/02-what-data.html.j2:158
+#: src/questions/02-what-data.html.j2:186
 msgid "It is a standardized format."
 msgstr "Jde o standardizovaný formát."
 
@@ -690,7 +692,7 @@ msgstr ""
 "Seznam dat ke zveřejnění je uveden v oddílu 5, v otázkách 10 a 11, včetně informací o katalozích,"
 " ve kterých lze data najít. Informace o použitých typech dat jsou uvedeny v oddílu 1, v otázce 2."
 
-#: src/word/frontpage.html.j2:20
+#: src/word/frontpage.html.j2:21
 msgid "Logo"
 msgstr "Logo"
 
@@ -772,20 +774,20 @@ msgstr "Pro tuto datovou sadu nebyly uvedeny žádné přístroje."
 msgid "Non-equipment datasets"
 msgstr "Datové sady nezískané přístroji"
 
-#: src/questions/11-data-preservation.html.j2:131
+#: src/questions/11-data-preservation.html.j2:130
 msgid "None of the used repositories charge for their services."
 msgstr "Žádný z použitých repozitářů si za své služby neúčtuje poplatky."
 
-#: src/macros.html.j2:19 src/macros.html.j2:31
+#: src/macros.html.j2:23 src/macros.html.j2:35
 msgid "ORCID:"
 msgstr "ORCID:"
 
-#: src/macros.html.j2:25
+#: src/macros.html.j2:29
 #, python-format
 msgid "ORCID: %(orcid)s"
 msgstr "ORCID: %(orcid)s"
 
-#: src/macros.html.j2:27
+#: src/macros.html.j2:31
 msgid "ORCID: Not found"
 msgstr "ORCID: nenalezeno"
 
@@ -859,6 +861,10 @@ msgstr "Zásady a postupy"
 msgid "Possible re-use of created data in other contexts"
 msgstr "Možné opětovné využití vytvořených dat v jiných kontextech"
 
+#: src/questions/02-what-data.html.j2:124
+msgid "Produced datasets"
+msgstr "Vytvářené datové sady"
+
 #: src/questions/06-access-security.html.j2:32 src/questions/06-access-security.html.j2:34
 #: src/questions/06-access-security.html.j2:36 src/questions/06-access-security.html.j2:38
 msgid "Project members"
@@ -880,7 +886,7 @@ msgstr ""
 msgid "Project number"
 msgstr "Číslo projektu"
 
-#: src/header.html.j2:62
+#: src/header.html.j2:64
 msgid "Project phase"
 msgstr "Fáze projektu"
 
@@ -896,11 +902,11 @@ msgstr "Původ dat (provenance)"
 msgid "Pseudonymization is handled by an independent party in order to allow data coupling."
 msgstr "Pseudonymizaci zajišťuje nezávislá strana, aby bylo možné data propojovat."
 
-#: src/versions.html.j2:9 src/word/versions.html.j2:8
+#: src/versions.html.j2:10 src/word/versions.html.j2:8
 msgid "Publication date"
 msgstr "Datum zveřejnění"
 
-#: src/questions/01-how-data.html.j2:155 src/questions/02-what-data.html.j2:129
+#: src/questions/01-how-data.html.j2:155 src/questions/02-what-data.html.j2:157
 msgid "Re-used datasets"
 msgstr "Opětovně využité datové sady"
 
@@ -1023,13 +1029,13 @@ msgstr "Formulář souhlasu bude dostupný pro opětovné uživatele."
 msgid "The consent form will not be available for re-users."
 msgstr "Formulář souhlasu nebude dostupný pro opětovné uživatele."
 
-#: src/questions/11-data-preservation.html.j2:138
+#: src/questions/11-data-preservation.html.j2:137
 msgid ""
 "The costs related to the used repositories will be carried by (one of) the departments involved "
 "in the project."
 msgstr "Náklady spojené s použitými repozitáři ponese (jedno z) pracovišť zapojených do projektu."
 
-#: src/questions/11-data-preservation.html.j2:140
+#: src/questions/11-data-preservation.html.j2:139
 msgid ""
 "The costs related to the used repositories will be carried by (one of) the institutes involved in"
 " the project."
@@ -1174,6 +1180,10 @@ msgstr "Postup získání souhlasu od subjektů údajů je stanoven následovně
 msgid "The project partners acquire full ownership of the data."
 msgstr "Partneři projektu získají plné vlastnictví dat."
 
+#: src/questions/02-what-data.html.j2:125
+msgid "The project will produce the following datasets:"
+msgstr "V projektu vzniknou následující datové sady:"
+
 #: src/questions/03-docs-metadata.html.j2:108
 msgid ""
 "The project will require so little storage space for all data and software (including temporary "
@@ -1249,7 +1259,7 @@ msgstr "Pracovní prostor poskytuje dostatečné záruky, pokud jde o prevenci �
 msgid "There are no contributors described for this DMP."
 msgstr "Pro tento DMP nejsou popsáni žádní přispěvatelé."
 
-#: src/versions.html.j2:22
+#: src/versions.html.j2:23
 msgid "There are no named versions"
 msgstr "Nejsou žádné pojmenované verze"
 
@@ -1290,7 +1300,7 @@ msgstr "Během projektu se pro práci s daty používá sdílený pracovní pros
 msgid "There is no contact person specified yet"
 msgstr "Zatím není uvedena žádná kontaktní osoba"
 
-#: src/header.html.j2:97
+#: src/header.html.j2:99
 msgid "There is no creator specified yet"
 msgstr "Zatím není uveden žádný autor"
 
@@ -1393,11 +1403,11 @@ msgstr "Tuto datovou sadu budou shromažďovat odborníci z projektu ve speciali
 msgid "This dataset will be collected by experts in the project, with our own equipment."
 msgstr "Tuto datovou sadu budou shromažďovat odborníci z projektu pomocí našeho vlastního vybavení."
 
-#: src/questions/02-what-data.html.j2:178
+#: src/questions/02-what-data.html.j2:206
 msgid "This is a suitable format for long-term archiving."
 msgstr "Jde o formát vhodný pro dlouhodobou archivaci."
 
-#: src/questions/02-what-data.html.j2:183
+#: src/questions/02-what-data.html.j2:211
 msgid ""
 "This is not a suitable format for long-term archiving; however, we plan to convert it to a "
 "suitable format before the end of the project."
@@ -1455,11 +1465,11 @@ msgstr "K realizaci DMP nejsou potřeba žádné další odborné znalosti."
 msgid "URL:"
 msgstr "URL:"
 
-#: src/header.html.j2:103 src/versions.html.j2:8 src/word/versions.html.j2:7
+#: src/header.html.j2:105 src/versions.html.j2:9 src/word/versions.html.j2:7
 msgid "Version"
 msgstr "Verze"
 
-#: src/questions/02-what-data.html.j2:185
+#: src/questions/02-what-data.html.j2:213
 msgid "We are aware that this is not a suitable format for long-term archiving."
 msgstr "Jsme si vědomi, že nejde o formát vhodný pro dlouhodobou archivaci."
 
@@ -1479,15 +1489,15 @@ msgstr ""
 "Projekt neprobíhá ve spolupráci různých skupin ani institucí. Proto není nutná žádná smlouva o "
 "spolupráci týkající se přístupu k datům."
 
-#: src/questions/02-what-data.html.j2:169
+#: src/questions/02-what-data.html.j2:197
 msgid "We are not using a standardized format"
 msgstr "Nepoužíváme standardizovaný formát"
 
-#: src/questions/02-what-data.html.j2:163
+#: src/questions/02-what-data.html.j2:191
 msgid "We are not using a standardized format because there is no standardized format for this data type."
 msgstr "Nepoužíváme standardizovaný formát, protože pro tento typ dat žádný neexistuje."
 
-#: src/questions/02-what-data.html.j2:165
+#: src/questions/02-what-data.html.j2:193
 msgid "We are not using a standardized format but it is optimized for processing speed and/or volume."
 msgstr ""
 "Nepoužíváme standardizovaný formát, ale tento formát je optimalizovaný pro rychlost zpracování "
@@ -1578,7 +1588,7 @@ msgstr ""
 "Úložný prostor, který bude projekt potřebovat pro všechna data a software (včetně dočasného "
 "úložiště), odhadujeme na %(size)s gigabajtů."
 
-#: src/questions/02-what-data.html.j2:200
+#: src/questions/02-what-data.html.j2:228
 #, python-format
 msgid ""
 "We expect to have %(formatsvolumefiles)s files of average size %(formatsvolumefilegb)s GB (i.e. "
@@ -1587,7 +1597,7 @@ msgstr ""
 "Očekáváme, že v tomto formátu budeme mít %(formatsvolumefiles)s souborů o průměrné velikosti "
 "%(formatsvolumefilegb)s GB (tj. celkem přibližně %(total)s GB)."
 
-#: src/questions/02-what-data.html.j2:194
+#: src/questions/02-what-data.html.j2:222
 #, python-format
 msgid "We expect to have %(formatsvolumetotalgb)s GB of data in this format."
 msgstr "Očekáváme, že v tomto formátu budeme mít %(formatsvolumetotalgb)s GB dat."
@@ -1602,7 +1612,7 @@ msgstr ""
 msgid "We have a consortium agreement that arranges Intellectual Property."
 msgstr "Máme smlouvu o konsorciu, která upravuje duševní vlastnictví."
 
-#: src/questions/11-data-preservation.html.j2:153
+#: src/questions/11-data-preservation.html.j2:152
 msgid ""
 "We have a reserved budget for the time and effort it will take to prepare the data for "
 "publication."
@@ -1618,7 +1628,7 @@ msgstr "Máme specifický způsob pseudonymizace%(details)s"
 msgid "We have already contacted the repository."
 msgstr "Repozitář jsme již kontaktovali."
 
-#: src/questions/11-data-preservation.html.j2:136
+#: src/questions/11-data-preservation.html.j2:135
 msgid "We have budgeted for the costs in the project to pay charges of the used repositories."
 msgstr "Na poplatky použitých repozitářů máme v projektu vyčleněny prostředky."
 
@@ -1748,7 +1758,7 @@ msgstr "Budeme používat"
 msgid "We will be using quality processes."
 msgstr "Budeme používat procesy kontroly kvality."
 
-#: src/questions/02-what-data.html.j2:140
+#: src/questions/02-what-data.html.j2:168
 msgid "We will be using the following data formats and types:"
 msgstr "Budeme používat následující datové formáty a typy:"
 
@@ -1772,7 +1782,7 @@ msgstr ""
 msgid "We will be working with the philosophy <em>as open as possible</em> for our data."
 msgstr "U našich dat se budeme řídit zásadou <em>tak otevřená, jak je to jen možné</em>."
 
-#: src/questions/11-data-preservation.html.j2:145
+#: src/questions/11-data-preservation.html.j2:144
 #, python-format
 msgid "We will carry the costs related to the used repositories by: %(value)s"
 msgstr "Náklady spojené s použitými repozitáři pokryjeme takto: %(value)s"
@@ -1789,7 +1799,7 @@ msgstr ""
 msgid "We will collect data related to individuals, i.e. \"personal data\"."
 msgstr "Budeme shromažďovat údaje týkající se jednotlivců, tj. „osobní údaje“."
 
-#: src/questions/02-what-data.html.j2:190
+#: src/questions/02-what-data.html.j2:218
 msgid "We will have only a small amount of data stored in this format."
 msgstr "V tomto formátu budeme mít uloženo jen malé množství dat."
 

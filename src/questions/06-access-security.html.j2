@@ -230,7 +230,7 @@
                 {%- endif -%}
               {%- endif -%}
               {%- if policiesProceduresItemDescriptionReply -%}
-                {{ policiesProceduresItemDescriptionReply|markdown }}
+                <div>{{ macros.md(policiesProceduresItemDescriptionReply) }}</div>
               {%- endif -%}
           </li>
         {%- endfor -%}

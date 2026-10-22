@@ -55,12 +55,14 @@
         </dd>
       {%- endif -%}
 
+      {%- if dc.km_package %}
       <dt>{% trans %}Based on{% endtrans %}</dt>
-      <dd>{{ dc.pkg.name }}, {{ dc.pkg.version }} (<span class="package-id"><span class="organization-id">{{ dc.pkg.organization_id }}</span>:<span class="km-id">{{ dc.pkg.km_id }}</span>:<span class="version">{{ dc.pkg.version }}</span></span>)</dd>
+      <dd>{{ dc.km_package.name }}, {{ dc.km_package.version }} (<span class="package-id">{{ dc.km_package.id }}:{{ dc.km_package.version }}</span>)</dd>
+      {%- endif -%}
 
-      {%- if ctx.phaseUuid -%}
+      {%- if dc.questionnaire.phase_uuid -%}
       <dt>{% trans %}Project phase{% endtrans %}</dt>
-      <dd>{{ km.entities.phases[ctx.phaseUuid].title }}</dd>
+      <dd>{{ dc.questionnaire.phase.title }}</dd>
       {%- endif -%}
 
       {%- set nCreators = creators|length -%}
@@ -99,7 +101,7 @@
         </dd>
       
 
-      {% for version in dc.project.versions if version.uuid == ctx.project.versionUuid %}
+      {% for version in dc.questionnaire.versions if version.uuid == ctx.questionnaire.versionUuid %}
       <dt>{% trans %}Version{% endtrans %}</dt>
       <dd>{{version.name}} ({{ version.created_at|datetime_format("%d %b %Y") }})</dd>
       {% endfor %}
