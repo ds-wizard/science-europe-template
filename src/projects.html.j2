@@ -55,7 +55,7 @@
     {%- set projectAbstract = repliesMap[projectAbstractPath]|reply_str_value -%}
     {%- if projectAbstract %}
       <section class="abstract">
-        {{ projectAbstract|markdown }}
+        {{ macros.md(projectAbstract) }}
       </section>
     {%- endif -%}
     </div>

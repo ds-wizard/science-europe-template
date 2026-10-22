@@ -31,6 +31,14 @@ This document template for DSW is available as open-source via GitHub Repository
 
 ## Changelog
 
+### 2.0.0
+
+- Adjusted to Wizard 5.0 (template metamodel version 19.0, template id `dsw.science-europe`, knowledge models `dsw.root` and `dsw.lifesciences`)
+- Show the project phase on the title page (it was never shown before)
+- Question 2 lists the produced datasets with their descriptions and whether they will be published
+- Long words and links wrap instead of running off the page; fixed column widths of the version history
+- Markdown in text answers: instrument descriptions are rendered as Markdown; headings in answers no longer become headings of the document (or page breaks in MS Word); short descriptions continue on the line of their name; quotes are marked
+
 ### 1.32.0
 
 - Refreshed document layout: title page, running footer with the project name, clearer section and question headings, lighter tables

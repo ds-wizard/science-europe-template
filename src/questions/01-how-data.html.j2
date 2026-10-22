@@ -34,7 +34,7 @@
                     {%- set measuredDataInstrDesc = repliesMap[measuredDataInstrDescPath]|reply_str_value -%}
                     <strong>{{ measuredDataInstrName }}</strong>
                     {% if measuredDataInstrName and measuredDataInstrDesc -%}<span class="separator">&ndash;</span>{%- endif %}
-                    {{ measuredDataInstrDesc }}
+                    {{ macros.md(measuredDataInstrDesc) if measuredDataInstrDesc }}
                   </li>
                 {%- endfor -%}
               </ul>

@@ -1,11 +1,15 @@
 {# Formatting macros #}
-{#- An answer in Markdown: a single paragraph stays inline (it continues a sentence), more become blocks -#}
+{#- An answer in Markdown: a single paragraph stays inline (it continues a sentence), more become
+    blocks; headings in answers become bold paragraphs (not headings of the document) -#}
 {%- macro md(text) -%}
-  {%- set html = (text|markdown)|trim -%}
-  {%- if html.startswith('<p>') and html.endswith('</p>') and html.count('<p>') == 1 -%}
-    {{ html[3:-4]|safe }}
+  {%- set ns = namespace(html=(text|markdown)|trim) -%}
+  {%- for level in range(1, 7) -%}
+    {%- set ns.html = ns.html|replace('<h%d>'|format(level)|safe, '<p class="answer-heading"><strong>'|safe)|replace('</h%d>'|format(level)|safe, '</strong></p>'|safe) -%}
+  {%- endfor -%}
+  {%- if ns.html.startswith('<p>') and ns.html.endswith('</p>') and ns.html.count('<p') == 1 -%}
+    {{ ns.html[3:-4]|safe }}
   {%- else -%}
-    {{ html }}
+    {{ ns.html|safe }}
   {%- endif -%}
 {%- endmacro -%}
 {%- macro formatEmail(email) -%}

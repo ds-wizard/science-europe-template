@@ -212,7 +212,7 @@
                 <p>{% trans %}The following qualified references to other data sets will be included:{% endtrans %}</p>
                 <ul>
                     {%- for qref in qreferences -%}
-                    <li><em>{{ qref.id|e }}</em> &ndash; {{ qref.relation|markdown }}</li>
+                    <li><em>{{ qref.id|e }}</em> &ndash; {{ macros.md(qref.relation) }}</li>
                     {%- endfor -%}
                 </ul>
             {%- endif -%}
