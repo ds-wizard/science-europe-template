@@ -2,12 +2,12 @@
   Data model of the document.
 
   1. Extraction: the replies of the project as nested objects named by the json.key annotations of
-     the knowledge model (dc|extract_replies). A question is an object with _value (the reply, or
-     the json.value of the selected answer), a list question a list of item objects, a multi-choice
-     question a list of choice objects. Chapters are the top level, e.g. x.creatingData.
-  2. Mapping: every annotated question that is not answered gets an empty reply ({'_value': none},
-     or [] for lists), so paths along the knowledge model never fail in the templates; answers and
-     choices without json.value get a code from FALLBACK_VALUES.
+     the knowledge model (dc|extract_replies, version 2). A question is an object with _value (the
+     reply, or the json.value of the selected answer), a list question a list of item objects, a
+     multi-choice question a list of choice objects. Chapters are the top level, e.g.
+     x.creatingData. Every annotated question is present, also when it is not answered (_value
+     none, [] for lists), so paths along the knowledge model never fail in the templates.
+  2. Mapping: answers and choices without json.value get a code from FALLBACK_VALUES.
 
   Templates use x (exported) and compare _value with the json.value of answers and choices.
 -#}
@@ -47,50 +47,20 @@
   'f7f2ff16-eee0-42a7-a89a-bd7291cef5fc': 'explore',
 } -%}
 
-{#- The json.key annotation of a chapter or question (none if it has none) -#}
-{%- macro _key(entity) -%}
-  {%- set k = entity.a.get('json.key') -%}
-  {{- k if k is string else (k[0] if k else '') -}}
-{%- endmacro -%}
-
-{#- Completes obj (the object of a chapter, answer or list item) for the given questions -#}
-{%- macro complete(obj, questions) -%}
-  {%- for q in questions -%}
-    {%- set k = _key(q)|string -%}
-    {%- if not k -%}
-      {#- not annotated: the extraction puts its follow-up questions into obj -#}
-      {%- if q is of_type("OptionsQuestion") -%}
-        {%- for answer in q.answers -%}{{ complete(obj, answer.followups) }}{%- endfor -%}
-      {%- endif -%}
-    {%- elif q is of_type("ListQuestion") or q is of_type("MultiChoiceQuestion") -%}
-      {%- if obj.get(k) is none -%}{%- do obj.update({k: []}) -%}{%- endif -%}
-      {%- for item in obj[k] -%}
-        {%- if q is of_type("ListQuestion") -%}
-          {{ complete(item, q.followups) }}
-        {%- elif item._value is none and item._uuid in FALLBACK_VALUES -%}
-          {%- do item.update({'_value': FALLBACK_VALUES[item._uuid]}) -%}
-        {%- endif -%}
-      {%- endfor -%}
-    {%- else -%}
-      {%- if obj.get(k) is none -%}{%- do obj.update({k: {'_value': none}}) -%}{%- endif -%}
-      {%- if obj[k]._value is none and obj[k]._uuid in FALLBACK_VALUES -%}
-        {%- do obj[k].update({'_value': FALLBACK_VALUES[obj[k]._uuid]}) -%}
-      {%- endif -%}
-      {%- if q is of_type("OptionsQuestion") -%}
-        {%- for answer in q.answers -%}{{ complete(obj[k], answer.followups) }}{%- endfor -%}
-      {%- endif -%}
+{#- Sets the codes of FALLBACK_VALUES in obj and the objects below it -#}
+{%- macro fallback(obj) -%}
+  {%- if obj is mapping -%}
+    {%- if obj._value is none and obj._uuid in FALLBACK_VALUES -%}
+      {%- do obj.update({'_value': FALLBACK_VALUES[obj._uuid]}) -%}
     {%- endif -%}
-  {%- endfor -%}
+    {%- for k, v in obj.items() if not k.startswith('_') -%}{{ fallback(v) }}{%- endfor -%}
+  {%- elif obj is sequence and obj is not string -%}
+    {%- for item in obj -%}{{ fallback(item) }}{%- endfor -%}
+  {%- endif -%}
 {%- endmacro -%}
 
 {#- 1. extraction -#}
-{%- set x = dc|extract_replies -%}
+{%- set x = dc|extract_replies({'version': '2'}) -%}
 
 {#- 2. mapping -#}
-{%- for chapter in dc.km.chapters -%}
-  {%- set k = _key(chapter)|string -%}
-  {%- if k -%}
-    {%- if x.get(k) is none -%}{%- do x.update({k: {}}) -%}{%- endif -%}
-    {{ complete(x[k], chapter.questions) }}
-  {%- endif -%}
-{%- endfor -%}
+{{- fallback(x) -}}

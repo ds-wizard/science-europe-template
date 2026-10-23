@@ -186,13 +186,13 @@
               {% trans %}We will have only a small amount of data stored in this format.{% endtrans %}
             {%- elif volume._value == 'gigabytes' -%}
               {%- set volumeTotalGB = volume.valueGb._value -%}
-              {%- if volumeTotalGB %}
+              {%- if volumeTotalGB not in [none, ''] %}
                 {% trans formatsvolumetotalgb=volumeTotalGB %}We expect to have {{ formatsvolumetotalgb }} GB of data in this format.{% endtrans %}
               {%- endif -%}
             {%- elif volume._value == 'files' -%}
               {%- set volumeFiles = volume.number._value -%}
               {%- set volumeFileGB = volume.averageSizeGb._value -%}
-              {%- if volumeFiles and volumeFileGB %}
+              {%- if volumeFiles not in [none, ''] and volumeFileGB not in [none, ''] %}
                 {% trans formatsvolumefiles=volumeFiles, formatsvolumefilegb=volumeFileGB, total=((volumeFiles|int * volumeFileGB|float)|round(2)) %}We expect to have {{ formatsvolumefiles }} files of average size {{ formatsvolumefilegb }} GB (i.e. approximately {{ total }} GB in total).{% endtrans %}
               {%- endif -%}
             {%- endif -%}

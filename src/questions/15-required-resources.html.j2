@@ -70,7 +70,7 @@
                         {%- set projectCostItemCurrency = cost.currency -%}
                         {%- set projectCostItemAmountReply = cost.amount._value -%}
 
-                        {%- if  projectCostItemAmountReply and projectCostItemCurrency._value is not none -%}
+                        {%- if projectCostItemAmountReply not in [none, ''] and projectCostItemCurrency._value is not none -%}
                             <p>{% trans amount=projectCostItemAmountReply, currency=(macros.currency(projectCostItemCurrency)) %}The amount is {{ amount }} {{ currency }}.{% endtrans %}</p>
                         {%- endif -%}
 

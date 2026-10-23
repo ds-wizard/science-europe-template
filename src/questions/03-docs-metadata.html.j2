@@ -86,7 +86,7 @@
         <p>{% trans %}The project will require so little storage space for all data and software (including temporary storage) that it is not a problem.{% endtrans %}</p>
       {%- elif storageSpace._value == 'specify' -%}
         {%- set size = storageSpace.gigabytes._value -%}
-        {%- if size -%}
+        {%- if size not in [none, ''] -%}
         <p>{% trans size=size %}We estimate the storage space that the project will require for all data and software (including temporary storage) to {{ size }} gigabytes.{% endtrans %}</p>
         {%- endif -%}
       {%- endif -%}
