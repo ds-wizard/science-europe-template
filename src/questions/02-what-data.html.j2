@@ -1,55 +1,53 @@
+{#- data -#}
+{%- set measured = x.creatingData.hasMeasuredData -%}
+{%- set nonMeasured = x.creatingData.hasNonMeasuredData -%}
+{%- set producedDatasets = x.preservingData.producedDatasets -%}
+{%- set preexisting = x.reusingData.hasPreExistingData -%}
+{%- set formats = x.creatingData.usesDataFormats -%}
+
 <div id="q-what-data" class="question">
   <h3>{% trans %}2. What data (kind, format, volume) will be collected or produced?{% endtrans %}</h3>
   <div class="answer">
 
-  {%- set measuredPath = [uuids.creatingCUuid, uuids.measuredQUuid]|reply_path -%}
-  {%- set measuredAUuid = repliesMap[measuredPath]|reply_str_value -%}
-  {%- if measuredAUuid == uuids.measuredYesAUuid -%}
-    {%- set measuredDataPath = [measuredPath, uuids.measuredYesAUuid, uuids.measuredDataQUuid]|reply_path -%}
-    {%- set measuredDataItems = repliesMap[measuredDataPath]|reply_items -%}
+  {%- if measured._value is true -%}
+    {%- set datasets = measured.datasets -%}
     {# Measured datasets #}
-    {%- if measuredDataItems|length > 0 -%}
+    {%- if datasets|length > 0 -%}
       <div>
       <h4>{% trans %}Instrument datasets{% endtrans %}</h4>
       {% trans %}The following instrument datasets will be acquired in the project:{% endtrans %}
       <ul class="entries">
-        {%- for datasetItem in measuredDataItems -%}
-          {%- set pathPrefix = [measuredDataPath, datasetItem]|reply_path -%}
+        {%- for dataset in datasets -%}
           <li>
-            {%- set measuredDataNamePath = [pathPrefix, uuids.measuredDataNameQUuid]|reply_path -%}
-            {%- set measuredDataName = repliesMap[measuredDataNamePath]|reply_str_value -%}
-            {%- set measuredDataWhoPath = [pathPrefix, uuids.measuredDataWhoQUuid]|reply_path -%}
-            {%- set measuredDataWhoAUuid = repliesMap[measuredDataWhoPath]|reply_str_value -%}
-            {%- set measuredDataEquipPath = [pathPrefix, uuids.measuredDataEquipQUuid]|reply_path -%}
-            {%- set measuredDataEquipAUuid = repliesMap[measuredDataEquipPath]|reply_str_value -%}
-            <strong>{{ measuredDataName if measuredDataName else _("(no name given)") }}</strong>
+            {%- set datasetName = dataset.dataset._value -%}
+            {%- set whoWhere = dataset.whoWhere -%}
+            {%- set equipment = dataset.isStandardAndWellDescribed._value -%}
+            <strong>{{ datasetName if datasetName else _("(no name given)") }}</strong>
             {# Who will collect #}
-            {%- if measuredDataWhoAUuid == uuids.measuredDataWhoExpertsOwnAUuid -%}
+            {%- if whoWhere._value == 'expertsOwn' -%}
               <p>{% trans %}This dataset will be collected by experts in the project, with our own equipment.{% endtrans %}</p>
-            {%- elif measuredDataWhoAUuid == uuids.measuredDataWhoExpertsOutAUuid -%}
+            {%- elif whoWhere._value == 'expertsSpecialised' -%}
               <p>{% trans %}This dataset will be collected by experts in the project, at a specialized infrastructure.{% endtrans %}</p>
-            {%- elif measuredDataWhoAUuid == uuids.measuredDataWhoExternalAUuid -%}
-              {%- set mdExternalOwnershipPath = [measuredDataWhoPath, uuids.measuredDataWhoExternalAUuid, uuids.mdExternalOwnershipQUuid]|reply_path -%}
-              {%- set mdExternalOwnershipAUuid = repliesMap[mdExternalOwnershipPath]|reply_str_value -%}
+            {%- elif whoWhere._value == 'external' -%}
+              {%- set ownership = whoWhere.ownership -%}
               <p>
                 {% trans %}This dataset will be collected by an external party.{% endtrans %}
-                {% if mdExternalOwnershipAUuid == uuids.mdExternalOwnershipPartyAUuid -%}
+                {% if ownership._value == 'external' -%}
                   {% trans %}The ownership of the resulting data will remain with the external party.{% endtrans %}
-                {%- elif mdExternalOwnershipAUuid == uuids.mdExternalOwnershipPartnersAUuid -%}
+                {%- elif ownership._value == 'projectPartners' -%}
                   {% trans %}The project partners acquire full ownership of the data.{% endtrans %}
-                {%- elif mdExternalOwnershipAUuid == uuids.mdExternalOwnershipOtherAUuid -%}
-                  {%- set mdExternalOwnershipOtherPath = [mdExternalOwnershipPath, uuids.mdExternalOwnershipOtherAUuid, uuids.mdExternalOwnershipOtherQUuid]|reply_path -%}
-                  {%- set mdExternalOwnershipOther = repliesMap[mdExternalOwnershipOtherPath]|reply_str_value -%}
-                  {%- if mdExternalOwnershipOther -%}
-                    {% trans value=(macros.md(mdExternalOwnershipOther)) %}For the ownership of the data we have made the following arrangements: {{ value }}{% endtrans %}
+                {%- elif ownership._value == 'other' -%}
+                  {%- set ownershipOther = ownership.other._value -%}
+                  {%- if ownershipOther -%}
+                    {% trans value=(macros.md(ownershipOther)) %}For the ownership of the data we have made the following arrangements: {{ value }}{% endtrans %}
                   {%- endif -%}
                 {%- endif -%}
               </p>
             {%- endif -%}
             {# Equipment standard? #}
-            {% if measuredDataEquipAUuid == uuids.measuredDataEquipDescribedAUuid -%}
+            {% if equipment is true -%}
               <p>{% trans %}The equipment is very well described and known.{% endtrans %}</p>
-            {%- elif measuredDataEquipAUuid == uuids.measuredDataEquipCareAUuid -%}
+            {%- elif equipment is false -%}
               <p>{% trans %}The equipment is less well described or not completely standard, so we will need to take extra care documenting the process.{% endtrans %}</p>
             {%- endif -%}
           </li>
@@ -60,23 +58,13 @@
   {%- endif -%}
 
   {# Non-equipment datasets #}
-  {%- set neqDataPath = [uuids.creatingCUuid, uuids.neqDataQUuid]|reply_path -%}
-  {%- set neqDataAUuid = repliesMap[neqDataPath]|reply_str_value -%}
-  {%- if neqDataAUuid == uuids.neqDataYesAUuid -%}
-    {%- set neqDataPrefix = [neqDataPath, uuids.neqDataYesAUuid]|reply_path -%}
-    {%- set neqDataQuestPath = [neqDataPrefix, uuids.neqDataQuestQUuid]|reply_path -%}
-    {%- set neqDataQuestAUuid = repliesMap[neqDataQuestPath]|reply_str_value -%}
-    {%- set neqDataCaseReportPath = [neqDataPrefix, uuids.neqDataCaseReportQUuid]|reply_path -%}
-    {%- set neqDataCaseReportAUuid = repliesMap[neqDataCaseReportPath]|reply_str_value -%}
-    {%- set neqDataERecordsPath = [neqDataPrefix, uuids.neqDataERecordsQUuid]|reply_path -%}
-    {%- set neqDataERecordsAUuid = repliesMap[neqDataERecordsPath]|reply_str_value -%}
-    {%- set neqDataSetsPath = [neqDataPrefix, uuids.neqDataSetsQUuid]|reply_path -%}
-    {%- set neqDataSetsItems = repliesMap[neqDataSetsPath]|reply_items -%}
+  {%- if nonMeasured._value is true -%}
+    {%- set neqDatasets = nonMeasured.datasets -%}
 
-    {%- set questionnaires = neqDataQuestAUuid == uuids.neqDataQuestYesAUuid -%}
-    {%- set caseReport = neqDataCaseReportAUuid == uuids.neqDataCaseReportYesAUuid -%}
-    {%- set eRecords = neqDataERecordsAUuid == uuids.neqDataERecordsYesAUuid -%}
-    {%- if questionnaires or caseReport or eRecords or neqDataSetsItems|length > 0 -%}
+    {%- set questionnaires = nonMeasured.questionnaires._value is true -%}
+    {%- set caseReport = nonMeasured.caseReportForms._value is true -%}
+    {%- set eRecords = nonMeasured.patientRecords._value is true -%}
+    {%- if questionnaires or caseReport or eRecords or neqDatasets|length > 0 -%}
       <div>
       <h4>{% trans %}Non-equipment datasets{% endtrans %}</h4>
       {# Types #}
@@ -98,16 +86,15 @@
           {%- endif -%}
         {% endif %}
         {# Datasets #}
-        {%- if neqDataSetsItems|length > 0 -%}
+        {%- if neqDatasets|length > 0 -%}
           {% trans %}The non-equipment datasets are:{% endtrans %}
           <ul class="entries">
-          {%- for neqDataSetItem in neqDataSetsItems -%}
-            {%- set pathPrefix = [neqDataSetsPath, neqDataSetItem]|reply_path -%}
-            {%- set neqDataSetsName = repliesMap[[pathPrefix, uuids.neqDataSetsNameQUuid]|reply_path]|reply_str_value -%}
-            {%- set neqDataSetsDesc = repliesMap[[pathPrefix, uuids.neqDataSetsDescQUuid]|reply_path]|reply_str_value -%}
+          {%- for neqDataset in neqDatasets -%}
+            {%- set neqDatasetName = neqDataset.dataset._value -%}
+            {%- set neqDatasetDesc = neqDataset.description._value -%}
             <li>
-              <strong>{{ neqDataSetsName if neqDataSetsName else _("(no name given)") }}</strong>
-              {% if neqDataSetsDesc -%}<span class="separator">&ndash;</span> {{ macros.md(neqDataSetsDesc) }}{%- endif -%}
+              <strong>{{ neqDatasetName if neqDatasetName else _("(no name given)") }}</strong>
+              {% if neqDatasetDesc -%}<span class="separator">&ndash;</span> {{ macros.md(neqDatasetDesc) }}{%- endif -%}
             </li>
           {%- endfor -%}
           </ul>
@@ -117,27 +104,24 @@
     {%- endif -%}
   {%- endif -%}
   {# Produced datasets #}
-  {%- set producedDataPath = [uuids.preservingCUuid, uuids.producedDataQUuid]|reply_path -%}
-  {%- set producedDataItems = repliesMap[producedDataPath]|reply_items -%}
-  {%- if producedDataItems|length > 0 -%}
+  {%- if producedDatasets|length > 0 -%}
     <div>
     <h4>{% trans %}Produced datasets{% endtrans %}</h4>
     <p>{% trans %}The project will produce the following datasets:{% endtrans %}</p>
     <ul class="entries">
-    {%- for i in producedDataItems -%}
-      {%- set pathPrefix = [producedDataPath, i]|reply_path -%}
-      {%- set producedDataName = repliesMap[[pathPrefix, uuids.producedDataNameQUuid]|reply_path]|reply_str_value -%}
-      {%- set producedDataDesc = repliesMap[[pathPrefix, uuids.producedDataDescQUuid]|reply_path]|reply_str_value -%}
-      {%- set isPublishedDataAUuid = repliesMap[[pathPrefix, uuids.isPublishedDataQUuid]|reply_path]|reply_str_value -%}
+    {%- for produced in producedDatasets -%}
+      {%- set producedName = produced.dataset._value -%}
+      {%- set producedDesc = produced.description._value -%}
+      {%- set published = produced.published._value -%}
       <li>
-        <strong>{{ producedDataName if producedDataName else _("(no name given)") }}</strong>
-        {%- if isPublishedDataAUuid == uuids.isPublishedDataNoAUuid %}
+        <strong>{{ producedName if producedName else _("(no name given)") }}</strong>
+        {%- if published is false %}
         <span class="status">{% trans %}(not published){% endtrans %}</span>
-        {%- elif isPublishedDataAUuid == uuids.isPublishedDataYesAUuid %}
+        {%- elif published is true %}
         <span class="status">{% trans %}(will be published){% endtrans %}</span>
         {%- endif -%}
-        {%- if producedDataDesc %}
-        <div>{{ macros.md(producedDataDesc) }}</div>
+        {%- if producedDesc %}
+        <div>{{ macros.md(producedDesc) }}</div>
         {%- endif %}
       </li>
     {%- endfor -%}
@@ -145,14 +129,8 @@
     </div>
   {%- endif -%}
   {# Existing datasets #}
-  {%- set preexistingPath = [uuids.reusingCUuid, uuids.preexistingQUuid]|reply_path -%}
-  {%- set preexistingAUuid = repliesMap[preexistingPath]|reply_str_value -%}
-  {%- if preexistingAUuid == uuids.preexistingYesAUuid -%}
-    {%- set refDataPath = [preexistingPath, uuids.preexistingYesAUuid, uuids.refDataQUuid]|reply_path -%}
-    {%- set refDataItems = repliesMap[refDataPath]|reply_items -%}
-    {%- set nrefDataPath = [preexistingPath, uuids.preexistingYesAUuid, uuids.nrefDataQUuid]|reply_path -%}
-    {%- set nrefDataItems = repliesMap[nrefDataPath]|reply_items -%}
-    {%- if (refDataItems|length + nrefDataItems|length) > 0 -%}
+  {%- if preexisting._value is true -%}
+    {%- if (preexisting.referenceDatasets|length + preexisting.nonReferenceDatasets|length) > 0 -%}
       <div>
         <h4>{% trans %}Re-used datasets{% endtrans %}</h4>
         <p>{% trans %}Datasets considered for reuse and actually reused are described in Question 1.{% endtrans %}</p>
@@ -161,71 +139,61 @@
   {%- endif -%}
 
   {# Format/Type with volume #}
-  {%- set formatsPath = [uuids.creatingCUuid, uuids.formatsQUuid]|reply_path -%}
-  {%- set formatsItems = repliesMap[formatsPath]|reply_items -%}
-  {%- if formatsItems|length > 0 -%}
+  {%- if formats|length > 0 -%}
     <h4>{% trans %}Data formats and types{% endtrans %}</h4>
     <div>{% trans %}We will be using the following data formats and types:{% endtrans %}
     <ul class="entries">
-      {%- for formatItem in formatsItems -%}
-        {%- set formatPrefix = [formatsPath, formatItem]|reply_path -%}
-        {%- set formatNameReply = repliesMap[[formatPrefix, uuids.formatsNameQUuid]|reply_path] -%}
-        {%- set formatsIsStandardPath = [formatPrefix, uuids.formatsIsStandardQUuid]|reply_path -%}
-        {%- set formatsIsStandardAUuid = repliesMap[formatsIsStandardPath]|reply_str_value -%}
-        {%- set formatsIsLTSuitablePath = [formatPrefix, uuids.formatsIsLTSuitableQUuid]|reply_path -%}
-        {%- set formatsIsLTSuitableAUuid = repliesMap[formatsIsLTSuitablePath]|reply_str_value -%}
-        {%- set formatsVolumePath = [formatPrefix, uuids.formatsVolumeQUuid]|reply_path -%}
-        {%- set formatsVolumeAUuid = repliesMap[formatsVolumePath]|reply_str_value -%}
+      {%- for format in formats -%}
+        {%- set isStandard = format.isStandard -%}
+        {%- set ltSuitable = format.enablesSharingArchiving -%}
+        {%- set volume = format.volume -%}
         <li>
           {# identification #}
-          <strong>{{ macros.integrationFairSharing(formatNameReply) }}</strong>
-          {%- if formatsIsStandardAUuid or formatsIsLTSuitableAUuid or formatsVolumeAUuid -%}
+          <strong>{{ macros.fairsharing(format.format) }}</strong>
+          {%- if isStandard._value is not none or ltSuitable._value is not none or volume._value is not none -%}
             <p>
             {# standard? #}
-            {%- if formatsIsStandardAUuid == uuids.formatsIsStandardYesAUuid %}
+            {%- if isStandard._value is true %}
               {% trans %}It is a standardized format.{% endtrans %}
-            {%- elif formatsIsStandardAUuid == uuids.formatsIsStandardNoAUuid -%}
-              {%- set formatsWhyNonStandardPath = [formatsIsStandardPath, uuids.formatsIsStandardNoAUuid, uuids.formatsWhyNonStandardQUuid]|reply_path -%}
-              {%- set formatsWhyNonStandardAUuid = repliesMap[formatsWhyNonStandardPath]|reply_str_value -%}
-              {%- if formatsWhyNonStandardAUuid == uuids.formatsWhyNSThereIsNoStandardAUuid %}
+            {%- elif isStandard._value is false -%}
+              {%- set whyNonStandard = isStandard.reason -%}
+              {%- if whyNonStandard._value == 'noStandard' %}
                 {% trans %}We are not using a standardized format because there is no standardized format for this data type.{% endtrans %}
-              {%- elif formatsWhyNonStandardAUuid == uuids.formatsWhyNSItIsOptimizedAUuid %}
+              {%- elif whyNonStandard._value == 'optimized' %}
                 {% trans %}We are not using a standardized format but it is optimized for processing speed and/or volume.{% endtrans %}
-              {%- elif formatsWhyNonStandardAUuid == uuids.formatsWhyNSAnotherReasonAUuid -%}
-                {%- set formatsWhyNSAnotherReasonPath = [formatsWhyNonStandardPath, uuids.formatsWhyNSAnotherReasonAUuid, uuids.formatsWhyNSAnotherReasonQUuid]|reply_path -%}
-                {%- set formatsWhyNSAnotherReason = repliesMap[formatsWhyNSAnotherReasonPath]|reply_str_value -%}
+              {%- elif whyNonStandard._value == 'other' -%}
+                {%- set otherReason = whyNonStandard.reason._value -%}
                 {% trans %}We are not using a standardized format{% endtrans %}
-                {%- if formatsWhyNSAnotherReason -%}
-                  {% trans value=(formatsWhyNSAnotherReason[:1]|upper ~ formatsWhyNSAnotherReason[1:]) %}, because: {{ value }}{% endtrans %}
+                {%- if otherReason -%}
+                  {% trans value=(otherReason[:1]|upper ~ otherReason[1:]) %}, because: {{ value }}{% endtrans %}
                 {%- endif -%}
                 .
               {%- endif -%}
             {%- endif -%}
             {# long-term suitable? #}
-            {%- if formatsIsLTSuitableAUuid == uuids.formatsIsLTSuitableYesAUuid %}
+            {%- if ltSuitable._value is true %}
               {% trans %}This is a suitable format for long-term archiving.{% endtrans %}
-            {%- elif formatsIsLTSuitableAUuid == uuids.formatsIsLTSuitableNoAUuid -%}
-              {%- set formatsConvertLTSuitablePath = [formatsIsLTSuitablePath, uuids.formatsIsLTSuitableNoAUuid, uuids.formatsConvertLTSuitableQUuid]|reply_path -%}
-              {%- set formatsConvertLTSuitableAUuid = repliesMap[formatsConvertLTSuitablePath]|reply_str_value -%}
-              {%- if formatsConvertLTSuitableAUuid == uuids.formatsConvertLTSuitableYesAUuid %}
+            {%- elif ltSuitable._value is false -%}
+              {%- set convert = ltSuitable.convert._value -%}
+              {%- if convert is true %}
                 {% trans %}This is not a suitable format for long-term archiving; however, we plan to convert it to a suitable format before the end of the project.{% endtrans %}
-              {%- elif formatsConvertLTSuitableAUuid == uuids.formatsConvertLTSuitableNoAUuid %}
+              {%- elif convert is false %}
                 {% trans %}We are aware that this is not a suitable format for long-term archiving.{% endtrans %}
               {%- endif -%}
             {%- endif -%}
             {# volume #}
-            {%- if formatsVolumeAUuid == uuids.formatsVolumeSmallAUuid %}
+            {%- if volume._value == 'small' %}
               {% trans %}We will have only a small amount of data stored in this format.{% endtrans %}
-            {%- elif formatsVolumeAUuid == uuids.formatsVolumeTotalAUuid -%}
-              {%- set formatsVolumeTotalGB = repliesMap[[formatsVolumePath, uuids.formatsVolumeTotalAUuid, uuids.formatsVolumeTotalGBQUuid]|reply_path]|reply_str_value -%}
-              {%- if formatsVolumeTotalGB %}
-                {% trans formatsvolumetotalgb=formatsVolumeTotalGB %}We expect to have {{ formatsvolumetotalgb }} GB of data in this format.{% endtrans %}
+            {%- elif volume._value == 'gigabytes' -%}
+              {%- set volumeTotalGB = volume.valueGb._value -%}
+              {%- if volumeTotalGB %}
+                {% trans formatsvolumetotalgb=volumeTotalGB %}We expect to have {{ formatsvolumetotalgb }} GB of data in this format.{% endtrans %}
               {%- endif -%}
-            {%- elif formatsVolumeAUuid == uuids.formatsVolumeFileSizeAUuid -%}
-              {%- set formatsVolumeFiles = repliesMap[[formatsVolumePath, uuids.formatsVolumeFileSizeAUuid, uuids.formatsVolumeFilesQUuid]|reply_path]|reply_str_value -%}
-              {%- set formatsVolumeFileGB = repliesMap[[formatsVolumePath, uuids.formatsVolumeFileSizeAUuid, uuids.formatsVolumeFileGBQUuid]|reply_path]|reply_str_value -%}
-              {%- if formatsVolumeFiles and formatsVolumeFileGB %}
-                {% trans formatsvolumefiles=formatsVolumeFiles, formatsvolumefilegb=formatsVolumeFileGB, total=((formatsVolumeFiles|int * formatsVolumeFileGB|float)|round(2)) %}We expect to have {{ formatsvolumefiles }} files of average size {{ formatsvolumefilegb }} GB (i.e. approximately {{ total }} GB in total).{% endtrans %}
+            {%- elif volume._value == 'files' -%}
+              {%- set volumeFiles = volume.number._value -%}
+              {%- set volumeFileGB = volume.averageSizeGb._value -%}
+              {%- if volumeFiles and volumeFileGB %}
+                {% trans formatsvolumefiles=volumeFiles, formatsvolumefilegb=volumeFileGB, total=((volumeFiles|int * volumeFileGB|float)|round(2)) %}We expect to have {{ formatsvolumefiles }} files of average size {{ formatsvolumefilegb }} GB (i.e. approximately {{ total }} GB in total).{% endtrans %}
               {%- endif -%}
             {%- endif -%}
             </p>

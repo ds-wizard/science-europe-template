@@ -31,6 +31,12 @@ This document template for DSW is available as open-source via GitHub Repository
 
 ## Changelog
 
+### 3.0.0
+
+- Replies are read by the annotations of the knowledge model (`json.key`, `json.value`) instead of UUIDs; requires the Common DSW Knowledge Model (`dsw.root`) or the Life Sciences DSW Knowledge Model (`dsw.lifesciences`) 2.8.1 or newer
+- The data model is separated from rendering: `src/data/model.j2` extracts the replies (`extract_replies`) and completes them, the other templates only render
+- Adjusted to the knowledge model 2.8: metadata and provenance standards from FAIRsharing (Question 3), identifiers of datasets by their FAIRsharing type (Question 10), the grant number of the funding selected for a cost (Question 15)
+
 ### 2.0.0
 
 - Adjusted to Wizard 5.0 (template metamodel version 19.0, template id `dsw.science-europe`, knowledge models `dsw.root` and `dsw.lifesciences`)

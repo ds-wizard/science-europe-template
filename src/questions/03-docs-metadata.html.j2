@@ -1,3 +1,8 @@
+{#- data -#}
+{%- set metadata = x.creatingData.collectingMetadata -%}
+{%- set openMetadata = x.givingAccessToData.openMetadata -%}
+{%- set storageConv = x.processingData.storageNamingConventions -%}
+
 <div id="q-docs-metadata" class="question">
   <h3>{% trans %}3. What metadata and documentation (for example the methodology of data collection and way of organizing data) will accompany the data?{% endtrans %}</h3>
 
@@ -5,51 +10,33 @@
     <p>{% trans %}List of data to be published is given in Section 5, Questions 10 and 11. This also includes information about catalogs where the data can be found. Information about data types used is given in Section 1, Question 2.{% endtrans %}</p>
 
     {# Metadata #}
-    {%- set metadataPath = [uuids.creatingCUuid, uuids.metadataQUuid]|reply_path -%}
-    {%- set metadataAUuid = repliesMap[metadataPath]|reply_str_value -%}
-    {%- if metadataAUuid == uuids.metadataExploreAUuid -%}
+    {%- if metadata._value == 'explore' -%}
 
       {# Metadata standards #}
       {%- set metadataSentences = [] -%}
-      {%- set metadataStandardsPath = [metadataPath, uuids.metadataExploreAUuid, uuids.metadataStandardsQUuid]|reply_path -%}
-      {%- set metadataStandardsAUuid = repliesMap[metadataStandardsPath]|reply_str_value -%}
-      {%- if metadataStandardsAUuid == uuids.metadataStandardsExploreAUuid -%}
-        {%- set metadataStandardsDCPath = [metadataStandardsPath, uuids.metadataStandardsExploreAUuid, uuids.metadataStandardsDCQUuid]|reply_path -%}
-        {%- set metadataStandardsDCAUuid = repliesMap[metadataStandardsDCPath]|reply_str_value -%}
-        {%- set metadataStandardsDataCityPath = [metadataStandardsPath, uuids.metadataStandardsExploreAUuid, uuids.metadataStandardsDataCiteQUuid]|reply_path -%}
-        {%- set metadataStandardsDataCityAUuid = repliesMap[metadataStandardsDataCityPath]|reply_str_value -%}
-        {%- set metadataStandardsDDIPath = [metadataStandardsPath, uuids.metadataStandardsExploreAUuid, uuids.metadataStandardsDDIQUuid]|reply_path -%}
-        {%- set metadataStandardsDDIAUuid = repliesMap[metadataStandardsDDIPath]|reply_str_value -%}
-        {%- set metadataStandardsKeywordsPath = [metadataStandardsPath, uuids.metadataStandardsExploreAUuid, uuids.metadataStandardsKeywordsQUuid]|reply_path -%}
-        {%- set metadataStandardsKeywordsAUuid = repliesMap[metadataStandardsKeywordsPath]|reply_str_value -%}
-
-
-        {%- set metadataStandards = [] -%}
-        {%- if metadataStandardsDCAUuid == uuids.metadataStandardsDCYesAUuid -%}
-          {%- do metadataStandards.append("Dublin Core") -%}
-        {%- endif -%}
-        {%- if metadataStandardsDataCityAUuid == uuids.metadataStandardsDataCiteYesAUuid -%}
-          {%- do metadataStandards.append("DataCite") -%}
-        {%- endif -%}
-        {%- if metadataStandardsDDIAUuid == uuids.metadataStandardsDDIYesAUuid -%}
-          {%- do metadataStandards.append("DDI (Data Documentation Initiative)") -%}
-        {%- endif -%}
-        {%- if metadataStandards|length == 1 -%}
-          {%- do metadataSentences.append(_("We will be documenting the data with the %(standard)s metadata standard.", standard=metadataStandards[0])) -%}
-        {%- elif metadataStandards|length == 2 -%}
-          {%- do metadataSentences.append(_("We will be documenting the data with the %(standard)s and %(standard2)s metadata standards.", standard=metadataStandards[0], standard2=metadataStandards[1])) -%}
-        {%- elif metadataStandards|length == 3 -%}
-          {%- do metadataSentences.append(_("We will be documenting the data with the %(standard)s, %(standard2)s, and %(standard3)s metadata standards.", standard=metadataStandards[0], standard2=metadataStandards[1], standard3=metadataStandards[2])) -%}
-        {%- endif -%}
-        {%- if metadataStandardsKeywordsAUuid == uuids.metadataStandardsKeywordsYesAUuid -%}
-          {%- do metadataSentences.append(_("We will include keywords and relevant ontology references to optimize the possibility for discovery and potential reuse.")) -%}
-        {%- endif -%}
+      {%- set standards = [] -%}
+      {%- for item in metadata.standards if item.standard._value -%}
+        {%- do standards.append(macros.fairsharing(item.standard)) -%}
+      {%- endfor -%}
+      {%- if standards|length == 1 -%}
+        {%- do metadataSentences.append(_("We will be documenting the data with the %(standard)s metadata standard.", standard=standards[0])) -%}
+      {%- elif standards|length == 2 -%}
+        {%- do metadataSentences.append(_("We will be documenting the data with the %(standard)s and %(standard2)s metadata standards.", standard=standards[0], standard2=standards[1])) -%}
+      {%- elif standards|length > 2 -%}
+        {%- do metadataSentences.append(_("We will be documenting the data with the %(standard)s, %(standard2)s, and %(standard3)s metadata standards.", standard=standards[:-2]|join(", "), standard2=standards[-2], standard3=standards[-1])) -%}
       {%- endif -%}
 
-      {%- set provenanceW3CPath = [metadataPath, uuids.metadataExploreAUuid, uuids.provenanceW3CQUuid]|reply_path -%}
-      {%- set provenanceW3CAUuid = repliesMap[provenanceW3CPath]|reply_str_value -%}
-      {%- if provenanceW3CAUuid == uuids.provenanceW3CYesAUuid -%}
-          {%- do metadataSentences.append(_("The provenance will be captured using W3C PROV.")) -%}
+      {# Provenance standards #}
+      {%- set provenance = [] -%}
+      {%- for item in metadata.standardsProvenance if item.standardProvenance._value -%}
+        {%- do provenance.append(macros.fairsharing(item.standardProvenance)) -%}
+      {%- endfor -%}
+      {%- if provenance|length == 1 -%}
+        {%- do metadataSentences.append(_("The provenance will be captured using %(standard)s.", standard=provenance[0])) -%}
+      {%- elif provenance|length == 2 -%}
+        {%- do metadataSentences.append(_("The provenance will be captured using %(standard)s and %(standard2)s.", standard=provenance[0], standard2=provenance[1])) -%}
+      {%- elif provenance|length > 2 -%}
+        {%- do metadataSentences.append(_("The provenance will be captured using %(standard)s, %(standard2)s, and %(standard3)s.", standard=provenance[:-2]|join(", "), standard2=provenance[-2], standard3=provenance[-1])) -%}
       {%- endif -%}
 
       {%- if metadataSentences|length > 0 -%}
@@ -58,82 +45,66 @@
     {%- endif -%}
 
     {# Publishing metadata #}
-    {%- set metadataOpenPath = [uuids.accessCUuid, uuids.metadataOpenQUuid]|reply_path -%}
-    {%- set metadataOpenAUuid = repliesMap[metadataOpenPath]|reply_str_value -%}
-    {%- if metadataOpenAUuid == uuids.metadataOpenNoAUuid %}
-      {%- set explanation = repliesMap[[metadataOpenPath, metadataOpenAUuid, uuids.metadataOpenNoExplainQUuid]|reply_path]|reply_str_value -%}
+    {%- if openMetadata._value is false %}
+      {%- set explanation = openMetadata.explanation._value -%}
       {%- if explanation -%}
         <p>{% trans value=(macros.md(explanation)) %}Metadata will not be available openly &ndash; {{ value }}{% endtrans %}</p>
       {%- else -%}
         <p>{% trans %}Metadata will not be available openly.{% endtrans %}</p>
       {%- endif -%}
-    {%- elif metadataOpenAUuid == uuids.metadataOpenYesAUuid -%}
-      {%- set metadataOpenInstrAUuid = repliesMap[[metadataOpenPath, metadataOpenAUuid, uuids.metadataOpenInstrQUuid]|reply_path]|reply_str_value -%}
-      {%- set metadataOpenFormAUuid = repliesMap[[metadataOpenPath, metadataOpenAUuid, uuids.metadataOpenFormQUuid]|reply_path]|reply_str_value -%}
+    {%- elif openMetadata._value is true -%}
+      {%- set accessInstructions = openMetadata.accessInstructions._value -%}
+      {%- set harvestable = openMetadata.harvestable._value -%}
       <p>
-      {%- if metadataOpenInstrAUuid == uuids.metadataOpenInstrYesAUuid %}
+      {%- if accessInstructions is true %}
         {% trans %}Metadata will be openly available including instructions how to get access to the data.{% endtrans %}
-      {%- elif metadataOpenInstrAUuid == uuids.metadataOpenInstrNoAUuid %}
+      {%- elif accessInstructions is false %}
         {% trans %}Metadata will be openly available without instructions how to get access to the data.{% endtrans %}
       {%- else %}
         {% trans %}Metadata will be openly available.{% endtrans %}
       {%- endif %}
-      {%- if metadataOpenFormAUuid == uuids.metadataOpenFormNoAUuid %}
+      {%- if harvestable == 'no' %}
         {% trans %}Metadata will not be available in a form that can be harvested and indexed.{% endtrans %}
-      {%- elif metadataOpenFormAUuid == uuids.metadataOpenFormYesRepoAUuid %}
+      {%- elif harvestable == 'byRepository' %}
         {% trans %}Metadata will be available in a form that can be harvested and indexed (managed by the used repository / repositories).{% endtrans %}
-      {%- elif metadataOpenFormAUuid == uuids.metadataOpenFormYesCareAUuid %}
+      {%- elif harvestable == 'yes' %}
         {% trans %}Metadata will be available in a form that can be harvested and indexed.{% endtrans %}
       {%- endif %}
       </p>
     {%- endif -%}
 
   {# Storage and file conventions #}
-  {%- set storageConvPath = [uuids.processingCUuid, uuids.storageConvQUuid]|reply_path -%}
-  {%- set storageConvAUuid = repliesMap[storageConvPath]|reply_str_value -%}
-  {%- if storageConvAUuid == uuids.storageConvExploreAUuid -%}
-    {%- set stConvPrefix = [storageConvPath, uuids.storageConvExploreAUuid]|reply_path -%}
-    {%- set storageSpacePath = [stConvPrefix, uuids.storageSpaceQUuid]|reply_path -%}
-    {%- set storageSpaceAUuid = repliesMap[storageSpacePath]|reply_str_value -%}
-    {%- set storageConvFSysPath = [stConvPrefix, uuids.storageConvFSysQUuid]|reply_path -%}
-    {%- set storageConvFSysAUuid = repliesMap[storageConvFSysPath]|reply_str_value -%}
-    {%- set storageConvObjStorePath = [stConvPrefix, uuids.storageConvObjStoreQUuid]|reply_path -%}
-    {%- set storageConvObjStoreAUuid = repliesMap[storageConvObjStorePath]|reply_str_value -%}
-    {%- set storageConvRelDbPath = [stConvPrefix, uuids.storageConvRelDbQUuid]|reply_path -%}
-    {%- set storageConvRelDbAUuid = repliesMap[storageConvRelDbPath]|reply_str_value -%}
-    {%- if storageConvFSysAUuid or storageConvObjStoreAUuid or storageConvRelDbAUuid -%}
+  {%- if storageConv._value == 'explore' -%}
+    {%- set storageSpace = storageConv.storageNeeds -%}
+    {%- set filesFolders = storageConv.filesFolders -%}
+    {%- set objectStore = storageConv.objectStore -%}
+    {%- set database = storageConv.databaseSystem -%}
+    {%- if filesFolders._value is not none or objectStore._value is not none or database._value is not none -%}
       <h4>{% trans %}Data storage and file conventions{% endtrans %}</h4>
       {# Storage space #}
-      {%- if storageSpaceAUuid == uuids.storageSpaceLittleAUuid -%}
+      {%- if storageSpace._value == 'little' -%}
         <p>{% trans %}The project will require so little storage space for all data and software (including temporary storage) that it is not a problem.{% endtrans %}</p>
-      {%- elif storageSpaceAUuid == uuids.storageSpaceSpecifyAUuid -%}
-        {%- set size = repliesMap[[storageSpacePath, storageSpaceAUuid, uuids.storageSpaceSpecifyQUuid]|reply_path]|reply_str_value -%}
+      {%- elif storageSpace._value == 'specify' -%}
+        {%- set size = storageSpace.gigabytes._value -%}
         {%- if size -%}
         <p>{% trans size=size %}We estimate the storage space that the project will require for all data and software (including temporary storage) to {{ size }} gigabytes.{% endtrans %}</p>
         {%- endif -%}
       {%- endif -%}
       {# File System #}
       <p>
-      {%- if storageConvFSysAUuid == uuids.storageConvFSysNoAUuid -%}
+      {%- if filesFolders._value is false -%}
         {% trans %}We will not use a filesystem with files and folders.{% endtrans %}
-      {%- elif storageConvFSysAUuid == uuids.storageConvFSysYesAUuid -%}
-        {%- set scFSysPrefix = [storageConvFSysPath, uuids.storageConvFSysYesAUuid]|reply_path -%}
+      {%- elif filesFolders._value is true -%}
         {# Folder types #}
-        {%- set scFSysSubjFoldersPath = [scFSysPrefix, uuids.scFSysSubjFoldersQUuid]|reply_path -%}
-        {%- set scFSysSubjFoldersAUuid = repliesMap[scFSysSubjFoldersPath]|reply_str_value -%}
-        {%- set scFSysAnalysisFoldersPath = [scFSysPrefix, uuids.scFSysAnalysisFoldersQUuid]|reply_path -%}
-        {%- set scFSysAnalysisFoldersAUuid = repliesMap[scFSysAnalysisFoldersPath]|reply_str_value -%}
-        {%- set scFSysWorkflowStepFoldersPath = [scFSysPrefix, uuids.scFSysWorkflowStepFoldersQUuid]|reply_path -%}
-        {%- set scFSysWorkflowStepFoldersAUuid = repliesMap[scFSysWorkflowStepFoldersPath]|reply_str_value -%}
-        {%- set subjectFolders = scFSysSubjFoldersAUuid == uuids.scFSysSubjFoldersYesAUuid -%}
-        {%- set analysisFolders = scFSysAnalysisFoldersAUuid == uuids.scFSysAnalysisFoldersYesAUuid -%}
-        {%- set workflowStepFolders = scFSysWorkflowStepFoldersAUuid == uuids.scFSysWorkflowStepFoldersYesAUuid -%}
+        {%- set subjectFolders = filesFolders.folderSample._value is true -%}
+        {%- set analysisFolders = filesFolders.folderAnalysis._value is true -%}
+        {%- set workflowStepFolders = filesFolders.folderWorkflowStep._value is true -%}
         {%- set folders = [subjectFolders, analysisFolders, workflowStepFolders] -%}
         {%- if folders|any -%}
           {% trans %}We will use a filesystem with files and folders with the following folder conventions:{% endtrans %}
           <ul>
             {%- if subjectFolders -%}
-              {%- set scFSysSubjFoldersConvs = repliesMap[[scFSysSubjFoldersPath, uuids.scFSysSubjFoldersYesAUuid, uuids.scFSysSubjFoldersConvsQUuid]|reply_path]|reply_str_value -%}
+              {%- set scFSysSubjFoldersConvs = filesFolders.folderSample.convention._value -%}
               <li>
                 {% trans %}There will be a <strong>folder for each sample/subject</strong>.{% endtrans %}
                 {% if scFSysSubjFoldersConvs %}
@@ -142,7 +113,7 @@
               </li>
             {%- endif -%}
             {%- if analysisFolders -%}
-              {%- set scFSysAnalysisFoldersConvs = repliesMap[[scFSysAnalysisFoldersPath, uuids.scFSysAnalysisFoldersYesAUuid, uuids.scFSysAnalysisFoldersConvsQUuid]|reply_path]|reply_str_value -%}
+              {%- set scFSysAnalysisFoldersConvs = filesFolders.folderAnalysis.convention._value -%}
               <li>
                 {% trans %}There will be a <strong>(sub)folder for each (repeated) analysis</strong>.{% endtrans %} 
                 {% if scFSysAnalysisFoldersConvs %}
@@ -151,7 +122,7 @@
               </li>
             {%- endif -%}
             {%- if workflowStepFolders -%}
-              {%- set scFSysWorkflowStepFoldersConvs = repliesMap[[scFSysWorkflowStepFoldersPath, uuids.scFSysWorkflowStepFoldersYesAUuid, uuids.scFSysWorkflowStepFoldersConvsQUuid]|reply_path]|reply_str_value -%}
+              {%- set scFSysWorkflowStepFoldersConvs = filesFolders.folderWorkflowStep.convention._value -%}
               <li>
                 {% trans %}There will be a <strong>(sub)folder for each step in the analysis workflow</strong>.{% endtrans %}
                 {% if scFSysWorkflowStepFoldersConvs %}
@@ -164,14 +135,11 @@
           {% trans %}We will use a filesystem with files and folders.{% endtrans %}
         {%- endif -%}
         {# Versioning #}
-        {%- set scDocumentVersioningPath = [scFSysPrefix, uuids.scDocumentVersioningQUuid]|reply_path -%}
-        {%- set scDocumentVersioningAUuid = repliesMap[scDocumentVersioningPath]|reply_str_value -%}
-        {%- if scDocumentVersioningAUuid == uuids.scDocumentVersioningYesAUuid %}
+        {%- if filesFolders.fileVersioningDocs._value is true %}
           {% trans %}We document how we manage file versioning for files and folders.{% endtrans %}
         {%- endif -%}
         {# Other appointments #}
-        {%- set scFSysAppointmentsPath = [scFSysPrefix, uuids.scFSysAppointmentsQUuid]|reply_path -%}
-        {%- set scFSysAppointments = repliesMap[scFSysAppointmentsPath]|reply_str_value -%}
+        {%- set scFSysAppointments = filesFolders.fileNaming._value -%}
         {%- if scFSysAppointments %}
           {% if folders|any %}{% trans value=(macros.md(scFSysAppointments[:1]|upper ~ scFSysAppointments[1:])) %}Moreover, we have made agreements on naming the files. {{ value }}{% endtrans %}{% else %}{% trans value=(macros.md(scFSysAppointments[:1]|upper ~ scFSysAppointments[1:])) %}We have made agreements on naming the files. {{ value }}{% endtrans %}{% endif %}
         {%- endif -%}
@@ -179,11 +147,10 @@
       </p>
       {# Object and Document Store #}
       <p>
-      {%- if storageConvObjStoreAUuid == uuids.storageConvObjStoreNoAUuid -%}
+      {%- if objectStore._value is false -%}
         {% trans %}We will not be storing data in an "object/document store" system.{% endtrans %}
-      {%- elif storageConvObjStoreAUuid == uuids.storageConvObjStoreYesAUuid -%}
-        {%- set scObjStoreNamingQUuid = [storageConvObjStorePath, uuids.storageConvObjStoreYesAUuid, uuids.scObjStoreNamingQUuid]|reply_path -%}
-        {%- set scObjStoreNaming = repliesMap[scObjStoreNamingQUuid]|reply_str_value -%}
+      {%- elif objectStore._value is true -%}
+        {%- set scObjStoreNaming = objectStore.convention._value -%}
         {%- if scObjStoreNaming -%} 
           {% trans value=(macros.md(scObjStoreNaming)) %}We will be storing data in an "object/document store" system using the following naming conventions for objects in the store: {{ value }}{% endtrans %}
         {%- else -%}
@@ -193,17 +160,16 @@
       </p>
       {# Databases #}
       <p>
-      {%- if storageConvRelDbAUuid == uuids.storageConvRelDbNoAUuid -%}
+      {%- if database._value is false -%}
         {% trans %}We will not use a database system to store project data.{% endtrans %}
-      {%- elif storageConvRelDbAUuid == uuids.storageConvRelDbYesAUuid -%}
+      {%- elif database._value is true -%}
         {% trans %}We will use a database system to store project data.{% endtrans %}
-        {%- set scRelDbHandleChangesPath = [storageConvRelDbPath, uuids.storageConvRelDbYesAUuid, uuids.scRelDbHandleChangesQUuid]|reply_path -%}
-        {%- set scRelDbHandleChangesAUuid = repliesMap[scRelDbHandleChangesPath]|reply_str_value -%}
-        {%- if scRelDbHandleChangesAUuid == uuids.scRelDbReadOnlyAnswerUuid %}
+        {%- set changeHandling = database.changeHandling._value -%}
+        {%- if changeHandling == 'readOnly' %}
           {% trans %}Data in the database will be read-only.{% endtrans %}
-        {%- elif scRelDbHandleChangesAUuid == uuids.scRelDbCrudAnswerUuid %}
+        {%- elif changeHandling == 'crud' %}
           {% trans %}We will be allowing Create, Update and Delete operations for data in the database.{% endtrans %}
-        {%- elif scRelDbHandleChangesAUuid == uuids.scRelDbExpireAnswerUuid %}
+        {%- elif changeHandling == 'expireAdd' %}
           {% trans %}Modifications will be made by <em>Expiring</em> the existing data and <em>Adding</em> updated data.{% endtrans %}
         {%- endif -%}
       {%- endif -%}

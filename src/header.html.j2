@@ -1,35 +1,31 @@
+{#- data -#}
+{%- set contributors = x.administrativeInformation.contributors -%}
+{%- set contacts = [] -%}
+{%- set creators = [] -%}
+{%- for contributor in contributors -%}
+  {%- set roles = contributor.roles|map(attribute='_value')|list -%}
+  {%- if 'contactPerson' in roles -%}{%- do contacts.append(contributor) -%}{%- endif -%}
+  {%- if 'creatorOfDmp' in roles -%}{%- do creators.append(contributor) -%}{%- endif -%}
+{%- endfor -%}
+
 <header>
   <p class="doc-type">{% trans %}Data Management Plan{% endtrans %}</p>
   <h1>{{ dc.project.name }}</h1>
   <p class="guidance">{% trans %}Structured according to the Science Europe core requirements for data management plans{% endtrans %}</p>
   <div class="dmp-info">
     <dl>
-      {%- set contributorsPath = [uuids.adminDetailsCUuid, uuids.contributorsQUuid]|join(".") -%}
-      {%- set contributorsItems = repliesMap[contributorsPath]|reply_items -%}
-      {%- if contributorsItems|length > 0 -%}
-        {%- set contacts = [] -%}
-        {%- set creators = [] -%}
-        {%- for i in contributorsItems -%}
-          {%- set pathPrefix = [contributorsPath, i]|join(".") ~ "." -%}
-          {%- set contributorRoles = repliesMap[pathPrefix ~ uuids.contributorRoleQUuid]|reply_items -%}
-          {%- if uuids.contributorRoleContactPersonAUuid in contributorRoles -%}
-            {% do contacts.append(pathPrefix)  %}
-          {%- endif -%}
-          {%- if uuids.contributorRoleCreatorOfDMPAUuid in contributorRoles -%}
-            {% do creators.append(pathPrefix)  %}
-          {%- endif -%}
-        {%- endfor -%}
+      {%- if contributors|length > 0 -%}
         {%- set nContacts = contacts|length -%}
         <dt>{% trans count=[nContacts, 1]|max %}Contact person{% pluralize %}Contact people{% endtrans %}</dt>
         <dd>
           {%- if nContacts > 0 -%}
             <ul>
-              {%- for pathPrefix in contacts -%}
+              {%- for person in contacts -%}
                 <li>
-                  {%- set contributorName = repliesMap[pathPrefix ~ uuids.contributorNameQUuid]|reply_str_value -%}
-                  {%- set contributorEmail = repliesMap[pathPrefix ~ uuids.contributorEmailQUuid]|reply_str_value -%}
-                  {%- set contributorOrcid = repliesMap[pathPrefix ~ uuids.contributorOrcidQUuid] -%}
-                  {%- set contributorAffiliationReply = repliesMap[pathPrefix ~ uuids.contributorAffiliationQUuid] -%}
+                  {%- set contributorName = person.name._value -%}
+                  {%- set contributorEmail = person.email._value -%}
+                  {%- set contributorOrcid = person.orcid if person.orcid._value is not none else none -%}
+                  {%- set contributorAffiliationReply = person.affiliation if person.affiliation._value is not none else none -%}
 
                   {%- if contributorName -%}
                     <span class="contact-name">{{ contributorName }}</span>
@@ -37,14 +33,14 @@
                     <span class="contact-name missing">{% trans %}(name not given){% endtrans %}</span>
                   {%- endif -%}
                   {%- if contributorEmail and contributorOrcid %}
-                    <br>{{ macros.formatEmail(contributorEmail) }}, {{ macros.formatOrcid(contributorOrcid) }}
+                    <br>{{ macros.formatEmail(contributorEmail) }}, {{ macros.orcid(contributorOrcid) }}
                   {%- elif contributorEmail %}
                     <br>{{ macros.formatEmail(contributorEmail) }}
                   {%- elif contributorOrcid %}
-                    <br>{{ macros.formatOrcid(contributorOrcid) }}
+                    <br>{{ macros.orcid(contributorOrcid) }}
                   {%- endif -%}
                   {%- if contributorAffiliationReply %}
-                    <br>{{ macros.integrationROR(contributorAffiliationReply) }}
+                    <br>{{ macros.ror(contributorAffiliationReply) }}
                   {%- endif -%}
                 </li>
               {%- endfor -%}
@@ -70,12 +66,12 @@
         <dd>
           {%- if nCreators > 0 -%}
             <ul>
-                {%- for pathPrefix in creators -%}
+                {%- for person in creators -%}
                   <li>
-                    {%- set creatorName = repliesMap[pathPrefix ~ uuids.contributorNameQUuid]|reply_str_value -%}
-                    {%- set creatorEmail = repliesMap[pathPrefix ~ uuids.contributorEmailQUuid]|reply_str_value -%}
-                    {%- set creatorOrcid = repliesMap[pathPrefix ~ uuids.contributorOrcidQUuid] -%}
-                    {%- set creatorAffiliationReply = repliesMap[pathPrefix ~ uuids.contributorAffiliationQUuid] -%}
+                    {%- set creatorName = person.name._value -%}
+                    {%- set creatorEmail = person.email._value -%}
+                    {%- set creatorOrcid = person.orcid if person.orcid._value is not none else none -%}
+                    {%- set creatorAffiliationReply = person.affiliation if person.affiliation._value is not none else none -%}
 
                     {%- if creatorName -%}
                       <span class="contact-name">{{ creatorName }}</span>
@@ -83,14 +79,14 @@
                       <span class="contact-name missing">{% trans %}(name not given){% endtrans %}</span>
                     {%- endif -%}
                     {%- if creatorEmail and creatorOrcid -%}
-                      <br>{{ macros.formatEmail(creatorEmail) }}, {{ macros.formatOrcid(creatorOrcid) }}
+                      <br>{{ macros.formatEmail(creatorEmail) }}, {{ macros.orcid(creatorOrcid) }}
                     {%- elif creatorEmail -%}
                       <br>{{ macros.formatEmail(creatorEmail) }}
                     {%- elif creatorOrcid -%}
-                      <br>{{ macros.formatOrcid(creatorOrcid) }}
+                      <br>{{ macros.orcid(creatorOrcid) }}
                     {%- endif -%}
                     {%- if creatorAffiliationReply -%}
-                      <br>{{ macros.integrationROR(creatorAffiliationReply) }}
+                      <br>{{ macros.ror(creatorAffiliationReply) }}
                     {%- endif -%}
                   </li>
                 {%- endfor -%}

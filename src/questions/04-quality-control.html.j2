@@ -1,43 +1,32 @@
+{#- data -#}
+{%- set measured = x.creatingData.hasMeasuredData -%}
+
 <div id="q-how-data" class="question">
     <h3>{% trans %}4. What data quality control measures will be used?{% endtrans %}</h3>
 
     <div class="answer">
-        {%- set measuredPath = [uuids.creatingCUuid, uuids.measuredQUuid]|reply_path -%}
-        {%- set measuredAUuid = repliesMap[measuredPath]|reply_str_value -%}
-        {%- if measuredAUuid == uuids.measuredYesAUuid -%}
+        {%- if measured._value is true -%}
             {# Measured datasets #}
-            {%- set measuredDataPath = [measuredPath, uuids.measuredYesAUuid, uuids.measuredDataQUuid]|reply_path -%}
-            {%- set measuredDataItems = repliesMap[measuredDataPath]|reply_items -%}
-            {%- if measuredDataItems|length > 0 -%}
+            {%- set datasets = measured.datasets -%}
+            {%- if datasets|length > 0 -%}
             <ul class="entries">
-                {%- for datasetItem in measuredDataItems -%}
-                {%- set pathPrefix = [measuredDataPath, datasetItem]|reply_path -%}
+                {%- for dataset in datasets -%}
                 <li>
-                    {%- set measuredDataNamePath = [pathPrefix, uuids.measuredDataNameQUuid]|reply_path -%}
-                    {%- set measuredDataName = repliesMap[measuredDataNamePath]|reply_str_value -%}
-                    <strong>{{ measuredDataName if measuredDataName else _("(no name given)") }}</strong>
+                    {%- set datasetName = dataset.dataset._value -%}
+                    <strong>{{ datasetName if datasetName else _("(no name given)") }}</strong>
                     {# Quality #}
-                    {%- set measuredDataQualityPath = [pathPrefix, uuids.measuredDataQualityQUuid]|reply_path -%}
-                    {%- set measuredDataQualityAUuid = repliesMap[measuredDataQualityPath]|reply_str_value -%}
-                    {%- if measuredDataQualityAUuid == uuids.measuredDataQualityNoAUuid -%}
+                    {%- set quality = dataset.hasQualityProcesses -%}
+                    {%- if quality._value is false -%}
                     <p>{% trans %}We will not be using a quality process for this dataset.{% endtrans %}</p>
-                    {%- elif measuredDataQualityAUuid == uuids.measuredDataQualityYesAUuid -%}
+                    {%- elif quality._value is true -%}
                     {# Named quality processes #}
-                    {%- set mdqPrefix = [measuredDataQualityPath, uuids.measuredDataQualityYesAUuid]|reply_path -%}
-                    {%- set calibratingAUuid = repliesMap[[mdqPrefix, uuids.mdQualityCalibratingQUuid]|reply_path]|reply_str_value -%}
-                    {%- set repetitionAUuid = repliesMap[[mdqPrefix, uuids.mdQualityRepetitionQUuid]|reply_path]|reply_str_value -%}
-                    {%- set standardizedAUuid = repliesMap[[mdqPrefix, uuids.mdQualityStandardizedQUuid]|reply_path]|reply_str_value -%}
-                    {%- set validationAUuid = repliesMap[[mdqPrefix, uuids.mdQualityValidationQUuid]|reply_path]|reply_str_value -%}
-                    {%- set peerReviewAUuid = repliesMap[[mdqPrefix, uuids.mdQualityPeerReviewQUuid]|reply_path]|reply_str_value -%}
-                    {%- set vocabulariesAUuid = repliesMap[[mdqPrefix, uuids.mdQualityVocabulariesQUuid]|reply_path]|reply_str_value -%}
-                    {%- set consistencyAUuid = repliesMap[[mdqPrefix, uuids.mdQualityConsistencyQUuid]|reply_path]|reply_str_value -%}
-                    {%- set calibrating = calibratingAUuid == uuids.mdQualityCalibratingYesAUuid -%}
-                    {%- set repetition = repetitionAUuid == uuids.mdQualityRepetitionYesAUuid -%}
-                    {%- set standardized = standardizedAUuid == uuids.mdQualityStandardizedYesAUuid -%}
-                    {%- set validation = validationAUuid == uuids.mdQualityValidationYesAUuid -%}
-                    {%- set peerReview = peerReviewAUuid == uuids.mdQualityPeerReviewYesAUuid -%}
-                    {%- set vocabularies = vocabulariesAUuid == uuids.mdQualityVocabulariesYesAUuid -%}
-                    {%- set consistency = consistencyAUuid == uuids.mdQualityConsistencyYesAUuid -%}
+                    {%- set calibrating = quality.calibration._value is true -%}
+                    {%- set repetition = quality.repeat._value is true -%}
+                    {%- set standardized = quality.standardised._value is true -%}
+                    {%- set validation = quality.validation._value is true -%}
+                    {%- set peerReview = quality.peerReview._value is true -%}
+                    {%- set vocabularies = quality.vocabularies._value is true -%}
+                    {%- set consistency = quality.consistency._value is true -%}
                     {%- set qualityProcesses = [consistency, calibrating, repetition, standardized, validation, peerReview, vocabularies] -%}
                     {%- set qualityCount = qualityProcesses|select("true")|list|length -%}
                     {%- if qualityCount == 1 -%}
@@ -97,11 +86,8 @@
                         <p>{% trans %}We will be using quality processes.{% endtrans %}<p>
                     {%- endif -%}
                     {# Other quality processes #}
-                    {%- set mdQualityOtherPath = [mdqPrefix, uuids.mdQualityOtherQUuid]|reply_path -%}
-                    {%- set mdQualityOtherAUuid = repliesMap[mdQualityOtherPath]|reply_str_value -%}
-                    {%- if mdQualityOtherAUuid == uuids.mdQualityOtherYesAUuid -%}
-                        {%- set mdQualityOtherYesPath = [mdQualityOtherPath, uuids.mdQualityOtherYesAUuid,uuids.mdQualityOtherWhatQUuid]|reply_path -%}
-                        {%- set mdQualityOther = repliesMap[mdQualityOtherYesPath]|reply_str_value -%}
+                    {%- if quality.other._value is true -%}
+                        {%- set mdQualityOther = quality.other.other._value -%}
                         {%- if mdQualityOther -%}
                         <p>{% if qualityCount > 0 %}{% trans value=(macros.md(mdQualityOther)) %}Additional quality processes are: {{ value }}{% endtrans %}{% else %}{% trans value=(macros.md(mdQualityOther)) %}Our quality processes are: {{ value }}{% endtrans %}{% endif %}</p>
                         {%- endif -%}

@@ -1,19 +1,19 @@
 {
-  "version": "2.0.0",
+  "version": "3.0.0",
   "name": "Science Europe DMP Template",
   "description": "Default DCC DMP Template recommended by Science Europe",
   "license": "Apache-2.0",
   "metamodelVersion": "19.0",
   "allowedPackages": [
     {
-      "minVersion": "2.7.0",
-      "maxVersion": null,
-      "id": "dsw.root"
+      "id": "dsw.root",
+      "minVersion": "2.8.1",
+      "maxVersion": null
     },
     {
-      "minVersion": "2.7.0",
-      "maxVersion": null,
-      "id": "dsw.lifesciences"
+      "id": "dsw.lifesciences",
+      "minVersion": "2.8.1",
+      "maxVersion": null
     }
   ],
   "formats": [

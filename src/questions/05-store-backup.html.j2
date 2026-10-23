@@ -1,55 +1,48 @@
+{#- data -#}
+{%- set workspace = x.processingData.sharedWorkingSpace -%}
+{%- set reliability = workspace.reliability -%}
+
 <div id="q-store-backup" class="question">
   <h3>{% trans %}5. How will data and metadata be stored and backed up during the research?{% endtrans %}</h3>
 
   <div class="answer">
     {# Data stored by members (no shared workspace) #}
-    {%- set sharedWorkspacePath = [uuids.processingCUuid, uuids.sharedWorkspaceQUuid]|reply_path -%}
-    {%- set sharedWorkspaceAUuid = repliesMap[sharedWorkspacePath]|reply_str_value -%}
-    {%- if sharedWorkspaceAUuid == uuids.sharedWorkspaceNoAUuid -%}
+    {%- if workspace._value is false -%}
       <p>{% trans %}There is no shared workspace used during the project for working with data.{% endtrans %}</p>
-      {%- set notSharedBackupPath = [sharedWorkspacePath, uuids.sharedWorkspaceNoAUuid, uuids.notSharedBackupQUuid]|reply_path -%}
-      {%- set notSharedBackupAUuid = repliesMap[notSharedBackupPath]|reply_str_value -%}
-      {%- if notSharedBackupAUuid == uuids.notSharedBackupYesAUuid -%}
+      {%- if workspace.backupTraceable._value is true -%}
         <p>{% trans %}Data that project members themselves store are adequately backed up and traceable. Therefore data are protected against both equipment failure and human error.{% endtrans %}</p>
       {%- endif -%}
-    {%- elif sharedWorkspaceAUuid == uuids.sharedWorkspaceYesAUuid -%}
+    {%- elif workspace._value is true -%}
       <p>{% trans %}There is a shared workspace used during the project for working with data.{% endtrans %}</p>
-      {%- set sharedHowPath = [sharedWorkspacePath, uuids.sharedWorkspaceYesAUuid, uuids.sharedHowQUuid]|reply_path -%}
-      {%- set sharedHowAUuid = repliesMap[sharedHowPath]|reply_str_value -%}
-      {%- if sharedHowAUuid == uuids.sharedHowExploreAUuid -%}
-        {%- set sharedHowChangePath = [sharedHowPath, uuids.sharedHowExploreAUuid, uuids.sharedHowChangeQUuid]|reply_path -%}
-        {%- set sharedHowChangeAUuid = repliesMap[sharedHowChangePath]|reply_str_value -%}
-        {%- if sharedHowChangeAUuid == uuids.sharedHowChangeSameAUuid -%}
+      {%- if workspace.workWithData._value == 'explore' -%}
+        {%- set change = workspace.workWithData.storageChangeNeeds._value -%}
+        {%- if change == 'same' -%}
           <p>{% trans %}Storage needs will be the same during the whole project.{% endtrans %}</p>
-        {%- elif sharedHowChangeAUuid == uuids.sharedHowChangeLargeAUuid -%}
+        {%- elif change == 'largeReduce' -%}
           <p>{% trans %}Storage needs are large at the beginning and will be reduced later.{% endtrans %}</p>
-        {%- elif sharedHowChangeAUuid == uuids.sharedHowChangeSmallAUuid -%}
+        {%- elif change == 'smallGrow' -%}
           <p>{% trans %}Storage needs are small at the beginning and will grow later.{% endtrans %}</p>
-        {%- elif sharedHowChangeAUuid == uuids.sharedHowChangeMiddleAUuid -%}
+        {%- elif change == 'largestMiddle' -%}
           <p>{% trans %}Storage needs are largest in the middle of the project.{% endtrans %}</p>
         {%- endif -%}
       {%- endif -%}
-      {%- set sharedReliablePath = [sharedWorkspacePath, uuids.sharedWorkspaceYesAUuid, uuids.sharedReliableQUuid]|reply_path -%}
-      {%- set sharedReliableAUuid = repliesMap[sharedReliablePath]|reply_str_value -%}
-      {%- if sharedReliableAUuid == uuids.sharedReliableExploreAUuid -%}
-        {%- set sharedReliablePreventLossPath = [sharedReliablePath, uuids.sharedReliableExploreAUuid, uuids.sharedReliablePreventLossQUuid]|reply_path -%}
-        {%- set sharedReliablePreventLossAUuid = repliesMap[sharedReliablePreventLossPath]|reply_str_value -%}
-        {%- set sharedReliableBackupPath = [sharedReliablePath, uuids.sharedReliableExploreAUuid, uuids.sharedReliableBackupQUuid]|reply_path -%}
-        {%- set sharedReliableBackupAUuid = repliesMap[sharedReliableBackupPath]|reply_str_value -%}
-        {%- if sharedReliablePreventLossAUuid or sharedReliableBackupAUuid -%}
+      {%- if reliability._value == 'explore' -%}
+        {%- set preventLoss = reliability.dataLossPrevention._value -%}
+        {%- set backup = reliability.otherBackup._value -%}
+        {%- if preventLoss or backup -%}
           <p>
-          {%- if sharedReliablePreventLossAUuid == uuids.sharedReliablePreventLossSufficientAUuid %}
+          {%- if preventLoss == 'sufficient' %}
             {% trans %}The work space provides sufficient guarantees in terms of preventing a total loss of data.{% endtrans %}
-          {%- elif sharedReliablePreventLossAUuid == uuids.sharedReliablePreventLossStoredAUuid %}
+          {%- elif preventLoss == 'duplication' %}
             {% trans %}All essential data is also stored elsewhere to prevent a total loss of data.{% endtrans %}
           {%- endif -%}
-          {%- if sharedReliableBackupAUuid == uuids.sharedReliableBackupCopyLeftAUuid %}
+          {%- if backup == 'projectParticipants' %}
             {% trans %}Backup of project data that is not in the work space is left to the project participants.{% endtrans %}
-          {%- elif sharedReliableBackupAUuid == uuids.sharedReliableBackupCopyNoDataAUuid %}
+          {%- elif backup == 'noDataElsewhere' %}
             {% trans %}Data is stored only in the work space, therefore additional backup copies of files outside work space are necessary.{% endtrans %}</p>
-          {%- elif sharedReliableBackupAUuid == uuids.sharedReliableBackupCopyAllSomewhereAUuid %}
+          {%- elif backup == 'allBackedUp' %}
             {% trans %}All project data stored outside of the working area will be adequately backed up.{% endtrans %}
-          {%- elif sharedReliableBackupAUuid == uuids.sharedReliableBackupCopyBackupsAUuid %}
+          {%- elif backup == 'automatedBackups' %}
             {% trans %}We will make (automated) backups of all data stored outside of the working area.{% endtrans %}
           {%- endif -%}
           </p>
