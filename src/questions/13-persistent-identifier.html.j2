@@ -81,7 +81,7 @@
 
     {# Explain how the data might be re-used in other contexts. #}
     <h4>{% trans %}Possible re-use of created data in other contexts{% endtrans %}</h4>
-    {% trans %}Explanation of how the collected or created data might be re-used in other contexts:{% endtrans %}
+    <p>{% trans %}Explanation of how the collected or created data might be re-used in other contexts:{% endtrans %}</p>
 
     {%- if measured._value is true  -%}
 
@@ -101,14 +101,14 @@
             {%- elif whoInterested._value == 'otherFields' -%}
                 {%- set measuredDataReuseOtherFieldHowReply = whoInterested.how._value -%}
 
-                <p>{% trans %}Researchers working in other fields will be interested in re-using this data{% endtrans %}
-                
-                {%- if measuredDataReuseOtherFieldHowReply -%}
-                
-                 {{ " " }}{% trans value=(macros.md(measuredDataReuseOtherFieldHowReply)) %}because: {{ value }}{% endtrans %}</p>
-                {%- else -%}
-                .
-                {%- endif -%}
+                {% call macros.para() %}
+                    {% trans %}Researchers working in other fields will be interested in re-using this data{% endtrans %}
+                    {%- if measuredDataReuseOtherFieldHowReply -%}
+                        {{ " " }}{% trans value=(macros.md(measuredDataReuseOtherFieldHowReply)) %}because: {{ value }}{% endtrans %}
+                    {%- else -%}
+                        .
+                    {%- endif -%}
+                {% endcall %}
 
             {%- endif -%}
             </li>

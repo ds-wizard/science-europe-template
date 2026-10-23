@@ -6,9 +6,8 @@
 {%- set ownership = x.creatingData.collectedDataRights -%}
 {%- set preexisting = x.reusingData.hasPreExistingData -%}
 
-<div id="q-ethical-issues" class="question">
-  <h3>{% trans %}8. How will other legal issues, such as intellectual property rights and ownership, be managed? What legislation is applicable?{% endtrans %}
-</h3>
+<div id="q-copyright-ipr" class="question">
+  <h3>{% trans %}8. How will other legal issues, such as intellectual property rights and ownership, be managed? What legislation is applicable?{% endtrans %}</h3>
 
   <div class="answer">
     {# Open philosophy #}
@@ -32,7 +31,7 @@
       {%- set nReasons = reasons|select("true")|list|length -%}
 
       {%- if nReasons > 0 -%}
-        <p>
+        {%- call macros.para() %}
         {% trans %}The data cannot become completely open because{% endtrans %} 
         {%- if nReasons == 1 -%}
           {%- if legalReasons %}
@@ -68,6 +67,7 @@
             {%- endif -%}
           </ul>
         {%- endif -%}
+        {%- endcall -%}
       {%- else -%}
         <p>{% trans %}The data cannot become completely open.{% endtrans %}</p>
       {%- endif -%}
@@ -87,7 +87,9 @@
             {%- set existingCommittee = authorisation.committee._value -%}
             
             {%- if existingCommittee -%}
-              <p>{% trans value=(macros.md(existingCommittee)) %}We will make use of an existing data committee: {{ value }}{% endtrans %}</p>
+              {%- call macros.para() -%}
+                {% trans value=(macros.md(existingCommittee)) %}We will make use of an existing data committee: {{ value }}{% endtrans %}
+              {%- endcall -%}
             {%- else -%}
               <p>{% trans %}We will make use of an existing data committee.{% endtrans %}</p>
             {%- endif -%}
@@ -96,7 +98,9 @@
             {%- set authorisationOther = authorisation.other._value -%}
 
             {%- if authorisationOther  -%}
-              <p>{% trans value=(macros.md(authorisationOther)) %}We will have the following arrangements: {{ value }}{% endtrans %}</p>
+              {%- call macros.para() -%}
+                {% trans value=(macros.md(authorisationOther)) %}We will have the following arrangements: {{ value }}{% endtrans %}
+              {%- endcall -%}
             {%- else -%}
               <p>{% trans %}We have not decided yet.{% endtrans %}</p>
             {%- endif -%}
@@ -138,7 +142,9 @@
     {%- elif ownershipValue == 'other' -%}
       {%- set ownershipOther = ownership.other._value -%}
       {%- if ownershipOther -%}
-        <p>{% trans value=(macros.md(ownershipOther)) %}We have made the following arrangements regarding the data ownership: {{ value }}{% endtrans %}</p>
+        {%- call macros.para() -%}
+          {% trans value=(macros.md(ownershipOther)) %}We have made the following arrangements regarding the data ownership: {{ value }}{% endtrans %}
+        {%- endcall -%}
       {%- endif -%}
     {%- endif -%}
 
@@ -161,7 +167,7 @@
         {%- endif -%}
       {%- endfor -%}
       {%- if (answeredRefData|length + answeredNRefData|length) > 0 -%}
-        <p>{% trans %}For the reference and non-reference data sets that we reuse, conditions are as follows:{% endtrans %}
+        <p>{% trans %}For the reference and non-reference data sets that we reuse, conditions are as follows:{% endtrans %}</p>
         <ul class="entries">
           {%- for i in answeredRefData -%}
             {%- set refDataNameReply = i.dataset._value -%}

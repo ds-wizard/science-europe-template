@@ -21,7 +21,7 @@
             <strong>{{ datasetName if datasetName else _("(no name given)") }}</strong>
             {# Instruments #}
             {%- if dataset.instruments|length > 0 -%}
-              <p>{% trans %}For this dataset, we are using the following instruments:{% endtrans %}
+              <p>{% trans %}For this dataset, we are using the following instruments:{% endtrans %}</p>
               <ul>
                 {%- for instrument in dataset.instruments -%}
                   <li>
@@ -33,7 +33,6 @@
                   </li>
                 {%- endfor -%}
               </ul>
-              </p>
             {%- else -%}
               <p>{% trans %}No instruments for this dataset have been specified.{% endtrans %}</p>
             {%- endif -%}
@@ -79,8 +78,7 @@
                   {% trans %}as part of the quality process.{% endtrans %}
                 </p>
               {%- elif qualityCount > 1 -%}
-                <p>
-                {% trans %}We will be using the following quality processes:{% endtrans %}
+                <p>{% trans %}We will be using the following quality processes:{% endtrans %}</p>
                 <ul>
                   {%- if calibrating -%}
                     <li>{% trans %}calibrating measurements{% endtrans %}</li>
@@ -104,15 +102,14 @@
                     <li>{% trans %}measuring samples with known outcome (to monitor consistency){% endtrans %}</li>
                   {%- endif %}
                 </ul>
-                </p>
               {%- else -%}
-                <p>{% trans %}We will be using quality processes.{% endtrans %}<p>
+                <p>{% trans %}We will be using quality processes.{% endtrans %}</p>
               {%- endif -%}
               {# Other quality processes #}
               {%- if quality.other._value is true -%}
                 {%- set qualityOther = quality.other.other._value -%}
                 {%- if qualityOther -%}
-                  <p>{% if qualityCount > 0 %}{% trans value=(macros.md(qualityOther)) %}Additional quality processes are: {{ value }}{% endtrans %}{% else %}{% trans value=(macros.md(qualityOther)) %}Our quality processes are: {{ value }}{% endtrans %}{% endif %}</p>
+                  {% call macros.para() %}{% if qualityCount > 0 %}{% trans value=(macros.md(qualityOther)) %}Additional quality processes are: {{ value }}{% endtrans %}{% else %}{% trans value=(macros.md(qualityOther)) %}Our quality processes are: {{ value }}{% endtrans %}{% endif %}{% endcall %}
                 {%- endif -%}
               {%- endif -%}
             {%- endif -%}
@@ -151,7 +148,7 @@
           {%- if refDataUse._value is true  %}
 
             {# identification #}
-            <p>{% trans %}We will re-use this standard reference data{% endtrans %}
+            {% call macros.para() %}{% trans %}We will re-use this standard reference data{% endtrans %}
             {%- if refDataWhere -%}
               {{ " " }}{% trans %}available via:{% endtrans %}{{ " " }}
               {%- if refDataWhere.startswith("http://") or refDataWhere.startswith("https://") or refDataWhere.startswith("ftp://") -%}
@@ -167,7 +164,7 @@
                 {{+" "}}{% trans value=(macros.md(refDataUsage|trim|dot)) %}in order to {{ value }}{% endtrans %}
             {%- else -%}.
             {%- endif -%}
-            </p>
+            {% endcall %}
 
             {# version #}
             {%- set refDataVersioned = refDataUse.isVersioned -%}
@@ -175,7 +172,7 @@
               {%- set refDataVersion = refDataVersioned.version._value -%}
               {%- set refDataVersionUpdate = refDataVersioned.updateVersion._value -%}
               {%- if refDataVersion or refDataVersionUpdate is not none  %}
-                <p>
+                {% call macros.para() %}
                 {% if refDataVersion -%}
                   {% trans value=(macros.md(refDataVersion|trim|dot)) %}We will use the following version of this dataset: {{ value }}{% endtrans %}
                 {%- endif -%}
@@ -186,27 +183,25 @@
                 {%- elif refDataVersionUpdate == 'allAnalyses' %}
                   {% trans %}If a new version becomes available during the project, all analyses will be redone with the new version.{% endtrans %}
                 {%- endif -%}
-                </p>
+                {% endcall %}
               {%- endif -%}
             {%- endif -%}
 
             {# availability of the standard reference data for future results reproduction #}
             {%- set refDataReproduce = refDataUse.reproduce._value -%}
-            <p>
             {%- if refDataReproduce == 'keepsOldVersions' -%}
-              {% trans %}This standard reference data will be available for long-term by the provider.{% endtrans %}
+              <p>{% trans %}This standard reference data will be available for long-term by the provider.{% endtrans %}</p>
             {%- elif refDataReproduce == 'keepCopy'  -%}
-              {% trans %}We will keep the copy of this standard reference data and make it available with our results.{% endtrans %}
+              <p>{% trans %}We will keep the copy of this standard reference data and make it available with our results.{% endtrans %}</p>
             {%- elif refDataReproduce == 'both' -%}
-              {% trans %}This standard reference data will be available for long-term by the provider as well as we will keep the copy of this dataset and make it available with our results.{% endtrans %}
+              <p>{% trans %}This standard reference data will be available for long-term by the provider as well as we will keep the copy of this dataset and make it available with our results.{% endtrans %}</p>
             {%- endif -%}
-            </p>
 
             {# licence #}
             {%- set refDataConditions = refDataUse.conditions._value -%}
             {%- set refDataConditionsOther = refDataUse.conditions.conditions._value -%}
             {%- if refDataConditions is not none %}
-             <p>{% trans %}This standard reference data are{% endtrans %}{{+" "}}
+             {% call macros.para() %}{% trans %}This standard reference data are{% endtrans %}{{+" "}}
               {%- if refDataConditions == 'cc0' -%}
                 {% trans %}freely available for any use.{% endtrans %}
               {%- elif refDataConditions == 'cc-by' -%}
@@ -219,18 +214,16 @@
                     {{ " " }}{% trans %}restrictions, that will be specified.{% endtrans %}
                   {%- endif -%}
               {%- endif -%}
-             </p>
+             {% endcall %}
             {%- endif -%}
 
             {# format #}
             {%- set refDataFormat = refDataUse.format._value -%}
-            <p>
             {%- if refDataFormat == 'convert' -%}
-              {% trans %}The standard reference data are in the format that has to be transformed before using.{% endtrans %}
+              <p>{% trans %}The standard reference data are in the format that has to be transformed before using.{% endtrans %}</p>
             {%- elif refDataFormat == 'ok' -%}
-              {% trans %}The standard reference data are in the format that does not have to be transformed and we can use it directly.{% endtrans %}
-            {% endif %}
-            </p>
+              <p>{% trans %}The standard reference data are in the format that does not have to be transformed and we can use it directly.{% endtrans %}</p>
+            {%- endif %}
 
           {# Reference data set that will NOT be used #}
           {%- elif refDataUse._value is false -%}
@@ -238,7 +231,7 @@
             {%- set refDataWhyNotReason = refDataUse.whyNot.reason._value %}
 
             {# identification #}
-            <p> {% trans %}We considered reusing this standard reference data{% endtrans %}
+            {% call macros.para() %}{% trans %}We considered reusing this standard reference data{% endtrans %}
             {%- if refDataWhere -%}
             {{ " " }}{% trans %}available via:{% endtrans %}{{ " " }}
               {%- if refDataWhere.startswith("http://") or refDataWhere.startswith("https://") or refDataWhere.startswith("ftp://") -%}
@@ -264,8 +257,9 @@
               {%- else -%}.
               {%- endif -%}
             {%- else -%}
-            . </p>
+            .
             {%- endif -%}
+            {% endcall %}
 
           {%- endif -%}
         </li>
@@ -290,7 +284,7 @@
         {%- if nrefDataUse._value is true %}
 
           {# identification #}
-          <p>{% trans %}We will re-use this non-reference data{% endtrans %}
+          {% call macros.para() %}{% trans %}We will re-use this non-reference data{% endtrans %}
           {%- if nrefDataWhere -%}
          {{ " " }}{% trans %}available via:{% endtrans %}{{ " " }}
             {%- if nrefDataWhere.startswith("http://") or nrefDataWhere.startswith("https://") or nrefDataWhere.startswith("ftp://") -%}
@@ -306,7 +300,7 @@
             {{+" "}}{% trans value=(macros.md(nrefDataUsage|trim|dot)) %}in order to {{ value }}{% endtrans %}
           {%- else -%}.
           {%- endif -%}
-          </p>
+          {% endcall %}
 
           {# Which part of the non-reference data we will use #}
           {%- set nrefDataComplete = nrefDataUse.useComplete._value -%}
@@ -342,23 +336,21 @@
           {# Licence #}
           {%- set nrefDataConditions = nrefDataUse.conditions._value -%}
           {%- if nrefDataConditions is not none %}
-            <p>{% trans %}This data are{% endtrans %}{{+" "}}
+            {% call macros.para() %}{% trans %}This data are{% endtrans %}{{+" "}}
             {%- if nrefDataConditions == 'cc0' -%}
               {% trans %}freely available for any use.{% endtrans %}
             {%- elif nrefDataConditions == 'cc-by' -%}
               {% trans %}freely available with obligation to quote the source.{% endtrans %}
             {%- elif nrefDataConditions == 'restrictions'  -%}
               {%- set nrefDataConditionsOther = nrefDataUse.conditions.conditions._value -%}
+              {% trans %}available with{% endtrans %}{{ " " }}
               {%- if nrefDataConditionsOther -%}
-                {% trans %}available with{% endtrans %}{{ " " }}
-                  {%- if nrefDataConditionsOther -%}
-                   {% trans value=(macros.md(nrefDataConditionsOther)) %}following restrictions: {{ value }}{% endtrans %}
-                  {%- else -%}
-                    {{ " " }}{% trans %}restrictions, that will be specified.{% endtrans %}
-                  {%- endif -%}
+                {% trans value=(macros.md(nrefDataConditionsOther)) %}following restrictions: {{ value }}{% endtrans %}
+              {%- else -%}
+                {{ " " }}{% trans %}restrictions, that will be specified.{% endtrans %}
               {%- endif -%}
             {%- endif -%}
-            </p>
+            {% endcall %}
           {%- endif -%}
 
           {# Personal Data #}
@@ -415,7 +407,7 @@
           {%- set nrefDataWhyNotReason = nrefDataUse.whyNot.reason._value %}
 
           {# identification #}
-          <p>{% trans %}We considered reusing this non-reference data{% endtrans %}
+          {% call macros.para() %}{% trans %}We considered reusing this non-reference data{% endtrans %}
           {%- if nrefDataWhere -%}
           {{+" "}}{% trans %}available via:{% endtrans %}{{ " " }}
             {%- if nrefDataWhere.startswith("http://") or nrefDataWhere.startswith("https://") or nrefDataWhere.startswith("ftp://") -%}
@@ -443,12 +435,11 @@
             {%- endif -%}
 
           {%- else -%}
-          .</p>
+          .
           {%- endif -%}
+          {% endcall %}
 
         {%- endif -%}
-
-      </p>
       </li>
       {%- endfor -%}
       </ul>
@@ -523,7 +514,7 @@
       {%- elif provenance._value == 'other' -%}
         {%- set provenanceOther = provenance.other._value -%}
         {#- TRANSLATORS: %(details)s is ": " followed by the user's text, or just "." -#}
-        <p>{% trans details=(": " ~ macros.md(provenanceOther) if provenanceOther else ".") %}We will use a solution other than (electronic) lab notebooks to make sure that there is good provenance of the data analysis{{ details }}{% endtrans %}
+        {% call macros.para() %}{% trans details=(": " ~ macros.md(provenanceOther) if provenanceOther else ".") %}We will use a solution other than (electronic) lab notebooks to make sure that there is good provenance of the data analysis{{ details }}{% endtrans %}{% endcall %}
       {%- endif -%}
       {%- endif -%}
     {%- endif -%}

@@ -97,7 +97,7 @@
     {%- if personalData._value == 'noPersonalData' -%}
       <p>{% trans %}We are not using any personal information.{% endtrans %}</p>
     {%- elif personalData._value == 'pseudonymizedOnly' -%}
-      <p>
+      {%- call macros.para() %}
         {% trans %}All personal information will be processed in pseudonymized form only.{% endtrans %}
         {%- if pseudonymization._value == 'insideProjectLimitedPeopleKey' %}
           {% trans %}We pseudonymize inside the project, only a limited number of people can access the keys.{% endtrans %}
@@ -108,7 +108,7 @@
           {#- TRANSLATORS: %(details)s is ": " followed by the user's text, or just "." -#}
           {% trans details=(": " ~ macros.md(pseudonymizationOther) if pseudonymizationOther else ".") %}We have a specific way of pseudonymization{{ details }}{% endtrans %}
         {%- endif -%}
-      </p>
+      {%- endcall -%}
     {%- elif personalData._value == 'anonymouslyCollected' -%}
       <p>{% trans %}All personal data will be collected anonymously.{% endtrans %}</p>
     {%- elif personalData._value == 'anonymisedEarly' -%}
@@ -138,7 +138,7 @@
 
     {# Long term preservation and recovery #}
     {%- if archivedDuring._value is true -%}
-      <p> {% trans %}We will be archiving data for long-term preservation already during our project.{% endtrans %}
+      <p>{% trans %}We will be archiving data for long-term preservation already during our project.{% endtrans %}
 
       {%- if rearchival._value is true -%}
         {{ " " }}{% trans %}The archived data will be changing over time and needs re-archival.{% endtrans %}
@@ -146,12 +146,13 @@
         {%- set relyOnBackups = rearchival.recoverHumanError._value is true -%}
 
         {%- if (frequentBackups is true) and relyOnBackups -%}
-          {{ " " }}{% trans %}This data needs frequent backups and we will rely on these backups in case of recovery from human errors.{% endtrans %}</p>
+          {{ " " }}{% trans %}This data needs frequent backups and we will rely on these backups in case of recovery from human errors.{% endtrans %}
         {%- elif (frequentBackups is false) and relyOnBackups -%}
-          {{ " " }}{% trans %}This data will be infrequently backed up and we will rely on these backups in case of recovery from human errors.{% endtrans %}</p>
+          {{ " " }}{% trans %}This data will be infrequently backed up and we will rely on these backups in case of recovery from human errors.{% endtrans %}
         {%- endif -%}
 
       {%- endif -%}
+      </p>
     {%- endif -%}
 
     {# Access control in shared workspace #}
@@ -189,7 +190,7 @@
                 {%- endif -%}
               {%- endif -%}
               {%- if policyDescription -%}
-                <div>{{ macros.md(policyDescription) }}</div>
+                {% call macros.para() %}{{ macros.md(policyDescription) }}{% endcall %}
               {%- endif -%}
           </li>
         {%- endfor -%}

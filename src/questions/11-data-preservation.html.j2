@@ -9,8 +9,7 @@
   <div class="answer">
     {# Produced datasets #}
     {%- if datasets|length > 0 -%}
-      <p>
-      {% trans %}We plan to produce the following datasets:{% endtrans %}
+      <p>{% trans %}We plan to produce the following datasets:{% endtrans %}</p>
       <ul class="entries">
       {%- for dataset in datasets -%}
         {%- set producedDataName = dataset.dataset._value -%}
@@ -30,7 +29,7 @@
             {% if retention._value == 'asLongAsPossible' -%}
               <p>{% trans %}This data set will be kept available as long as technically possible.{% endtrans %}</p>
             {%- elif retention._value == 'untilDelete' -%}
-              <p> {% trans %}This data set will be kept available until it needs to be deleted for legal, contractual or regulatory reasons.{% endtrans %}</p>
+              <p>{% trans %}This data set will be kept available until it needs to be deleted for legal, contractual or regulatory reasons.{% endtrans %}</p>
             {%- elif retention._value == 'fixedPeriod' -%}
               {%- set publishedDataHowLongFixed = retention.period._value -%}
               {#- TRANSLATORS: %(details)s is ": " followed by the user's text, or just "." -#}
@@ -122,7 +121,7 @@
       {%- elif paying == 'other' -%}
         {%- set repoChargesHowPayOther = fees.paying.other._value -%}
         {%- if repoChargesHowPayOther -%}
-          <p>{% trans value=(macros.md(repoChargesHowPayOther)) %}We will carry the costs related to the used repositories by: {{ value }}{% endtrans %}</p>
+          {% call macros.para() %}{% trans value=(macros.md(repoChargesHowPayOther)) %}We will carry the costs related to the used repositories by: {{ value }}{% endtrans %}{% endcall %}
         {%- endif -%}
       {%- endif -%}
     {%- endif -%}

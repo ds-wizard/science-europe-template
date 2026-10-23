@@ -840,8 +840,8 @@ msgstr "Zájemci mohou požádat komisi pro přístup k datům, kterou zřídím
 
 #: src/questions/10-share-restrictions.html.j2:219
 #, python-format
-msgid "People can apply to the following data access committee: <em>%(value)s</em>"
-msgstr "Zájemci mohou požádat následující komisi pro přístup k datům: <em>%(value)s</em>"
+msgid "People can apply to the following data access committee: %(value)s"
+msgstr "Zájemci mohou požádat následující komisi pro přístup k datům: %(value)s"
 
 #: src/questions/06-access-security.html.j2:174
 msgid "Policies and Procedures"

@@ -14,7 +14,7 @@
     {%- elif expertise._value == 'available' -%}
       <p>{% trans %}To execute the DMP, additional specialist expertise is required and we have such trained support staff available.{% endtrans %}</p>
     {%- elif expertise._value == 'training' -%}
-      <p>
+      {% call macros.para() %}
         {% trans %}To execute the DMP, additional specialist expertise is required. We will be training existing staff{% endtrans %}
         {%- set expertiseTrainText = expertise.training._value -%}
         {%- if expertiseTrainText %}
@@ -22,15 +22,16 @@
         {%- else -%}
           .
         {%- endif -%}
-      </p>
+      {% endcall %}
     {%- elif expertise._value == 'expertise' -%}
       <p>
         {% trans %}To execute the DMP, additional specialist expertise is required. We will be hiring new people with additional expertise{% endtrans %}
         {%- set expertiseHireText = expertise.expertise._value -%}
         {%- if expertiseHireText %}
-          {{ " " }}{% trans expertisehiretext=expertiseHireText %}in: {{ expertisehiretext }}{% endtrans %}
+          {{ " " }}{% trans expertisehiretext=(expertiseHireText|trim|dot) %}in: {{ expertisehiretext }}{% endtrans %}
+        {%- else -%}
+          .
         {%- endif -%}
-        .
       </p>
     {%- endif -%}
     {# additional hw/sw #}
@@ -39,7 +40,7 @@
     {%- elif hwsw._value is true -%}
       {%- set additionalHWSWWhat = hwsw.needs._value -%}
       {%- if additionalHWSWWhat -%}
-        <p>{% trans value=(macros.md(additionalHWSWWhat)) %}We require the following hardware or software in addition to what is usually available in the institute: {{ value }}{% endtrans %}</p>
+        {% call macros.para() %}{% trans value=(macros.md(additionalHWSWWhat)) %}We require the following hardware or software in addition to what is usually available in the institute: {{ value }}{% endtrans %}{% endcall %}
       {%- else -%}
         <p>{% trans %}We require hardware or software in addition to what is usually available in the institute.{% endtrans %}</p>
       {%- endif -%}
@@ -118,8 +119,9 @@
                           {%- if costCoverGrantIdReply -%}
                             {{ " " }}{% trans costcovergrantidreply=costCoverGrantIdReply %}(grant number: {{ costcovergrantidreply }}){% endtrans %}
                           {%- else -%}
-                            . </p>
+                            .
                           {%- endif -%}
+                          </p>
                         {%- elif coveredBy._value == 'other' -%}
                           {%- set costCoverOtherHowReply = coveredBy.description._value -%}
                           {%- if costCoverOtherHowReply -%}

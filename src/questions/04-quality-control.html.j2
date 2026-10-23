@@ -1,7 +1,7 @@
 {#- data -#}
 {%- set measured = x.creatingData.hasMeasuredData -%}
 
-<div id="q-how-data" class="question">
+<div id="q-quality-control" class="question">
     <h3>{% trans %}4. What data quality control measures will be used?{% endtrans %}</h3>
 
     <div class="answer">
@@ -56,8 +56,7 @@
                         {% trans %}as part of the quality process.{% endtrans %}
                         </p>
                     {%- elif qualityCount > 1 -%}
-                        <p>
-                        {% trans %}We will be using the following quality processes for this dataset:{% endtrans %}
+                        <p>{% trans %}We will be using the following quality processes for this dataset:{% endtrans %}</p>
                         <ul>
                         {%- if calibrating -%}
                             <li>{% trans %}calibrating measurements{% endtrans %}</li>
@@ -81,15 +80,14 @@
                             <li>{% trans %}measuring samples with known outcome (to monitor consistency){% endtrans %}</li>
                         {%- endif %}
                         </ul>
-                        </p>
                     {%- else -%}
-                        <p>{% trans %}We will be using quality processes.{% endtrans %}<p>
+                        <p>{% trans %}We will be using quality processes.{% endtrans %}</p>
                     {%- endif -%}
                     {# Other quality processes #}
                     {%- if quality.other._value is true -%}
                         {%- set mdQualityOther = quality.other.other._value -%}
                         {%- if mdQualityOther -%}
-                        <p>{% if qualityCount > 0 %}{% trans value=(macros.md(mdQualityOther)) %}Additional quality processes are: {{ value }}{% endtrans %}{% else %}{% trans value=(macros.md(mdQualityOther)) %}Our quality processes are: {{ value }}{% endtrans %}{% endif %}</p>
+                        {% call macros.para() %}{% if qualityCount > 0 %}{% trans value=(macros.md(mdQualityOther)) %}Additional quality processes are: {{ value }}{% endtrans %}{% else %}{% trans value=(macros.md(mdQualityOther)) %}Our quality processes are: {{ value }}{% endtrans %}{% endif %}{% endcall %}
                         {%- endif -%}
                     {%- endif -%}
                     {%- endif -%}

@@ -74,7 +74,7 @@
     {# Produced datasets #}
     {%- if datasets|length > 0 -%}
       <h4>{% trans %}Data we produce{% endtrans %}</h4>
-      <p>{% trans %}For the data we produce, the ethical aspects are as follows:{% endtrans %}
+      <p>{% trans %}For the data we produce, the ethical aspects are as follows:{% endtrans %}</p>
       <ul class="entries">
       {%- for dataset in datasets -%}
         {%- set producedDataName = dataset.dataset._value -%}
@@ -101,7 +101,6 @@
         </li>
       {%- endfor -%}
       </ul>
-      </p>
     {%- endif -%}
 
     {# Collected data - personal/GDPR and ethical legislation #}
@@ -181,7 +180,18 @@
           {%- endif -%}
         {%- endif -%}
 
-        <p>{{ sentences|join(' ') }}</p>
+        {#- consecutive inline sentences share a paragraph, Markdown answers with blocks stand on their own #}
+        {%- set ns = namespace(inline=[]) -%}
+        {%- for sentence in sentences -%}
+          {%- if (sentence|string|trim).startswith(('<p', '<ul', '<ol', '<blockquote', '<pre', '<table', '<div', '<h4')) -%}
+            {%- if ns.inline -%}<p>{{ ns.inline|join(' ') }}</p>{%- endif -%}
+            {%- set ns.inline = [] -%}
+            {{ sentence }}
+          {%- else -%}
+            {%- set ns.inline = ns.inline + [sentence] -%}
+          {%- endif -%}
+        {%- endfor -%}
+        {%- if ns.inline -%}<p>{{ ns.inline|join(' ') }}</p>{%- endif -%}
       {%- endif -%}
 
       {% if ethics._value is false %}

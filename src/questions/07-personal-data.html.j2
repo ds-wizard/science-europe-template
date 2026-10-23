@@ -4,7 +4,7 @@
 {%- set safeguards = gdpr.safeguards -%}
 {%- set legalReasons = x.givingAccessToData.allOpenOverTime.legalReasons -%}
 
-<div id="q-access-security" class="question">
+<div id="q-personal-data" class="question">
     <h3>{% trans %}7. If personal data are processed, how will compliance with legislation on personal data and on security be ensured?{% endtrans %}</h3>
 
     <div class="answer">
@@ -16,23 +16,24 @@
                 {%- set legalBasis = gdpr.legalBasis._value -%}
                 {%- if legalBasis  -%}
                     <h4>{% trans %}Legal basis for collecting and processing personal data{% endtrans %}</h4>
-                    <p> {% trans %}We are collecting and processing personal data{% endtrans %}{{+" "}}
+                    <p>{% trans %}We are collecting and processing personal data{% endtrans %}{{+" "}}
                     {%- if legalBasis == 'publicInterest' -%}
-                        {% trans %}based on public interest.{% endtrans %}</p>
+                        {% trans %}based on public interest.{% endtrans %}
                     {%- elif legalBasis == 'consent' -%}
-                        {% trans %}based on the subject's consent.{% endtrans %}</p>
+                        {% trans %}based on the subject's consent.{% endtrans %}
                     {%- elif legalBasis == 'other' -%}
                         {%- set legalBasisOther = gdpr.legalBasis.other._value -%}
                         {%- if legalBasisOther == 'contract' -%}
-                            {% trans %}in order to fulfil a contract.{% endtrans %}</p>
+                            {% trans %}in order to fulfil a contract.{% endtrans %}
                         {%- elif legalBasisOther == 'legitimateInterest' -%}
-                            {% trans %}based on legitimate interest.{% endtrans %}</p>
+                            {% trans %}based on legitimate interest.{% endtrans %}
                         {%- elif legalBasisOther == 'vitalInterest' -%}
-                            {% trans %}based on vital interest.{% endtrans %}</p>
+                            {% trans %}based on vital interest.{% endtrans %}
                         {%- elif legalBasisOther == 'legalRequirement' -%}
-                            {% trans %}based on legal requirement.{% endtrans %}</p>
+                            {% trans %}based on legal requirement.{% endtrans %}
                         {%- endif -%}
                     {%- endif -%}
+                    </p>
                 {%- endif -%}
 
                 {# Technical and procedural safeguards #}
@@ -52,14 +53,18 @@
 
                     {%- set safeguardsDescription = safeguards.description._value -%}
                     {%- if safeguardsDescription -%}
-                        <p>{% trans value=(macros.md(safeguardsDescription)) %}We will use the following technical and procedural safeguards: {{ value }}{% endtrans %}</p>
-                   {%- endif -%}
+                        {%- call macros.para() -%}
+                            {% trans value=(macros.md(safeguardsDescription)) %}We will use the following technical and procedural safeguards: {{ value }}{% endtrans %}
+                        {%- endcall -%}
+                    {%- endif -%}
 
                     {%- set transferMeasures = safeguards.transferOutsideEu.description._value -%}
 
                     {%- if (safeguards.transferOutsideEu._value is true) and (transferMeasures) -%}
-                        <p>{% trans value=(macros.md(transferMeasures)) %}We plan to transfer data outside the EU/EEA and these are the measures we will put in place to protect the data:
-                        {{ value }}{% endtrans %}</p>
+                        {%- call macros.para() -%}
+                            {% trans value=(macros.md(transferMeasures)) %}We plan to transfer data outside the EU/EEA and these are the measures we will put in place to protect the data:
+                        {{ value }}{% endtrans %}
+                        {%- endcall -%}
                     {%- endif -%}
                 {%- endif -%}
             {%- endif -%}

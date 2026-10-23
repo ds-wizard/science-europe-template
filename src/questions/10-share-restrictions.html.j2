@@ -161,8 +161,8 @@
                 <p>{% trans %}The dataset will be published after an embargo.{% endtrans %}</p>
             {%- endif %}
             {# Qualified references #}
+            {%- set qreferences = [] -%}
             {%- if published.qualifiedReferences._value is true -%}
-                {%- set qreferences = [] -%}
                 {%- for item in published.qualifiedReferences.references -%}
                     {%- set refId = (item.identifier._value or '')|e -%}
                     {%- set refRel = (item.relationship._value or '')|e -%}
@@ -197,16 +197,16 @@
     {%- elif openOverTime._value is false -%}
       {%- if embargo._value == 'yesEmbargo' -%}
         {%- set embargoPeriod = embargo.period._value -%}
-        <p>
+        {% call macros.para() %}
           {% trans %}Data cannot be completely open due to legal reasons. However, data that is not legally restricted will be released after a fixed time period.{% endtrans %}
           {%- if embargoPeriod %}
             {% trans value=(embargoPeriod|trim|dot) %}The embargo period will be {{ value }}{% endtrans %}
           {%- endif %}
-        </p>
+        {% endcall %}
       {%- endif -%}
 
       {%- if authenticatedAccess._value is true -%}
-        <p>
+        {% call macros.para() %}
           {% trans %}A data sharing agreement will be required.{% endtrans %}
           {%- set authorisation = authenticatedAccess.authorisation -%}
           {%- if authorisation._value == 'member' %}
@@ -216,7 +216,10 @@
           {%- elif authorisation._value == 'existingCommittee' %}
             {%- set legalReasonsAuthorizeOldCommittee = authorisation.committee._value -%}
             {%- if legalReasonsAuthorizeOldCommittee %}
-              {% trans value=(macros.md(legalReasonsAuthorizeOldCommittee)) %}People can apply to the following data access committee: <em>{{ value }}</em>{% endtrans %}
+              {#- the name of the committee in italics, unless the answer is longer (blocks) -#}
+              {%- set committee = macros.md(legalReasonsAuthorizeOldCommittee)|trim -%}
+              {%- set committee = committee if committee.startswith(('<p', '<ul', '<ol', '<blockquote', '<table', '<div', '<h4')) else '<em>'|safe ~ committee ~ '</em>'|safe %}
+              {% trans value=committee %}People can apply to the following data access committee: {{ value }}{% endtrans %}
             {%- else -%}
               {% trans %}People can apply to an existing data access committee.{% endtrans %}
             {%- endif -%}
@@ -225,7 +228,7 @@
             {#- TRANSLATORS: %(details)s is ": " followed by the user's text, or just "." -#}
             {% trans details=(": " ~ macros.md(legalReasonsAuthorizeOther) if legalReasonsAuthorizeOther else ".") %}For the authorization of potential users, we will make special arrangements{{ details }}{% endtrans %}
           {%- endif -%}
-        </p>
+        {% endcall %}
       {%- endif -%}
     {%- endif -%}
 

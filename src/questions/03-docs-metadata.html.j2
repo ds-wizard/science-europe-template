@@ -48,7 +48,7 @@
     {%- if openMetadata._value is false %}
       {%- set explanation = openMetadata.explanation._value -%}
       {%- if explanation -%}
-        <p>{% trans value=(macros.md(explanation)) %}Metadata will not be available openly &ndash; {{ value }}{% endtrans %}</p>
+        {% call macros.para() %}{% trans value=(macros.md(explanation)) %}Metadata will not be available openly &ndash; {{ value }}{% endtrans %}{% endcall %}
       {%- else -%}
         <p>{% trans %}Metadata will not be available openly.{% endtrans %}</p>
       {%- endif -%}
@@ -91,7 +91,7 @@
         {%- endif -%}
       {%- endif -%}
       {# File System #}
-      <p>
+      {% call macros.para() %}
       {%- if filesFolders._value is false -%}
         {% trans %}We will not use a filesystem with files and folders.{% endtrans %}
       {%- elif filesFolders._value is true -%}
@@ -144,9 +144,9 @@
           {% if folders|any %}{% trans value=(macros.md(scFSysAppointments[:1]|upper ~ scFSysAppointments[1:])) %}Moreover, we have made agreements on naming the files. {{ value }}{% endtrans %}{% else %}{% trans value=(macros.md(scFSysAppointments[:1]|upper ~ scFSysAppointments[1:])) %}We have made agreements on naming the files. {{ value }}{% endtrans %}{% endif %}
         {%- endif -%}
       {%- endif -%}
-      </p>
+      {% endcall %}
       {# Object and Document Store #}
-      <p>
+      {% call macros.para() %}
       {%- if objectStore._value is false -%}
         {% trans %}We will not be storing data in an "object/document store" system.{% endtrans %}
       {%- elif objectStore._value is true -%}
@@ -157,7 +157,7 @@
           {% trans %}We will be storing data in an "object/document store" system.{% endtrans %}
         {%- endif -%}
       {%- endif -%}
-      </p>
+      {% endcall %}
       {# Databases #}
       <p>
       {%- if database._value is false -%}

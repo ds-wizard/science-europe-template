@@ -15,7 +15,7 @@
     {%- if datasets|length > 0 -%}
       <div>
       <h4>{% trans %}Instrument datasets{% endtrans %}</h4>
-      {% trans %}The following instrument datasets will be acquired in the project:{% endtrans %}
+      <p>{% trans %}The following instrument datasets will be acquired in the project:{% endtrans %}</p>
       <ul class="entries">
         {%- for dataset in datasets -%}
           <li>
@@ -30,7 +30,7 @@
               <p>{% trans %}This dataset will be collected by experts in the project, at a specialized infrastructure.{% endtrans %}</p>
             {%- elif whoWhere._value == 'external' -%}
               {%- set ownership = whoWhere.ownership -%}
-              <p>
+              {% call macros.para() %}
                 {% trans %}This dataset will be collected by an external party.{% endtrans %}
                 {% if ownership._value == 'external' -%}
                   {% trans %}The ownership of the resulting data will remain with the external party.{% endtrans %}
@@ -42,7 +42,7 @@
                     {% trans value=(macros.md(ownershipOther)) %}For the ownership of the data we have made the following arrangements: {{ value }}{% endtrans %}
                   {%- endif -%}
                 {%- endif -%}
-              </p>
+              {% endcall %}
             {%- endif -%}
             {# Equipment standard? #}
             {% if equipment is true -%}
@@ -73,7 +73,7 @@
       {%- if caseReport -%}{%- do typesNames.append(_("case report forms")) -%}{%- endif -%}
       {%- if eRecords -%}{%- do typesNames.append(_("electronic patient records")) -%}{%- endif -%}
       {%- set typesCount = typesNames|length -%}
-      <p>
+      {% call macros.para() %}
         {%- if typesCount > 0 -%}
           {% trans %}We collect data from{% endtrans %}
           {% if typesCount == 1 -%}
@@ -99,7 +99,7 @@
           {%- endfor -%}
           </ul>
         {%- endif -%}
-      </p>
+      {% endcall %}
       </div>
     {%- endif -%}
   {%- endif -%}
@@ -121,7 +121,7 @@
         <span class="status">{% trans %}(will be published){% endtrans %}</span>
         {%- endif -%}
         {%- if producedDesc %}
-        <div>{{ macros.md(producedDesc) }}</div>
+        {% call macros.para() %}{{ macros.md(producedDesc) }}{% endcall %}
         {%- endif %}
       </li>
     {%- endfor -%}
@@ -141,7 +141,7 @@
   {# Format/Type with volume #}
   {%- if formats|length > 0 -%}
     <h4>{% trans %}Data formats and types{% endtrans %}</h4>
-    <div>{% trans %}We will be using the following data formats and types:{% endtrans %}
+    <div><p>{% trans %}We will be using the following data formats and types:{% endtrans %}</p>
     <ul class="entries">
       {%- for format in formats -%}
         {%- set isStandard = format.isStandard -%}
