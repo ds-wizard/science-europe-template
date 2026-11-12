@@ -35,6 +35,7 @@ This document template for DSW is available as open-source via GitHub Repository
 
 - Fixed the document failing ("'dict object' has no attribute ...") for projects with selected question tags; questions hidden by the tags are shown as not answered
 - Fixed the document failing on a contributor whose typed reply ends with "ORCID:"
+- Fixed the information on the front page covering the project title when there are many contact people or creators; it continues on the next page instead
 
 ### 3.0.1
 

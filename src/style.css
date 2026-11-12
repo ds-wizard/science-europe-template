@@ -91,10 +91,7 @@ h1, h2, h3, h4, h5, h6 {
 /* Cover page */
 
 header {
-  box-sizing: border-box;
-  height: 24.5cm;
   padding-top: 3.5cm;
-  position: relative;
   break-after: page;
 }
 
@@ -124,11 +121,29 @@ header .guidance {
   color: #5f6b78;
 }
 
+/* The cover is a table of two rows with minimum heights (WeasyPrint honours the height of a
+   table cell as a minimum): the title, with room for three lines, and the info, with its content
+   at the bottom of the page. A longer title or info makes its row grow downwards, so the info
+   never covers the title as an absolute position did. */
+header .cover {
+  display: table;
+  width: 100%;
+}
+
+header .cover-row {
+  display: table-row;
+}
+
+header .cover-title {
+  display: table-cell;
+  height: 7.1cm;
+  vertical-align: top;
+}
+
 header .dmp-info {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
+  display: table-cell;
+  height: 13.9cm;
+  vertical-align: bottom;
 }
 
 header .contact-orcid {

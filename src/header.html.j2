@@ -9,10 +9,13 @@
 {%- endfor -%}
 
 <header>
+  <div class="cover">
+  <div class="cover-row"><div class="cover-title">
   <p class="doc-type">{% trans %}Data Management Plan{% endtrans %}</p>
   <h1>{{ dc.project.name }}</h1>
   <p class="guidance">{% trans %}Structured according to the Science Europe core requirements for data management plans{% endtrans %}</p>
-  <div class="dmp-info">
+  </div></div>
+  <div class="cover-row"><div class="dmp-info">
     <dl>
       {%- if contributors|length > 0 -%}
         {%- set nContacts = contacts|length -%}
@@ -108,5 +111,6 @@
     <p class="note">
       {% trans service_name=dc.config.service_name %}Data Management Plan created in {{ service_name }} &laquo;{% endtrans %}<a href="{{ dc.config.service_url }}" target="_blank">{{ dc.config.service_domain_name }}</a>&raquo;
     </p>
+  </div></div>
   </div>
 </header>
