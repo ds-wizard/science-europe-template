@@ -31,6 +31,11 @@ This document template for DSW is available as open-source via GitHub Repository
 
 ## Changelog
 
+### 3.0.2
+
+- Fixed the document failing ("'dict object' has no attribute ...") for projects with selected question tags; questions hidden by the tags are shown as not answered
+- Fixed the document failing on a contributor whose typed reply ends with "ORCID:"
+
 ### 3.0.1
 
 - Fixed: the answer "There is no data elsewhere" about backups outside the work space (Question 5) rendered a sentence saying the opposite (that backups are necessary)
